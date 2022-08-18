@@ -1,4 +1,4 @@
-import 'package:capstone_project_hcmut/controllers/controller.dart';
+import 'package:capstone_project_hcmut/view_models/view_models.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,22 +16,22 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Consumer<CounterProvider>(
+              Consumer<CounterViewModel>(
                   builder: (context, counterProvider, child) {
                 return Text(
-                  counterProvider.currentValue.toString(),
+                  counterProvider.instance.counter.toString(),
                   style: const TextStyle(fontSize: 20),
                 );
               }),
               ElevatedButton(
                 onPressed: () =>
-                    Provider.of<CounterProvider>(context, listen: false)
+                    Provider.of<CounterViewModel>(context, listen: false)
                         .increase(),
                 child: const Text('Increase value'),
               ),
               ElevatedButton(
                 onPressed: () =>
-                    Provider.of<CounterProvider>(context, listen: false)
+                    Provider.of<CounterViewModel>(context, listen: false)
                         .decrease(),
                 child: const Text('Decrease value'),
               )
