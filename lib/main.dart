@@ -1,10 +1,10 @@
-import 'package:capstone_project_hcmut/controllers/counter_provider.dart';
-import 'package:capstone_project_hcmut/screens/screens.dart';
+import 'package:capstone_project_hcmut/view_models/counter_view_model.dart';
+import 'package:capstone_project_hcmut/views/views.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  final counterProvider = CounterProvider();
+  final counterProvider = CounterViewModel();
   runApp(
     MultiProvider(
       providers: [
