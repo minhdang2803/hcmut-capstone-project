@@ -3,6 +3,27 @@ import 'dart:convert';
 LoginResponseModel loginResponseModel(String str) =>
     LoginResponseModel.fromJson(json.decode(str));
 
+class LoginFailedModel {
+  LoginFailedModel({
+    required this.error,
+    required this.statusCode,
+  });
+  late final String error;
+  late final int statusCode;
+
+  LoginFailedModel.fromJson(Map<String, dynamic> json) {
+    error = json['error'];
+    statusCode = json['statusCode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['error'] = error;
+    data['statusCode'] = statusCode;
+    return data;
+  }
+}
+
 class LoginResponseModel {
   LoginResponseModel({
     required this.data,
@@ -20,11 +41,11 @@ class LoginResponseModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['data'] = data.toJson();
-    _data['message'] = message;
-    _data['statusCode'] = statusCode;
-    return _data;
+    final returnData = <String, dynamic>{};
+    returnData['data'] = data.toJson();
+    returnData['message'] = message;
+    returnData['statusCode'] = statusCode;
+    return returnData;
   }
 }
 
@@ -42,10 +63,10 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['user'] = user.toJson();
-    _data['authorization'] = authorization.toJson();
-    return _data;
+    final returnData = <String, dynamic>{};
+    returnData['user'] = user.toJson();
+    returnData['authorization'] = authorization.toJson();
+    return returnData;
   }
 }
 
@@ -69,12 +90,12 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['user_id'] = userId;
-    _data['full_name'] = fullName;
-    _data['email'] = email;
-    _data['created_at'] = createdAt;
-    return _data;
+    final returnData = <String, dynamic>{};
+    returnData['user_id'] = userId;
+    returnData['full_name'] = fullName;
+    returnData['email'] = email;
+    returnData['created_at'] = createdAt;
+    return returnData;
   }
 }
 
@@ -101,12 +122,12 @@ class Authorization {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['session_id'] = sessionId;
-    _data['access_token'] = accessToken;
-    _data['access_token_expires_at'] = accessTokenExpiresAt;
-    _data['refresh_token'] = refreshToken;
-    _data['refresh_token_expires_at'] = refreshTokenExpiresAt;
-    return _data;
+    final returnData = <String, dynamic>{};
+    returnData['session_id'] = sessionId;
+    returnData['access_token'] = accessToken;
+    returnData['access_token_expires_at'] = accessTokenExpiresAt;
+    returnData['refresh_token'] = refreshToken;
+    returnData['refresh_token_expires_at'] = refreshTokenExpiresAt;
+    return returnData;
   }
 }

@@ -17,9 +17,9 @@ class RegisterResponseModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['message'] = message;
-    _data['statusCode'] = statusCode;
-    return _data;
+    final returnData = <String, dynamic>{};
+    returnData['message'] = message;
+    returnData['statusCode'] = statusCode;
+    return returnData;
   }
 }

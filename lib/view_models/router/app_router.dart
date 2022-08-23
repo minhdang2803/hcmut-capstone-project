@@ -1,4 +1,5 @@
 import 'package:capstone_project_hcmut/view_models/app_state_manager_viewmodel.dart';
+import 'package:capstone_project_hcmut/views/demo_screen.dart';
 import 'package:capstone_project_hcmut/views/home_screen.dart';
 import 'package:capstone_project_hcmut/views/login_screen.dart';
 import 'package:capstone_project_hcmut/views/splash_screen.dart';
@@ -29,6 +30,11 @@ class AppRouter extends ChangeNotifier {
         path: '/login',
         name: LoginScreen.routeName,
         pageBuilder: (context, state) => LoginScreen.page(),
+      ),
+      GoRoute(
+        path: '/demo',
+        name: DemoScreen.routeName,
+        pageBuilder: (context, state) => DemoScreen.page(),
       ),
       GoRoute(
         path: '/home',

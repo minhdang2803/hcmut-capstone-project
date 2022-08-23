@@ -5,14 +5,14 @@ class SplashScreen extends StatefulWidget {
   static String routeName = 'SplashScreen';
   static MaterialPage page() {
     return MaterialPage(
-      child: SplashScreen(),
+      child: const SplashScreen(),
       key: ValueKey(routeName),
       name: routeName,
     );
   }
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {

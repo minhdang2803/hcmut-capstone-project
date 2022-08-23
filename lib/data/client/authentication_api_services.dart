@@ -1,17 +1,12 @@
 import 'dart:convert';
-
-// import 'package:capstone_project_hcmut/data/network/authentication/authentication_config.dart';
-import 'package:capstone_project_hcmut/data/network/authentication/authentication_config.dart';
 import 'package:capstone_project_hcmut/models/authentication/login_request_model.dart';
 import 'package:capstone_project_hcmut/models/authentication/login_response_model.dart';
-// import 'package:capstone_project_hcmut/models/authentication/register_response_model.dart';
 import 'package:capstone_project_hcmut/utils/shared_preference_wrapper.dart';
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 
 class AuthenticationAPIService {
   // static var client = http.Client();
-  static Future<LoginResponseModel> login(LoginRequestModel loginModel) async {
+  static Future<dynamic> login(LoginRequestModel loginModel) async {
     Map<String, String> requestHeader = {'Content-Type': 'application/json'};
 
     final response = await Dio().post(
@@ -19,7 +14,6 @@ class AuthenticationAPIService {
       data: jsonEncode(loginModel.toJson()),
       options: Options(headers: requestHeader),
     );
-    print(response.data);
     if (response.statusCode == 200) {
       // SharedPreferences
       final sharedPreferences = SharedPreferencesWrapper.instance;
@@ -36,8 +30,10 @@ class AuthenticationAPIService {
       sharedPreferences.set('refresh_token', refreshToken);
       sharedPreferences.set('refresh_token_expried', refreshTokenExpired);
       sharedPreferences.set('session_id', sessionID);
+      return LoginResponseModel.fromJson(response.data);
+    } else {
+      return LoginFailedModel.fromJson(response.data);
     }
-    return LoginResponseModel.fromJson(response.data);
   }
 
   // static Future<RegisterResponseModel> register(
