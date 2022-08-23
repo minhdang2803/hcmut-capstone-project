@@ -10,36 +10,34 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
 class AuthenticationAPIService {
-  static var client = http.Client();
+  // static var client = http.Client();
   static Future<LoginResponseModel> login(LoginRequestModel loginModel) async {
     Map<String, String> requestHeader = {'Content-Type': 'application/json'};
 
-    // final Response<LoginResponseModel> response = await Dio().post(
-    //   'https://bke200701.herokuapp.com/api/v1/users/loginWithEmailorPhone',
-    //   options: Options(headers: requestHeader),
-    //   data: loginModel.toJson(),
-    // );
-    final url = Uri.https(Config.apiURL, Config.loginApi);
-    var response = await client.post(url,
-        headers: requestHeader, body: jsonEncode(loginModel.toJson()));
+    final response = await Dio().post(
+      'https://bke200701.herokuapp.com/api/v1/users/loginWithEmailorPhone',
+      data: jsonEncode(loginModel.toJson()),
+      options: Options(headers: requestHeader),
+    );
+    print(response.data);
     if (response.statusCode == 200) {
-      //SharedPreferences
-      // final sharedPreferences = SharedPreferencesWrapper.instance;
-      // final responseData = response.data!;
-      // final accessToken = responseData.data.authorization.accessToken;
-      // final accessTokenExpired =
-      //     responseData.data.authorization.accessTokenExpiresAt;
-      // final refreshToken = responseData.data.authorization.refreshToken;
-      // final refreshTokenExpired =
-      //     responseData.data.authorization.refreshTokenExpiresAt;
-      // final sessionID = responseData.data.authorization.sessionId;
-      // sharedPreferences.set('access_token', accessToken);
-      // sharedPreferences.set('access_token_expried', accessTokenExpired);
-      // sharedPreferences.set('refresh_token', refreshToken);
-      // sharedPreferences.set('refresh_token_expried', refreshTokenExpired);
-      // sharedPreferences.set('session_id', sessionID);
+      // SharedPreferences
+      final sharedPreferences = SharedPreferencesWrapper.instance;
+      final responseData = LoginResponseModel.fromJson(response.data);
+      final accessToken = responseData.data.authorization.accessToken;
+      final accessTokenExpired =
+          responseData.data.authorization.accessTokenExpiresAt;
+      final refreshToken = responseData.data.authorization.refreshToken;
+      final refreshTokenExpired =
+          responseData.data.authorization.refreshTokenExpiresAt;
+      final sessionID = responseData.data.authorization.sessionId;
+      sharedPreferences.set('access_token', accessToken);
+      sharedPreferences.set('access_token_expried', accessTokenExpired);
+      sharedPreferences.set('refresh_token', refreshToken);
+      sharedPreferences.set('refresh_token_expried', refreshTokenExpired);
+      sharedPreferences.set('session_id', sessionID);
     }
-    return loginResponseModel(response.body);
+    return LoginResponseModel.fromJson(response.data);
   }
 
   // static Future<RegisterResponseModel> register(

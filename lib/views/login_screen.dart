@@ -29,8 +29,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return Consumer<LoginStateViewModel>(builder: (context, value, child) {
       if (value.data.viewStatus == ViewStatus.loading) {
         return Container(
-            alignment: Alignment.center,
-            child: const CircularProgressIndicator());
+          alignment: Alignment.center,
+          child: const CircularProgressIndicator(),
+        );
       } else if (value.data.viewStatus == ViewStatus.succeed) {
         if (value.data.data == null) {
           print('No matching username/password');

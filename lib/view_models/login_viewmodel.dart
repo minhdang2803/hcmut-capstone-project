@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:capstone_project_hcmut/data/client/authentication_api_services.dart';
 import 'package:capstone_project_hcmut/models/authentication/login_request_model.dart';
 import 'package:capstone_project_hcmut/models/authentication/login_response_model.dart';
@@ -18,9 +16,9 @@ class LoginStateViewModel extends BaseProvider {
       final response = await AuthenticationAPIService.login(
         LoginRequestModel(emailPhone: emailPhone, password: password),
       );
+      if(re)
       _loginData = BaseProviderModel.success(response);
     } on Exception catch (exception) {
-      print(exception.toString());
       _loginData = BaseProviderModel.fail(exception);
     } on Error catch (error) {
       print(error);
