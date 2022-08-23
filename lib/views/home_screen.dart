@@ -9,6 +9,15 @@ import 'package:provider/provider.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
+  static const String routeName = 'HomeScreen';
+  static MaterialPage page() {
+    return const MaterialPage(
+      child: HomeScreen(),
+      key: ValueKey(routeName),
+      name: routeName,
+    );
+  }
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }

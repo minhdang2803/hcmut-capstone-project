@@ -4,7 +4,10 @@ import 'package:capstone_project_hcmut/data/database/recipe_database.dart';
 import 'package:capstone_project_hcmut/data/mapper.dart';
 import 'package:capstone_project_hcmut/data/repository/recipe_repository.dart';
 import 'package:capstone_project_hcmut/models/recipe.dart';
+import 'package:capstone_project_hcmut/view_models/app_router.dart';
+import 'package:capstone_project_hcmut/view_models/app_state_manager_viewmodel.dart';
 import 'package:capstone_project_hcmut/view_models/counter_view_model.dart';
+import 'package:capstone_project_hcmut/view_models/login_viewmodel.dart';
 import 'package:capstone_project_hcmut/views/views.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +21,19 @@ void main() {
   // ignore: deprecated_member_use, avoid_redundant_argument_values
   Sqflite.devSetDebugModeOn(kDebugMode);
   final counterProvider = CounterViewModel();
+  final appStateManager = AppStateManagerViewModel();
+  final appRouter = AppRouter(appStateManager);
+  final loginStateViewModel = LoginStateViewModel();
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => loginStateViewModel),
+        ChangeNotifierProvider(create: (context) => appStateManager),
         ChangeNotifierProvider(create: (context) => counterProvider),
+        ChangeNotifierProvider<AppRouter>(
+          lazy: false,
+          create: (context) => appRouter,
+        ),
         Provider<Logger>(
           create: (context) => Logger(
               printer: PrettyPrinter(),
@@ -29,10 +41,11 @@ void main() {
         ),
         Provider<RecipeRepository>(
           create: (context) => RecipeRepository(
-              apiClient:
-                  ApiClient(baseUrl: 'tasty.p.rapidapi.com', apiKey: apiKey),
-              mapper: Mapper(),
-              recipeDao: RecipeDatabase()),
+            apiClient:
+                ApiClient(baseUrl: 'tasty.p.rapidapi.com', apiKey: apiKey),
+            mapper: Mapper(),
+            recipeDao: RecipeDatabase(),
+          ),
         )
       ],
       child: const CapStoneProject(),
@@ -50,9 +63,12 @@ class CapStoneProject extends StatefulWidget {
 class _CapStoneProjectState extends State<CapStoneProject> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    final router = Provider.of<AppRouter>(context, listen: false).myRouter;
+    return MaterialApp.router(
       title: 'English Learning Application',
-      home: HomeScreen(),
+      routerDelegate: router.routerDelegate,
+      routeInformationParser: router.routeInformationParser,
+      routeInformationProvider: router.routeInformationProvider,
     );
   }
 }
