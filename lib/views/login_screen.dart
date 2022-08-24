@@ -1,11 +1,12 @@
+import 'dart:math';
+
 import 'package:capstone_project_hcmut/view_models/abstract/base_provider_model.dart';
 import 'package:capstone_project_hcmut/view_models/login_viewmodel.dart';
 import 'package:capstone_project_hcmut/views/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-import 'demo_screen.dart';
+import '../utils/string_extension.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -23,8 +24,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final email = TextEditingController()..text = 'minhdang2001.11@gmail.com';
+  final email = TextEditingController()..text = '0906005535';
   final password = TextEditingController()..text = '123456';
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<LoginStateViewModel>(builder: (context, value, child) {
@@ -38,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
           print('No matching username/password');
         } else {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            context.goNamed(HomeScreen.routeName);
+            context.goNamed(HomeScreen.routeName, params: {'tab':'home'});
           });
           return Container();
         }
@@ -112,6 +120,16 @@ class _LoginScreenState extends State<LoginScreen> {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
+      validator: ((value) {
+        if (value == null || value.isEmpty) {
+          return 'Please input correct email or phone';
+        } else if (!value.isDigit(0) && value.isValidEmail()) {
+          return 'Email is not correct';
+        } else if (value.isDigit(0) && value.isValidPhoneNumber()) {
+          return 'Phone is not correct';
+        }
+        return null;
+      }),
     );
   }
 
@@ -127,6 +145,13 @@ class _LoginScreenState extends State<LoginScreen> {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please input correct password';
+        } else {
+          return null;
+        }
+      },
     );
   }
 
@@ -146,17 +171,14 @@ class _LoginScreenState extends State<LoginScreen> {
             backgroundColor: const Color(0xff4c505b),
             child: IconButton(
               color: Colors.white,
-              onPressed: () {
-                Provider.of<LoginStateViewModel>(context, listen: false)
-                    .getToken(email.text, password.text);
-              },
+              onPressed: _buildSubmitButton,
               icon: const Icon(Icons.arrow_forward),
             ),
           ),
         ],
       );
 
-  Widget _buildOptionsButtons(BuildContext) {
+  Widget _buildOptionsButtons(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       TextButton(
         onPressed: () {
@@ -183,5 +205,12 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     ]);
+  }
+
+  void _buildSubmitButton() {
+    final loginState = Provider.of<LoginStateViewModel>(context, listen: false);
+    if (loginState.formKey.currentState!.validate()) {
+      loginState.getToken(email.text, password.text);
+    }
   }
 }
