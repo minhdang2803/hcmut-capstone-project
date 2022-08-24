@@ -1,15 +1,15 @@
-import 'package:capstone_project_hcmut/views/views.dart';
+import 'package:capstone_project_hcmut/view_models/view_models.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key, required this.name}) : super(key: key);
+  final String name;
   static const String routeName = 'HomeScreen';
-  static MaterialPage page() {
-    return const MaterialPage(
-      child: HomeScreen(),
-      key: ValueKey(routeName),
+  static MaterialPage page({required String page}) {
+    return MaterialPage(
+      child: HomeScreen(name: page),
+      key: const ValueKey(routeName),
       name: routeName,
     );
   }
@@ -19,65 +19,64 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static final List<Widget> _listofPage = <Widget>[
-    const Center(child: Text('Home')),
-    const Center(child: Text('Quizzes')),
-    const Center(child: Text('Books')),
-    const Center(child: Text('Tests')),
-    const Center(child: Text('Settings')),
-    const DemoScreen()
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(child: _listofPage[_selectedIndex]),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            backgroundColor: Colors.red,
+    return Consumer<AppStateManagerViewModel>(builder: (context, value, child) {
+      return Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          centerTitle: true,
+          title: Text(
+            value.getTitle(widget.name),
+            style: Theme.of(context).textTheme.headline2?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.quiz),
-            label: 'Quizzes',
-            backgroundColor: Colors.green,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'English Books',
-            backgroundColor: Colors.purple,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book_online),
-            label: 'Tests',
-            backgroundColor: Colors.pink,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-            backgroundColor: Colors.pink,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.developer_mode),
-            label: 'Demo',
-            backgroundColor: Colors.blue,
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.white,
-        onTap: _onItemTapped,
-      ),
-    );
+        ),
+        body: SafeArea(
+            child: IndexedStack(
+          index: value.instance.currentIndex,
+          children: value.instance.listofPage,
+        )),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor:
+              Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.quiz),
+              label: 'Quizzes',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book),
+              label: 'English Books',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book_online),
+              label: 'Tests',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.developer_mode),
+              label: 'Demo',
+            ),
+          ],
+          currentIndex: value.instance.currentIndex,
+          selectedItemColor:
+              Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
+          unselectedItemColor:
+              Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+          onTap: (index) => value.goToTab(context, index),
+        ),
+      );
+    });
   }
 }

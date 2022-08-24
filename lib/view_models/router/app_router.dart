@@ -37,19 +37,22 @@ class AppRouter extends ChangeNotifier {
         pageBuilder: (context, state) => DemoScreen.page(),
       ),
       GoRoute(
-        path: '/home',
+        path: '/:tab(home|books|quizzes|tests|settings|demo)',
         name: HomeScreen.routeName,
-        pageBuilder: (context, state) => HomeScreen.page(),
+        pageBuilder: (context, state) {
+          final currentScreen = state.params['tab'];
+          return HomeScreen.page(page: currentScreen!);
+        },
       ),
     ],
     redirect: (state) {
       if (state.subloc == '/splash' &&
-          appStateManager.instance.data!.isSplashScreen == false) {
+          appStateManager.instance.isSplashScreen == false) {
         appStateManager.initializeApp();
         return null;
       }
       if (state.subloc == '/splash' &&
-          appStateManager.instance.data!.isSplashScreen) {
+          appStateManager.instance.isSplashScreen) {
         return state.namedLocation(LoginScreen.routeName);
       }
       return null;

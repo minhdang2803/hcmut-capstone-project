@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+
+import '../view_models/theme_viewmodel.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -23,47 +27,26 @@ class _SplashScreenState extends State<SplashScreen> {
         fit: StackFit.expand,
         children: [
           Container(
-            decoration: const BoxDecoration(color: Colors.greenAccent),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 50.0,
-                      child: Icon(
-                        Icons.local_grocery_store,
-                        color: Colors.black,
-                        size: 50.0,
-                      ),
-                    ),
-                    Padding(padding: EdgeInsets.only(top: 10.0)),
-                    Text(
-                      "NakstarKart",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24.0,
-                          color: Colors.black),
-                    )
-                  ],
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              image: DecorationImage(
+                image: Svg(
+                  scale: 2,
+                  color: kHawkBlueColor,
+                  'assets/splash_screen/splash_screen.svg',
+                  size: Size(MediaQuery.of(context).size.width,
+                      MediaQuery.of(context).size.height),
                 ),
               ),
-              // Expanded(
-              //   flex: 1,
-              // child: Column(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     CircularProgressIndicator.adaptive(value: 3.0,),
-              //     Padding(padding: const EdgeInsets.only(top: 20.0))
-              //   ],
-              // ),)
-            ],
-          )
+            ),
+          ),
+          Image(
+            image: Svg(
+              'assets/splash_screen/logo.svg',
+              size: Size(MediaQuery.of(context).size.width * 0.8,
+                  MediaQuery.of(context).size.width * 0.8),
+            ),
+          ),
         ],
       ),
     );
