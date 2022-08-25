@@ -10,6 +10,7 @@ Color kHawkBlueColor = ColorExtension.hexToColor('#C4D0FB');
 Color kDarkPrimaryColor = ColorExtension.hexToColor('#02066F');
 Color kDarkSecondaryColor = ColorExtension.hexToColor('#4B4466');
 Color kDarkSelectedColor = ColorExtension.hexToColor('#894F5D');
+Color kQuizGameUnselectedColor = ColorExtension.hexToColor('#EFEEFC');
 
 class ThemeManager extends ChangeNotifier {
   late ThemeData _selectedTheme;
@@ -130,6 +131,7 @@ class ThemeManager extends ChangeNotifier {
       ),
       textTheme: lightTextTheme,
       primaryColor: kPrimaryColor,
+      secondaryHeaderColor: kSecondaryColor,
     );
   }
 

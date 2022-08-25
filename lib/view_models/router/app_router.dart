@@ -2,7 +2,9 @@ import 'package:capstone_project_hcmut/view_models/app_state_manager_viewmodel.d
 import 'package:capstone_project_hcmut/views/demo_screen.dart';
 import 'package:capstone_project_hcmut/views/home_screen.dart';
 import 'package:capstone_project_hcmut/views/login_screen.dart';
+import 'package:capstone_project_hcmut/views/quizzes_screen/game_component.dart';
 import 'package:capstone_project_hcmut/views/splash_screen.dart';
+import 'package:capstone_project_hcmut/views/views.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
@@ -37,13 +39,19 @@ class AppRouter extends ChangeNotifier {
         pageBuilder: (context, state) => DemoScreen.page(),
       ),
       GoRoute(
-        path: '/:tab(home|books|quizzes|tests|settings|demo)',
-        name: HomeScreen.routeName,
-        pageBuilder: (context, state) {
-          final currentScreen = state.params['tab'];
-          return HomeScreen.page(page: currentScreen!);
-        },
-      ),
+          path: '/:tab(home|books|quizzes|tests|settings|demo)',
+          name: HomeScreen.routeName,
+          pageBuilder: (context, state) {
+            final currentScreen = state.params['tab'];
+            return HomeScreen.page(page: currentScreen!);
+          },
+          routes: [
+            GoRoute(
+              path: 'game',
+              name: QuizzesScreen.routeName,
+              pageBuilder: (context, state) => QuizzesListScreen.page(),
+            )
+          ]),
     ],
     redirect: (state) {
       if (state.subloc == '/splash' &&
