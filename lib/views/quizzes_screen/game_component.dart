@@ -14,26 +14,28 @@ class GameComponent extends StatelessWidget {
       child: Container(
         width: size.width,
         height: size.height,
-        padding: EdgeInsets.all(30),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(color: kQuizGameUnselectedColor),
         child: Column(
           children: [
             _buildLogo(context, size),
-            SizedBox(height: size.height * 0.005),
+            SizedBox(height: size.height * 0.001),
             Text(
               gameModel?.name ?? 'Name',
               style: Theme.of(context).textTheme.headline3?.copyWith(
                     color: Theme.of(context).primaryColor,
+                    fontSize: 25,
                   ),
             ),
-            SizedBox(height: size.height * 0.003),
+            SizedBox(height: size.height * 0.005),
             Text(
               '${gameModel?.numberOfQuizzes} Game',
-              style: Theme.of(context).textTheme.headline4?.copyWith(
+              style: Theme.of(context).textTheme.headline5?.copyWith(
                     color: Theme.of(context).primaryColor,
+
                   ),
             ),
-            SizedBox(height: size.height * 0.003),
+            SizedBox(height: size.height * 0.015),
             LinearProgressIndicator(
               value: 0.5,
               color: Theme.of(context).primaryColor,

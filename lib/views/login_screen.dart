@@ -1,9 +1,10 @@
-import 'dart:math';
-
+import 'package:capstone_project_hcmut/utils/custom_widgets.dart';
 import 'package:capstone_project_hcmut/view_models/abstract/base_provider_model.dart';
+import 'package:capstone_project_hcmut/view_models/abstract/base_view_model.dart';
 import 'package:capstone_project_hcmut/view_models/login_viewmodel.dart';
 import 'package:capstone_project_hcmut/views/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../utils/string_extension.dart';
@@ -24,7 +25,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final email = TextEditingController()..text = '0906005535';
+  final email = TextEditingController()..text = '0906005539';
   final password = TextEditingController()..text = '123456';
   @override
   void dispose() {
@@ -35,33 +36,160 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoginStateViewModel>(builder: (context, value, child) {
-      if (value.data.viewStatus == ViewStatus.loading) {
-        return Container(
-          alignment: Alignment.center,
-          child: const CircularProgressIndicator(),
-        );
-      } else if (value.data.viewStatus == ViewStatus.succeed) {
-        if (value.data.data == null) {
-          print('No matching username/password');
-        } else {
+    Size size = MediaQuery.of(context).size;
+    return Consumer<LoginStateViewModel>(
+      builder: (context, value, child) {
+        if (value.viewState == ViewState.loading) {
+          WidgetsBinding.instance.addPostFrameCallback(
+            (timeStamp) {
+              showDialog(
+                context: context,
+                builder: (context) => WillPopScope(
+                  onWillPop: () async {
+                    print('hello');
+                    value.isPop = true;
+                    value.isCancel = true;
+                    value.cancelToken.cancel();
+                    return true;
+                  },
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              );
+            },
+          );
+        } else if (value.viewState == ViewState.done) {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            context.goNamed(HomeScreen.routeName, params: {'tab':'home'});
+            context.goNamed(HomeScreen.routeName, params: {'tab': 'home'});
+            value.setStatus(ViewState.none);
           });
-          return Container();
+        } else if (value.viewState == ViewState.fail) {
+          print(value.isPop);
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            !value.isPop ? Navigator.pop(context, true) : null;
+            showsnackBar(context: context, message: value.errorMessage);
+            value.setStatus(ViewState.none);
+          });
         }
-      } else if (value.data.viewStatus == ViewStatus.failed) {
-        return const Scaffold(
-          body: Center(
-            child: Text('Failed'),
-          ),
-        );
-      }
-      return _buildUI(context);
-    });
+        return _buildUI(context, size);
+      },
+    );
   }
 
-  Widget _buildUI(BuildContext context) => Container(
+  // Widget _buildUI(BuildContext context, Size size) {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //       color: Theme.of(context).primaryColor,
+  //       image: DecorationImage(
+  //         image: Svg('assets/authentication/welcome_screen.svg', size: size),
+  //       ),
+  //     ),
+  //     child: Scaffold(
+  //       backgroundColor: Colors.transparent,
+  //       body: SafeArea(
+  //         child: Container(
+  //           height: size.height,
+  //           width: size.width,
+  //           child: Column(
+  //             children: [
+  //               // Image(image: Svg('assets/logo.svg')),
+  //               SizedBox(height: size.height * 0.05),
+  //               _buildHuman(context, size),
+  //               _buildOption(context, size),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  // Widget _buildHuman(BuildContext context, Size size) {
+  //   return Container(
+  //     color: Colors.transparent,
+  //     height: size.height * 0.45,
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       crossAxisAlignment: CrossAxisAlignment.end,
+  //       children: [
+  //         SizedBox(width: size.width * 0.01),
+  //         Image(
+  //           image: Svg('assets/authentication/6.svg',
+  //               size: Size(size.width, size.height)),
+  //         ),
+  //         Image(
+  //           image: Svg('assets/authentication/3.svg',
+  //               size: Size(size.width, size.height)),
+  //         ),
+  //         SizedBox(width: size.width * 0.01),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  // Widget _buildOption(BuildContext context, Size size) {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //         color: Colors.white, borderRadius: BorderRadius.circular(25)),
+  //     height: size.height * 0.36,
+  //     width: size.width * 0.9,
+  //     padding: const EdgeInsets.all(20),
+  //     child: Column(
+  //       children: [
+  //         Text(
+  //           'Login or Sign Up',
+  //           style: Theme.of(context).textTheme.headline2?.copyWith(
+  //                 fontWeight: FontWeight.w300,
+  //               ),
+  //         ),
+  //         SizedBox(height: size.height * 0.015),
+  //         Text(
+  //           'Login or create an account to learn English, take part in challenges.',
+  //           style: Theme.of(context).textTheme.headline5!.copyWith(
+  //                 fontWeight: FontWeight.normal,
+  //                 color: Theme.of(context).hintColor,
+  //               ),
+  //           textAlign: TextAlign.center,
+  //         ),
+  //         SizedBox(height: size.height * 0.025),
+  //         buildThemeButton(
+  //           context,
+  //           elevation: 0.0,
+  //           height: MediaQuery.of(context).size.height * 0.05,
+  //           color: Theme.of(context).primaryColor,
+  //           title: 'Login',
+  //           function: () {},
+  //         ),
+  //         SizedBox(height: size.height * 0.015),
+  //         buildThemeButton(
+  //           context,
+  //           elevation: 0,
+  //           height: MediaQuery.of(context).size.height * 0.05,
+  //           color: Theme.of(context).secondaryHeaderColor,
+  //           title: 'Create an account',
+  //           textStyle: Theme.of(context).textTheme.headline5!.copyWith(
+  //                 color: Theme.of(context).primaryColor,
+  //               ),
+  //           function: () {},
+  //         ),
+  //         SizedBox(height: size.height * 0.015),
+  //         buildThemeButton(
+  //           context,
+  //           elevation: 0,
+  //           height: MediaQuery.of(context).size.height * 0.05,
+  //           color: Theme.of(context).backgroundColor,
+  //           title: 'Later',
+  //           textStyle: Theme.of(context).textTheme.headline5!.copyWith(
+  //                 color: Theme.of(context).primaryColor,
+  //               ),
+  //           function: () {},
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
+  Widget _buildUI(BuildContext context, Size size) => Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage('assets/authentication/login.png'),
@@ -210,7 +338,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _buildSubmitButton() {
     final loginState = Provider.of<LoginStateViewModel>(context, listen: false);
     if (loginState.formKey.currentState!.validate()) {
-      loginState.getToken(email.text, password.text);
+      loginState.getToken(email.text, password.text, context);
     }
   }
 }

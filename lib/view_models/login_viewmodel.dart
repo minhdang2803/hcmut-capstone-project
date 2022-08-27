@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:capstone_project_hcmut/data/client/authentication_api_services.dart';
 import 'package:capstone_project_hcmut/models/authentication/login_request_model.dart';
 import 'package:capstone_project_hcmut/models/authentication/login_response_model.dart';
 import 'package:capstone_project_hcmut/utils/exception.dart';
 import 'package:capstone_project_hcmut/utils/shared_preference_wrapper.dart';
 import 'package:capstone_project_hcmut/view_models/abstract/base_view_model.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'abstract/base_provider_model.dart';
 
 class LoginStateViewModel extends BaseProvider {
@@ -13,36 +17,34 @@ class LoginStateViewModel extends BaseProvider {
   LoginResponseModel get instance => _loginData.data!;
 
   final formKey = GlobalKey<FormState>();
-  
-  Future getToken(String emailPhone, String password) async {
-    final sharedPreferences = SharedPreferencesWrapper.instance;
+  bool isPop = false;
+  bool isCancel = false;
+  final CancelToken cancelToken = CancelToken();
+  Future<void> getToken(
+      String emailPhone, String password, BuildContext context) async {
+    AuthenticationAPIService service = AuthenticationAPIService();
+
     try {
-      _loginData = BaseProviderModel.loading();
-      notifyListeners();
-      final response = await AuthenticationAPIService.login(
-        LoginRequestModel(emailPhone: emailPhone, password: password),
+      isCancel = false;
+      isPop = false;
+      setStatus(ViewState.loading, notify: true);
+      late dynamic response;
+
+      await Future.delayed(
+        const Duration(seconds: 2),
+        () async => response = await service.login(
+            LoginRequestModel(emailPhone: emailPhone, password: password),
+            cancelToken: isCancel ? cancelToken : null),
       );
-      if (response is LoginResponseModel) {
-        String? accessToken = await sharedPreferences.get('access_token');
-        if (accessToken != null) {
-          _loginData = BaseProviderModel.success(response);
-        }
-      } else {
-        LoginFailedModel errorResponse = response as LoginFailedModel;
-        final error = LoginException(
-          statusCode: errorResponse.statusCode,
-          message: errorResponse.error,
-        );
-        _loginData = BaseProviderModel.fail(error);
-        _loginData.message = error.message;
-        print(_loginData.message);
-      }
+
+      _loginData = BaseProviderModel.success(response);
+      setStatus(ViewState.done, notify: true);
+    } on RemoteException catch (exception) {
+      setStatus(ViewState.fail, notify: true);
+      setErrorMessage(exception.errorMessage, notify: true);
+      _loginData = BaseProviderModel.fail(exception);
     } on Exception catch (exception) {
       _loginData = BaseProviderModel.fail(exception);
-    } on Error catch (error) {
-      print(error);
-    } finally {
-      notifyListeners();
-    }
+    } finally {}
   }
 }

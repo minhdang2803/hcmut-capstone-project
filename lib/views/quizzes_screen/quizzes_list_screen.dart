@@ -7,7 +7,7 @@ class QuizzesListScreen extends StatelessWidget {
   static String routeName = 'QuizzesListScreen';
   static MaterialPage page() {
     return MaterialPage(
-      child: QuizzesListScreen(),
+      child: const QuizzesListScreen(),
       key: ValueKey(routeName),
       name: routeName,
     );
@@ -16,8 +16,9 @@ class QuizzesListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
-        child: Text('clm'),
+        child: Center(child: Text('clm')),
       ),
     );
   }

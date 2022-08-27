@@ -1,9 +1,5 @@
 import 'package:capstone_project_hcmut/view_models/app_state_manager_viewmodel.dart';
-import 'package:capstone_project_hcmut/views/demo_screen.dart';
-import 'package:capstone_project_hcmut/views/home_screen.dart';
-import 'package:capstone_project_hcmut/views/login_screen.dart';
 import 'package:capstone_project_hcmut/views/quizzes_screen/game_component.dart';
-import 'package:capstone_project_hcmut/views/splash_screen.dart';
 import 'package:capstone_project_hcmut/views/views.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
@@ -48,7 +44,7 @@ class AppRouter extends ChangeNotifier {
           routes: [
             GoRoute(
               path: 'game',
-              name: QuizzesScreen.routeName,
+              name: QuizzesListScreen.routeName,
               pageBuilder: (context, state) => QuizzesListScreen.page(),
             )
           ]),

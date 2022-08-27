@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'view_models/view_models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -32,11 +31,7 @@ Future<void> main() async {
           lazy: false,
           create: (context) => appRouter,
         ),
-        Provider<Logger>(
-          create: (context) => Logger(
-              printer: PrettyPrinter(),
-              level: kDebugMode ? Level.verbose : Level.nothing),
-        ),
+        
         Provider<RecipeRepository>(
           create: (context) => RecipeRepository(
             apiClient:

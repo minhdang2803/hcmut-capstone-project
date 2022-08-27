@@ -3,12 +3,14 @@ class BaseProviderModel<T> {
   Exception? errMessage;
   String? message;
   T? data;
+  String? statusCode;
 
   BaseProviderModel({
     this.errMessage,
     this.message,
     this.data,
     this.viewStatus = ViewStatus.none,
+    this.statusCode,
   });
 
   factory BaseProviderModel.success(T? data) {
