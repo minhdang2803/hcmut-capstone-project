@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:capstone_project_hcmut/utils/shared_preference_wrapper.dart';
 import 'package:capstone_project_hcmut/views/views.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -7,8 +8,9 @@ import 'abstract/base_provider_model.dart';
 import 'abstract/base_view_model.dart';
 
 class AppStateModel {
+  bool isLoggedIn = false;
   List<Widget> listofPage = <Widget>[
-    const WelcomeScreen(),
+    const MainScreen(),
     const QuizzesScreen(),
     const BookScreen(),
     const Center(child: Text('Tests')),
@@ -25,12 +27,22 @@ class AppStateManagerViewModel extends BaseProvider {
       BaseProviderModel.init(data: AppStateModel());
   BaseProviderModel<AppStateModel> get data => _data;
   AppStateModel get instance => _data.data!;
-
+  final pref = SharedPreferencesWrapper.instance;
   void initializeApp() {
     Timer(const Duration(milliseconds: 3000), () {
       _data.data!.isSplashScreen = true;
       notifyListeners();
     });
+  }
+
+  void checkLoggedIn() async {
+    final value = await pref.getBool('isLoggedIn');
+    if (value) {
+      instance.isLoggedIn = true;
+    } else {
+      instance.isLoggedIn = false;
+    }
+    notifyListeners();
   }
 
   void goToTab(BuildContext context, int index) {

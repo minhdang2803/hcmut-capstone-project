@@ -3,8 +3,7 @@ import 'package:capstone_project_hcmut/data/client/api_client.dart';
 import 'package:capstone_project_hcmut/data/client/api_services.dart';
 import 'package:capstone_project_hcmut/data/network/api_request.dart';
 import 'package:capstone_project_hcmut/data/network/authentication/authentication_config.dart';
-import 'package:capstone_project_hcmut/models/authentication/login_request_model.dart';
-import 'package:capstone_project_hcmut/models/authentication/login_response_model.dart';
+import 'package:capstone_project_hcmut/models/models.dart';
 import 'package:capstone_project_hcmut/utils/shared_preference_wrapper.dart';
 import 'package:dio/dio.dart';
 
@@ -16,10 +15,12 @@ class AuthenticationAPIService {
         final sharePreferecnes = SharedPreferencesWrapper.instance;
         sharePreferecnes.set(
             'refresh_token', decodedResponse.data.authorization.refreshToken);
+        sharePreferecnes.setBool('isLoggedIn', true);
     }
   }
 
-  Future<dynamic> login(LoginRequestModel loginModel, {CancelToken? cancelToken}) async {
+  Future<dynamic> login(LoginRequestModel loginModel,
+      {CancelToken? cancelToken}) async {
     const String path = EndPoint.loginWithPhoneOrEmail;
     final Map<String, dynamic> body = (loginModel.toJson());
     Map<String, String> requestHeader = {'Content-Type': 'application/json'};
@@ -32,6 +33,24 @@ class AuthenticationAPIService {
         (response) => LoginResponseModel.fromJson(response),
       ),
       extraFunction: _loginResponse,
+    );
+    return response;
+  }
+
+  Future<dynamic> register(RegisterRequestModel registerModel,
+      {CancelToken? cancelToken}) {
+    const String path = EndPoint.registerWithPhoneOrEmail;
+    final Map<String, dynamic> body = registerModel.toJson();
+    final Map<String, String> requestHeader = {
+      'Content_Type': 'application/json'
+    };
+    final response = APIService.instance().post(
+      APIServiceRequest<RegisterResponseModel>(
+        path,
+        header: requestHeader,
+        dataBody: body,
+        (response) => RegisterResponseModel.fromJson(response),
+      ),
     );
     return response;
   }

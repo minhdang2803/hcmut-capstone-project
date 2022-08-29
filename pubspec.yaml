@@ -47,6 +47,8 @@ dependencies:
   flutter_svg_provider: ^1.0.3
   connectivity_plus: ^2.3.6+1
   snippet_coder_utils: ^1.0.12
+  font_awesome_flutter: ^10.1.0
+  flutter_svg: ^1.1.4
 
 dev_dependencies:
   flutter_test:
