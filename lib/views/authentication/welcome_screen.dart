@@ -118,7 +118,7 @@ class WelcomeScreen extends StatelessWidget {
                     color: Theme.of(context).primaryColor,
                   ),
             ),
-            function: () => context.pushNamed(SignUpGetEmail.routeName),
+            function: () => context.pushNamed(RegisterScreen.routeName),
           ),
           SizedBox(height: size.height * 0.015),
           buildThemeButton(

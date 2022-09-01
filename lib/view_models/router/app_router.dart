@@ -34,6 +34,11 @@ class AppRouter extends ChangeNotifier {
         pageBuilder: (context, state) => SplashScreen.page(),
       ),
       GoRoute(
+        path: '/auth/register',
+        name: RegisterScreen.routeName,
+        pageBuilder: (context, state) => RegisterScreen.page(),
+      ),
+      GoRoute(
         path: '/auth/register/step1',
         name: SignUpGetEmail.routeName,
         pageBuilder: (context, state) => SignUpGetEmail.page(),

@@ -13,9 +13,12 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: SafeArea(
-      child: Container(
+      child: SizedBox(
+        height: size.height,
+        width: size.width,
         child: const Center(child: Text('Wellcome Screen')),
       ),
     ));
