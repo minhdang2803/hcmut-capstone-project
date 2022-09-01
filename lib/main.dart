@@ -3,39 +3,41 @@ import 'package:capstone_project_hcmut/data/client/api_client.dart';
 import 'package:capstone_project_hcmut/data/database/recipe_database.dart';
 import 'package:capstone_project_hcmut/data/mapper.dart';
 import 'package:capstone_project_hcmut/data/repository/recipe_repository.dart';
+import 'package:capstone_project_hcmut/utils/shared_preference_wrapper.dart';
 import 'package:capstone_project_hcmut/view_models/router/app_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'view_models/view_models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
+  final prefs = SharedPreferencesWrapper.instance;
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // ignore: deprecated_member_use, avoid_redundant_argument_values
   Sqflite.devSetDebugModeOn(kDebugMode);
   final themeManager =
-      ThemeManager(isDarkMode: prefs.getBool('isDarkTheme') ?? false);
+      ThemeManager(isDarkMode: await prefs.getBool('isDarkTheme'));
   final appStateManager = AppStateManagerViewModel();
-  final appRouter = AppRouter(appStateManager);
+  final appRouter =
+      AppRouter(appStateManager, await prefs.getBool('isLoggedIn'));
   final loginStateViewModel = LoginStateViewModel();
+  final registerViewModel = RegisterViewModel();
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => registerViewModel),
         ChangeNotifierProvider(create: (context) => themeManager),
         ChangeNotifierProvider(create: (context) => loginStateViewModel),
         ChangeNotifierProvider(create: (context) => appStateManager),
         ChangeNotifierProvider<AppRouter>(
           lazy: false,
           create: (context) => appRouter,
-        ),
-        Provider<Logger>(
-          create: (context) => Logger(
-              printer: PrettyPrinter(),
-              level: kDebugMode ? Level.verbose : Level.nothing),
         ),
         Provider<RecipeRepository>(
           create: (context) => RecipeRepository(

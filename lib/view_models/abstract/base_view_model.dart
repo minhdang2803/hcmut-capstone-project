@@ -10,6 +10,7 @@ class BaseProvider extends ChangeNotifier {
   String _errorMessage = "";
 
   String get errorMessage => _errorMessage;
+
   
   void setStatus(ViewState stateValue, {bool notify = true}) {
     _viewState = stateValue;

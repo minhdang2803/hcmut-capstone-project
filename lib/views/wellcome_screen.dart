@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
+class MainScreen extends StatelessWidget {
+  const MainScreen({Key? key}) : super(key: key);
   static const String routeName = 'QuizzesScreen';
   static MaterialPage page() {
-    return MaterialPage(
-      child: WelcomeScreen(),
+    return const MaterialPage(
+      child: MainScreen(),
       key: ValueKey(routeName),
       name: routeName,
     );
@@ -16,7 +16,7 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
         body: SafeArea(
       child: Container(
-        child: Center(child: Text('Wellcome Screen')),
+        child: const Center(child: Text('Wellcome Screen')),
       ),
     ));
   }

@@ -10,6 +10,10 @@ Color kHawkBlueColor = ColorExtension.hexToColor('#C4D0FB');
 Color kDarkPrimaryColor = ColorExtension.hexToColor('#02066F');
 Color kDarkSecondaryColor = ColorExtension.hexToColor('#4B4466');
 Color kDarkSelectedColor = ColorExtension.hexToColor('#894F5D');
+Color kQuizGameUnselectedColor = ColorExtension.hexToColor('#EFEEFC');
+Color kGreyBodyText = ColorExtension.hexToColor('#CCCCCC');
+Color kLoginBackGround = ColorExtension.hexToColor('#f1dff5');
+Color kFacebookIcon = ColorExtension.hexToColor('#0056B2');
 
 class ThemeManager extends ChangeNotifier {
   late ThemeData _selectedTheme;
@@ -130,31 +134,34 @@ class ThemeManager extends ChangeNotifier {
       ),
       textTheme: lightTextTheme,
       primaryColor: kPrimaryColor,
+      secondaryHeaderColor: kSecondaryColor,
+      backgroundColor: Colors.white,
+      hintColor: kGreyBodyText,
     );
   }
 
   static ThemeData dark() {
     return ThemeData(
-      checkboxTheme: CheckboxThemeData(
-        fillColor: MaterialStateColor.resolveWith((states) {
-          return kPrimaryColor;
-        }),
-      ),
-      brightness: Brightness.dark,
-      appBarTheme: AppBarTheme(
-        foregroundColor: Colors.white,
-        backgroundColor: kDarkPrimaryColor,
-      ),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-        foregroundColor: Colors.white,
-        backgroundColor: kDarkPrimaryColor,
-      ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          selectedItemColor: Colors.white,
+        checkboxTheme: CheckboxThemeData(
+          fillColor: MaterialStateColor.resolveWith((states) {
+            return kPrimaryColor;
+          }),
+        ),
+        brightness: Brightness.dark,
+        appBarTheme: AppBarTheme(
+          foregroundColor: Colors.white,
           backgroundColor: kDarkPrimaryColor,
-          unselectedItemColor: kDarkSecondaryColor),
-      textTheme: darkTextTheme,
-      primaryColor: kDarkPrimaryColor,
-    );
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          foregroundColor: Colors.white,
+          backgroundColor: kDarkPrimaryColor,
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            selectedItemColor: Colors.white,
+            backgroundColor: kDarkPrimaryColor,
+            unselectedItemColor: kDarkSecondaryColor),
+        textTheme: darkTextTheme,
+        primaryColor: kDarkPrimaryColor,
+        backgroundColor: Colors.black38);
   }
 }
