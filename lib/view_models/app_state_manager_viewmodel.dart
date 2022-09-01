@@ -15,7 +15,9 @@ class AppStateModel {
     const BookScreen(),
     const Center(child: Text('Tests')),
     const SettingScreen(),
-    const DemoScreen()
+    Container(
+      color: Colors.red,
+    ),
   ];
   int currentIndex = 0;
   bool isSplashScreen = false;
