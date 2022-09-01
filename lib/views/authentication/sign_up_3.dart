@@ -34,8 +34,10 @@ class SignUpGetFullName extends StatelessWidget {
                     value.cancelToken.cancel();
                     return true;
                   },
-                  child: const Center(
-                    child: CircularProgressIndicator(),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
               );

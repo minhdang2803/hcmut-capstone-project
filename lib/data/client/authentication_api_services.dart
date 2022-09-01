@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:capstone_project_hcmut/data/client/api_client.dart';
 import 'package:capstone_project_hcmut/data/client/api_services.dart';
 import 'package:capstone_project_hcmut/data/network/api_request.dart';
 import 'package:capstone_project_hcmut/data/network/authentication/authentication_config.dart';
@@ -72,6 +70,7 @@ class AuthenticationAPIService {
     );
     return response;
   }
+
   Future<dynamic> register(RegisterRequestModel registerModel,
       {CancelToken? cancelToken}) {
     const String path = EndPoint.registerWithPhoneOrEmail;
@@ -89,15 +88,4 @@ class AuthenticationAPIService {
     );
     return response;
   }
-
-  // static Future<RegisterResponseModel> register(
-  //     RegisterRequestModel registerModel) async {
-  //   Map<String, String> requestHeader = {'Content-Type': 'application/json'};
-  //   final Response<RegisterResponseModel> response = await Dio().post(
-  //     '${Config.apiURL}${Config.loginApi}',
-  //     options: Options(headers: requestHeader),
-  //     data: jsonEncode(registerModel.toJson()),
-  //   );
-  //   return registerResponseModel(jsonDecode(source));
-  // }
 }

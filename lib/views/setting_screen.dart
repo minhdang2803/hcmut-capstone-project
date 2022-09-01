@@ -1,8 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:developer';
-
-import 'package:capstone_project_hcmut/utils/shared_preference_wrapper.dart';
 import 'package:capstone_project_hcmut/view_models/login_viewmodel.dart';
 import 'package:capstone_project_hcmut/view_models/router/app_router.dart';
 import 'package:flutter/material.dart';
