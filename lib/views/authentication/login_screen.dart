@@ -1,8 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:capstone_project_hcmut/utils/custom_widgets.dart';
+import 'package:capstone_project_hcmut/utils/shared_preference_wrapper.dart';
 import 'package:capstone_project_hcmut/view_models/abstract/base_view_model.dart';
 import 'package:capstone_project_hcmut/view_models/login_viewmodel.dart';
+import 'package:capstone_project_hcmut/view_models/router/app_router.dart';
 import 'package:capstone_project_hcmut/view_models/theme_viewmodel.dart';
-import 'package:capstone_project_hcmut/views/authentication/welcome_screen.dart';
+import 'package:capstone_project_hcmut/view_models/view_models.dart';
 import 'package:capstone_project_hcmut/views/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,6 +32,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final email = TextEditingController()..text = '0906005535';
   final password = TextEditingController()..text = '123456';
+  late final LoginStateViewModel provider;
+  @override
+  void initState() {
+    super.initState();
+    provider = Provider.of<LoginStateViewModel>(context, listen: false);
+  }
+
   @override
   void dispose() {
     email.dispose();
@@ -38,6 +49,10 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    return _buildNormalProvider(context, size);
+  }
+
+  Widget _buildNormalProvider(BuildContext context, Size size) {
     return Consumer<LoginStateViewModel>(
       builder: (context, value, child) {
         if (value.viewState == ViewState.loading) {
@@ -47,22 +62,27 @@ class _LoginScreenState extends State<LoginScreen> {
                 context: context,
                 builder: (context) => WillPopScope(
                   onWillPop: () async {
-                    print('hello');
                     value.isPop = true;
                     value.isCancel = true;
                     value.cancelToken.cancel();
                     return true;
                   },
-                  child: const Center(
-                    child: CircularProgressIndicator(),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
               );
             },
           );
         } else if (value.viewState == ViewState.done) {
-          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            context.goNamed(HomeScreen.routeName, params: {'tab': 'home'});
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+            final pref = SharedPreferencesWrapper.instance;
+            final refreshToken = await pref.getBool('isLoggedIn');
+            if (refreshToken) {
+              context.goNamed(HomeScreen.routeName, params: {'tab': 'home'});
+            }
             value.setStatus(ViewState.none);
           });
         } else if (value.viewState == ViewState.fail) {
@@ -81,6 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
         return _buildUI(context, size, value);
       },
+      child: _buildUI(context, size, provider),
     );
   }
 
@@ -190,7 +211,9 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             color: Theme.of(context).backgroundColor,
             elevation: 0,
-            function: () {},
+            function: () async =>
+                Provider.of<LoginStateViewModel>(context, listen: false)
+                    .loginbyGoogle(),
           ),
           SizedBox(height: size.height * 0.025),
           buildThemeButton(
@@ -202,16 +225,19 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const FaIcon(FontAwesomeIcons.facebook),
                 SizedBox(width: size.width * 0.025),
-                Text('Login with Facebook',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4
-                        ?.copyWith(color: Theme.of(context).backgroundColor)),
+                Text(
+                  'Login with Facebook',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4
+                      ?.copyWith(color: Theme.of(context).backgroundColor),
+                ),
               ],
             ),
             color: kFacebookIcon,
             elevation: 0,
-            function: () {},
+            function: () async => Provider.of<LoginStateViewModel>(context, listen: false)
+                  .loginByFacebook(),
           ),
         ],
       ),
