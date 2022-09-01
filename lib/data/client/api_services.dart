@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:capstone_project_hcmut/data/network/api_request.dart';
 import 'package:capstone_project_hcmut/utils/connection_utils.dart';
 import 'package:capstone_project_hcmut/utils/exception.dart';
@@ -100,9 +102,13 @@ class APIService {
           throw RemoteException(
               RemoteException.receiveTimeout, 'Receive timeout');
         case DioErrorType.response:
+          var responsed = e.response?.data;
+          if (responsed is String) {
+            responsed = jsonDecode(responsed);
+          }
           throw RemoteException(
             RemoteException.responseError,
-            '${e.response?.data?['error'] ?? ''}',
+            '${responsed['error'] ?? ''}',
             httpStatusCode: e.response?.statusCode,
           );
         case DioErrorType.cancel:

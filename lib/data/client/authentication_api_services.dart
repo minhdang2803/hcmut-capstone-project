@@ -37,6 +37,41 @@ class AuthenticationAPIService {
     return response;
   }
 
+  Future<dynamic> loginWithGoogle(GoogleLoginRequestModel loginModel,
+      {CancelToken? cancelToken}) async {
+    const String path = EndPoint.loginWithGoogle;
+    final Map<String, dynamic> body = (loginModel.toJson());
+    Map<String, String> requestHeader = {'Content-Type': 'application/json'};
+    final response = APIService.instance().post(
+      APIServiceRequest<LoginResponseModel>(
+        path,
+        header: requestHeader,
+        dataBody: body,
+        cancelToken: cancelToken,
+        (response) => LoginResponseModel.fromJson(response),
+      ),
+      extraFunction: _loginResponse,
+    );
+    return response;
+  }
+
+  Future<dynamic> loginWithFacebook(FacebookLoginRequestModel loginModel,
+      {CancelToken? cancelToken}) async {
+    const String path = EndPoint.loginWithFacebook;
+    final Map<String, dynamic> body = (loginModel.toJson());
+    Map<String, String> requestHeader = {'Content-Type': 'application/json'};
+    final response = APIService.instance().post(
+      APIServiceRequest<LoginResponseModel>(
+        path,
+        header: requestHeader,
+        dataBody: body,
+        cancelToken: cancelToken,
+        (response) => LoginResponseModel.fromJson(response),
+      ),
+      extraFunction: _loginResponse,
+    );
+    return response;
+  }
   Future<dynamic> register(RegisterRequestModel registerModel,
       {CancelToken? cancelToken}) {
     const String path = EndPoint.registerWithPhoneOrEmail;
