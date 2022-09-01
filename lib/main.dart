@@ -5,16 +5,20 @@ import 'package:capstone_project_hcmut/data/mapper.dart';
 import 'package:capstone_project_hcmut/data/repository/recipe_repository.dart';
 import 'package:capstone_project_hcmut/utils/shared_preference_wrapper.dart';
 import 'package:capstone_project_hcmut/view_models/router/app_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'view_models/view_models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferencesWrapper.instance;
+  final prefs = SharedPreferencesWrapper.instance;
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // ignore: deprecated_member_use, avoid_redundant_argument_values
   Sqflite.devSetDebugModeOn(kDebugMode);
   final themeManager =
