@@ -21,7 +21,8 @@ class AppStateModel {
   ];
   int currentIndex = 0;
   bool isSplashScreen = false;
-  bool seenOnboard = false;
+  bool isOnboardingScreen = false;
+  bool isSecondTime = false;
   set isSplashScreenValue(bool value) => isSplashScreen = value;
 }
 
@@ -31,31 +32,24 @@ class AppStateManagerViewModel extends BaseProvider {
   BaseProviderModel<AppStateModel> get data => _data;
   AppStateModel get instance => _data.data!;
   final pref = SharedPreferencesWrapper.instance;
+
   void initializeApp() {
-    Timer(const Duration(milliseconds: 3000), () {
+    Timer(const Duration(milliseconds: 3000), () async {
       _data.data!.isSplashScreen = true;
       notifyListeners();
     });
   }
 
-  void checkLoggedIn() async {
-    final value = await pref.getBool('isLoggedIn');
-    if (value) {
-      instance.isLoggedIn = true;
-    } else {
-      instance.isLoggedIn = false;
-    }
+  void isOnboardingScreenDone() async {
+    print('check this funciton');
+    instance.isOnboardingScreen = true;
+    instance.isSecondTime = true;
+    await pref.setBool('isSecondTime', true);
     notifyListeners();
   }
 
-  void checkseenOnboard() async {
-    final value = await pref.getBool('seenOnboard');
-    if (value) {
-      instance.seenOnboard = true;
-    } else {
-      instance.seenOnboard = false;
-    }
-    notifyListeners();
+  void checkSecondTime() async {
+    instance.isSecondTime = await pref.getBool('isSecondTime');
   }
 
   void goToTab(BuildContext context, int index) {
@@ -106,7 +100,6 @@ class AppStateManagerViewModel extends BaseProvider {
         break;
     }
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
-
     return returnValue;
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
-
 import '../view_models/theme_viewmodel.dart';
 
 class SplashScreen extends StatefulWidget {
