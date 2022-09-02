@@ -25,7 +25,7 @@ Future<void> main() async {
       ThemeManager(isDarkMode: await prefs.getBool('isDarkTheme'));
   final appStateManager = AppStateManagerViewModel();
   final appRouter =
-      AppRouter(appStateManager, await prefs.getBool('isLoggedIn'), await prefs.getBool('seenOnboard'));
+      AppRouter(appStateManager, await prefs.getBool('isLoggedIn'));
   final loginStateViewModel = LoginStateViewModel();
   final registerViewModel = RegisterViewModel();
   runApp(
