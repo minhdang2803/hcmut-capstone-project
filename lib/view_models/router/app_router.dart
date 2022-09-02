@@ -1,15 +1,12 @@
-import 'package:capstone_project_hcmut/utils/shared_preference_wrapper.dart';
 import 'package:capstone_project_hcmut/view_models/app_state_manager_viewmodel.dart';
-import 'package:capstone_project_hcmut/views/authentication/sign_up_2.dart';
-import 'package:capstone_project_hcmut/views/authentication/sign_up_3.dart';
 import 'package:capstone_project_hcmut/views/views.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AppRouter extends ChangeNotifier {
   final AppStateManagerViewModel appStateManager;
   bool isLoggedIn;
+
   AppRouter(this.appStateManager, this.isLoggedIn);
 
   late final myRouter = GoRouter(
@@ -21,7 +18,10 @@ class AppRouter extends ChangeNotifier {
       GoRoute(
         path: '/',
         name: 'root',
-        redirect: (state) => state.namedLocation(SplashScreen.routeName),
+        redirect: (state) {
+          appStateManager.instance.isSplashScreen = false;
+          return state.namedLocation(SplashScreen.routeName);
+        },
       ),
       GoRoute(
         path: '/welcome',
@@ -64,6 +64,11 @@ class AppRouter extends ChangeNotifier {
         pageBuilder: (context, state) => DemoScreen.page(),
       ),
       GoRoute(
+        path: '/onboarding',
+        name: OnboardingScreen.routeName,
+        pageBuilder: (context, state) => OnboardingScreen.page(),
+      ),
+      GoRoute(
           path: '/:tab(home|books|quizzes|tests|settings|demo)',
           name: HomeScreen.routeName,
           pageBuilder: (context, state) {
@@ -82,16 +87,31 @@ class AppRouter extends ChangeNotifier {
       if (state.subloc == '/splash' &&
           appStateManager.instance.isSplashScreen == false) {
         appStateManager.initializeApp();
+        appStateManager.checkSecondTime();
         return null;
       }
+
       if (state.subloc == '/splash' &&
-          isLoggedIn &&
-          appStateManager.instance.isSplashScreen) {
+          appStateManager.instance.isSplashScreen == true &&
+          appStateManager.instance.isOnboardingScreen == false &&
+          appStateManager.instance.isSecondTime == false) {
+        print('first time get here');
+        appStateManager.isOnboardingScreenDone();
+        return state.namedLocation(OnboardingScreen.routeName);
+      }
+
+      if (state.subloc == '/splash' &&
+          appStateManager.instance.isSplashScreen &&
+          appStateManager.instance.isOnboardingScreen == false &&
+          appStateManager.instance.isSecondTime &&
+          isLoggedIn) {
         return state
             .namedLocation(HomeScreen.routeName, params: {'tab': 'home'});
       }
       if (state.subloc == '/splash' &&
           appStateManager.instance.isSplashScreen &&
+          appStateManager.instance.isOnboardingScreen == false &&
+          appStateManager.instance.isSecondTime &&
           !isLoggedIn) {
         return state.namedLocation(WelcomeScreen.routeName);
       }

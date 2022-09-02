@@ -3,7 +3,6 @@ import 'package:capstone_project_hcmut/utils/shared_preference_wrapper.dart';
 import 'package:capstone_project_hcmut/views/views.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import 'abstract/base_provider_model.dart';
 import 'abstract/base_view_model.dart';
 
@@ -21,6 +20,8 @@ class AppStateModel {
   ];
   int currentIndex = 0;
   bool isSplashScreen = false;
+  bool isOnboardingScreen = false;
+  bool isSecondTime = false;
   set isSplashScreenValue(bool value) => isSplashScreen = value;
 }
 
@@ -30,21 +31,24 @@ class AppStateManagerViewModel extends BaseProvider {
   BaseProviderModel<AppStateModel> get data => _data;
   AppStateModel get instance => _data.data!;
   final pref = SharedPreferencesWrapper.instance;
+
   void initializeApp() {
-    Timer(const Duration(milliseconds: 3000), () {
+    Timer(const Duration(milliseconds: 3000), () async {
       _data.data!.isSplashScreen = true;
       notifyListeners();
     });
   }
 
-  void checkLoggedIn() async {
-    final value = await pref.getBool('isLoggedIn');
-    if (value) {
-      instance.isLoggedIn = true;
-    } else {
-      instance.isLoggedIn = false;
-    }
+  void isOnboardingScreenDone() async {
+    print('check this funciton');
+    instance.isOnboardingScreen = true;
+    instance.isSecondTime = true;
+    await pref.setBool('isSecondTime', true);
     notifyListeners();
+  }
+
+  void checkSecondTime() async {
+    instance.isSecondTime = await pref.getBool('isSecondTime');
   }
 
   void goToTab(BuildContext context, int index) {
@@ -95,7 +99,6 @@ class AppStateManagerViewModel extends BaseProvider {
         break;
     }
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
-
     return returnValue;
   }
 }
