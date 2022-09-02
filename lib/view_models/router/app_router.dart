@@ -10,7 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AppRouter extends ChangeNotifier {
   final AppStateManagerViewModel appStateManager;
   bool isLoggedIn;
-  AppRouter(this.appStateManager, this.isLoggedIn);
+  bool seenOnboard;
+  AppRouter(this.appStateManager, this.isLoggedIn, this.seenOnboard);
 
   late final myRouter = GoRouter(
     refreshListenable: appStateManager,
@@ -64,6 +65,11 @@ class AppRouter extends ChangeNotifier {
         pageBuilder: (context, state) => DemoScreen.page(),
       ),
       GoRoute(
+        path: '/onboard',
+        name: OnboardScreen.routeName,
+        pageBuilder: (context, state) => OnboardScreen.page(),
+      ),
+      GoRoute(
           path: '/:tab(home|books|quizzes|tests|settings|demo)',
           name: HomeScreen.routeName,
           pageBuilder: (context, state) {
@@ -84,6 +90,12 @@ class AppRouter extends ChangeNotifier {
         appStateManager.initializeApp();
         return null;
       }
+      if (state.subloc == '/splash' && 
+          appStateManager.instance.isSplashScreen &&
+          !seenOnboard){
+        return state
+            .namedLocation(OnboardScreen.routeName);
+      } 
       if (state.subloc == '/splash' &&
           isLoggedIn &&
           appStateManager.instance.isSplashScreen) {
