@@ -2,28 +2,28 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
-import '../view_models/theme_viewmodel.dart';
+import '../../view_models/theme_viewmodel.dart';
 import 'package:capstone_project_hcmut/utils/custom_widgets.dart';
 import 'package:capstone_project_hcmut/views/views.dart';
 import 'package:go_router/go_router.dart';
-import '../models/onboard_data.dart';
+import '../../models/onboarding_modal.dart';
 
-class OnboardScreen extends StatefulWidget {
-  const OnboardScreen({Key? key}) : super(key: key);
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({Key? key}) : super(key: key);
   static String routeName = 'OnboardScreen';
   static MaterialPage page() {
     return MaterialPage(
-      child: const OnboardScreen(),
+      child: const OnboardingScreen(),
       key: ValueKey(routeName),
       name: routeName,
     );
   }
 
   @override
-  State<OnboardScreen> createState() => _OnboardScreenState();
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardScreenState extends State<OnboardScreen> {
+class _OnboardingScreenState extends State<OnboardingScreen> {
   int currentPage = 0;
 
   PageController _pageController = PageController(initialPage: 0);

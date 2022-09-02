@@ -1,5 +1,8 @@
 export 'demo_screen.dart';
 export 'authentication/login_screen.dart';
+// Onboarding Screen
+export 'onboarding_screen/onboarding_screen.dart';
+// Splash Screen
 export 'splash_screen.dart';
 
 // Authentication
