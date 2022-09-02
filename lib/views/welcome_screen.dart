@@ -19,7 +19,7 @@ class MainScreen extends StatelessWidget {
       child: SizedBox(
         height: size.height,
         width: size.width,
-        child: const Center(child: Text('Wellcome Screen')),
+        child: const Center(child: Text('Welcome Screen')),
       ),
     ));
   }

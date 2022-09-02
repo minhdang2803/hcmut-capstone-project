@@ -21,6 +21,7 @@ class AppStateModel {
   ];
   int currentIndex = 0;
   bool isSplashScreen = false;
+  bool seenOnboard = false;
   set isSplashScreenValue(bool value) => isSplashScreen = value;
 }
 
@@ -43,6 +44,16 @@ class AppStateManagerViewModel extends BaseProvider {
       instance.isLoggedIn = true;
     } else {
       instance.isLoggedIn = false;
+    }
+    notifyListeners();
+  }
+
+  void checkseenOnboard() async {
+    final value = await pref.getBool('seenOnboard');
+    if (value) {
+      instance.seenOnboard = true;
+    } else {
+      instance.seenOnboard = false;
     }
     notifyListeners();
   }
