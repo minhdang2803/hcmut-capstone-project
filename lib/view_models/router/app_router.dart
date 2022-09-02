@@ -90,7 +90,6 @@ class AppRouter extends ChangeNotifier {
         appStateManager.checkSecondTime();
         return null;
       }
-
       if (state.subloc == '/splash' &&
           appStateManager.instance.isSplashScreen == true &&
           appStateManager.instance.isOnboardingScreen == false &&
