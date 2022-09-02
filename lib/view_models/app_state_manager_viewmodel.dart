@@ -3,7 +3,6 @@ import 'package:capstone_project_hcmut/utils/shared_preference_wrapper.dart';
 import 'package:capstone_project_hcmut/views/views.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import 'abstract/base_provider_model.dart';
 import 'abstract/base_view_model.dart';
 
