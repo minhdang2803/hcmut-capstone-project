@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 class AppRouter extends ChangeNotifier {
   final AppStateManagerViewModel appStateManager;
   bool isLoggedIn;
-
-  AppRouter(this.appStateManager, this.isLoggedIn);
+  bool isSecondTime;
+  AppRouter(this.appStateManager, this.isLoggedIn, this.isSecondTime);
 
   late final myRouter = GoRouter(
     refreshListenable: appStateManager,
@@ -87,34 +87,30 @@ class AppRouter extends ChangeNotifier {
       if (state.subloc == '/splash' &&
           appStateManager.instance.isSplashScreen == false) {
         appStateManager.initializeApp();
-        appStateManager.checkSecondTime();
         return null;
       }
 
       if (state.subloc == '/splash' &&
-          appStateManager.instance.isSplashScreen == true &&
-          appStateManager.instance.isOnboardingScreen == false &&
-          appStateManager.instance.isSecondTime == false) {
-        print('first time get here');
-        appStateManager.isOnboardingScreenDone();
-        return state.namedLocation(OnboardingScreen.routeName);
-      }
-
-      if (state.subloc == '/splash' &&
           appStateManager.instance.isSplashScreen &&
-          appStateManager.instance.isOnboardingScreen == false &&
-          appStateManager.instance.isSecondTime &&
+          isSecondTime &&
           isLoggedIn) {
         return state
             .namedLocation(HomeScreen.routeName, params: {'tab': 'home'});
       }
       if (state.subloc == '/splash' &&
           appStateManager.instance.isSplashScreen &&
-          appStateManager.instance.isOnboardingScreen == false &&
-          appStateManager.instance.isSecondTime &&
+          isSecondTime &&
           !isLoggedIn) {
         return state.namedLocation(WelcomeScreen.routeName);
       }
+      if (state.subloc == '/splash' &&
+          appStateManager.instance.isSplashScreen == true &&
+          appStateManager.instance.isOnboardingScreen == false &&
+          !isSecondTime) {
+        appStateManager.isOnboardingScreenDone();
+        return state.namedLocation(OnboardingScreen.routeName);
+      }
+
       return null;
     },
   );

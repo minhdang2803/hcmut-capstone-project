@@ -21,7 +21,6 @@ class AppStateModel {
   int currentIndex = 0;
   bool isSplashScreen = false;
   bool isOnboardingScreen = false;
-  bool isSecondTime = false;
   set isSplashScreenValue(bool value) => isSplashScreen = value;
 }
 
@@ -42,13 +41,8 @@ class AppStateManagerViewModel extends BaseProvider {
   void isOnboardingScreenDone() async {
     print('check this funciton');
     instance.isOnboardingScreen = true;
-    instance.isSecondTime = true;
     await pref.setBool('isSecondTime', true);
     notifyListeners();
-  }
-
-  void checkSecondTime() async {
-    instance.isSecondTime = await pref.getBool('isSecondTime');
   }
 
   void goToTab(BuildContext context, int index) {
