@@ -24,14 +24,19 @@ class AppRouter extends ChangeNotifier {
         },
       ),
       GoRoute(
-        path: '/welcome',
-        name: WelcomeScreen.routeName,
-        pageBuilder: (context, state) => WelcomeScreen.page(),
-      ),
-      GoRoute(
         path: '/splash',
         name: SplashScreen.routeName,
         pageBuilder: (context, state) => SplashScreen.page(),
+      ),
+      GoRoute(
+        path: '/onboarding',
+        name: OnboardingScreen.routeName,
+        pageBuilder: (context, state) => OnboardingScreen.page(),
+      ),
+      GoRoute(
+        path: '/welcome',
+        name: WelcomeScreen.routeName,
+        pageBuilder: (context, state) => WelcomeScreen.page(),
       ),
       GoRoute(
         path: '/auth/register',
@@ -62,11 +67,6 @@ class AppRouter extends ChangeNotifier {
         path: '/demo',
         name: DemoScreen.routeName,
         pageBuilder: (context, state) => DemoScreen.page(),
-      ),
-      GoRoute(
-        path: '/onboarding',
-        name: OnboardingScreen.routeName,
-        pageBuilder: (context, state) => OnboardingScreen.page(),
       ),
       GoRoute(
           path: '/:tab(home|books|quizzes|tests|settings|demo)',

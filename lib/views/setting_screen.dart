@@ -2,6 +2,7 @@
 
 import 'package:capstone_project_hcmut/view_models/login_viewmodel.dart';
 import 'package:capstone_project_hcmut/view_models/router/app_router.dart';
+import 'package:capstone_project_hcmut/views/views.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +36,7 @@ class SettingScreen extends StatelessWidget {
                   loginProvider.logOut();
                   Provider.of<AppRouter>(context, listen: false).isLoggedIn =
                       false;
-                  context.goNamed('root');
+                  context.goNamed(WelcomeScreen.routeName);
                 },
               ),
             ],
