@@ -31,13 +31,15 @@ class WelcomeScreen extends StatelessWidget {
           child: SizedBox(
             height: size.height,
             width: size.width,
-            child: Column(
-              children: [
-                // Image(image: Svg('assets/logo.svg')),
-                SizedBox(height: size.height * 0.05),
-                _buildHuman(context, size),
-                _buildOption(context, size),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Image(image: Svg('assets/logo.svg')),
+                  SizedBox(height: size.height * 0.05),
+                  _buildHuman(context, size),
+                  _buildOption(context, size),
+                ],
+              ),
             ),
           ),
         ),

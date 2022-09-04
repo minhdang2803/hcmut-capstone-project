@@ -37,12 +37,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   // }
 
   @override
-  void initState() {
-    super.initState();
-    // setSeenonboard();
-  }
-
-  @override
   Widget build(BuildContext context) {
     // initialize size config
     Size size = MediaQuery.of(context).size;

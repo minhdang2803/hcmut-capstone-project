@@ -39,7 +39,6 @@ class AppStateManagerViewModel extends BaseProvider {
   }
 
   void isOnboardingScreenDone() async {
-    print('check this funciton');
     instance.isOnboardingScreen = true;
     await pref.setBool('isSecondTime', true);
     notifyListeners();

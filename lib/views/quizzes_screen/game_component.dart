@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:capstone_project_hcmut/models/quizzes_feature/game_model.dart';
 import 'package:capstone_project_hcmut/view_models/theme_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -29,15 +31,14 @@ class GameComponent extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.005),
             Text(
-              '${gameModel?.numberOfQuizzes} Game',
+              '${gameModel?.numberOfQuizzes} quizzes',
               style: Theme.of(context).textTheme.headline5?.copyWith(
                     color: Theme.of(context).primaryColor,
-
                   ),
             ),
             SizedBox(height: size.height * 0.015),
             LinearProgressIndicator(
-              value: 0.5,
+              value: gameModel!.process,
               color: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor.withOpacity(0.5),
             )

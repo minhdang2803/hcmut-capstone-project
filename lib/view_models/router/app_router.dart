@@ -77,9 +77,9 @@ class AppRouter extends ChangeNotifier {
           },
           routes: [
             GoRoute(
-              path: 'game',
-              name: QuizzesListScreen.routeName,
-              pageBuilder: (context, state) => QuizzesListScreen.page(),
+              path: 'game1',
+              name: LevelOneScreen.routeName,
+              pageBuilder: (context, state) => LevelOneScreen.page(),
             )
           ]),
     ],
@@ -92,6 +92,7 @@ class AppRouter extends ChangeNotifier {
 
       if (state.subloc == '/splash' &&
           appStateManager.instance.isSplashScreen &&
+          appStateManager.instance.isOnboardingScreen == false &&
           isSecondTime &&
           isLoggedIn) {
         return state
@@ -99,6 +100,7 @@ class AppRouter extends ChangeNotifier {
       }
       if (state.subloc == '/splash' &&
           appStateManager.instance.isSplashScreen &&
+          appStateManager.instance.isOnboardingScreen == false &&
           isSecondTime &&
           !isLoggedIn) {
         return state.namedLocation(WelcomeScreen.routeName);
