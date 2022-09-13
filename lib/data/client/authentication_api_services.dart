@@ -12,7 +12,7 @@ class AuthenticationAPIService {
       case 200:
         final sharePreferecnes = SharedPreferencesWrapper.instance;
         sharePreferecnes.set(
-            'refresh_token', decodedResponse.data.authorization.refreshToken);
+            'refresh_token', decodedResponse.data.authorization.accessToken);
         sharePreferecnes.setBool('isLoggedIn', true);
     }
   }

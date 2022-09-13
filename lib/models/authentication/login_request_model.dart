@@ -7,13 +7,13 @@ class LoginRequestModel {
   late final String password;
 
   LoginRequestModel.fromJson(Map<String, dynamic> json) {
-    emailPhone = json['email_phone'];
+    emailPhone = json['email'];
     password = json['password'];
   }
 
   Map<String, dynamic> toJson() {
     final returnData = <String, String>{};
-    returnData['email_phone'] = emailPhone;
+    returnData['email'] = emailPhone;
     returnData['password'] = password;
     return returnData;
   }
