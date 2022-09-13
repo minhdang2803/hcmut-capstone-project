@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:capstone_project_hcmut/data/network/api_request.dart';
+import 'package:capstone_project_hcmut/data/network/api_request_model.dart';
 import 'package:capstone_project_hcmut/utils/connection_utils.dart';
 import 'package:capstone_project_hcmut/utils/exception.dart';
 import 'package:dio/dio.dart';

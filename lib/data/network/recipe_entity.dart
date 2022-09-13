@@ -1,4 +1,3 @@
-import 'package:capstone_project_hcmut/models/recipe.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'recipe_entity.g.dart';

@@ -1,6 +1,6 @@
 import 'package:capstone_project_hcmut/data/client/api_services.dart';
-import 'package:capstone_project_hcmut/data/network/api_request.dart';
-import 'package:capstone_project_hcmut/data/network/authentication/authentication_config.dart';
+import 'package:capstone_project_hcmut/data/network/api_request_model.dart';
+import 'package:capstone_project_hcmut/data/network/api.dart';
 import 'package:capstone_project_hcmut/models/models.dart';
 import 'package:capstone_project_hcmut/utils/shared_preference_wrapper.dart';
 import 'package:dio/dio.dart';

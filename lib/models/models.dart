@@ -9,3 +9,5 @@ export './authentication/login_facebook_request_model.dart';
 export './quizzes_feature/dash_path_painter_model.dart';
 export './quizzes_feature/game_model.dart';
 export './quizzes_feature/node_model.dart';
+// Quiz Level 1
+export './quizzes_feature/quizz_one_model.dart';

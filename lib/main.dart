@@ -40,14 +40,6 @@ Future<void> main() async {
           lazy: false,
           create: (context) => appRouter,
         ),
-        Provider<RecipeRepository>(
-          create: (context) => RecipeRepository(
-            apiClient:
-                ApiClient(baseUrl: 'tasty.p.rapidapi.com', apiKey: apiKey),
-            mapper: Mapper(),
-            recipeDao: RecipeDatabase(),
-          ),
-        )
       ],
       child: const CapStoneProject(),
     ),

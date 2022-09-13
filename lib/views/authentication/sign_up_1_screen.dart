@@ -2,7 +2,7 @@ import 'package:capstone_project_hcmut/utils/custom_widgets.dart';
 import 'package:capstone_project_hcmut/view_models/theme_viewmodel.dart';
 import '../../utils/string_extension.dart';
 import 'package:capstone_project_hcmut/view_models/view_models.dart';
-import 'package:capstone_project_hcmut/views/authentication/sign_up_2.dart';
+import 'package:capstone_project_hcmut/views/authentication/sign_up_2_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';

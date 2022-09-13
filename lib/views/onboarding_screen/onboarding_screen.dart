@@ -10,7 +10,7 @@ import '../../models/onboarding_modal.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
-  static String routeName = 'OnboardScreen';
+  static String routeName = 'OnboardingScreen';
   static MaterialPage page() {
     return MaterialPage(
       child: const OnboardingScreen(),
