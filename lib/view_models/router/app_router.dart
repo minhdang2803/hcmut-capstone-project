@@ -80,19 +80,18 @@ class AppRouter extends ChangeNotifier {
               path: 'lv1',
               name: LevelOneScreen.routeName,
               pageBuilder: (context, state) => LevelOneScreen.page(),
-              // routes: [
-              //   GoRoute(
-              //       path: 'instruction',
-              //       name: InstructionScreenLV1.routeName,
-              //       pageBuilder: (context, state) {
-              //         final index = state.queryParams['id'];
-              //         final value = state.extra as Map<String, Object>;
-              //         return InstructionScreenLV1.page(
-              //           text: value['text'] as String,
-              //           callAPi: value['api_call'] as void Function(void),
-              //         );
-              //       })
-              // ],
+              routes: [
+                GoRoute(
+                    path: 'instruction',
+                    name: InstructionScreen.routeName,
+                    pageBuilder: (context, state) {
+                      final value = state.extra as Map<String, Object?>;
+                      return InstructionScreen.page(
+                        text: value['text'] as String,
+                        callAPi: value['api_call'] as void Function(),
+                      );
+                    })
+              ],
             ),
           ]),
     ],

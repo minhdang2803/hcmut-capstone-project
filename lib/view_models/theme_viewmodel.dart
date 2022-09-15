@@ -14,6 +14,8 @@ Color kQuizGameUnselectedColor = ColorExtension.hexToColor('#EFEEFC');
 Color kGreyBodyText = ColorExtension.hexToColor('#CCCCCC');
 Color kLoginBackGround = ColorExtension.hexToColor('#f1dff5');
 Color kFacebookIcon = ColorExtension.hexToColor('#0056B2');
+Color kGreyTitleText = ColorExtension.hexToColor('#858494');
+Color kPinkColor = ColorExtension.hexToColor('#FFD6DD');
 
 class ThemeManager extends ChangeNotifier {
   late ThemeData _selectedTheme;
