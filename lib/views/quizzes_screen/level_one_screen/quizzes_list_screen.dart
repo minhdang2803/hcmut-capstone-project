@@ -39,12 +39,12 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
     }
 
     listNumber = [
-      {'text': 'Hello', 'api_call': null},
-      {'text': 'Hello', 'api_call': null},
-      {'text': 'Hello', 'api_call': null},
-      {'text': 'Hello', 'api_call': null},
-      {'text': 'Hello', 'api_call': null},
-      {'text': 'Hello', 'api_call': null},
+      {'text': 'Hello', 'api_call': () {}},
+      {'text': 'Hello', 'api_call': () {}},
+      {'text': 'Hello', 'api_call': () {}},
+      {'text': 'Hello', 'api_call': () {}},
+      {'text': 'Hello', 'api_call': () {}},
+      {'text': 'Hello', 'api_call': () {}},
     ];
     lengthList = listNumber.length;
     Size size = MediaQuery.of(context).size;
@@ -127,12 +127,22 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
                                 if (checkLength) {
                                   return GestureDetector(
                                     behavior: HitTestBehavior.translucent,
-                                    onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const InstructionScreenLV1(),
-                                        )),
+                                    onTap: () => context.pushNamed(
+                                        InstructionScreen.routeName,
+                                        params: {
+                                          'tab': 'quizzes'
+                                        },
+                                        queryParams: {
+                                          'id':
+                                              '${numberStepThree - numberStepTwo + 1}'
+                                        },
+                                        extra: {
+                                          'text': listNumber[numberStepThree -
+                                              numberStepTwo]['text'],
+                                          'api_call': listNumber[
+                                              numberStepThree -
+                                                  numberStepTwo]['api_call']
+                                        }),
                                     child: AbsorbPointer(
                                       child: TextShapeCircle(
                                           color: Theme.of(context).primaryColor,
@@ -162,12 +172,22 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
                                 if (checkLength) {
                                   return GestureDetector(
                                     behavior: HitTestBehavior.translucent,
-                                    onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const InstructionScreenLV1(),
-                                        )),
+                                    onTap: () => context.pushNamed(
+                                        InstructionScreen.routeName,
+                                        params: {
+                                          'tab': 'quizzes'
+                                        },
+                                        queryParams: {
+                                          'id':
+                                              '${numberStepThree - numberStepTwo + 1}'
+                                        },
+                                        extra: {
+                                          'text': listNumber[numberStepThree -
+                                              numberStepTwo]['text'],
+                                          'api_call': listNumber[
+                                              numberStepThree -
+                                                  numberStepTwo]['api_call']
+                                        }),
                                     child: Align(
                                       alignment: Alignment(
                                           indexRow == 0 ? 0.55 : -0.55, 0),

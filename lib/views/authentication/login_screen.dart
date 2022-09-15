@@ -1,11 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:capstone_project_hcmut/utils/custom_widgets.dart';
 import 'package:capstone_project_hcmut/utils/shared_preference_wrapper.dart';
 import 'package:capstone_project_hcmut/view_models/abstract/base_view_model.dart';
-import 'package:capstone_project_hcmut/view_models/login_viewmodel.dart';
-import 'package:capstone_project_hcmut/view_models/router/app_router.dart';
-import 'package:capstone_project_hcmut/view_models/theme_viewmodel.dart';
 import 'package:capstone_project_hcmut/view_models/view_models.dart';
 import 'package:capstone_project_hcmut/views/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +25,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final email = TextEditingController()..text = '0906005535';
+  final email = TextEditingController()..text = 'minhdangle2803@gmail.com';
   final password = TextEditingController()..text = '123456';
   late final LoginStateViewModel provider;
   @override
@@ -236,8 +231,9 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             color: kFacebookIcon,
             elevation: 0,
-            function: () async => Provider.of<LoginStateViewModel>(context, listen: false)
-                  .loginByFacebook(),
+            function: () async =>
+                Provider.of<LoginStateViewModel>(context, listen: false)
+                    .loginByFacebook(),
           ),
         ],
       ),
