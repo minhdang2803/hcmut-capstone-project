@@ -17,7 +17,7 @@ export 'quizzes_screen/quizzes_screen.dart';
 export 'quizzes_screen/game_component.dart';
 export 'quizzes_screen/quizzes_list_screen.dart';
 // Book feature
-export 'books_screen.dart';
+export 'books_screen/books_screen.dart';
 // Home feature
 export 'wellcome_screen.dart';
 // Setting feature
