@@ -1,14 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:capstone_project_hcmut/data/repository/book_repos.dart';
+import 'package:flutter/material.dart';
 import 'book_event.dart';
 import 'book_state.dart';
 import 'books_bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import '../../models/book_model.dart';
-// import 'book_details.dart';
+import 'book_details.dart';
 
 class BookScreen extends StatelessWidget {
   const BookScreen({Key? key}) : super(key: key);
@@ -37,7 +37,7 @@ class BookScreen extends StatelessWidget {
                     IconButton(
                       icon: Icon(
                         Icons.menu,
-                        color: Colors.white,
+                        color: Theme.of(context).backgroundColor,
                         size: 35,
                       ),
                       onPressed: () {},
@@ -45,7 +45,7 @@ class BookScreen extends StatelessWidget {
                     IconButton(
                       icon: Icon(
                         Icons.search,
-                        color: Colors.white,
+                        color: Theme.of(context).backgroundColor,
                         size: 35,
                       ),
                       onPressed: () {},
@@ -60,7 +60,7 @@ class BookScreen extends StatelessWidget {
                   ),
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Color(0xfffff8ee),
+                    color: Theme.of(context).backgroundColor,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(50),
                       topRight: Radius.circular(50),
@@ -166,15 +166,11 @@ class BookSection extends StatelessWidget {
                             height: size.height*0.4,
                             child: ListView.builder(
                               itemBuilder: (ctx, i)=> GestureDetector(
-                                onTap: (){}, //=> Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (ctx) => BookDetails(
-                                //       index: i,
-                                //       section: heading,
-                                //     ),
-                                //   ),
-                                // ),
+                                onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (ctx) => BookDetails(book: bookList[i]),
+                                  ),
+                                ),
                                 child: Row(
                                   children: [
                                     Container(

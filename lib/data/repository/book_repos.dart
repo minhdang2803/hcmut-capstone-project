@@ -5,28 +5,14 @@ import 'package:flutter/services.dart';
 class BookRepos{ 
   String endpoint = 'assets/books.json/';
   Future<List<BookModel>> getBooks() async{
-    final String response = await rootBundle.loadString(endpoint);
-    final data = await json.decode(response);
-    return data.map((e)=>BookModel.fromJson(e)).toList();
+    
+      final String response = await rootBundle.loadString(endpoint);
+      final data = await json.decode(response);
+      return data.map((e)=>BookModel.fromJson(e)).toList();
+    
   }
 }
 List<BookModel> allBooks = [
-  BookModel(
-        title: "The Adventures of Sherlock Holmes",
-        author: "Arthur Conan Doyle",
-        cover: "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-orig-2305.jpg?itok=fKkqXRnW",
-        year: "1892",
-        pages: "236",
-        downloads: 570963,
-        description: "A delight for a public which enjoys incident, mystery, and above all that matching of the wits of a clever man against the dumb resistance of the secrecy of inanimate things, which results in the triumph of the human intelligence.",
-        genres: [
-            "BANNED BOOKS",
-            "FICTION AND LITERATURE",
-            "MYSTERY/DETECTIVE",
-            "SHORT STORY COLLECTION"
-        ],
-        rating: 0
-  ),
   BookModel(
         title: "Pride and Prejudice",
         author: "Jane Austen",
