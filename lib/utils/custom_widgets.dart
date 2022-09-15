@@ -78,7 +78,6 @@ Widget buildThemeButton(BuildContext context,
     double? height,
     double? borderRadius,
     required void Function()? function}) {
-  final theme = Provider.of<ThemeManager>(context, listen: false);
   return SizedBox(
     height: height,
     width: width ?? MediaQuery.of(context).size.width,
@@ -112,7 +111,7 @@ Widget buildThemeTextFormField(
   void Function(String)? onChanged,
   void Function()? onEditingComplete,
 }) {
-  return Container(
+  return SizedBox(
     width: size.width * 0.9,
     child: TextFormField(
       validator: validator,
@@ -177,6 +176,7 @@ Widget buildThemeTextFormField(
 Widget buildAuthTopBar(
   BuildContext context,
   Size size, {
+  Color color = Colors.black,
   required String title,
   required void Function()? function,
 }) {
@@ -187,16 +187,18 @@ Widget buildAuthTopBar(
       children: [
         IconButton(
           onPressed: function,
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back,
+            color: color,
             size: 35,
           ),
         ),
         Text(
           title,
-          style: Theme.of(context).textTheme.headline3?.copyWith(
-                fontWeight: FontWeight.normal,
-              ),
+          style: Theme.of(context)
+              .textTheme
+              .headline3
+              ?.copyWith(fontWeight: FontWeight.normal, color: color),
         ),
         SizedBox(
           width: size.width * 0.1,

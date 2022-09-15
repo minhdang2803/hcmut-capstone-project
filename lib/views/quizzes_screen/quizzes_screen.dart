@@ -1,6 +1,6 @@
-import 'package:capstone_project_hcmut/models/quizzes_feature/game_model.dart';
+import 'package:capstone_project_hcmut/models/quizzes/level_model.dart';
 import 'package:capstone_project_hcmut/views/quizzes_screen/game_component.dart';
-import 'package:capstone_project_hcmut/views/quizzes_screen/quizzes_list_screen.dart';
+import 'package:capstone_project_hcmut/views/quizzes_screen/level_one_screen/quizzes_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -42,7 +42,7 @@ class QuizzesScreen extends StatelessWidget {
                 children: [
                   buildQuizzes(
                     context,
-                    GameModel(
+                    GameLevelModel(
                         icon: const Center(child: FaIcon(FontAwesomeIcons.one)),
                         name: 'Level One',
                         numberOfQuizzes: 10,
@@ -61,7 +61,7 @@ class QuizzesScreen extends StatelessWidget {
 }
 
 Widget buildQuizzes(
-    BuildContext context, GameModel game, void Function()? onTap) {
+    BuildContext context, GameLevelModel game, void Function()? onTap) {
   return GestureDetector(
     onTap: onTap,
     child: GameComponent(

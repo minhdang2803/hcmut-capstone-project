@@ -13,7 +13,7 @@ class RegisterRequestModel {
   RegisterRequestModel.fromJson(Map<String, dynamic> json) {
     phone = json['phone'];
     email = json['email'];
-    fullName = json['full_name'];
+    fullName = json['fullName'];
     password = json['password'];
   }
 
@@ -21,7 +21,7 @@ class RegisterRequestModel {
     final data = <String, dynamic>{};
     data['phone'] = phone;
     data['email'] = email;
-    data['full_name'] = fullName;
+    data['fullName'] = fullName;
     data['password'] = password;
     return data;
   }

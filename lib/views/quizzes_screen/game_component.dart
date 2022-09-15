@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:capstone_project_hcmut/models/quizzes_feature/game_model.dart';
+import 'package:capstone_project_hcmut/models/quizzes/level_model.dart';
 import 'package:capstone_project_hcmut/view_models/theme_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 class GameComponent extends StatelessWidget {
   const GameComponent({Key? key, this.gameModel}) : super(key: key);
 
-  final GameModel? gameModel;
+  final GameLevelModel? gameModel;
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;

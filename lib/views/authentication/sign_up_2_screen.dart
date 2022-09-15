@@ -1,6 +1,6 @@
 import 'package:capstone_project_hcmut/utils/string_extension.dart';
 import 'package:capstone_project_hcmut/view_models/view_models.dart';
-import 'package:capstone_project_hcmut/views/authentication/sign_up_3.dart';
+import 'package:capstone_project_hcmut/views/authentication/sign_up_3_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';

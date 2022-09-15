@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class GameModel {
+class GameLevelModel {
   final Widget? icon;
   final String? name;
   final int? numberOfQuizzes;
   final double? process;
   //Data of games
 
-  GameModel({
+  GameLevelModel({
     this.icon,
     this.name,
     this.numberOfQuizzes,
