@@ -16,15 +16,10 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = SharedPreferencesWrapper.instance;
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  // ignore: deprecated_member_use, avoid_redundant_argument_values
-  Sqflite.devSetDebugModeOn(kDebugMode);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final themeManager =
       ThemeManager(isDarkMode: await prefs.getBool('isDarkTheme'));
   final appStateManager = AppStateManagerViewModel();
-  print('is Second Time?: ${await prefs.getBool('isSecondTime')}');
   final appRouter = AppRouter(appStateManager,
       await prefs.getBool('isLoggedIn'), await prefs.getBool('isSecondTime'));
   final loginStateViewModel = LoginStateViewModel();

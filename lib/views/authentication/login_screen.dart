@@ -174,16 +174,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontWeight: FontWeight.normal,
                 ),
           ),
-          SizedBox(
-            width: size.width * 0.1,
-          ),
+          SizedBox(width: size.width * 0.1),
         ],
       ),
     );
   }
 
   Widget _buildLoginOption(BuildContext context, Size size) {
-    return Container(
+    return SizedBox(
       width: size.width,
       child: Column(
         children: [
@@ -200,15 +198,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: size.width * 0.03,
                 ),
                 SizedBox(width: size.width * 0.025),
-                Text('Login with Google',
-                    style: Theme.of(context).textTheme.headline4),
+                Text(
+                  'Login with Google',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
               ],
             ),
             color: Theme.of(context).backgroundColor,
             elevation: 0,
-            function: () async =>
-                Provider.of<LoginStateViewModel>(context, listen: false)
-                    .loginbyGoogle(),
+            function: () async {
+              return Provider.of<LoginStateViewModel>(context, listen: false)
+                  .loginbyGoogle();
+            },
           ),
           SizedBox(height: size.height * 0.025),
           buildThemeButton(
@@ -231,9 +232,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             color: kFacebookIcon,
             elevation: 0,
-            function: () async =>
-                Provider.of<LoginStateViewModel>(context, listen: false)
-                    .loginByFacebook(),
+            function: () async {
+              return Provider.of<LoginStateViewModel>(context, listen: false)
+                  .loginByFacebook();
+            },
           ),
         ],
       ),
@@ -341,6 +343,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _buildRichText(BuildContext context) {
+    String loginScreenPrivacyText =
+        'By continuing, you agree to the Terms of Services & Privacy Policy.';
     List<InlineSpan> richtext = [];
     final value = loginScreenPrivacyText.split(' ');
     for (final element in value) {
@@ -380,11 +384,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
       child: RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(children: [..._buildRichText(context)])),
+        textAlign: TextAlign.center,
+        text: TextSpan(children: [..._buildRichText(context)]),
+      ),
     );
   }
 }
-
-final String loginScreenPrivacyText =
-    'By continuing, you agree to the Terms of Services & Privacy Policy.';

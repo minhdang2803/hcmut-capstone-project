@@ -46,6 +46,7 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
       {'text': 'Hello', 'api_call': () {}},
       {'text': 'Hello', 'api_call': () {}},
     ];
+
     lengthList = listNumber.length;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -128,28 +129,27 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
                                   return GestureDetector(
                                     behavior: HitTestBehavior.translucent,
                                     onTap: () => context.pushNamed(
-                                        InstructionScreen.routeName,
-                                        params: {
-                                          'tab': 'quizzes'
-                                        },
-                                        queryParams: {
-                                          'id':
-                                              '${numberStepThree - numberStepTwo + 1}'
-                                        },
-                                        extra: {
-                                          'text': listNumber[numberStepThree -
-                                              numberStepTwo]['text'],
-                                          'api_call': listNumber[
-                                              numberStepThree -
-                                                  numberStepTwo]['api_call']
-                                        }),
+                                      InstructionScreen.routeName,
+                                      params: {'tab': 'quizzes'},
+                                      queryParams: {
+                                        'id':
+                                            '${numberStepThree - numberStepTwo + 1}'
+                                      },
+                                      extra: {
+                                        'text': listNumber[numberStepThree -
+                                            numberStepTwo]['text'],
+                                        'api_call': listNumber[numberStepThree -
+                                            numberStepTwo]['api_call']
+                                      },
+                                    ),
                                     child: AbsorbPointer(
                                       child: TextShapeCircle(
-                                          color: Theme.of(context).primaryColor,
-                                          text: (numberStepThree -
-                                                  numberStepTwo +
-                                                  1)
-                                              .toString()),
+                                        color: Theme.of(context).primaryColor,
+                                        text: (numberStepThree -
+                                                numberStepTwo +
+                                                1)
+                                            .toString(),
+                                      ),
                                     ),
                                   );
                                 } else {
@@ -173,30 +173,29 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
                                   return GestureDetector(
                                     behavior: HitTestBehavior.translucent,
                                     onTap: () => context.pushNamed(
-                                        InstructionScreen.routeName,
-                                        params: {
-                                          'tab': 'quizzes'
-                                        },
-                                        queryParams: {
-                                          'id':
-                                              '${numberStepThree - numberStepTwo + 1}'
-                                        },
-                                        extra: {
-                                          'text': listNumber[numberStepThree -
-                                              numberStepTwo]['text'],
-                                          'api_call': listNumber[
-                                              numberStepThree -
-                                                  numberStepTwo]['api_call']
-                                        }),
+                                      InstructionScreen.routeName,
+                                      params: {'tab': 'quizzes'},
+                                      queryParams: {
+                                        'id':
+                                            '${numberStepThree - numberStepTwo + 1}'
+                                      },
+                                      extra: {
+                                        'text': listNumber[numberStepThree -
+                                            numberStepTwo]['text'],
+                                        'api_call': listNumber[numberStepThree -
+                                            numberStepTwo]['api_call']
+                                      },
+                                    ),
                                     child: Align(
                                       alignment: Alignment(
                                           indexRow == 0 ? 0.55 : -0.55, 0),
                                       child: TextShapeCircle(
-                                          color: Theme.of(context).primaryColor,
-                                          text: (numberStepThree -
-                                                  numberStepTwo +
-                                                  1)
-                                              .toString()),
+                                        color: Theme.of(context).primaryColor,
+                                        text: (numberStepThree -
+                                                numberStepTwo +
+                                                1)
+                                            .toString(),
+                                      ),
                                     ),
                                   );
                                 } else {
@@ -337,7 +336,6 @@ class _LevelOneScreenState extends State<LevelOneScreen> {
             size.width * 0.8, size.height * 0.28 * (i + 1));
       }
     }
-
     return path0;
   }
 }

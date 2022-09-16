@@ -24,44 +24,48 @@ class QuizzesScreen extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-              height: size.height,
-              decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
+            height: size.height,
+            decoration: BoxDecoration(
+              color: Theme.of(context).backgroundColor,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
               ),
-              padding: const EdgeInsets.all(20),
-              child: GridView(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20,
-                ),
-                children: [
-                  buildQuizzes(
-                    context,
-                    GameLevelModel(
-                        icon: const Center(child: FaIcon(FontAwesomeIcons.one)),
-                        name: 'Level One',
-                        numberOfQuizzes: 10,
-                        process: 1 / 3),
-                    () {
-                      context.pushNamed(LevelOneScreen.routeName,
-                          params: {'tab': 'quizzes'});
-                    },
-                  )
-                ],
-              )),
+            ),
+            padding: const EdgeInsets.all(20),
+            child: GridView(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 20,
+              ),
+              children: [
+                buildQuizzes(
+                  context: context,
+                  game: GameLevelModel(
+                      icon: const Center(child: FaIcon(FontAwesomeIcons.one)),
+                      name: 'Level One',
+                      numberOfQuizzes: 10,
+                      process: 1 / 3),
+                  onTap: () {
+                    context.pushNamed(LevelOneScreen.routeName,
+                        params: {'tab': 'quizzes'});
+                  },
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 }
 
-Widget buildQuizzes(
-    BuildContext context, GameLevelModel game, void Function()? onTap) {
+Widget buildQuizzes({
+  required BuildContext context,
+  required GameLevelModel game,
+  required void Function()? onTap,
+}) {
   return GestureDetector(
     onTap: onTap,
     child: GameComponent(
