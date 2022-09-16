@@ -4,10 +4,14 @@ import 'book_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BookBloc extends Bloc<BookEvent, BookState>{
-  final BookRepos _bookRepos;
+  final BookRepos? _bookRepos;
 
   BookBloc(this._bookRepos) : super(BookLoadingState()){
-    on<LoadBookEvent>((event, emit) async{
+    on<LoadBookEvent>(_onLoadAll);
+  }
+
+
+  void _onLoadAll(LoadBookEvent event, Emitter<BookState> emit) async{
       emit(BookLoadingState());
       try{
         // final books = await _bookRepos.getBooks();
@@ -17,6 +21,27 @@ class BookBloc extends Bloc<BookEvent, BookState>{
       catch(e){
         emit(BookErrorState(e.toString()));
       }
-    });
+  }
+}
+
+
+
+
+
+class DetailsBloc extends Bloc<DetailsEvent, DetailsState>{
+
+  DetailsBloc() : super(DetailsLoadingState()){
+    on<LoadDetailsEvent>(_onLoadDetails);
+  }
+  void _onLoadDetails(LoadDetailsEvent event, Emitter<DetailsState> emit){
+    emit(DetailsLoadingState());
+      try{
+        // final books = await _bookRepos.getBooks();
+        final book = event.book;
+        emit(DetailsLoadedState(book));
+      }
+      catch(e){
+        emit(DetailsErrorState(e.toString()));
+      }
   }
 }
