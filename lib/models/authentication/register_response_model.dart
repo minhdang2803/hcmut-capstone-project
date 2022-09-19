@@ -67,7 +67,6 @@ class RegisterData {
   RegisterData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     email = json['email'];
-    phone = json['phone'];
     fullName = json['fullName'];
     photoUrl = json['photoUrl'];
   }
@@ -76,7 +75,6 @@ class RegisterData {
     final _data = <String, dynamic>{};
     _data['id'] = id;
     _data['email'] = email;
-    _data['phone'] = phone;
     _data['fullName'] = fullName;
     _data['photoUrl'] = photoUrl;
     return _data;

@@ -34,7 +34,6 @@ class WelcomeScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Image(image: Svg('assets/logo.svg')),
                   SizedBox(height: size.height * 0.05),
                   _buildHuman(context, size),
                   _buildOption(context, size),
@@ -77,66 +76,68 @@ class WelcomeScreen extends StatelessWidget {
       height: size.height * 0.36,
       width: size.width * 0.9,
       padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Text(
-            'Login or Sign Up',
-            style: Theme.of(context).textTheme.headline2?.copyWith(
-                  fontWeight: FontWeight.w300,
-                ),
-          ),
-          SizedBox(height: size.height * 0.015),
-          Text(
-            'Login or create an account to learn English, take part in challenges.',
-            style: Theme.of(context).textTheme.headline5!.copyWith(
-                  fontWeight: FontWeight.normal,
-                  color: Theme.of(context).hintColor,
-                ),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: size.height * 0.025),
-          buildThemeButton(
-            context,
-            elevation: 0.0,
-            height: MediaQuery.of(context).size.height * 0.05,
-            color: Theme.of(context).primaryColor,
-            widget: Text(
-              'Login',
-              style: Theme.of(context).textTheme.headline5!.copyWith(
-                    color: Theme.of(context).backgroundColor,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(
+              'Login or Sign Up',
+              style: Theme.of(context).textTheme.headline2?.copyWith(
+                    fontWeight: FontWeight.w300,
                   ),
             ),
-            function: () => context.pushNamed(LoginScreen.routeName),
-          ),
-          SizedBox(height: size.height * 0.015),
-          buildThemeButton(
-            context,
-            elevation: 0,
-            height: MediaQuery.of(context).size.height * 0.05,
-            color: Theme.of(context).secondaryHeaderColor,
-            widget: Text(
-              'Create an account',
+            SizedBox(height: size.height * 0.015),
+            Text(
+              'Login or create an account to learn English, take part in challenges.',
               style: Theme.of(context).textTheme.headline5!.copyWith(
-                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.normal,
+                    color: Theme.of(context).hintColor,
                   ),
+              textAlign: TextAlign.center,
             ),
-            function: () => context.pushNamed(RegisterScreen.routeName),
-          ),
-          SizedBox(height: size.height * 0.015),
-          buildThemeButton(
-            context,
-            elevation: 0,
-            height: MediaQuery.of(context).size.height * 0.05,
-            color: Theme.of(context).backgroundColor,
-            widget: Text(
-              'Later',
-              style: Theme.of(context).textTheme.headline5!.copyWith(
-                    color: Theme.of(context).primaryColor,
-                  ),
+            SizedBox(height: size.height * 0.025),
+            buildThemeButton(
+              context,
+              elevation: 0.0,
+              height: MediaQuery.of(context).size.height * 0.05,
+              color: Theme.of(context).primaryColor,
+              widget: Text(
+                'Login',
+                style: Theme.of(context).textTheme.headline5!.copyWith(
+                      color: Theme.of(context).backgroundColor,
+                    ),
+              ),
+              function: () => context.pushNamed(LoginScreen.routeName),
             ),
-            function: () => context.goNamed('root'),
-          )
-        ],
+            SizedBox(height: size.height * 0.015),
+            buildThemeButton(
+              context,
+              elevation: 0,
+              height: MediaQuery.of(context).size.height * 0.05,
+              color: Theme.of(context).secondaryHeaderColor,
+              widget: Text(
+                'Create an account',
+                style: Theme.of(context).textTheme.headline5!.copyWith(
+                      color: Theme.of(context).primaryColor,
+                    ),
+              ),
+              function: () => context.pushNamed(RegisterScreen.routeName),
+            ),
+            SizedBox(height: size.height * 0.015),
+            buildThemeButton(
+              context,
+              elevation: 0,
+              height: MediaQuery.of(context).size.height * 0.05,
+              color: Theme.of(context).backgroundColor,
+              widget: Text(
+                'Later',
+                style: Theme.of(context).textTheme.headline5!.copyWith(
+                      color: Theme.of(context).primaryColor,
+                    ),
+              ),
+              function: () => context.goNamed('root'),
+            )
+          ],
+        ),
       ),
     );
   }

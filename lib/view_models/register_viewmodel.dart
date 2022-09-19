@@ -40,7 +40,6 @@ class RegisterViewModel extends BaseProvider {
       await Future.delayed(const Duration(seconds: 1), () async {
         response = await service.register(
           RegisterRequestModel(
-              phone: phone,
               email: email,
               fullName: fullName,
               password: password),
