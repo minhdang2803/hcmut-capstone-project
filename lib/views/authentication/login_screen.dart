@@ -117,7 +117,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // SizedBox(height: size.height * 0.03),
                 _buildTopBar(context, size),
                 SizedBox(height: size.height * 0.03),
                 _buildLoginOption(context, size),
@@ -297,10 +296,18 @@ class _LoginScreenState extends State<LoginScreen> {
           color: Theme.of(context).primaryColor,
         ),
         hintText: 'Enter your password',
-        isPassword: true,
+        isPassword: context.watch<LoginStateViewModel>().isPassword,
         posfixIcon: GestureDetector(
-          onLongPressDown: null,
-          onLongPressUp: null,
+          onLongPress: () {
+            setState(() {
+              context.read<LoginStateViewModel>().isPassword = false;
+            });
+          },
+          onLongPressUp: () {
+            setState(() {
+              context.read<LoginStateViewModel>().isPassword = true;
+            });
+          },
           child: Icon(
             Icons.remove_red_eye,
             size: 25,

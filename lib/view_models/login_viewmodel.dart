@@ -19,6 +19,7 @@ class LoginStateViewModel extends BaseProvider {
   bool isPop = false;
   bool isCancel = false;
   final CancelToken cancelToken = CancelToken();
+  bool isPassword = true;
 
   final googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _user;
@@ -119,7 +120,7 @@ class LoginStateViewModel extends BaseProvider {
             LoginRequestModel(emailPhone: emailPhone, password: password),
             cancelToken: isCancel ? cancelToken : null),
       );
-
+      print(response);
       _loginData = BaseProviderModel.success(response);
       setStatus(ViewState.done, notify: true);
     } on RemoteException catch (exception) {
