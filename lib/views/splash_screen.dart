@@ -27,26 +27,13 @@ class _SplashScreenState extends State<SplashScreen> {
         fit: StackFit.expand,
         children: [
           Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              image: DecorationImage(
-                image: Svg(
-                  scale: 2,
-                  color: kHawkBlueColor,
-                  'assets/splash_screen/splash_screen.svg',
-                  size: Size(MediaQuery.of(context).size.width,
-                      MediaQuery.of(context).size.height),
-                ),
+            decoration: const BoxDecoration(
+              color: Colors.white,
               ),
-            ),
           ),
-          Image(
-            image: Svg(
-              'assets/splash_screen/logo.svg',
-              size: Size(MediaQuery.of(context).size.width * 0.8,
-                  MediaQuery.of(context).size.width * 0.8),
-            ),
-          ),
+          Image.asset(
+              'assets/splash_screen/logo.png',
+              ),
         ],
       ),
     );

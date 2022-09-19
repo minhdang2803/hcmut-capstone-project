@@ -32,117 +32,225 @@ class BookDetails extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 30,
-                                            horizontal: 20,
-                                          ),
+                                          padding: const EdgeInsets.all(8.0),
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               IconButton(
                                                 icon: Icon(
                                                   Icons.arrow_back,
-                                                  color: Colors.black,
+                                                  color: Theme.of(context).primaryColor,
                                                   size: 35,
                                                 ),
                                                 onPressed: () => Navigator.of(context).pop(),
                                               ),
-                                              IconButton(
-                                                icon: Icon(
-                                                  Icons.favorite_border,
-                                                  color: Colors.black,
-                                                  size: 35,
-                                                ),
-                                                onPressed: () {},
-                                              ),
+                                              Container(
+                                                child: Row(
+                                                        children: [
+                                                          IconButton(
+                                                            icon: Icon(
+                                                              Icons.favorite_border,
+                                                              color: Theme.of(context).primaryColor,
+                                                              size: 35,
+                                                            ),
+                                                            onPressed: () {},
+                                                          ),
+                                                          IconButton(
+                                                            icon: Icon(
+                                                              Icons.share,
+                                                              color: Theme.of(context).primaryColor,
+                                                              size: 35,
+                                                            ),
+                                                            onPressed: () {},
+                                                          ),
+                                                        ]
+                                                      )
+                                              )    
                                             ],
                                           ),
                                         ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            bottom: 30,
-                                          ),
-                                          height: size.height * 0.3,
-                                          width: size.width * 0.4,
-                                          child: Stack(
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
                                               Container(
-                                                width: double.infinity,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(20),
-                                                  boxShadow: <BoxShadow>[
-                                                    BoxShadow(
-                                                      color: Colors.black.withOpacity(0.3),
-                                                      blurRadius: 5,
-                                                      offset: Offset(8, 8),
-                                                      spreadRadius: 3,
+                                                margin: EdgeInsets.only(
+                                                  bottom: 10,
+                                                ),
+                                                height: size.height * 0.3,
+                                                width: size.width * 0.4,
+                                                child: Stack(
+                                                  children: [
+                                                    Container(
+                                                      width: double.infinity,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(20),
+                                                        boxShadow: <BoxShadow>[
+                                                          BoxShadow(
+                                                            color: Colors.black.withOpacity(0.3),
+                                                            blurRadius: 5,
+                                                            offset: Offset(8, 8),
+                                                            spreadRadius: 3,
+                                                          ),
+                                                          BoxShadow(
+                                                            color: Colors.black.withOpacity(0.3),
+                                                            blurRadius: 25,
+                                                            offset: Offset(-8, -8),
+                                                            spreadRadius: 3,
+                                                          )
+                                                        ],
+                                                      ),
+                                                      child: ClipRRect(
+                                                        borderRadius: BorderRadius.circular(20),
+                                                        child: Image.network(
+                                                                  book.cover,
+                                                                  fit: BoxFit.fill,
+                                                                ),
+                                                      ),
                                                     ),
-                                                    BoxShadow(
-                                                      color: Colors.black.withOpacity(0.3),
-                                                      blurRadius: 25,
-                                                      offset: Offset(-8, -8),
-                                                      spreadRadius: 3,
-                                                    )
                                                   ],
                                                 ),
-                                                child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(20),
-                                                  child: Image.network(
-                                                            book.cover,
-                                                            fit: BoxFit.fill,
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    left: 12,
+                                                ),
+                                                width: size.width * 0.5,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      book.title,
+                                                      style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline3
+                                                        ,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    Text(
+                                                      book.author,
+                                                      style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline6!
+                                                        .copyWith(
+                                                          fontWeight: FontWeight.normal,
+                                                          color: Theme.of(context).hintColor,
+                                                        ),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        // SmoothStarRating(
+                                                        //   rating: 3,
+                                                        //   // bookList[index].rating
+                                                        //   isReadOnly: false,
+                                                        //   size: 25,
+                                                        //   filledIconData: Icons.star,
+                                                        //   halfFilledIconData: Icons.star_half,
+                                                        //   defaultIconData: Icons.star_border,
+                                                        //   starCount: 5,
+                                                        //   allowHalfRating: true,
+                                                        //   spacing: 2.0,
+                                                        //   // onRated: (value) {
+                                                        //   //   print(value);
+                                                        //   // },
+                                                        // ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Text(
+                                                          book.rating.toString(),
+                                                          style: TextStyle(
+                                                            fontSize: 24,
+                                                            fontWeight: FontWeight.w700,
                                                           ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 10),
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          width: 80,
+                                                          height: 40,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(100),
+                                                            color: Theme.of(context).primaryColor,
+                                                          ),
+                                                          child: TextButton(
+                                                            
+                                                            onPressed: () {},//=>Navigator.push(
+                                                            //   context,
+                                                            //   MaterialPageRoute(
+                                                            //     builder: (context) => BookRead(),
+                                                            //   ),
+                                                            // ),
+                                                            child: Row(
+                                                              children: [
+                                                                Icon(Icons.book,
+                                                                  size: 20,
+                                                                  color: Theme.of(context).backgroundColor),
+                                                                Text(
+                                                                  "Read",
+                                                                  style: TextStyle(
+                                                                    color:Theme.of(context).backgroundColor,
+                                                                    fontWeight: FontWeight.w500,
+                                                                    fontSize: 15,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Container(
+                                                          width: 80,
+                                                          height: 40,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(100),
+                                                            color: Theme.of(context).primaryColor,
+                                                          ),
+                                                          child: TextButton(
+                                                            onPressed: () {},//=> Navigator.push(
+                                                              // context,
+                                                              // MaterialPageRoute(
+                                                              //   builder: (context) => BookListen(
+                                                            //       index: index,
+                                                            //       section: section,
+                                                            //     ),
+                                                            //   ),
+                                                            // ),
+                                                            child: Row(
+                                                              children: [
+                                                                Icon(Icons.headphones,
+                                                                  size: 20,
+                                                                  color: Theme.of(context).backgroundColor),
+                                                                Text(
+                                                                  "Listen",
+                                                                  style: TextStyle(
+                                                                    color: Theme.of(context).backgroundColor,
+                                                                    fontWeight: FontWeight.w500,
+                                                                    fontSize: 15,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ],
                                           ),
                                         ),
-                                        Text(
-                                          book.title,
-                                          style: TextStyle(
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        Text(
-                                          book.author,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            // SmoothStarRating(
-                                            //   rating: 3,
-                                            //   // bookList[index].rating
-                                            //   isReadOnly: false,
-                                            //   size: 25,
-                                            //   filledIconData: Icons.star,
-                                            //   halfFilledIconData: Icons.star_half,
-                                            //   defaultIconData: Icons.star_border,
-                                            //   starCount: 5,
-                                            //   allowHalfRating: true,
-                                            //   spacing: 2.0,
-                                            //   // onRated: (value) {
-                                            //   //   print(value);
-                                            //   // },
-                                            // ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              book.rating.toString(),
-                                              style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            )
-                                          ],
-                                        ),
+
                                         Container(
                                           margin: EdgeInsets.all(2),
                                           height: 8,
@@ -152,6 +260,7 @@ class BookDetails extends StatelessWidget {
                                             borderRadius: BorderRadius.circular(100),
                                           ),
                                         ),
+
                                         Expanded(
                                           child: Container(
                                               padding: EdgeInsets.only(
@@ -172,82 +281,6 @@ class BookDetails extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                Positioned(
-                                  bottom: 0,
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.height * 0.15,
-                                    width: MediaQuery.of(context).size.width,
-                                    
-                                    child: Center(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children: [
-                                          Container(
-                                            width: 100,
-                                            height: 50,
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: 4,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(100),
-                                              color: Theme.of(context).primaryColor,
-                                            ),
-                                            child: TextButton(
-                                              onPressed: () {},//=>Navigator.push(
-                                              //   context,
-                                              //   MaterialPageRoute(
-                                              //     builder: (context) => BookRead(),
-                                              //   ),
-                                              // ),
-                                              child: Text(
-                                                "READ",
-                                                style: TextStyle(
-                                                  color:Theme.of(context).backgroundColor,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          Container(
-                                            width: 100,
-                                            height: 50,
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: 4,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(100),
-                                              color: Theme.of(context).primaryColor,
-                                            ),
-                                            child: TextButton(
-                                              onPressed: () {},//=> Navigator.push(
-                                                // context,
-                                                // MaterialPageRoute(
-                                                //   builder: (context) => BookListen(
-                                              //       index: index,
-                                              //       section: section,
-                                              //     ),
-                                              //   ),
-                                              // ),
-                                              child: Text(
-                                                "LISTEN",
-                                                style: TextStyle(
-                                                  color: Theme.of(context).backgroundColor,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                )
                               ],
                             ),
                           ),

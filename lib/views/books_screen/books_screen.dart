@@ -37,7 +37,7 @@ class BookScreen extends StatelessWidget {
                     IconButton(
                       icon: Icon(
                         Icons.menu,
-                        color: Colors.white,
+                        color: Theme.of(context).backgroundColor,
                         size: 35,
                       ),
                       onPressed: () {},
@@ -45,68 +45,69 @@ class BookScreen extends StatelessWidget {
                     IconButton(
                       icon: Icon(
                         Icons.search,
-                        color: Colors.white,
+                        color: Theme.of(context).backgroundColor,
                         size: 35,
                       ),
                       onPressed: () {},
                     ),
-                  ],
+                  ]
               ),
               Expanded(
                 child: Container(
                   padding: EdgeInsets.only(
-                    top: 20,
-                    left: 15,
+                    top: 50,
+                    left: 10,
+                    right: 10
                   ),
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Color(0xfffff8ee),
+                    color: Theme.of(context).backgroundColor,
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(50),
-                      topRight: Radius.circular(50),
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
                     ),
                   ),
                   child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Hello,",
-                          style: Theme.of(context)
-                                  .textTheme
-                                  .headline4
-                                  ,
-                        ),
-                        Text(
-                              'user',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline1
-                                  ,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Hello,",
+                            style: Theme.of(context)
+                                    .textTheme
+                                    .headline4
+                                    ,
+                          ),
+                          Text(
+                                'user',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline1
+                                    ,
+                              ),
+                          Container(
+                            margin: EdgeInsets.only(
+                              top: 15,
+                              bottom: 30,
                             ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            top: 15,
-                            bottom: 30,
+                            width: 100,
+                            height: 7,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
-                          width: 100,
-                          height: 7,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: Theme.of(context).primaryColor,
+                          const BookSection(
+                            heading: "Continue Reading",
                           ),
-                        ),
-                        const BookSection(
-                          heading: "Continue Reading",
-                        ),
-                        const BookSection(
-                          heading: "Discover More",
-                        ),
-                      ],
+                          const BookSection(
+                            heading: "Discover More",
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              )
             ],
           ),
         ),
@@ -136,22 +137,20 @@ class BookSection extends StatelessWidget {
             child: BlocBuilder<BookBloc, BookState>(
               builder: (context, state) {
                 if (state is BookLoadingState){
-                      return Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                heading,
-                                style: Theme.of(context)
-                                              .textTheme
-                                            .headline3
-                                            ,
-                              ),
-                              Center(
-                                child: CircularProgressIndicator(color: Theme.of(context).primaryColor)
-                              )
-                            ]
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            heading,
+                            style: Theme.of(context)
+                                          .textTheme
+                                        .headline3
+                                        ,
+                          ),
+                          Center(
+                            child: CircularProgressIndicator(color: Theme.of(context).primaryColor)
                           )
+                        ]
                       );
                 }
                 if (state is BookLoadedState){
@@ -244,7 +243,7 @@ class BookSection extends StatelessWidget {
                                               ),
                                             ),
                                         SizedBox(
-                                          width: 30,
+                                          width: 10,
                                         ),
                                       ],
                                     ),
