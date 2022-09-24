@@ -1,0 +1,77 @@
+[
+    {
+        "action": "before",
+        "advice": "Nên ngủ đủ giấc vào đêm trước ngày hiến máu (ngủ ít nhất 6 tiếng)",
+        "shouldDo": true
+    },
+    {
+        "action": "before",
+        "advice": "Nên ăn uống điều độ, bổ sung đủ các chất dinh dưỡng và ăn nhẹ trước khi đi hiến máu",
+        "shouldDo": true
+    },
+    {
+        "action": "before",
+        "advice": "Nên chuẩn bị tâm lý thoải mái, hoan hỷ",
+        "shouldDo": true
+    },
+    {
+        "action": "before",
+        "advice": "Nên chuẩn bị các giấy tờ tùy thân",
+        "shouldDo": true
+    },
+    {
+        "action": "before",
+        "advice": "Nên uống nhiều nước",
+        "shouldDo": true
+    },
+    {
+        "action": "before",
+        "advice": "Không nên thức khuya trước ngày hiến máu",
+        "shouldDo": false
+    },
+    {
+        "action": "before",
+        "advice": "Không uống rượu bia và sử dụng chất kích thích",
+        "shouldDo": false
+    },
+    {
+        "action": "after",
+        "advice": "Duỗi thẳng, hơi nâng cao cánh tay trong 15 phút",
+        "shouldDo": null
+    },
+    {
+        "action": "after",
+        "advice": "Hạn chế gập tay trong quá trình nghỉ sau hiến máu",
+        "shouldDo": null
+    },
+    {
+        "action": "after",
+        "advice": "Nghỉ tại điểm hiến máu tối thiểu 15 phút",
+        "shouldDo": null
+    },
+    {
+        "action": "after",
+        "advice": "Uống nhiều nước",
+        "shouldDo": null
+    },
+    {
+        "action": "after",
+        "advice": "Chỉ ra về khi cảm thấy thực sự thoải mái",
+        "shouldDo": null
+    },
+    {
+        "action": "after",
+        "advice": "Nếu xuất hiện chảy máu từ vết băng cầm máu",
+        "shouldDo": null
+    },
+    {
+        "action": "after",
+        "advice": "Nâng cánh tay lên và ấn nhẹ vào vết bông",
+        "shouldDo": null
+    },
+    {
+        "action": "after",
+        "advice": "Ngồi xuống ghế và thông báo cho nhân viên y tế để được hỗ trợ",
+        "shouldDo": null
+    }
+]
