@@ -34,9 +34,9 @@ Future<String> _getInitialRoute() async {
   try {
     final token = await const FlutterSecureStorage()
         .read(key: HiveConfig.currentUserTokenKey);
-    return token == null ? RouteName.authentication : RouteName.main;
+    return token == null ? RouteName.welcome : RouteName.main;
   } catch (e) {
-    return RouteName.authentication;
+    return RouteName.welcome;
   }
 }
 

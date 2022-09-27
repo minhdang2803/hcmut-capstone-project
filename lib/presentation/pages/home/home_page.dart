@@ -27,11 +27,6 @@ class _HomePageState extends State<HomePage>
       padding: EdgeInsets.symmetric(vertical: 25.r),
       children: [
         const UserCard(),
-        // SizedBox(height: 25.r),
-        // const FavoriteFeatureSection(),
-        SizedBox(height: 25.r),
-
-        SizedBox(height: 25.r),
       ],
     );
   }

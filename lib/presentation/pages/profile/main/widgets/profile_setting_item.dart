@@ -9,11 +9,13 @@ class ProfileSettingItem extends StatelessWidget {
     Key? key,
     required this.asset,
     required this.label,
+    this.iconColor,
     this.onPress,
   }) : super(key: key);
 
   final String asset;
   final String label;
+  final Color? iconColor;
   final VoidCallback? onPress;
 
   @override
@@ -29,6 +31,7 @@ class ProfileSettingItem extends StatelessWidget {
             width: 16.r,
             height: 16.r,
             fit: BoxFit.contain,
+            color: iconColor,
           ),
           SizedBox(height: 10.r),
           Text(

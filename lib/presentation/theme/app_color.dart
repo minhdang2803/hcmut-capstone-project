@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class AppColor {
   //main colors
-  static const Color primary = Color(0xFFBF1E2E);
-  static const Color secondary = Color(0xFFFF5151);
+  static const Color primary = Color(0xFF6A5AE0);
+  static const Color secondary = Color(0xFF9087E5);
 
   /// TODO: need update
   static const Color tertiary = Colors.red;
@@ -11,8 +11,9 @@ class AppColor {
   static const Color onSecondary = Colors.white;
 
   static const Color textPrimary = Color(0xFF000000);
-  static const Color textSecondary = Color(0xFF7B7B7B);
-  static const Color appBackground = Color(0xFFFFF5F5);
+  static const Color textSecondary = Color(0xFF49465F);
+  static const Color textSub = Color(0xFF858494);
+  static const Color appBackground = Color(0xFFE6E6F6);
 
   //scroll bar indicator color
   static const Color scrollBarIndicator = Color(0xFF7B7B7B);
@@ -35,5 +36,4 @@ class AppColor {
   static const Color hocphapColor = Color(0xFFFF5151);
   static const Color hoatdongColor = Color(0xFFFFC919);
   static const Color ketnoiColor = Color(0xFF3888CE);
-
 }

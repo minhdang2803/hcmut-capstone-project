@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../pages/about_us/about_us.dart';
 import '../pages/authentication/authentication_page.dart';
+import '../pages/welcome/welcome.dart';
 import '../pages/main/main_page.dart';
 import '../pages/profile/main/profile_page.dart';
 import 'route_name.dart';
@@ -12,11 +14,17 @@ class RouteGenerator {
       case RouteName.main:
         page = const MainPage();
         break;
+      case RouteName.welcome:
+        page = const WelcomeScreen();
+        break;
       case RouteName.authentication:
         page = const AuthenticationPage();
         break;
       case RouteName.profile:
         page = const ProfilePage();
+        break;
+      case RouteName.aboutUs:
+        page = const AboutUsPage();
         break;
     }
 

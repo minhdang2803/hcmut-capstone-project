@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import '../../../../bloc/authentication/auth_cubit.dart';
@@ -30,8 +31,8 @@ class UserCard extends StatelessWidget {
               ? Stack(
                   alignment: Alignment.center,
                   children: [
-                    Image.asset(
-                      'assets/images/user_card_bg.png',
+                    SvgPicture.asset(
+                      'assets/authentication/default_user.svg',
                       width: 1.sw,
                       fit: BoxFit.contain,
                     ),
@@ -81,15 +82,15 @@ class UserCard extends StatelessWidget {
               : Stack(
                   alignment: Alignment.center,
                   children: [
-                    Image.asset(
-                      'assets/images/user_card_bg.png',
+                    SvgPicture.asset(
+                      'assets/authentication/default_user.svg',
                       width: 1.sw,
                       fit: BoxFit.contain,
                     ),
                     BackdropFilter(
                       filter: ImageFilter.blur(
-                        sigmaX: 1.0,
-                        sigmaY: 1.0,
+                        sigmaX: 2.0,
+                        sigmaY: 2.0,
                       ),
                       child: Container(
                         color: Colors.black.withOpacity(0),
@@ -136,7 +137,7 @@ class UserCard extends StatelessWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           border: Border.all(color: AppColor.primary),
-          color: isLogin ? AppColor.primary : Colors.white,
+          color: !isLogin ? AppColor.primary : Colors.white,
           borderRadius: BorderRadius.all(
             Radius.circular(15.r),
           ),
@@ -146,7 +147,7 @@ class UserCard extends StatelessWidget {
           child: Text(
             text,
             style: AppTypography.body.copyWith(
-              color: isLogin ? Colors.white : AppColor.primary,
+              color: !isLogin ? Colors.white : AppColor.primary,
             ),
           ),
         ),

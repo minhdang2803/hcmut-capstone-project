@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="39" height="40" viewBox="0 0 39 40">
-  <g id="ic_bd_registered" transform="translate(-32 -288.381)">
-    <path id="Path_16422" data-name="Path 16422" d="M10,0H29A10,10,0,0,1,39,10V30A10,10,0,0,1,29,40H10A10,10,0,0,1,0,30V10A10,10,0,0,1,10,0Z" transform="translate(32 288.381)" fill="#3888ce"/>
-    <g id="chart-line" transform="translate(38.522 297.685)">
-      <path id="Path_116" data-name="Path 116" d="M21.531,11.25v1.79h3.524L14.845,23.633l-3.882-4.028-5.57,5.78,1.22,1.266,4.35-4.513,3.882,4.028,11.43-11.859v3.656H28V11.25Z" transform="translate(-1.913 -8.04)" fill="#fff"/>
-      <path id="Path_117" data-name="Path 117" d="M2.864,7.313H1.125V29.4H27.212V27.6H2.864Z" transform="translate(-1.125 -7.313)" fill="#fff"/>
-    </g>
-  </g>
-</svg>

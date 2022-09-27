@@ -139,7 +139,7 @@ class _MainPageState extends State<MainPage> {
               height: 24.r,
             ),
           ),
-          label: 'Trang chủ',
+          label: 'Home',
         ),
         BottomNavigationBarItem(
           icon: Padding(
@@ -160,7 +160,7 @@ class _MainPageState extends State<MainPage> {
               height: 24.r,
             ),
           ),
-          label: 'Viếng chùa',
+          label: 'Quiz',
         ),
         BottomNavigationBarItem(
           icon: Padding(
@@ -181,7 +181,7 @@ class _MainPageState extends State<MainPage> {
               height: 24.r,
             ),
           ),
-          label: 'Tài khoản',
+          label: 'User',
         ),
       ],
     );

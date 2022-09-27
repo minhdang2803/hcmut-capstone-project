@@ -31,12 +31,12 @@ class RoundedElevatedButton extends StatelessWidget {
       height: height,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
+          foregroundColor: labelColor,
+          backgroundColor: backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius), // <-- Radius
           ),
           elevation: elevation,
-          primary: backgroundColor,
-          onPrimary: labelColor,
         ),
         onPressed: onPressed,
         child: FittedBox(

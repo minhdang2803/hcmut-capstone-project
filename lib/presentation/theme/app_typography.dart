@@ -5,8 +5,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'app_color.dart';
 
 class AppTypography {
+  static TextStyle superHeadline = GoogleFonts.nunito(
+    fontSize: 26.r,
+    color: AppColor.textPrimary,
+  );
   static TextStyle headline = GoogleFonts.nunito(
     fontSize: 20.r,
+    color: AppColor.textPrimary,
+  );
+  static TextStyle subHeadline = GoogleFonts.nunito(
+    fontSize: 18.r,
     color: AppColor.textPrimary,
   );
   static TextStyle title = GoogleFonts.nunito(
