@@ -56,6 +56,9 @@ dependencies:
   equatable: ^2.0.5
   flutter_bloc: ^8.1.1
   bloc: ^8.1.0
+  syncfusion_flutter_pdf: ^20.2.50
+  audioplayers: ^1.1.0
+  syncfusion_flutter_pdfviewer: ^20.2.50-beta
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +89,7 @@ flutter:
     - assets/
     - assets/authentication/
     - assets/splash_screen/
+    - assets/books_screen/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

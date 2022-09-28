@@ -1,0 +1,366 @@
+[
+    {
+        "title": "The Adventures of Sherlock Holmes",
+        "author": "Arthur Conan Doyle",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-orig-2305.jpg?itok=fKkqXRnW",
+        "year": "1892",
+        "pages": "236",
+        "downloads": 570963,
+        "description": "A delight for a public which enjoys incident, mystery, and above all that matching of the wits of a clever man against the dumb resistance of the secrecy of inanimate things, which results in the triumph of the human intelligence.",
+        "genres": [
+            "BANNED BOOKS",
+            "FICTION AND LITERATURE",
+            "MYSTERY/DETECTIVE",
+            "SHORT STORY COLLECTION"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Pride and Prejudice",
+        "author": "Jane Austen",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-cust-699.jpg?itok=YMpHxFDI",
+        "year": "1813",
+        "pages": "311",
+        "downloads": 366008,
+        "description": "Austen's finest comedy of manners portrays life in the genteel rural society of the early 1800s, and tells of the initial misunderstandings (and mutual enlightenment) between lively and quick witted Elizabeth Bennet and the haughty Mr. Darcy.",
+        "genres": [
+            "FICTION AND LITERATURE",
+            "HARVARD CLASSICS",
+            "ROMANCE"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Emma",
+        "author": "Jane Austen",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-cust-693.jpg?itok=GUgOTN8v",
+        "year": "1815",
+        "pages": "380",
+        "downloads": 269346,
+        "description": "The main character, Emma Woodhouse, is described in the opening paragraph as ''handsome, clever, and rich'' but is also rather spoiled. As a result of the recent marriage of her former governess, Emma prides herself on her ability to matchmake, and proceeds to take under her wing an illegitimate orphan, Harriet Smith, whom she hopes to marry off to the vicar, Mr Elton. So confident is she that she persuades Harriet to reject a proposal from a young farmer who is a much more suitable partner for the girl.",
+        "genres": [
+            "FICTION AND LITERATURE",
+            "ROMANCE",
+            "HUMOR"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "The Call of Cthulhu",
+        "author": "H. P. Lovecraft",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-cust-13095.jpg?itok=H0c1QL8Y",
+        "year": "1926",
+        "pages": "28",
+        "downloads": 215544,
+        "description": "Three independent narratives linked together by the device of a narrator discovering notes left by a deceased relative. Piecing together the whole truth and disturbing significance of the information he possesses, the narrator's final line is ''The most merciful thing in the world, I think, is the inability of the human mind to correlate all its contents.''",
+        "genres": [
+            "HORROR",
+            "SHORT STORY"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "The Count of Monte Cristo",
+        "author": "Alexandre Dumas",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-cust-2356.jpg?itok=NsH-dAJf",
+        "year": "1845",
+        "pages": "1424",
+        "downloads": 195067,
+        "description": "A classic adventure novel, often considered Dumas' best work, and frequently included on lists of the best novels of all time. Completed in 1844, and released as an 18-part series over the next two years, Dumas collaborated with other authors throughout. The story takes place in France, Italy, and the Mediterranean from the end of the rule of Napoleon I through the reign of Louis-Philippe.",
+        "genres": [
+            "ADVENTURE",
+            "FICTION AND LITERATURE",
+            "HISTORY",
+            "PIRATE TALES"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Healing Her Heart",
+        "author": "Laura Scott",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/2018-09/LauraScott_HealingHerHeart_2500.jpg?itok=2z66ssHr",
+        "year": "2013",
+        "pages": "57",
+        "downloads": 191214,
+        "description": "Dr. Gabe Allen has a rule about dating colleagues but when he meets ER nurse Larissa Brockman he's tempted to break his vow. Larissa's faith draws him back to the church he'd left behind, but when their lives are on the line Gabe discovers that Larissa is the one who needs to learn about the true meaning of forgiveness. And only Gabe can help heal her heart.",
+        "genres": [
+            "ROMANCE"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Dracula",
+        "author": "Bram Stoker",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-orig-6694.jpg?itok=1NNJXYUa",
+        "year": "1897",
+        "pages": "347",
+        "downloads": 144213,
+        "description": "The world's best-known vampire story begins by following a naive young Englishman as he visits Transylvania to meet a client, the mysterious Count Dracula. Upon revealing his true nature, Dracula boards a ship for England, where chilling and gruesome disasters begin to befall the people of London...",
+        "genres": [
+            "HORROR",
+            "GOTHIC",
+            "FICTION AND LITERATURE"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Wuthering Heights",
+        "author": "Emily Bront\u00eb",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-cust-1242.jpg?itok=HbrAATQE",
+        "year": "1847",
+        "pages": "300",
+        "downloads": 134903,
+        "description": "Emily Bront\u00eb's only novel, this tale portrays Catherine and Heathcliff, their all-encompassing love for one another, and how this unresolved passion eventually destroys them both, leading Heathcliff to shun and abuse society. First published in 1847 under the pseudonym Ellis Bell, Wuthering Heights is considered to be a classic of English literature.",
+        "genres": [
+            "FICTION AND LITERATURE",
+            "GOTHIC",
+            "ROMANCE"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Siddhartha",
+        "author": "Herman Hesse",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-cust-3520.jpg?itok=UXPaF0XF",
+        "year": "1922",
+        "pages": "108",
+        "downloads": 113668,
+        "description": "An allegorical novel that follows the spiritual journey of an Indian man called Siddhartha during the time of Buddha (6th century B.C.). Beginning with the main character's departure from his Brahmin home the search for enlightenment takes Siddhartha through a series of changes and realizations.",
+        "genres": [
+            "PHILOSOPHY",
+            "FICTION AND LITERATURE",
+            "RELIGION"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "The Time Machine",
+        "author": "H. G. Wells",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-cust-7349.jpg?itok=AEnzquEW",
+        "year": "1895",
+        "pages": "78",
+        "downloads": 110859,
+        "description": "A brilliant fantasy beyond conventional thought...",
+        "genres": [
+            "SCIENCE FICTION",
+            "FANTASY",
+            "FICTION AND LITERATURE"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Autobiography of a Yogi",
+        "author": "Paramahansa Yogananda",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-orig-5429.jpg?itok=b3Wjz1kx",
+        "year": "1946",
+        "pages": "579",
+        "downloads": 102477,
+        "description": "This life story of Yogananda was instrumental in introducing meditation and yoga to the West. It includes Yogananda's and Sri Yukteswar's attempts to explain certain verses and events of the Bible such as the Garden of Eden story, and descriptions of Yogananda's encounters with Therese Neumann, Mohandas Gandhi, and Nobel laureate Rabindranath Tagore.",
+        "genres": [
+            "BIOGRAPHY",
+            "POST-1930",
+            "RELIGION",
+            "PHILOSOPHY"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Don Quixote",
+        "author": "Miguel de Cervantes Saavedra",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-cust-1621.jpg?itok=ch16gxqH",
+        "year": "1615",
+        "pages": "1026",
+        "downloads": 102207,
+        "description": "Translated by John Ormsby.\nOne of the earliest novels in a modern European language, one which many people consider the finest book in the Spanish language.",
+        "genres": [
+            "FICTION AND LITERATURE",
+            "CLASSIC",
+            "HARVARD CLASSICS",
+            "ROMANCE"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Collected Works of Poe",
+        "author": "Edgar Allan Poe",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-cust-5719.jpg?itok=td4M8RUi",
+        "year": "",
+        "pages": "207",
+        "downloads": 95884,
+        "description": "Edgar Allan Poe, An Appreciation\nLife of Poe, by James Russell Lowell\nDeath of Poe, by N. P. Willis\nThe Unparalled Adventures of One Hans Pfall\nThe Gold Bug\nFour Beasts in One\nThe Murders in the Rue Morgue (Audio version)\nThe Mystery of Marie Rog\u00eat\nThe Balloon Hoax\nMS. Found in a Bottle\nThe Oval Portrait",
+        "genres": [
+            "MYSTERY/DETECTIVE",
+            "GOTHIC",
+            "HORROR",
+            "SHORT STORY COLLECTION",
+            "FICTION AND LITERATURE",
+            "POETRY",
+            "FANTASY"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Anna Karenina",
+        "author": "graf Tolstoy Leo",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-cust-6931.jpg?itok=-SyZeD1k",
+        "year": "1875",
+        "pages": "761",
+        "downloads": 86044,
+        "description": "Anna is the jewel of St. Petersburg society until she leaves her husband for the handsome and charming military officer, Count Vronsky. They fall in love, going beyond High Society's acceptance of trivial adulterous dalliances. But when Vronsky's love cools, Anna cannot bring herself to return to the husband she detests...\n(Translated by Constance Garnett)",
+        "genres": [
+            "FICTION AND LITERATURE",
+            "HARVARD CLASSICS",
+            "ROMANCE"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Little Women",
+        "author": "Louisa May Alcott",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-orig-498.jpg?itok=zY7xCyMC",
+        "year": "1868",
+        "pages": "484",
+        "downloads": 81404,
+        "description": "This popular novel concerns the lives and loves of four sisters growing up during the American Civil War, and was based on Alcott's own experiences as a child in Concord, Massachusetts. After much demand, Alcott wrote a sequel, Good Wives, which is often published together with Little Women as if it were a single work. Good Wives picks up three years after the events in the last chapter of Little Women, and includes characters and events often felt by fans to be essential to the story.",
+        "genres": [
+            "FICTION AND LITERATURE",
+            "YOUNG READERS"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "The War of the Worlds",
+        "author": "H. G. Wells",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-cust-7354.jpg?itok=3aKaEL4D",
+        "year": "1898",
+        "pages": "147",
+        "downloads": 79790,
+        "description": "The War of the Worlds describes the fictional 1895 invasion of Earth by aliens from Mars who use laser-like Heat-Rays, chemical weapons, and mechanical three-legged ''fighting machines'' that could potentially be viewed as precursors to the tank. After defeating the resistance the Martians devastate much of eastern England, including London...",
+        "genres": [
+            "SCIENCE FICTION",
+            "FICTION AND LITERATURE",
+            "WAR"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Walden",
+        "author": "Henry David Thoreau",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-cust-6908.jpg?itok=QZOjk3nG",
+        "year": "1854",
+        "pages": "244",
+        "downloads": 75849,
+        "description": "When I wrote the following pages, or rather the bulk of them, I lived alone, in the woods, a mile from any neighbor, in a house which I had built myself, on the shore of Walden Pond, in Concord, Massachusetts, and earned my living by the labor of my hands only. I lived there two years and two months. At present I am a sojourner in civilized life again.",
+        "genres": [
+            "NATURE",
+            "ESSAYS",
+            "POLITICS",
+            "BIOGRAPHY",
+            "FICTION AND LITERATURE"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "The Hound of the Baskervilles",
+        "author": "Arthur Conan Doyle",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-cust-2292.jpg?itok=Jiyiv8Lm",
+        "year": "1902",
+        "pages": "149",
+        "downloads": 69976,
+        "description": "This may be the most popular of all of the Sherlock Holmes stories. Inspired by regional mythology of the British Isles concerning hell-hounds, the tale tells of detective Sherlock Holmes and his assistant Dr. Watson as they are called to investigate an alleged curse upon the house of the Baskervilles.",
+        "genres": [
+            "MYSTERY/DETECTIVE",
+            "FICTION AND LITERATURE"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "The Picture of Dorian Gray",
+        "author": "Oscar Wilde",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-orig-13387.jpg?itok=D5b9TKxi",
+        "year": "1890",
+        "pages": "213",
+        "downloads": 69240,
+        "description": "The artist is the creator of beautiful things. To reveal art and conceal the artist is art's aim. The critic is he who can translate into another manner or a new material his impression of beautiful things.",
+        "genres": [
+            "FICTION AND LITERATURE",
+            "HISTORY"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "The Wonderful Wizard of Oz",
+        "author": "Lyman Frank Baum",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-orig-955.jpg?itok=vkCHWJ26",
+        "year": "1901",
+        "pages": "122",
+        "downloads": 66977,
+        "description": "To quote a reader, ''If all you know of Oz comes from the movie musical then you owe it to yourself to read the book that inspired Hollywood.'' Learn about Dorothy and her friends in the first of thirteen volumes by L. Frank Baum.",
+        "genres": [
+            "YOUNG READERS",
+            "FANTASY",
+            "FICTION AND LITERATURE"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Around the World in 80 Days",
+        "author": "Jules Verne",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-orig-7151.jpg?itok=23TpEAcY",
+        "year": "1873",
+        "pages": "198",
+        "downloads": 59721,
+        "description": "Phileas Fogg of London and his newly employed valet Passepartout attempt to circumnavigate the globe in just 80 days to win a \u00a320,000 wager set by members of the Reform Club. (An unabridged reproduction of the original 1873 Hetzel edition.)",
+        "genres": [
+            "ADVENTURE",
+            "FICTION AND LITERATURE",
+            "TRAVEL"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Robinson Crusoe",
+        "author": "Daniel Defoe",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-orig-2118.jpg?itok=5ksVB6SZ",
+        "year": "1719",
+        "pages": "143",
+        "downloads": 55796,
+        "description": "Sometimes considered to be the first novel in English, this book is a fictional autobiography of a castaway who spends 28 years on a remote tropical island near Venezuela.",
+        "genres": [
+            "ADVENTURE",
+            "FICTION AND LITERATURE",
+            "NAUTICAL"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "After the Cure",
+        "author": "Deirdre Gould",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/2018-06/48.jpg?itok=XkXUzuSY",
+        "year": "2013",
+        "pages": "251",
+        "downloads": 50960,
+        "description": "Eight years ago the December Plague swept through the human population of earth. The Infected were driven mad by the disease, becoming violent and cannibalistic, killing even those closest to them without hesitation.\n\nSix years ago, the tiny surviving community of Immune humans found a cure, and the Infected began to wake up and realize what they'd done. And what had been done to them.\n\nOver time, society began to rebuild itself. Now it is ready to judge those responsible for the Plague. Nella Rider, the court psychologist and Frank Courtlen a defense attorney are trying to establish the truth. But more depends on it than they know. They race to find the answers they need before the fragile remains of humanity vanish for good.",
+        "genres": [
+            "SCIENCE FICTION"
+        ],
+        "rating": 0
+    },
+    {
+        "title": "Gulliver's Travels",
+        "author": "Jonathan Swift",
+        "cover": "https://manybooks.net/sites/default/files/styles/220x330sc/public/old-covers/cover-cust-6763.jpg?itok=271pXWiR",
+        "year": "1726",
+        "pages": "",
+        "downloads": 50267,
+        "description": "A satire on human nature and a parody of the \"travellers' tales\" literary genre, this is widely considered Swift's greatest work as well as one of the indisputable classics of English literature. Transcribed from the 1892 George Bell and Son edition.",
+        "genres": [
+            "NON-FICTION",
+            "ADVENTURE",
+            "FANTASY",
+            "SATIRE",
+            "FICTION AND LITERATURE"
+        ],
+        "rating": 0
+    }
+]
