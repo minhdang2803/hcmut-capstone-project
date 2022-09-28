@@ -23,16 +23,22 @@ class GameCubit extends Cubit<GameState> {
       LogUtil.debug(
           'Get game success: ${response.data?.toJson() ?? 'empty game'}');
     } on RemoteException catch (e, s) {
-      if (e.code == RemoteException.other) {
-        emit(GameFailure(e.message));
-        return;
+      LogUtil.error('Login error: ${e.httpStatusCode}',
+          error: e, stackTrace: s);
+      switch (e.code) {
+        case RemoteException.noInternet:
+          emit(const GameFailure('Không có kết nối internet!'));
+          break;
+        case RemoteException.responseError:
+          emit(GameFailure(e.message));
+          break;
+        default:
+          emit(const GameFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+          break;
       }
-      if (e.code == RemoteException.responseError) {
-        emit(const GameFailure('Loi nao do'));
-        return;
-      }
-      emit(GameFailure(e.message, errorCode: e.code));
-      LogUtil.error('Get game error: ${e.message}', error: e, stackTrace: s);
+    } catch (e, s) {
+      emit(const GameFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+      LogUtil.error('Login error ', error: e, stackTrace: s);
     }
   }
 }
