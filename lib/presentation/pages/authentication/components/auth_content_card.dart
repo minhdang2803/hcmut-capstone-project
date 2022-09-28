@@ -149,25 +149,21 @@ class _AuthContentCardState extends State<AuthContentCard>
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      elevation: 6,
-      borderRadius: BorderRadius.circular(34.r),
-      child: AnimatedContainer(
-        onEnd: () {
-          if (!_changeLayout) {
-            _changeAuthAction(AuthAction.authentication);
-          }
-        },
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(34.r),
-        ),
-        curve: Curves.decelerate,
-        duration: const Duration(milliseconds: 250),
-        width: 315.w,
-        height: _changeLayout ? 336.h : 524.h,
-        child: _buildAuthContent(),
+    return AnimatedContainer(
+      onEnd: () {
+        if (!_changeLayout) {
+          _changeAuthAction(AuthAction.authentication);
+        }
+      },
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(34.r),
       ),
+      curve: Curves.decelerate,
+      duration: const Duration(milliseconds: 250),
+      width: 315.w,
+      height: _changeLayout ? 336.h : 524.h,
+      child: _buildAuthContent(),
     );
   }
 

@@ -2,7 +2,6 @@ import '../../../../utils/log_util.dart';
 import '../../../configs/endpoint.dart';
 import '../../../models/authentication/login_model.dart';
 import '../../../models/authentication/register_model.dart';
-import '../../../models/authentication/user.dart';
 import '../../../models/network/api_service_request.dart';
 import '../../../models/network/base_response.dart';
 import '../../../services/api_service.dart';

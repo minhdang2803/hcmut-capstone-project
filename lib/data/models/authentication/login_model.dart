@@ -14,10 +14,10 @@ class LoginModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['user'] = user.toJson();
-    _data['authorization'] = authorization.toJson();
-    return _data;
+    final map = <String, dynamic>{};
+    map['user'] = user.toJson();
+    map['authorization'] = authorization.toJson();
+    return map;
   }
 }
 

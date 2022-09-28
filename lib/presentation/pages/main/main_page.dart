@@ -1,3 +1,4 @@
+import 'package:bke/presentation/pages/game_quiz/main/gamequiz_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,7 +21,7 @@ class _MainPageState extends State<MainPage> {
   int _pageIndex = 0;
   final List<Widget> _pages = [
     const HomePage(),
-    const HomePage(),
+    const GameQuizPage(),
     const ProfilePage(),
   ];
   late final PageController _pageController;
@@ -48,13 +49,13 @@ class _MainPageState extends State<MainPage> {
     var title = '';
     switch (_pageIndex) {
       case 0:
-        title = 'TRANG CHỦ';
+        title = 'HOME';
         break;
       case 1:
-        title = 'TRANG CHU';
+        title = 'QUIZ GAME';
         break;
       case 2:
-        title = 'TÀI KHOẢN';
+        title = 'USER';
         break;
     }
     return title;

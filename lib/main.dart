@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'bloc/authentication/auth_cubit.dart';
+import 'bloc/game/game_cubit.dart';
 import 'data/configs/hive_config.dart';
 import 'presentation/routes/route_generator.dart';
 import 'presentation/routes/route_name.dart';
@@ -54,9 +55,10 @@ class MyApp extends StatelessWidget {
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (ctx) => AuthCubit()),
+              BlocProvider(create: (ctx) => GameCubit()),
             ],
             child: MaterialApp(
-              title: 'Chùa VN',
+              title: 'Funny Englisk',
               theme: AppTheme.lightTheme,
               localizationsDelegates: const [
                 GlobalMaterialLocalizations.delegate,

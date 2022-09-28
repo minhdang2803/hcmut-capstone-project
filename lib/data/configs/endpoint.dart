@@ -4,4 +4,7 @@ class EndPoint {
   static const registerPath = '$_baseUrl/user/createUser';
   static const checkPhonePath = '$_baseUrl/checkphone';
   static const resetPasswordPath = '$_baseUrl/rcuser';
+
+  static const gamePath =
+      'https://mocki.io/v1/2aba0527-2609-49d8-87b7-76a088b57877';
 }

@@ -29,7 +29,7 @@ class ProfileSettingPanel extends StatelessWidget {
         .delete(key: HiveConfig.currentUserTokenKey)
         .then(
           (_) => Navigator.of(context).pushNamedAndRemoveUntil(
-            RouteName.splash,
+            RouteName.welcome,
             (Route<dynamic> route) => false,
           ),
         );
@@ -59,24 +59,12 @@ class ProfileSettingPanel extends StatelessWidget {
                       children: [
                         ProfileSettingItem(
                           asset: 'assets/icons/ic_setting.svg',
-                          label: 'Thiết lập',
+                          label: 'Setting',
                           onPress: () {
                             WidgetUtil.showDialog(
                               context: context,
                               title: 'Coming soon',
-                              message: 'Tính năng đang được cập nhật',
-                            );
-                          },
-                        ),
-                        SizedBox(height: 20.r),
-                        ProfileSettingItem(
-                          asset: 'assets/icons/ic_fav_monastery_setting.svg',
-                          label: 'Chùa yêu thích',
-                          onPress: () {
-                            WidgetUtil.showDialog(
-                              context: context,
-                              title: 'Coming soon',
-                              message: 'Tính năng đang được cập nhật',
+                              message: 'Feature is being updated',
                             );
                           },
                         ),
@@ -90,18 +78,18 @@ class ProfileSettingPanel extends StatelessWidget {
                           asset: 'assets/icons/ic_user.svg',
                           label: 'Người dùng',
                           iconColor: const Color(0xFFDE5900),
-                          onPress: () => Navigator.of(context)
-                              .pushNamed(RouteName.updateProfile),
+                          // onPress: () => Navigator.of(context)
+                          //     .pushNamed(RouteName.updateProfile),
                         ),
                         SizedBox(height: 20.r),
                         ProfileSettingItem(
                           asset: 'assets/icons/ic_activity_setting.svg',
-                          label: 'Hoạt động',
+                          label: 'Events',
                           onPress: () {
                             WidgetUtil.showDialog(
                               context: context,
                               title: 'Coming soon',
-                              message: 'Tính năng đang được cập nhật',
+                              message: 'Feature is being updated',
                             );
                           },
                         ),
@@ -114,7 +102,7 @@ class ProfileSettingPanel extends StatelessWidget {
                       children: [
                         ProfileSettingItem(
                           asset: 'assets/icons/ic_info.svg',
-                          label: 'Về chúng tôi',
+                          label: 'About us',
                           onPress: () => Navigator.of(context)
                               .pushNamed(RouteName.aboutUs),
                         ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../pages/about_us/about_us.dart';
 import '../pages/authentication/authentication_page.dart';
+import '../pages/game_quiz/game/startGame02_page.dart';
+import '../pages/game_quiz/game/game02_page.dart';
 import '../pages/welcome/welcome.dart';
 import '../pages/main/main_page.dart';
 import '../pages/profile/main/profile_page.dart';
@@ -26,6 +28,12 @@ class RouteGenerator {
       case RouteName.aboutUs:
         page = const AboutUsPage();
         break;
+
+      case RouteName.start:
+        page = const StartGame02();
+        break;
+      case RouteName.game:
+        page = const GamePage();
     }
 
     return _getPageRoute(page, settings);

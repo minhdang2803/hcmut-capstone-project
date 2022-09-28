@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../theme/app_color.dart';
 import '../../../theme/app_typography.dart';
+import '../../../widgets/circle_border_container.dart';
 
 class MonasterySearchDelegate extends SearchDelegate {
   final List<String> _historySearch = [];
@@ -26,17 +27,22 @@ class MonasterySearchDelegate extends SearchDelegate {
 
   @override
   Widget? buildLeading(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back_rounded),
-      onPressed: () => close(context, null),
+    return CircleBorderContainer(
+      radius: 28.r,
+      elevation: null,
+      borderColor: Colors.transparent,
+      borderWidth: null,
+      onPressed: () => Navigator.of(context).pop(),
+      child: Icon(
+        Icons.arrow_back_ios_rounded,
+        size: 16.r,
+      ),
     );
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    return Center(
-      child: Text(query),
-    );
+    return Center(child: Text(query));
   }
 
   @override
@@ -57,7 +63,7 @@ class MonasterySearchDelegate extends SearchDelegate {
       itemCount: _historySearch.length,
       itemBuilder: (context, index) => ListTile(
         leading: Image.asset(
-          'assets/images/default_monastery.png',
+          'assets/images/default_logo.png',
           width: 36.r,
           height: 36.r,
           fit: BoxFit.contain,
@@ -73,7 +79,7 @@ class MonasterySearchDelegate extends SearchDelegate {
   }
 
   @override
-  String get searchFieldLabel => 'Tìm kiếm chùa';
+  String get searchFieldLabel => 'Search something';
 
   @override
   TextStyle? get searchFieldStyle =>
@@ -86,21 +92,21 @@ class MonasterySearchDelegate extends SearchDelegate {
   ThemeData appBarTheme(BuildContext context) {
     final theme = Theme.of(context);
     return theme.copyWith(
-      appBarTheme: AppBarTheme(
-        toolbarHeight: 63.r,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(
-          color: AppColor.textSecondary,
+        appBarTheme: AppBarTheme(
+          toolbarHeight: 63.r,
+          backgroundColor: Colors.white,
+          titleSpacing: 0,
+          iconTheme: const IconThemeData(
+            color: AppColor.textSecondary,
+          ),
+          elevation: 3,
         ),
-        elevation: 3,
-      ),
-      inputDecorationTheme: const InputDecorationTheme(
-        border: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        errorBorder: InputBorder.none,
-        disabledBorder: InputBorder.none,
-      )
-    );
+        inputDecorationTheme: const InputDecorationTheme(
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+        ));
   }
 }

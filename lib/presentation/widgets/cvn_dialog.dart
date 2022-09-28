@@ -27,7 +27,7 @@ class CVNDialog extends StatelessWidget {
         color: Colors.transparent,
         child: Container(
           width: 0.8.sw,
-          height: 0.6.sw,
+          height: 0.5.sw,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20.r),
@@ -42,10 +42,10 @@ class CVNDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Center(
-                        child: SvgPicture.asset(
-                          'assets/icons/ic_delacc.svg',
-                          width: 56.r,
-                          height: 56.r,
+                        child: Image.asset(
+                          'assets/images/proud.png',
+                          width: 65.r,
+                          height: 65.r,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -63,6 +63,7 @@ class CVNDialog extends StatelessWidget {
                         style: AppTypography.body,
                         maxLines: 2,
                       ),
+                      2.verticalSpace
                     ],
                   ),
                 ),
@@ -86,7 +87,7 @@ class CVNDialog extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            'Hủy bỏ',
+                            'Cancel',
                             style: AppTypography.body.copyWith(
                               color: AppColor.onSecondary,
                             ),
@@ -107,7 +108,7 @@ class CVNDialog extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            'Đồng ý',
+                            'Accept',
                             style: AppTypography.body
                                 .copyWith(color: AppColor.onPrimary),
                           ),
