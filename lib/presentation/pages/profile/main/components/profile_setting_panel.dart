@@ -16,8 +16,8 @@ class ProfileSettingPanel extends StatelessWidget {
   void _showConfirmDialog(BuildContext context) async {
     WidgetUtil.showDialog(
       context: context,
-      title: 'Thoát tài khoản',
-      message: 'Bạn có chắc muốn thoát tài khoản này không?',
+      title: 'Logout',
+      message: 'Do you want to logout? See you again',
       onAccepted: () => _doLogOut(context),
     );
   }
@@ -76,7 +76,7 @@ class ProfileSettingPanel extends StatelessWidget {
                       children: [
                         ProfileSettingItem(
                           asset: 'assets/icons/ic_user.svg',
-                          label: 'Người dùng',
+                          label: 'User',
                           iconColor: const Color(0xFFDE5900),
                           // onPress: () => Navigator.of(context)
                           //     .pushNamed(RouteName.updateProfile),
@@ -129,7 +129,7 @@ class ProfileSettingPanel extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Thoát tài khoản',
+              'Logout',
               style: AppTypography.body.copyWith(color: AppColor.textSecondary),
             ),
             Icon(

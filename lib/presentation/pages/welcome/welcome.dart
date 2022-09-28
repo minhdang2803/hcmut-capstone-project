@@ -42,7 +42,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       10.verticalSpace,
                       Text(
-                        'Login or create an account to learn English, take part in challenges, and more.',
+                        'Login or create an account to learn English and take part in challenges.',
                         style: AppTypography.subHeadline.copyWith(
                           color: AppColor.textSecondary,
                         ),
@@ -69,13 +69,13 @@ class WelcomeScreen extends StatelessWidget {
       children: [
         SvgPicture.asset(
           'assets/authentication/6.svg',
-          width: 180.68.r,
-          height: 269.55.r,
+          width: 150.r,
+          height: 250.r,
         ),
         SvgPicture.asset(
           'assets/authentication/3.svg',
-          width: 180.68.r,
-          height: 269.55.r,
+          width: 150.r,
+          height: 250.r,
         ),
       ],
     );

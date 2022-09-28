@@ -22,6 +22,7 @@ class _MainPageState extends State<MainPage> {
   final List<Widget> _pages = [
     const HomePage(),
     const GameQuizPage(),
+    const HomePage(),
     const ProfilePage(),
   ];
   late final PageController _pageController;
@@ -55,6 +56,9 @@ class _MainPageState extends State<MainPage> {
         title = 'QUIZ GAME';
         break;
       case 2:
+        title = 'TOEIC';
+        break;
+      case 3:
         title = 'USER';
         break;
     }
@@ -146,7 +150,7 @@ class _MainPageState extends State<MainPage> {
           icon: Padding(
             padding: EdgeInsets.only(bottom: 4.r),
             child: SvgPicture.asset(
-              'assets/icons/ic_visit_monastery.svg',
+              'assets/icons/ic_quiz.svg',
               color: AppColor.inactiveIconColor,
               width: 24.r,
               height: 24.r,
@@ -155,13 +159,34 @@ class _MainPageState extends State<MainPage> {
           activeIcon: Padding(
             padding: EdgeInsets.only(bottom: 4.r),
             child: SvgPicture.asset(
-              'assets/icons/ic_visit_monastery.svg',
+              'assets/icons/ic_quiz.svg',
               color: AppColor.primary,
               width: 24.r,
               height: 24.r,
             ),
           ),
           label: 'Quiz',
+        ),
+        BottomNavigationBarItem(
+          icon: Padding(
+            padding: EdgeInsets.only(bottom: 4.r),
+            child: SvgPicture.asset(
+              'assets/icons/ic_toeic.svg',
+              color: AppColor.inactiveIconColor,
+              width: 24.r,
+              height: 24.r,
+            ),
+          ),
+          activeIcon: Padding(
+            padding: EdgeInsets.only(bottom: 4.r),
+            child: SvgPicture.asset(
+              'assets/icons/ic_toeic.svg',
+              color: AppColor.primary,
+              width: 24.r,
+              height: 24.r,
+            ),
+          ),
+          label: 'Toeic',
         ),
         BottomNavigationBarItem(
           icon: Padding(
