@@ -1,5 +1,9 @@
+import 'package:bke/utils/enum.dart';
+import 'package:bke/utils/widget_util.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
 import '../../data/models/authentication/login_model.dart';
@@ -11,6 +15,7 @@ import '../../data/repositories/auth_repository.dart';
 import '../../utils/log_util.dart';
 
 part 'auth_state.dart';
+part 'auth_logic.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());

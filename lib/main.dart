@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 
 import 'bloc/authentication/auth_cubit.dart';
 import 'bloc/game/game_cubit.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authLogic = AuthLogic();
     return CVNRestartWidget(
       child: ScreenUtilInit(
         designSize: const Size(360, 690),
@@ -55,24 +57,28 @@ class MyApp extends StatelessWidget {
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (ctx) => AuthCubit()),
+              BlocProvider(create: (ctx) => authLogic),
               BlocProvider(create: (ctx) => GameCubit()),
             ],
-            child: MaterialApp(
-              title: 'Funny Englisk',
-              theme: AppTheme.lightTheme,
-              localizationsDelegates: const [
-                GlobalMaterialLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-                DefaultWidgetsLocalizations.delegate,
-              ],
-              supportedLocales: const [Locale('en'), Locale('vi')],
-              builder: (ctx, child) => ScrollConfiguration(
-                behavior: AppScrollBehavior(),
-                child: child!,
+            child: MultiProvider(
+              providers: [ChangeNotifierProvider(create: (ctx) => authLogic)],
+              child: MaterialApp(
+                title: 'Funny Englisk',
+                theme: AppTheme.lightTheme,
+                localizationsDelegates: const [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  DefaultWidgetsLocalizations.delegate,
+                ],
+                supportedLocales: const [Locale('en'), Locale('vi')],
+                builder: (ctx, child) => ScrollConfiguration(
+                  behavior: AppScrollBehavior(),
+                  child: child!,
+                ),
+                debugShowCheckedModeBanner: false,
+                initialRoute: initialRoute,
+                onGenerateRoute: RouteGenerator.onGenerateAppRoute,
               ),
-              debugShowCheckedModeBanner: false,
-              initialRoute: initialRoute,
-              onGenerateRoute: RouteGenerator.onGenerateAppRoute,
             ),
           );
         },

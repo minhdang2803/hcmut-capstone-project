@@ -14,10 +14,7 @@ import '../../../widgets/rounded_elevated_button.dart';
 import '../widgets/auth_input_field.dart';
 
 class LoginComponent extends StatefulWidget {
-  const LoginComponent({Key? key, required this.onChangeAction})
-      : super(key: key);
-
-  final Function(AuthAction action) onChangeAction;
+  const LoginComponent({Key? key}) : super(key: key);
 
   @override
   State<LoginComponent> createState() => _LoginComponentState();
@@ -88,8 +85,11 @@ class _LoginComponentState extends State<LoginComponent> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
-                      onTap: () =>
-                          widget.onChangeAction(AuthAction.forgotPassword),
+                      onTap: () {
+                        context
+                            .read<AuthLogic>()
+                            .changeAuthAction(AuthAction.forgotPassword);
+                      },
                       child: Text(
                         'Quên mật khẩu?',
                         style: AppTypography.body.copyWith(

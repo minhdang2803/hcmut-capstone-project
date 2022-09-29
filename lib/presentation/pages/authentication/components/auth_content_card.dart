@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../bloc/authentication/auth_cubit.dart';
-import '../../../../data/models/authentication/register_model.dart';
 import '../../../../utils/enum.dart';
-import '../../../../utils/log_util.dart';
 import '../../../../utils/string_util.dart';
 import '../../../../utils/validation_util.dart';
 import '../../../../utils/widget_util.dart';
@@ -33,141 +32,54 @@ class AuthContentCard extends StatefulWidget {
 
 class _AuthContentCardState extends State<AuthContentCard>
     with TickerProviderStateMixin {
-  static const authTabs = <Tab>[
-    Tab(child: FittedBox(child: Text('Đăng nhập'))),
-    Tab(child: FittedBox(child: Text('Đăng ký'))),
-  ];
   late TabController _tabController;
-  bool _changeLayout = false;
-  bool _otpVerifying = false;
-  AuthAction _authAction = AuthAction.authentication;
-
-  // Use this variable as global but not within forgotPW section
-  // cuz we need to pass the number to verifyOTP section
-  String _verifyPhoneNbr = '';
-
-  String _verificationID = '';
-  String _codeOTP = '';
-  final _registerKeyForm = GlobalKey<FormState>();
-  final _registerModel = RegisterModel();
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: authTabs.length, vsync: this);
-    _tabController.addListener(_onTabChange);
+    _tabController = TabController(
+        length: context.read<AuthLogic>().authTabs.length, vsync: this);
+    _tabController
+        .addListener(() => context.read<AuthLogic>().onTabChange(context));
     _tabController.animateTo(widget.initialTabIndex);
   }
 
   @override
   void dispose() {
-    _tabController.removeListener(_onTabChange);
+    _tabController
+        .removeListener(() => context.read<AuthLogic>().onTabChange(context));
     _tabController.dispose();
     super.dispose();
   }
 
-  void _onTabChange() {
-    FocusManager.instance.primaryFocus?.unfocus();
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    _verifyPhoneNbr = '';
-    _verificationID = '';
-    setState(() {
-      _registerModel.clear();
-    });
-  }
-
-  void _goBackToAuthentication() {
-    FocusManager.instance.primaryFocus?.unfocus();
-    setState(() {
-      _changeLayout = false;
-      _otpVerifying = false;
-      _verifyPhoneNbr = '';
-    });
-  }
-
-  void _changeAuthAction(AuthAction action) {
-    setState(() {
-      if (action == AuthAction.forgotPassword ||
-          action == AuthAction.verifyRegisterOTP) {
-        _changeLayout = true;
-      }
-      _authAction = action;
-    });
-  }
-
-  void _onRegisterClick() async {
-    FocusManager.instance.primaryFocus?.unfocus();
-    if (_registerKeyForm.currentState?.validate() ?? false) {
-      if (!_registerModel.isAcceptedTerms) {
-        WidgetUtil.showSnackBar(context, 'Vui lòng chấp nhận điều khoản');
-        return;
-      }
-      _setVerifyLoading(true);
-      final bool phoneExisting = await context
-          .read<AuthCubit>()
-          .checkPhoneNumber(_registerModel.email);
-      if (phoneExisting) {
-        if (mounted) {
-          WidgetUtil.showSnackBar(context, 'Email đã được sử dụng');
-        }
-        _verifyPhoneNbr = '';
-        _setVerifyLoading(false);
-        return;
-      }
-      _sendOTP(AuthAction.verifyRegisterOTP);
-    } else {
-      WidgetUtil.showSnackBar(
-          context, 'Thông tin đăng ký chưa hợp lệ, vui lòng kiểm trả lại');
-    }
-  }
-
-  void _sendOTP(AuthAction action) async {
-    // send otp
-  }
-
-  void _setVerifyLoading(bool value) {
-    setState(() {
-      _otpVerifying = value;
-    });
-  }
-
-  void _verifyOTP() async {
-    FocusManager.instance.primaryFocus?.unfocus();
-    try {
-      // verify otp
-      if (_authAction == AuthAction.verifyResetPwOTP) {
-        _changeAuthAction(AuthAction.resetPassword);
-      } else if (_authAction == AuthAction.verifyRegisterOTP) {
-        if (!mounted) return;
-        context.read<AuthCubit>().doRegister(_registerModel);
-      }
-    } catch (e) {
-      LogUtil.error('Verify phone fail: Invalid OTP', error: e);
-      WidgetUtil.showSnackBar(context, 'Mã OTP không chính xác!');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      onEnd: () {
-        if (!_changeLayout) {
-          _changeAuthAction(AuthAction.authentication);
-        }
+    final authLogic = context.read<AuthLogic>();
+    return Consumer<AuthLogic>(
+      builder: (context, value, child) {
+        return AnimatedContainer(
+          onEnd: () {
+            if (!authLogic.changeLayout) {
+              authLogic.changeAuthAction(AuthAction.authentication);
+            }
+          },
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(34.r),
+          ),
+          curve: Curves.decelerate,
+          duration: const Duration(milliseconds: 150),
+          width: 315.w,
+          height: authLogic.changeLayout ? 336.h : 524.h,
+          child: _buildAuthContent(value),
+        );
       },
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(34.r),
-      ),
-      curve: Curves.decelerate,
-      duration: const Duration(milliseconds: 250),
-      width: 315.w,
-      height: _changeLayout ? 336.h : 524.h,
-      child: _buildAuthContent(),
     );
   }
 
-  Widget _buildAuthContent() {
+  Widget _buildAuthContent(AuthLogic value) {
+    final authLogic = context.read<AuthLogic>();
+
     Widget child = Padding(
       padding: EdgeInsets.only(top: 45.h),
       child: Column(
@@ -190,7 +102,7 @@ class _AuthContentCardState extends State<AuthContentCard>
                 borderRadius: BorderRadius.circular(16.r),
               ),
               // indicatorColor: themeData.colorScheme.primary,
-              tabs: authTabs,
+              tabs: authLogic.authTabs,
             ),
           ),
           20.verticalSpace,
@@ -198,12 +110,13 @@ class _AuthContentCardState extends State<AuthContentCard>
             child: TabBarView(
               controller: _tabController,
               children: [
-                LoginComponent(onChangeAction: _changeAuthAction),
+                const LoginComponent(),
                 RegisterComponent(
-                  registerKeyForm: _registerKeyForm,
-                  onRegisterClick: _onRegisterClick,
-                  registerModel: _registerModel,
-                  isLoading: _otpVerifying,
+                  registerKeyForm: authLogic.registerKeyForm,
+                  onRegisterClick: () =>
+                      authLogic.onRegisterClick(context, mounted),
+                  registerModel: authLogic.registerModel,
+                  isLoading: authLogic.otpVerifying,
                 ),
               ],
             ),
@@ -211,18 +124,20 @@ class _AuthContentCardState extends State<AuthContentCard>
         ],
       ),
     );
-    if (_authAction == AuthAction.forgotPassword) {
+    if (value.authAction == AuthAction.forgotPassword) {
       child = _buildForgotPassword();
-    } else if (_authAction == AuthAction.resetPassword) {
+    } else if (value.authAction == AuthAction.resetPassword) {
       child = _buildResetPassword();
-    } else if (_authAction == AuthAction.verifyResetPwOTP ||
-        _authAction == AuthAction.verifyRegisterOTP) {
+    } else if (value.authAction == AuthAction.verifyResetPwOTP ||
+        value.authAction == AuthAction.verifyRegisterOTP) {
       child = _buildVerifyOTP();
     }
+    // Future.delayed(Duration.zero);
     return child;
   }
 
   Widget _buildForgotPassword() {
+    final authLogic = context.read<AuthLogic>();
     final phoneFormKey = GlobalKey<FormState>();
     return Padding(
       padding: EdgeInsets.all(30.r),
@@ -255,12 +170,12 @@ class _AuthContentCardState extends State<AuthContentCard>
               },
               enableErrorText: true,
               onChange: (value) {
-                _verifyPhoneNbr = value;
+                authLogic.verifyPhoneNbr = value;
               },
             ),
           ),
           Center(
-            child: _otpVerifying
+            child: authLogic.otpVerifying
                 ? SizedBox(
                     height: 44.h,
                     child: FittedBox(
@@ -280,19 +195,19 @@ class _AuthContentCardState extends State<AuthContentCard>
                     onPressed: () async {
                       FocusManager.instance.primaryFocus?.unfocus();
                       if (phoneFormKey.currentState?.validate() ?? false) {
-                        _setVerifyLoading(true);
+                        authLogic.setVerifyLoading(true);
                         final bool phoneExisting = await context
                             .read<AuthCubit>()
-                            .checkPhoneNumber(_verifyPhoneNbr);
+                            .checkPhoneNumber(authLogic.verifyPhoneNbr);
                         if (phoneExisting) {
-                          _sendOTP(AuthAction.verifyResetPwOTP);
+                          authLogic.sendOTP(AuthAction.verifyResetPwOTP);
                         } else {
                           if (mounted) {
                             WidgetUtil.showSnackBar(
                                 context, 'Số điện thoại chưa được đăng ký');
                           }
-                          _verifyPhoneNbr = '';
-                          _setVerifyLoading(false);
+                          authLogic.verifyPhoneNbr = '';
+                          authLogic.setVerifyLoading(false);
                         }
                       }
                     },
@@ -300,7 +215,9 @@ class _AuthContentCardState extends State<AuthContentCard>
           ),
           10.verticalSpace,
           GestureDetector(
-            onTap: _goBackToAuthentication,
+            onTap: () {
+              authLogic.goBackToAuthentication();
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -326,6 +243,7 @@ class _AuthContentCardState extends State<AuthContentCard>
   }
 
   Widget _buildVerifyOTP() {
+    final authLogic = context.read<AuthLogic>();
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is RegisterSuccess) {
@@ -355,7 +273,7 @@ class _AuthContentCardState extends State<AuthContentCard>
                 style: AppTypography.body,
                 children: [
                   TextSpan(
-                    text: StringUtil.securityPhone(_verifyPhoneNbr),
+                    text: StringUtil.securityPhone(authLogic.verifyPhoneNbr),
                     style: AppTypography.body.copyWith(
                       color: AppColor.primary,
                     ),
@@ -375,7 +293,7 @@ class _AuthContentCardState extends State<AuthContentCard>
                   pinContentAlignment: Alignment.center,
                   showCursor: true,
                   onCompleted: (otp) {
-                    _codeOTP = otp;
+                    authLogic.codeOTP = otp;
                   },
                 ),
               ),
@@ -401,14 +319,14 @@ class _AuthContentCardState extends State<AuthContentCard>
                     width: 225.w,
                     height: 44.h,
                     radius: 22.r,
-                    onPressed: _verifyOTP,
+                    onPressed: () => authLogic.verifyOTP(context, mounted),
                   );
                 },
               ),
             ),
             10.verticalSpace,
             GestureDetector(
-              onTap: _goBackToAuthentication,
+              onTap: authLogic.goBackToAuthentication,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -435,6 +353,7 @@ class _AuthContentCardState extends State<AuthContentCard>
   }
 
   Widget _buildResetPassword() {
+    final authLogic = context.read<AuthLogic>();
     final passwordFormKey = GlobalKey<FormState>();
     var password = '';
     return BlocListener<AuthCubit, AuthState>(
@@ -443,7 +362,7 @@ class _AuthContentCardState extends State<AuthContentCard>
           WidgetUtil.showSnackBar(context, state.errorMessage);
         }
         if (state is ResetPasswordSuccess) {
-          _goBackToAuthentication();
+          authLogic.goBackToAuthentication();
           WidgetUtil.showSnackBar(context, state.message);
         }
       },
@@ -522,9 +441,8 @@ class _AuthContentCardState extends State<AuthContentCard>
                     onPressed: () {
                       FocusManager.instance.primaryFocus?.unfocus();
                       if (passwordFormKey.currentState?.validate() ?? false) {
-                        context
-                            .read<AuthCubit>()
-                            .doResetPassword(_verifyPhoneNbr, password);
+                        context.read<AuthCubit>().doResetPassword(
+                            authLogic.verifyPhoneNbr, password);
                       }
                     },
                   );
@@ -533,7 +451,7 @@ class _AuthContentCardState extends State<AuthContentCard>
             ),
             10.verticalSpace,
             GestureDetector(
-              onTap: _goBackToAuthentication,
+              onTap: authLogic.goBackToAuthentication,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
