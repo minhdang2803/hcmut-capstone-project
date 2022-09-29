@@ -1,13 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hive_flutter/adapters.dart';
 
-import '../../bloc/authentication/auth_cubit.dart';
-import '../routes/route_name.dart';
 import '../theme/app_color.dart';
 import '../theme/app_typography.dart';
 import 'circle_border_container.dart';
@@ -15,18 +10,18 @@ import 'circle_border_container.dart';
 class CVNAppBar extends StatelessWidget {
   const CVNAppBar({
     Key? key,
-    required this.label,
-    required this.hasBackButton,
-    required this.hasTrailing,
+    this.label,
     this.onBackButtonPress,
     this.onSearchButtonPress,
+    this.showNotificationAction = true,
+    this.leading,
   }) : super(key: key);
 
   final String? label;
-  final bool hasBackButton;
-  final bool hasTrailing;
   final VoidCallback? onBackButtonPress;
   final VoidCallback? onSearchButtonPress;
+  final bool showNotificationAction;
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +33,11 @@ class CVNAppBar extends StatelessWidget {
         height: 63.r + topPadding,
         color: Colors.white,
         child: Padding(
-          padding: EdgeInsets.only(top: topPadding, right: 30.r, left: 30.r),
+          padding: EdgeInsets.only(
+            top: topPadding,
+            right: 30.r,
+            left: onBackButtonPress != null ? 20.r : 30.r,
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -71,8 +70,9 @@ class CVNAppBar extends StatelessWidget {
   }
 
   Widget _buildLeading(BuildContext context) {
-    return hasBackButton
-        ? CircleBorderContainer(
+    return leading != null
+        ? leading!
+        : CircleBorderContainer(
             radius: 28.r,
             elevation: null,
             borderColor: Colors.transparent,
@@ -84,33 +84,31 @@ class CVNAppBar extends StatelessWidget {
               Icons.arrow_back_ios_rounded,
               size: 16.r,
             ),
-          )
-        : const SizedBox();
+          );
   }
 
   Widget _buildNotificationIcon(BuildContext context) {
-    return hasTrailing
-        ? CircleBorderContainer(
-            radius: 32.r,
-            elevation: 2,
-            borderColor: AppColor.iconBorder,
-            borderWidth: 3.r,
-            onPressed: () {
-              // TODO: Implement Icon click
-            },
-            child: SvgPicture.asset(
-              'assets/icons/ic_noti_default.svg',
-              fit: BoxFit.contain,
-              width: 16.r,
-              height: 16.r,
-            ),
-          )
-        : const SizedBox();
+    return Visibility(
+      visible: showNotificationAction,
+      child: CircleBorderContainer(
+        radius: 32.r,
+        elevation: 2,
+        borderColor: AppColor.iconBorder,
+        borderWidth: 3.r,
+        onPressed: () {},
+        child: SvgPicture.asset(
+          'assets/icons/ic_noti_default.svg',
+          fit: BoxFit.contain,
+          width: 16.r,
+          height: 16.r,
+        ),
+      ),
+    );
   }
 
   Widget _buildSearchIcon(BuildContext context) {
     return Visibility(
-      visible: hasTrailing && (onSearchButtonPress != null),
+      visible: onSearchButtonPress != null,
       child: CircleBorderContainer(
         radius: 32.r,
         elevation: 2,
@@ -123,36 +121,6 @@ class CVNAppBar extends StatelessWidget {
           color: AppColor.primary,
           width: 16.r,
           height: 16.r,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildUserProfileIcon(BuildContext context) {
-    final authCubit = BlocProvider.of<AuthCubit>(context);
-    return Visibility(
-      visible: hasTrailing,
-      child: CircleBorderContainer(
-        radius: 34.r,
-        borderColor: AppColor.primary,
-        borderWidth: 1,
-        onPressed: () {
-          Navigator.of(context).pushNamed(RouteName.updateProfile);
-        },
-        child: ValueListenableBuilder(
-          valueListenable: authCubit.getUserBox().listenable(),
-          builder: (ctx, Box userBox, child) {
-            final image = authCubit.getCurrentUser()?.photoUrl;
-            return CachedNetworkImage(
-              imageUrl: image ?? '',
-              fadeInDuration: const Duration(milliseconds: 350),
-              fit: BoxFit.cover,
-              errorWidget: (ctx, url, error) => Image.asset(
-                'assets/images/error_profile_image_holder.png',
-                fit: BoxFit.cover,
-              ),
-            );
-          },
         ),
       ),
     );
