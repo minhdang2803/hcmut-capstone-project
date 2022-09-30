@@ -60,25 +60,22 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (ctx) => authLogic),
               BlocProvider(create: (ctx) => GameCubit()),
             ],
-            child: MultiProvider(
-              providers: [ChangeNotifierProvider(create: (ctx) => authLogic)],
-              child: MaterialApp(
-                title: 'Funny Englisk',
-                theme: AppTheme.lightTheme,
-                localizationsDelegates: const [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                  DefaultWidgetsLocalizations.delegate,
-                ],
-                supportedLocales: const [Locale('en'), Locale('vi')],
-                builder: (ctx, child) => ScrollConfiguration(
-                  behavior: AppScrollBehavior(),
-                  child: child!,
-                ),
-                debugShowCheckedModeBanner: false,
-                initialRoute: initialRoute,
-                onGenerateRoute: RouteGenerator.onGenerateAppRoute,
+            child: MaterialApp(
+              title: 'Funny Englisk',
+              theme: AppTheme.lightTheme,
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                DefaultWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: const [Locale('en'), Locale('vi')],
+              builder: (ctx, child) => ScrollConfiguration(
+                behavior: AppScrollBehavior(),
+                child: child!,
               ),
+              debugShowCheckedModeBanner: false,
+              initialRoute: initialRoute,
+              onGenerateRoute: RouteGenerator.onGenerateAppRoute,
             ),
           );
         },

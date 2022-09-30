@@ -5,8 +5,12 @@ abstract class AuthState extends Equatable {
 }
 
 class AuthInitial extends AuthState {
+  const AuthInitial(this.action);
+
+  final AuthAction? action;
+
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [action];
 }
 
 class AuthLoading extends AuthState {

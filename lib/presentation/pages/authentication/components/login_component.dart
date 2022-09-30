@@ -139,8 +139,8 @@ class _LoginComponentState extends State<LoginComponent> {
             CircularBorderIcon(
               icon: SvgPicture.asset(
                 'assets/icons/ic_google.svg',
-                width: 24.r,
-                height: 24.r,
+                width: 30.r,
+                height: 30.r,
               ),
               borderColor: Colors.grey[400]!,
               onIconClick: () {

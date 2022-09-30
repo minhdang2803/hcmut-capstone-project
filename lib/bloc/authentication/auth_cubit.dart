@@ -1,6 +1,5 @@
 import 'package:bke/utils/enum.dart';
 import 'package:bke/utils/widget_util.dart';
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +17,7 @@ part 'auth_state.dart';
 part 'auth_logic.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthInitial());
+  AuthCubit() : super(const AuthInitial(AuthAction.authentication));
 
   final _authRepository = AuthRepository.instance();
 
@@ -182,4 +181,6 @@ class AuthCubit extends Cubit<AuthState> {
   User? getCurrentUser() => _authRepository.getCurrentUser();
 
   Box getUserBox() => _authRepository.getUserBox();
+
+
 }

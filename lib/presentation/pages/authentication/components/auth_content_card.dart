@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../bloc/authentication/auth_cubit.dart';
 import '../../../../utils/enum.dart';
@@ -55,31 +54,26 @@ class _AuthContentCardState extends State<AuthContentCard>
   @override
   Widget build(BuildContext context) {
     final authLogic = context.read<AuthLogic>();
-    return Consumer<AuthLogic>(
-      builder: (context, value, child) {
-        return AnimatedContainer(
-          onEnd: () {
-            if (!authLogic.changeLayout) {
-              authLogic.changeAuthAction(AuthAction.authentication);
-            }
-          },
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.3),
-            borderRadius: BorderRadius.circular(34.r),
-          ),
-          curve: Curves.decelerate,
-          duration: const Duration(milliseconds: 150),
-          width: 315.w,
-          height: authLogic.changeLayout ? 336.h : 524.h,
-          child: _buildAuthContent(value),
-        );
+    return AnimatedContainer(
+      onEnd: () {
+        if (!authLogic.changeLayout) {
+          authLogic.changeAuthAction(AuthAction.authentication);
+        }
       },
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(34.r),
+      ),
+      curve: Curves.linear,
+      duration: const Duration(milliseconds: 250),
+      width: 315.w,
+      height: authLogic.changeLayout ? 336.h : 524.h,
+      child: _buildAuthContent(),
     );
   }
 
-  Widget _buildAuthContent(AuthLogic value) {
-    final authLogic = context.read<AuthLogic>();
-
+  Widget _buildAuthContent() {
+    final authRead = context.watch<AuthLogic>();
     Widget child = Padding(
       padding: EdgeInsets.only(top: 45.h),
       child: Column(
@@ -102,7 +96,7 @@ class _AuthContentCardState extends State<AuthContentCard>
                 borderRadius: BorderRadius.circular(16.r),
               ),
               // indicatorColor: themeData.colorScheme.primary,
-              tabs: authLogic.authTabs,
+              tabs: authRead.authTabs,
             ),
           ),
           20.verticalSpace,
@@ -112,11 +106,11 @@ class _AuthContentCardState extends State<AuthContentCard>
               children: [
                 const LoginComponent(),
                 RegisterComponent(
-                  registerKeyForm: authLogic.registerKeyForm,
+                  registerKeyForm: authRead.registerKeyForm,
                   onRegisterClick: () =>
-                      authLogic.onRegisterClick(context, mounted),
-                  registerModel: authLogic.registerModel,
-                  isLoading: authLogic.otpVerifying,
+                      authRead.onRegisterClick(context, mounted),
+                  registerModel: authRead.registerModel,
+                  isLoading: authRead.otpVerifying,
                 ),
               ],
             ),
@@ -124,16 +118,24 @@ class _AuthContentCardState extends State<AuthContentCard>
         ],
       ),
     );
-    if (value.authAction == AuthAction.forgotPassword) {
-      child = _buildForgotPassword();
-    } else if (value.authAction == AuthAction.resetPassword) {
-      child = _buildResetPassword();
-    } else if (value.authAction == AuthAction.verifyResetPwOTP ||
-        value.authAction == AuthAction.verifyRegisterOTP) {
-      child = _buildVerifyOTP();
-    }
-    // Future.delayed(Duration.zero);
-    return child;
+
+    return BlocBuilder<AuthLogic, AuthState>(
+      builder: (context, state) {
+        if (state is AuthInitial) {
+          if (state.action == AuthAction.forgotPassword) {
+            return _buildForgotPassword();
+          } else if (state.action == AuthAction.resetPassword) {
+            return _buildResetPassword();
+          } else if (state.action == AuthAction.verifyResetPwOTP ||
+              state.action == AuthAction.verifyRegisterOTP) {
+            return _buildVerifyOTP();
+          } else {
+            return child;
+          }
+        }
+        return child;
+      },
+    );
   }
 
   Widget _buildForgotPassword() {
@@ -326,7 +328,9 @@ class _AuthContentCardState extends State<AuthContentCard>
             ),
             10.verticalSpace,
             GestureDetector(
-              onTap: authLogic.goBackToAuthentication,
+              onTap: () {
+                authLogic.goBackToAuthentication();
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

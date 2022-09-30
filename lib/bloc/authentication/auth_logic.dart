@@ -1,6 +1,6 @@
 part of 'auth_cubit.dart';
 
-class AuthLogic extends AuthCubit with ChangeNotifier {
+class AuthLogic extends AuthCubit {
   List<Tab> authTabs = const [
     Tab(child: FittedBox(child: Text('Đăng nhập'))),
     Tab(child: FittedBox(child: Text('Đăng ký'))),
@@ -30,7 +30,7 @@ class AuthLogic extends AuthCubit with ChangeNotifier {
     changeLayout = false;
     otpVerifying = false;
     verifyPhoneNbr = '';
-    notifyListeners();
+    emit(AuthInitial(authAction));
   }
 
   void changeAuthAction(AuthAction action) {
@@ -39,7 +39,7 @@ class AuthLogic extends AuthCubit with ChangeNotifier {
       changeLayout = true;
     }
     authAction = action;
-    notifyListeners();
+    emit(AuthInitial(authAction));
   }
 
   void setVerifyLoading(bool value) {
