@@ -51,11 +51,6 @@ class _TestToeicPageState extends State<TestToeicPage>
   @override
   bool get wantKeepAlive => true;
 
-  void _onAudioItemSelected(int index) {
-    _toeicP1AudioService.playIndex(index);
-    Navigator.of(context).pop();
-  }
-
   void _onItemSelected(int index) {
     _toeicP1AudioService.stop();
     _indicatorScrollController.scrollToIndex(
@@ -97,8 +92,6 @@ class _TestToeicPageState extends State<TestToeicPage>
     final topPadding = MediaQuery.of(context).padding.top;
     final quizs =
         ModalRoute.of(context)?.settings.arguments as List<ToeicP1QandA>;
-    final audioList = quizs.map((e) => e.mp3URL).toList();
-    _toeicP1AudioService.setAudioList(audioList);
 
     return Scrollbar(
       controller: _scrollController,
@@ -144,7 +137,8 @@ class _TestToeicPageState extends State<TestToeicPage>
     );
   }
 
-  Widget _buildAudioController() {
+  Widget _buildAudioController(String audioUrl) {
+    _toeicP1AudioService.setAudio(audioUrl);
     return Container(
       color: Colors.white,
       padding: EdgeInsets.fromLTRB(20.r, 10.r, 20.r, 0),
@@ -191,14 +185,7 @@ class _TestToeicPageState extends State<TestToeicPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            _buildAudioController(),
-            Text(
-              quizs.isEmpty ? '' : quizs[_selectedIndex].mp3URL,
-              style: AppTypography.title.copyWith(
-                fontWeight: FontWeight.bold,
-                color: AppColor.primary,
-              ),
-            ),
+            _buildAudioController(quizs[_selectedIndex].mp3URL),
             SizedBox(height: 20.r),
             Text(
               quizs.isEmpty ? '' : quizs[_selectedIndex].pngURL,
