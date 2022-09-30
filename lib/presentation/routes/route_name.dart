@@ -10,4 +10,7 @@ class RouteName {
 
   static const start = "/start";
   static const game = "/game";
+
+  static const startToeic = "/start_toeic";
+  static const testToeic = "/test_toeic";
 }

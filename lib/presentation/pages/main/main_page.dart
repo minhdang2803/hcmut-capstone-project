@@ -1,4 +1,3 @@
-import 'package:bke/presentation/pages/game_quiz/main/gamequiz_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,8 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_typography.dart';
 import '../../widgets/cvn_app_bar.dart';
+import '../game_quiz/main/gamequiz_page.dart';
 import '../home/home_page.dart';
 import '../profile/main/profile_page.dart';
+import '../toeic_test/main/toeictest_page.dart';
 import 'components/monastery_search_delegate.dart';
 
 class MainPage extends StatefulWidget {
@@ -22,7 +23,7 @@ class _MainPageState extends State<MainPage> {
   final List<Widget> _pages = [
     const HomePage(),
     const GameQuizPage(),
-    const HomePage(),
+    const ToeicPage(),
     const ProfilePage(),
   ];
   late final PageController _pageController;
