@@ -19,12 +19,13 @@ class ToeicCubit extends Cubit<ToeicState> {
       emit(ToeicLoading());
       final BaseResponse<ToeicTest> response =
           await _toeicRepository.getToeicP1QandA();
+
       final data = response.data!;
       emit(ToeicSuccess(data));
       LogUtil.debug(
           'Get toeic success: ${response.data?.toJson() ?? 'empty toeic'}');
     } on RemoteException catch (e, s) {
-      LogUtil.error('Login error: ${e.httpStatusCode}',
+      LogUtil.error('Get toeicP1 error: ${e.httpStatusCode}',
           error: e, stackTrace: s);
       switch (e.code) {
         case RemoteException.noInternet:
@@ -39,7 +40,7 @@ class ToeicCubit extends Cubit<ToeicState> {
       }
     } catch (e, s) {
       emit(const ToeicFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
-      LogUtil.error('Login error ', error: e, stackTrace: s);
+      LogUtil.error('Get toeicP1 error ', error: e, stackTrace: s);
     }
   }
 }

@@ -8,6 +8,5 @@ class EndPoint {
   static const gamePath =
       'https://mocki.io/v1/2aba0527-2609-49d8-87b7-76a088b57877';
 
-  static const toeicPath =
-      'https://bkenglish-9ec8e.et.r.appspot.com/api/toeicP1/getToeicP1';
+  static const toeicPath = '$_baseUrl/toeicP1/getToeicP1';
 }

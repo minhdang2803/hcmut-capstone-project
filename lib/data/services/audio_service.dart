@@ -26,7 +26,7 @@ class AudioService {
         ),
       ),
       autoStart: false,
-      playInBackground: PlayInBackground.enabled,
+      playInBackground: PlayInBackground.disabledPause,
       showNotification: true,
       loopMode: LoopMode.none,
       audioFocusStrategy: const AudioFocusStrategy.request(
@@ -42,6 +42,13 @@ class AudioService {
     if (player.isPlaying.value) {
       player.pause();
 
+      return;
+    }
+    player.play();
+  }
+
+  void play() {
+    if (player.isPlaying.value) {
       return;
     }
     player.play();

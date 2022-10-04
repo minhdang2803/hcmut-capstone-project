@@ -1,46 +1,39 @@
+import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
 
-class ResultComponent extends StatelessWidget {
-  final int resultScore;
-  final Function returnHandler;
+import '../../../routes/route_name.dart';
+import '../../../theme/app_color.dart';
 
-  const ResultComponent(this.resultScore, this.returnHandler, {Key? key})
-      : super(key: key);
-
-  //Remark Logic
-  String get resultPhrase {
-    String resultText = "noobbbbbb";
-    return resultText;
-  }
+class ResultToeicPage extends StatelessWidget {
+  const ResultToeicPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            resultPhrase,
-            style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ), //Text
-          Text(
-            'Score ' '$resultScore',
-            style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ), //Text
-          TextButton(
-            onPressed: () => returnHandler(),
-            child: Container(
-              color: Colors.orange.shade400,
-              padding: const EdgeInsets.all(14),
-              child: const Text(
-                'Return home',
-                style: TextStyle(color: Colors.white),
+    final finalScore = ModalRoute.of(context)?.settings.arguments as int;
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Score ' '$finalScore',
+              style: AppTypography.body,
+              textAlign: TextAlign.center,
+            ), //Text
+            TextButton(
+              onPressed: () =>
+                  Navigator.of(context).pushReplacementNamed(RouteName.main),
+              child: Container(
+                color: AppColor.primary,
+                padding: const EdgeInsets.all(14),
+                child: Text(
+                  'Return home',
+                  style: AppTypography.body,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

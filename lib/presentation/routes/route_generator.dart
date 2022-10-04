@@ -5,6 +5,7 @@ import '../pages/authentication/authentication_page.dart';
 import '../pages/game_quiz/game/start_game02_page.dart';
 import '../pages/game_quiz/game/game02_page.dart';
 import '../pages/notification/notifications_page.dart';
+import '../pages/toeic_test/components/result_component.dart';
 import '../pages/toeic_test/test/start_toeic_page.dart';
 import '../pages/toeic_test/test/test_toeic_page.dart';
 import '../pages/welcome/welcome.dart';
@@ -48,6 +49,9 @@ class RouteGenerator {
         break;
       case RouteName.testToeic:
         page = const TestToeicPage();
+        break;
+      case RouteName.resultToeic:
+        page = const ResultToeicPage();
         break;
     }
 

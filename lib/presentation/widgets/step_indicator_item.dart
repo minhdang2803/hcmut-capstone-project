@@ -11,12 +11,14 @@ class StepIndicatorItem extends StatelessWidget {
     required this.isSelected,
     required this.isLastItem,
     required this.onItemClick,
+    this.isSolved,
   }) : super(key: key);
 
   final int step;
   final bool isSelected;
   final bool isLastItem;
   final VoidCallback onItemClick;
+  final bool? isSolved;
 
   @override
   Widget build(BuildContext context) {
@@ -38,22 +40,24 @@ class StepIndicatorItem extends StatelessWidget {
                 width: 1.5.r,
               ),
               borderRadius: BorderRadius.circular(18.r),
-              color: isSelected ? AppColor.tertiary : Colors.white,
+              color: isSelected
+                  ? AppColor.primary
+                  : (isSolved ?? false ? Colors.green : Colors.white),
             ),
             child: Text(
               '$step',
               style: AppTypography.body.copyWith(
-                color: AppColor.primary,
+                color: isSelected ? Colors.white : AppColor.primary,
               ),
             ),
           ),
         ),
         if (!isLastItem)
-        Container(
-          width: 20.r,
-          height: 1.2.r,
-          color: AppColor.primary,
-        ),
+          Container(
+            width: 20.r,
+            height: 1.2.r,
+            color: AppColor.primary,
+          ),
       ],
     );
   }

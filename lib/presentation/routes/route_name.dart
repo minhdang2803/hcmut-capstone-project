@@ -8,9 +8,10 @@ class RouteName {
   static const aboutUs = '/about_us';
   static const notifications = '/notifications';
 
-  static const start = "/start";
-  static const game = "/game";
+  static const start = '/start';
+  static const game = '/game';
 
-  static const startToeic = "/start_toeic";
-  static const testToeic = "/test_toeic";
+  static const startToeic = '/start_toeic';
+  static const testToeic = '/test_toeic';
+  static const resultToeic = '/result_toeic';
 }
