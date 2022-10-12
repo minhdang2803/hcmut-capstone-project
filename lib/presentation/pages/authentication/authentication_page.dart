@@ -13,12 +13,12 @@ class AuthenticationPage extends StatelessWidget {
     final tabIndex = ModalRoute.of(context)?.settings.arguments as int?;
     return Scaffold(
       backgroundColor: AppColor.primary,
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: Stack(children: [
         SvgPicture.asset(
           'assets/authentication/welcome_screen.svg',
           width: 1.sw,
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
         ),
         ListView(
           children: [

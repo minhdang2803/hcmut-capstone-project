@@ -14,8 +14,10 @@ import '../../../widgets/rounded_elevated_button.dart';
 import '../widgets/auth_input_field.dart';
 
 class LoginComponent extends StatefulWidget {
-  const LoginComponent({Key? key, required this.onChangeAction})
-      : super(key: key);
+  const LoginComponent({
+    Key? key,
+    required this.onChangeAction,
+  }) : super(key: key);
 
   final Function(AuthAction action) onChangeAction;
 
@@ -55,10 +57,10 @@ class _LoginComponentState extends State<LoginComponent> {
                     enableErrorText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Email không được bỏ trống';
+                        return 'Email should not be empty';
                       }
                       if (!ValidationUtil.isValidEmail(value)) {
-                        return 'Email không hợp lệ';
+                        return 'Email is invalid';
                       }
                       return null;
                     },
@@ -67,17 +69,17 @@ class _LoginComponentState extends State<LoginComponent> {
                     },
                   ),
                   AuthInputField(
-                    hintText: 'Mật khẩu',
+                    hintText: 'Password',
                     inputAction: TextInputAction.done,
                     inputType: TextInputType.text,
                     obscure: true,
                     enableErrorText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Mật khẩu không được bỏ trống';
+                        return 'Password should not be empty';
                       }
                       if (!ValidationUtil.isPasswordValid(value)) {
-                        return 'Mật khẩu không hợp lệ';
+                        return 'Password length must be greater than 6';
                       }
                       return null;
                     },
@@ -91,7 +93,7 @@ class _LoginComponentState extends State<LoginComponent> {
                       onTap: () =>
                           widget.onChangeAction(AuthAction.forgotPassword),
                       child: Text(
-                        'Quên mật khẩu?',
+                        'Forgot Password?',
                         style: AppTypography.body.copyWith(
                           color: AppColor.textSecondary,
                         ),
@@ -116,7 +118,7 @@ class _LoginComponentState extends State<LoginComponent> {
       children: [
         _buildLoginButton(),
         Text(
-          'HOẶC',
+          'OR',
           style: AppTypography.body.copyWith(
             color: AppColor.textSecondary,
           ),
@@ -158,7 +160,7 @@ class _LoginComponentState extends State<LoginComponent> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Sử dụng không cần đăng nhập',
+                'Login as anonymous',
                 style: AppTypography.body.copyWith(
                   color: AppColor.textSecondary,
                 ),
@@ -197,7 +199,7 @@ class _LoginComponentState extends State<LoginComponent> {
           );
         }
         return RoundedElevatedButton(
-          label: 'Đăng nhập',
+          label: 'Login',
           labelStyle: AppTypography.title.copyWith(color: Colors.white),
           width: 225.w,
           height: 44.h,

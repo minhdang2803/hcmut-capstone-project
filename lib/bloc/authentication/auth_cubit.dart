@@ -34,17 +34,17 @@ class AuthCubit extends Cubit<AuthState> {
           error: e, stackTrace: s);
       switch (e.code) {
         case RemoteException.noInternet:
-          emit(const LoginFailure('Không có kết nối internet!'));
+          emit(const LoginFailure('No internet connection!'));
           break;
         case RemoteException.responseError:
           emit(LoginFailure(e.message));
           break;
         default:
-          emit(const LoginFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+          emit(const LoginFailure('Please try again later!'));
           break;
       }
     } catch (e, s) {
-      emit(const LoginFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+      emit(const LoginFailure('Please try again later!'));
       LogUtil.error('Login error ', error: e, stackTrace: s);
     }
   }
@@ -65,17 +65,17 @@ class AuthCubit extends Cubit<AuthState> {
   //         error: e, stackTrace: s);
   //     switch (e.code) {
   //       case RemoteException.noInternet:
-  //         emit(const LoginFailure('Không có kết nối internet!'));
+  //         emit(const LoginFailure('No internet connection!'));
   //         break;
   //       case RemoteException.responseError:
   //         emit(LoginFailure(e.message));
   //         break;
   //       default:
-  //         emit(const LoginFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+  //         emit(const LoginFailure('Please try again later!'));
   //         break;
   //     }
   //   } catch (e, s) {
-  //     emit(const LoginFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+  //     emit(const LoginFailure('Please try again later!'));
   //     LogUtil.error('Google Login error', error: e, stackTrace: s);
   //   }
   // }
@@ -94,17 +94,17 @@ class AuthCubit extends Cubit<AuthState> {
   //     LogUtil.error('FB Login error: ${e.message}', error: e, stackTrace: s);
   //     switch (e.code) {
   //       case RemoteException.noInternet:
-  //         emit(const LoginFailure('Không có kết nối internet!'));
+  //         emit(const LoginFailure('No internet connection!'));
   //         break;
   //       case RemoteException.responseError:
   //         emit(LoginFailure(e.message));
   //         break;
   //       default:
-  //         emit(const LoginFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+  //         emit(const LoginFailure('Please try again later!'));
   //         break;
   //     }
   //   } catch (e, s) {
-  //     emit(const LoginFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+  //     emit(const LoginFailure('Please try again later!'));
   //     LogUtil.error('FB Login error', error: e, stackTrace: s);
   //   }
   // }
@@ -123,55 +123,107 @@ class AuthCubit extends Cubit<AuthState> {
       LogUtil.error('Register error: ${e.message}', error: e, stackTrace: s);
       switch (e.code) {
         case RemoteException.noInternet:
-          emit(const LoginFailure('Không có kết nối internet!'));
+          emit(const RegisterFailure('No internet connection!'));
           break;
         case RemoteException.responseError:
-          emit(LoginFailure(e.message));
+          emit(RegisterFailure(e.message));
           break;
         default:
-          emit(const LoginFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+          emit(const RegisterFailure('Please try again later!'));
           break;
       }
     } catch (e, s) {
-      emit(const LoginFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+      emit(const RegisterFailure('Please try again later!'));
       LogUtil.error('Register error ', error: e, stackTrace: s);
     }
   }
 
-  void doResetPassword(String phone, String newPassword) async {
+  void gmailVerify(String email) async {
     try {
       emit(AuthLoading());
-      await _authRepository.resetPassword(phone, newPassword);
-      emit(const ResetPasswordSuccess('Đã đổi mật khẩu thành công'));
-      LogUtil.debug(
-          'Reset new password success: {phone: $phone, newPassword: $newPassword');
+      await _authRepository.gmailVerify(email);
+      emit(const EmailVerifySuccess('Send mail successful.'));
+      LogUtil.debug('send validation success: {email: $email');
     } on RemoteException catch (e, s) {
-      if (e.code == RemoteException.noInternet) {
-        emit(const ResetPasswordFailure('Không có kết nối internet!'));
-        return;
+      LogUtil.error('send validation error: ${e.message}',
+          error: e, stackTrace: s);
+
+      switch (e.code) {
+        case RemoteException.noInternet:
+          emit(const EmailVerifyFailure('No internet connection!'));
+          break;
+        case RemoteException.responseError:
+          emit(EmailVerifyFailure(e.message));
+          break;
+        default:
+          emit(const EmailVerifyFailure('Please try again later!'));
+          break;
       }
-      emit(const ResetPasswordFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+    } catch (e, s) {
+      emit(EmailVerifyFailure(e.toString()));
+      LogUtil.error('send validation error', error: e, stackTrace: s);
+    }
+  }
+
+  void checkGmailVerify(String email, String otpCode) async {
+    try {
+      emit(AuthLoading());
+      final BaseResponse<Authorization> response =
+          await _authRepository.checkGmailVerify(email, otpCode);
+      emit(CheckEmailVerifySuccess(response.data!.accessToken));
+      LogUtil.debug('mail validation success: {email: $email');
+    } on RemoteException catch (e, s) {
       LogUtil.error('Reset password error: ${e.message}',
           error: e, stackTrace: s);
+      switch (e.code) {
+        case RemoteException.noInternet:
+          emit(const CheckEmailVerifyFailure('No internet connection!'));
+          break;
+        case RemoteException.responseError:
+          emit(CheckEmailVerifyFailure(e.message));
+          break;
+        default:
+          emit(const CheckEmailVerifyFailure('Please try again later!'));
+          break;
+      }
     } catch (e, s) {
-      emit(ResetPasswordFailure(e.toString()));
+      emit(CheckEmailVerifyFailure(e.toString()));
       LogUtil.error('Reset password error', error: e, stackTrace: s);
     }
   }
 
-  Future<bool> checkPhoneNumber(String phone) async {
+  void resetPassword(String token, String email, String password) async {
     try {
-      final response = await _authRepository.checkPhoneNumber(phone);
-      if (response.status == 'success') {
-        return true;
-      }
+      emit(AuthLoading());
+      final BaseResponse<LoginModel> response = await _authRepository.resetPass(
+        token,
+        email,
+        password,
+      );
+      final user = response.data!.user;
+      final accessToken = response.data!.authorization.accessToken;
+      _authRepository.saveCurrentUser(user, accessToken);
+      emit(const ResetPasswordSuccess('Reset password successfully'));
+      LogUtil.debug(
+          'Reset password success: ${response.data?.user.id ?? 'empty user'}');
     } on RemoteException catch (e, s) {
-      LogUtil.error('Checking Phone number failure: ${e.errorMessage}',
+      LogUtil.error('Reset password error: ${e.httpStatusCode}',
           error: e, stackTrace: s);
+      switch (e.code) {
+        case RemoteException.noInternet:
+          emit(const ResetPasswordFailure('No internet connection!'));
+          break;
+        case RemoteException.responseError:
+          emit(ResetPasswordFailure(e.message));
+          break;
+        default:
+          emit(const ResetPasswordFailure('Please try again later!'));
+          break;
+      }
     } catch (e, s) {
-      LogUtil.error('Checking Phone number failure: $e');
+      emit(const ResetPasswordFailure('Please try again later!'));
+      LogUtil.error('Reset password error ', error: e, stackTrace: s);
     }
-    return false;
   }
 
   User? getCurrentUser() => _authRepository.getCurrentUser();

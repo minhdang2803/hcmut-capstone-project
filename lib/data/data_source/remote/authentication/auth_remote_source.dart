@@ -17,9 +17,13 @@ abstract class AuthRemoteSource {
 
   Future<BaseResponse<LoginModel>> register(RegisterModel registerModel);
 
-  Future<BaseResponse> checkPhoneNumber(String phone);
+  Future<BaseResponse> gmailVerify(String email);
 
-  Future<BaseResponse> resetPassword(String phone, String newPassword);
+  Future<BaseResponse<Authorization>> checkGmailVerify(
+      String email, String otpCode);
+
+  Future<BaseResponse<LoginModel>> resetPass(
+      String token, String email, String password);
 }
 
 class AuthRemoteSourceImpl extends AuthRemoteSource {
@@ -124,35 +128,47 @@ class AuthRemoteSourceImpl extends AuthRemoteSource {
   }
 
   @override
-  Future<BaseResponse> checkPhoneNumber(String phone) {
-    const path = EndPoint.checkPhonePath;
-    final bodyRequest = {'phone': phone};
+  Future<BaseResponse> gmailVerify(String email) {
+    const path = EndPoint.gmailVerifyPath;
+    final bodyRequest = {'email': email};
     final request = APIServiceRequest(
       path,
       dataBody: bodyRequest,
       (response) => BaseResponse.fromJson(json: response, dataBuilder: null),
     );
-    LogUtil.debug('Check phone number: $bodyRequest');
+    LogUtil.debug('Check email: $bodyRequest');
     return _api.post(request);
   }
 
   @override
-  Future<BaseResponse> resetPassword(String phone, String newPassword) {
-    const path = EndPoint.resetPasswordPath;
-    final bodyRequest = {
-      'action': 'reset',
-      'phone': phone,
-      'password': newPassword,
-    };
+  Future<BaseResponse<Authorization>> checkGmailVerify(
+      String email, String otpCode) {
+    const path = EndPoint.checkGmailVerifyPath;
+    final bodyRequest = {'email': email, 'otpCode': otpCode};
     final request = APIServiceRequest(
       path,
       dataBody: bodyRequest,
-      (response) => BaseResponse.fromJson(
-        json: response,
-        dataBuilder: null,
-      ),
+      (response) => BaseResponse<Authorization>.fromJson(
+          json: response, dataBuilder: Authorization.fromJson),
     );
-    LogUtil.debug('Reset password: $bodyRequest');
+    LogUtil.debug('Check email verify: $bodyRequest');
+    return _api.post(request);
+  }
+
+  @override
+  Future<BaseResponse<LoginModel>> resetPass(
+      String token, String email, String password) async {
+    const path = EndPoint.resetPassPath;
+    final bodyRequest = {'email': email, 'password': password};
+    final header = {'Authorization': 'Bearer $token'};
+    final request = APIServiceRequest(
+      path,
+      header: header,
+      dataBody: bodyRequest,
+      (response) => BaseResponse<LoginModel>.fromJson(
+          json: response, dataBuilder: LoginModel.fromJson),
+    );
+    LogUtil.debug('Reset pass: $bodyRequest');
     return _api.post(request);
   }
 }

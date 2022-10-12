@@ -22,7 +22,7 @@ class RoundedElevatedButton extends StatelessWidget {
   final double? elevation;
   final Color? backgroundColor;
   final Color? labelColor;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {

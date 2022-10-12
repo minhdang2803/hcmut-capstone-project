@@ -27,17 +27,17 @@ class GameCubit extends Cubit<GameState> {
           error: e, stackTrace: s);
       switch (e.code) {
         case RemoteException.noInternet:
-          emit(const GameFailure('Không có kết nối internet!'));
+          emit(const GameFailure('No internet connection!'));
           break;
         case RemoteException.responseError:
           emit(GameFailure(e.message));
           break;
         default:
-          emit(const GameFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+          emit(const GameFailure('Please try again later!'));
           break;
       }
     } catch (e, s) {
-      emit(const GameFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+      emit(const GameFailure('Please try again later!'));
       LogUtil.error('Login error ', error: e, stackTrace: s);
     }
   }

@@ -9,6 +9,7 @@ import '../game_quiz/main/gamequiz_page.dart';
 import '../home/home_page.dart';
 import '../profile/main/profile_page.dart';
 import '../toeic_test/main/toeictest_page.dart';
+import '../video/video_page.dart';
 import 'components/monastery_search_delegate.dart';
 
 class MainPage extends StatefulWidget {
@@ -24,6 +25,7 @@ class _MainPageState extends State<MainPage> {
     const HomePage(),
     const GameQuizPage(),
     const ToeicPage(),
+    const VideoPage(),
     const ProfilePage(),
   ];
   late final PageController _pageController;
@@ -60,6 +62,9 @@ class _MainPageState extends State<MainPage> {
         title = 'TOEIC';
         break;
       case 3:
+        title = 'Video';
+        break;
+      case 4:
         title = 'USER';
         break;
     }
@@ -190,6 +195,27 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
           label: 'Toeic',
+        ),
+        BottomNavigationBarItem(
+          icon: Padding(
+            padding: EdgeInsets.only(bottom: 4.r),
+            child: SvgPicture.asset(
+              'assets/icons/ic_quiz.svg',
+              color: AppColor.inactiveIconColor,
+              width: 24.r,
+              height: 24.r,
+            ),
+          ),
+          activeIcon: Padding(
+            padding: EdgeInsets.only(bottom: 4.r),
+            child: SvgPicture.asset(
+              'assets/icons/ic_quiz.svg',
+              color: AppColor.primary,
+              width: 24.r,
+              height: 24.r,
+            ),
+          ),
+          label: 'Video',
         ),
         BottomNavigationBarItem(
           icon: Padding(

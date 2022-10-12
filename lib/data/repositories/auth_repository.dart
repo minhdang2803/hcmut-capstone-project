@@ -40,12 +40,18 @@ class AuthRepository {
     return _authRemoteSource.register(registerModel);
   }
 
-  Future<BaseResponse> checkPhoneNumber(String phone) {
-    return _authRemoteSource.checkPhoneNumber(phone);
+  Future<BaseResponse> gmailVerify(String email) {
+    return _authRemoteSource.gmailVerify(email);
   }
 
-  Future<BaseResponse> resetPassword(String phone, String newPassword) {
-    return _authRemoteSource.resetPassword(phone, newPassword);
+  Future<BaseResponse<Authorization>> checkGmailVerify(
+      String email, String otpCode) {
+    return _authRemoteSource.checkGmailVerify(email, otpCode);
+  }
+
+  Future<BaseResponse<LoginModel>> resetPass(
+      String token, String email, String password) async {
+    return _authRemoteSource.resetPass(token, email, password);
   }
 
   void saveCurrentUser(User user, String token) async {

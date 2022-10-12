@@ -3,15 +3,10 @@ class RegisterModel {
   bool invalidFullname = false;
 
   String email = '';
-  bool invalidEmail = true;
+  bool invalidEmail = false;
 
   String password = '';
   bool invalidPassword = false;
-
-  String repeatPassword = '';
-  bool invalidRepeatPassword = false;
-
-  bool isAcceptedTerms = false;
 
   RegisterModel();
 
@@ -27,11 +22,8 @@ class RegisterModel {
     fullName = '';
     invalidFullname = false;
     email = '';
-    invalidEmail = true;
+    invalidEmail = false;
     password = '';
     invalidPassword = false;
-    repeatPassword = '';
-    invalidRepeatPassword = false;
-    isAcceptedTerms = false;
   }
 }

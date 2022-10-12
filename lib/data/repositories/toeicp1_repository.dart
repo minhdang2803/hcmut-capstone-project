@@ -13,4 +13,11 @@ class ToeicP1Repository {
   Future<BaseResponse<ToeicTest>> getToeicP1QandA() async {
     return _toeicSource.getToeicP1QandA();
   }
+
+  Future<BaseResponse> saveScoreToeicP1(
+    List<int> listQid,
+    List<String> listUserAnswer,
+  ) async {
+    return _toeicSource.saveScoreToeicP1(listQid, listUserAnswer);
+  }
 }

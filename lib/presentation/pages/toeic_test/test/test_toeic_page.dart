@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
+import '../../../../bloc/authentication/auth_cubit.dart';
+import '../../../../bloc/toeic/toeic_cubit.dart';
 import '../../../../data/models/toeic/toeic_part1/toeic_part1_qna.dart';
 import '../../../../data/services/audio_service.dart';
 import '../../../routes/route_name.dart';
@@ -91,15 +94,15 @@ class _TestToeicPageState extends State<TestToeicPage>
 
   void _onSubmitClick(List<ToeicP1QandA> quizs) {
     _toeicP1AudioService.stop();
-    debugPrint('>>>>>>>>>>> post api ${_isClickedBtn}');
+    var listQid = quizs.map((e) => e.qid).toList();
+    context.read<ToeicCubit>().saveScoreToeicP1(listQid, _isClickedBtn);
     _calculateScore(quizs);
-    Navigator.of(context)
-        .pushReplacementNamed(RouteName.resultToeic, arguments: _finalScore);
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final currentUser = BlocProvider.of<AuthCubit>(context).getCurrentUser();
     return Scaffold(
       body: Stack(
         children: [
@@ -271,18 +274,43 @@ class _TestToeicPageState extends State<TestToeicPage>
   }
 
   Widget _buildButtonSubmit(List<ToeicP1QandA> quizs) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20),
-      child: Center(
-        child: RoundedElevatedButton(
-          backgroundColor: AppColor.primary,
-          label: 'Submit',
-          width: 150.w,
-          height: 44.h,
-          radius: 22.r,
-          onPressed: () => _onSubmitClick(quizs),
-        ),
-      ),
+    return BlocConsumer<ToeicCubit, ToeicState>(
+      listener: (context, state) {
+        if (state is SaveScoreToeicP1Success) {
+          Navigator.of(context).pushReplacementNamed(
+            RouteName.resultToeic,
+            arguments: _finalScore,
+          );
+        } else if (state is SaveScoreToeicP1Failure) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(state.errorMessage)));
+        }
+      },
+      builder: (context, state) {
+        if (state is ToeicLoading) {
+          return SizedBox(
+            height: 44.h,
+            child: FittedBox(
+              child: Padding(
+                  padding: EdgeInsets.all(10.r),
+                  child: const CircularProgressIndicator()),
+            ),
+          );
+        }
+        return Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Center(
+            child: RoundedElevatedButton(
+              backgroundColor: AppColor.primary,
+              label: 'Submit',
+              width: 150.w,
+              height: 44.h,
+              radius: 22.r,
+              onPressed: () => _onSubmitClick(quizs),
+            ),
+          ),
+        );
+      },
     );
   }
 

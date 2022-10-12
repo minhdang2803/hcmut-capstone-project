@@ -1,3 +1,4 @@
+import 'package:bke/presentation/pages/video/video_player_page.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/about_us/about_us.dart';
@@ -52,6 +53,10 @@ class RouteGenerator {
         break;
       case RouteName.resultToeic:
         page = const ResultToeicPage();
+        break;
+      case RouteName.videoPlayer:
+        final videoId = settings.arguments as String;
+        page = VideoPlayerPage(videoId: videoId);
         break;
     }
 

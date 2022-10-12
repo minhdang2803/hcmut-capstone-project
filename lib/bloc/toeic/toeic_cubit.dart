@@ -29,18 +29,48 @@ class ToeicCubit extends Cubit<ToeicState> {
           error: e, stackTrace: s);
       switch (e.code) {
         case RemoteException.noInternet:
-          emit(const ToeicFailure('Không có kết nối internet!'));
+          emit(const ToeicFailure('No internet connection!'));
           break;
         case RemoteException.responseError:
           emit(ToeicFailure(e.message));
           break;
         default:
-          emit(const ToeicFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+          emit(const ToeicFailure('Please try again later!'));
           break;
       }
     } catch (e, s) {
-      emit(const ToeicFailure('Đã xảy ra lỗi, vui lòng thử lại sau!'));
+      emit(const ToeicFailure('Please try again later!'));
       LogUtil.error('Get toeicP1 error ', error: e, stackTrace: s);
+    }
+  }
+
+  void saveScoreToeicP1(
+    List<int> listQid,
+    List<String> listUserAnswer,
+  ) async {
+    try {
+      emit(ToeicLoading());
+      await _toeicRepository.saveScoreToeicP1(listQid, listUserAnswer);
+
+      emit(const SaveScoreToeicP1Success('Save score toeic P1 successfully'));
+      LogUtil.debug('Save score toeicP1 successfully.');
+    } on RemoteException catch (e, s) {
+      LogUtil.error('Save score toeicP1 error: ${e.httpStatusCode}',
+          error: e, stackTrace: s);
+      switch (e.code) {
+        case RemoteException.noInternet:
+          emit(const SaveScoreToeicP1Failure('No internet connection!'));
+          break;
+        case RemoteException.responseError:
+          emit(SaveScoreToeicP1Failure(e.message));
+          break;
+        default:
+          emit(const SaveScoreToeicP1Failure('Please try again later!'));
+          break;
+      }
+    } catch (e, s) {
+      emit(const SaveScoreToeicP1Failure('Please try again later!'));
+      LogUtil.error('Save score toeicP1 error ', error: e, stackTrace: s);
     }
   }
 }

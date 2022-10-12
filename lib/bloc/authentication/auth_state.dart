@@ -70,3 +70,41 @@ class ResetPasswordFailure extends AuthState {
   @override
   List<Object?> get props => [errorCode, errorMessage];
 }
+
+class EmailVerifySuccess extends AuthState {
+  const EmailVerifySuccess(this.message);
+
+  final String message;
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class EmailVerifyFailure extends AuthState {
+  const EmailVerifyFailure(this.errorMessage, {this.errorCode});
+
+  final int? errorCode;
+  final String errorMessage;
+
+  @override
+  List<Object?> get props => [errorCode, errorMessage];
+}
+
+class CheckEmailVerifySuccess extends AuthState {
+  const CheckEmailVerifySuccess(this.acessToken);
+
+  final String? acessToken;
+
+  @override
+  List<Object?> get props => [acessToken];
+}
+
+class CheckEmailVerifyFailure extends AuthState {
+  const CheckEmailVerifyFailure(this.errorMessage, {this.errorCode});
+
+  final int? errorCode;
+  final String errorMessage;
+
+  @override
+  List<Object?> get props => [errorCode, errorMessage];
+}

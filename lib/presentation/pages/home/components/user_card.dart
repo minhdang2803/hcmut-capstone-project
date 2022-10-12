@@ -99,7 +99,7 @@ class UserCard extends StatelessWidget {
                     Column(
                       children: [
                         Text(
-                          "Để sử dụng toàn bộ tính năng:",
+                          "To unlock all features:",
                           style: AppTypography.title
                               .copyWith(fontWeight: FontWeight.bold),
                         ),
@@ -108,9 +108,9 @@ class UserCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildLoginSignup("Đăng kí", false, context),
+                            _buildLoginSignup("Register", false, context),
                             SizedBox(width: 10.r),
-                            _buildLoginSignup("Đăng nhập", true, context),
+                            _buildLoginSignup("Login", true, context),
                           ],
                         )
                       ],

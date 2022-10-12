@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'bloc/authentication/auth_cubit.dart';
 import 'bloc/game/game_cubit.dart';
+import 'bloc/video/video_cubit.dart';
 import 'bloc/toeic/toeic_cubit.dart';
 import 'data/configs/hive_config.dart';
 import 'presentation/routes/route_generator.dart';
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (ctx) => AuthCubit()),
               BlocProvider(create: (ctx) => GameCubit()),
               BlocProvider(create: (ctx) => ToeicCubit()),
+              BlocProvider(create: (ctx) => VideoCubit()),
             ],
             child: MaterialApp(
               title: 'Funny Englisk',
