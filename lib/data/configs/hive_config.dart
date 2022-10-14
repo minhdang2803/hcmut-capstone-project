@@ -7,6 +7,8 @@ class HiveConfig {
   static const currentUserKey = 'CURRENT_USER';
   static const currentUserTokenKey = 'CURRENT_USER_TOKEN';
 
+  static const dictionary = 'DICTIONARY';
+
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(UserAdapter());

@@ -43,8 +43,8 @@ class _VideoYoutubeItemState extends State<VideoYoutubeItem> {
                   imageErrorBuilder: (context, error, stackTrace) =>
                       Image.asset(
                     'assets/images/default_logo.png',
-                    width: 36.r,
-                    height: 36.r,
+                    width: 120.r,
+                    height: 70.r,
                     fit: BoxFit.contain,
                   ),
                 ),

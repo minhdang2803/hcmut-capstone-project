@@ -14,4 +14,6 @@ class EndPoint {
 
   static const getSubVideo = '$_baseUrl/subVideo';
   static const getYoutubeVideoInfos = '$_baseUrl/videoYoutubeInfo';
+
+  static const getVocabInfos = '$_baseUrl/vocab';
 }

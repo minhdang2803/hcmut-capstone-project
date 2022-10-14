@@ -9,6 +9,7 @@ import 'bloc/authentication/auth_cubit.dart';
 import 'bloc/game/game_cubit.dart';
 import 'bloc/video/video_cubit.dart';
 import 'bloc/toeic/toeic_cubit.dart';
+import 'bloc/vocab/vocab_cubit.dart';
 import 'data/configs/hive_config.dart';
 import 'presentation/routes/route_generator.dart';
 import 'presentation/routes/route_name.dart';
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (ctx) => GameCubit()),
               BlocProvider(create: (ctx) => ToeicCubit()),
               BlocProvider(create: (ctx) => VideoCubit()),
+              BlocProvider(create: (ctx) => VocabCubit()),
             ],
             child: MaterialApp(
               title: 'Funny Englisk',

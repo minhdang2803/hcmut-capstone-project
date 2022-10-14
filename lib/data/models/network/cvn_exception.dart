@@ -28,6 +28,7 @@ class LocalException extends CVNException {
   static const other = -1;
   static const emptyUser = 0;
   static const unableSaveUser = 1;
+  static const unableSaveDictionary = 2;
 
   final int errorCode;
   final String errorMessage;

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:lottie/lottie.dart';
+
+import 'package:skeletons/skeletons.dart';
 
 import '../../../bloc/video/video_cubit.dart';
 import '../../../data/models/video/video_youtube_info.dart';
@@ -19,11 +20,25 @@ class VideoPage extends StatefulWidget {
 }
 
 class _VideoPageState extends State<VideoPage>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   var _currentPageKey = 1;
   final PagingController<int, VideoYoutubeInfo> _pagingController =
       PagingController(firstPageKey: 1);
 
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(milliseconds: 1000),
+    vsync: this,
+  )..forward();
+
+  late final Animation<double> _animationEaseIn = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.easeIn,
+  );
+
+  late final Animation<double> _animationEaseOut = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.easeOut,
+  );
   @override
   void initState() {
     super.initState();
@@ -61,13 +76,7 @@ class _VideoPageState extends State<VideoPage>
       },
       builder: (context, state) {
         if (state is VideoLoading && _pagingController.itemList == null) {
-          return Center(
-            child: Lottie.asset(
-              'assets/lotties/loading.json',
-              fit: BoxFit.contain,
-              width: 0.5.sw,
-            ),
-          );
+          return _buildLoadingSkeleton();
         }
 
         if (state is VideoYoutubeInfoFailure) {
@@ -86,27 +95,104 @@ class _VideoPageState extends State<VideoPage>
           );
         }
 
-        return PagedListView<int, VideoYoutubeInfo>(
-          pagingController: _pagingController,
-          padding: EdgeInsets.symmetric(vertical: 10.r),
-          builderDelegate: PagedChildBuilderDelegate<VideoYoutubeInfo>(
-            itemBuilder: (ctx, item, index) => VideoYoutubeItem(
-              videoYoutubeInfo: item,
-              onItemClick: () {
-                final argument = item.videoId;
-                Navigator.of(context)
-                    .pushNamed(RouteName.videoPlayer, arguments: argument);
+        return FadeTransition(
+          opacity: _animationEaseIn,
+          child: PagedListView<int, VideoYoutubeInfo>(
+            pagingController: _pagingController,
+            padding: EdgeInsets.symmetric(vertical: 10.r),
+            builderDelegate: PagedChildBuilderDelegate<VideoYoutubeInfo>(
+              itemBuilder: (ctx, item, index) => VideoYoutubeItem(
+                videoYoutubeInfo: item,
+                onItemClick: () {
+                  final argument = item.videoId;
+                  Navigator.of(context)
+                      .pushNamed(RouteName.videoPlayer, arguments: argument);
+                },
+              ),
+              noItemsFoundIndicatorBuilder: (context) {
+                return const HolderWidget(
+                  asset: 'assets/images/default_logo.png',
+                  message: 'Fail to load',
+                );
               },
             ),
-            noItemsFoundIndicatorBuilder: (context) {
-              return const HolderWidget(
-                asset: 'assets/images/default_logo.png',
-                message: 'Fail to load',
-              );
-            },
           ),
         );
       },
+    );
+  }
+
+  Widget _buildLoadingSkeleton() {
+    return FadeTransition(
+      opacity: _animationEaseOut,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30.r),
+        child: ListView.separated(
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 15,
+          itemBuilder: (context, index) => Row(
+            children: [
+              SkeletonAvatar(
+                style: SkeletonAvatarStyle(
+                    shape: BoxShape.rectangle, width: 100.r, height: 70.r),
+              ),
+              SizedBox(width: 15.r),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SkeletonLine(
+                      style: SkeletonLineStyle(
+                        height: 15.r,
+                        borderRadius: BorderRadius.circular(8),
+                        width: double.infinity,
+                      ),
+                    ),
+                    SizedBox(height: 4.r),
+                    SkeletonLine(
+                      style: SkeletonLineStyle(
+                        randomLength: true,
+                        height: 15.r,
+                        borderRadius: BorderRadius.circular(8),
+                        minLength: MediaQuery.of(context).size.width / 6,
+                        maxLength: MediaQuery.of(context).size.width / 3,
+                      ),
+                    ),
+                    SizedBox(height: 12.r),
+                    Row(
+                      children: [
+                        SkeletonLine(
+                          style: SkeletonLineStyle(
+                            randomLength: true,
+                            height: 20.r,
+                            borderRadius: BorderRadius.circular(8),
+                            minLength: 40.r,
+                            maxLength: 70.r,
+                          ),
+                        ),
+                        10.horizontalSpace,
+                        SkeletonLine(
+                          style: SkeletonLineStyle(
+                            randomLength: true,
+                            height: 20.r,
+                            borderRadius: BorderRadius.circular(8),
+                            minLength: 60.r,
+                            maxLength: 90.r,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+          separatorBuilder: (BuildContext context, int index) {
+            return SizedBox(height: 10.r);
+          },
+        ),
+      ),
     );
   }
 
