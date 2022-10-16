@@ -20,7 +20,11 @@ class BottomVocab extends StatefulWidget {
 class _BottomVocabState extends State<BottomVocab>
     with SingleTickerProviderStateMixin {
   VocabInfos? _vocabInfos;
+  final List<String> _vocabTypeList = [];
+  final List<List<TranslateInfo>> _translateInfoList = [];
+  int _currentTab = 0;
 
+  // for animation loading //////////
   late final AnimationController _controller = AnimationController(
     duration: const Duration(milliseconds: 1000),
     vsync: this,
@@ -35,6 +39,7 @@ class _BottomVocabState extends State<BottomVocab>
     parent: _controller,
     curve: Curves.easeOut,
   );
+  ///////////////////////////////////
 
   @override
   void initState() {
@@ -59,6 +64,12 @@ class _BottomVocabState extends State<BottomVocab>
             if (state is VocabSuccess) {
               setState(() {
                 _vocabInfos = state.data;
+                if (_vocabInfos != null) {
+                  _vocabTypeList
+                      .addAll(_vocabInfos!.list.map((e) => e.vocabType));
+                  _translateInfoList
+                      .addAll(_vocabInfos!.list.map((e) => e.translate));
+                }
               });
             }
           },
@@ -100,48 +111,15 @@ class _BottomVocabState extends State<BottomVocab>
                       ),
                     ),
                     10.verticalSpace,
-                    Row(
-                      children: [
-                        _buildPronounce(
-                          "UK",
-                          _vocabInfos?.list[0].pronounce.uk ?? '',
-                        ),
-                      ],
-                    ),
-                    10.verticalSpace,
-                    Divider(height: 1.r, color: Colors.black38),
-                    10.verticalSpace,
-                    Text(
-                      _vocabInfos?.list[0].translate[0].vn ?? '',
-                      style: AppTypography.title,
-                    ),
-                    5.verticalSpace,
-                    Text(
-                      _vocabInfos?.list[0].translate[0].en ?? '',
-                      style: AppTypography.body,
-                    ),
-                    5.verticalSpace,
-                    Text(
-                      _vocabInfos?.list[0].translate[0].example ?? '',
-                      style: AppTypography.body,
-                    ),
-                    10.verticalSpace,
-                    Divider(height: 1.r, color: Colors.black38),
-                    10.verticalSpace,
-                    Text(
-                      _vocabInfos?.list[0].translate[0].vn ?? '',
-                      style: AppTypography.title,
-                    ),
-                    5.verticalSpace,
-                    Text(
-                      _vocabInfos?.list[0].translate[0].en ?? '',
-                      style: AppTypography.body,
-                    ),
-                    5.verticalSpace,
-                    Text(
-                      _vocabInfos?.list[0].translate[0].example ?? '',
-                      style: AppTypography.body,
-                    ),
+                    // Row(
+                    //   children: [
+                    //     _buildPronounce(
+                    //       "UK",
+                    //       _vocabInfos?.list[0].pronounce.uk ?? '',
+                    //     ),
+                    //   ],
+                    // ),
+                    _buildTranslate(),
                   ],
                 ),
               ),
@@ -162,22 +140,7 @@ class _BottomVocabState extends State<BottomVocab>
                   ),
                   20.verticalSpace,
                   Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColor.secondary,
-                        borderRadius: BorderRadius.circular(16.r),
-                      ),
-                      width: 30.r,
-                      child: Center(
-                        child: RotatedBox(
-                          quarterTurns: 1,
-                          child: Text(
-                            _vocabInfos?.list[0].vocabType ?? '',
-                            style: AppTypography.subHeadline,
-                          ),
-                        ),
-                      ),
-                    ),
+                    child: _buildVocabTypes(),
                   ),
                 ],
               ),
@@ -202,6 +165,63 @@ class _BottomVocabState extends State<BottomVocab>
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTranslate() {
+    return Column(
+      children: _translateInfoList[_currentTab]
+          .map(
+            (e) => Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                10.verticalSpace,
+                Divider(height: 1.r, color: Colors.black38),
+                10.verticalSpace,
+                Text(e.vn, style: AppTypography.title),
+                5.verticalSpace,
+                Text(e.en, style: AppTypography.body),
+                5.verticalSpace,
+                Text(e.example, style: AppTypography.body),
+              ],
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  Widget _buildVocabTypes() {
+    return Column(
+      children: _vocabTypeList
+          .map(
+            (e) => Expanded(
+              child: GestureDetector(
+                onTap: (() => setState(() {
+                      _currentTab = _vocabTypeList.indexOf(e);
+                    })),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 3.r),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColor.secondary,
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                    width: 30.r,
+                    child: Center(
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: Text(e,
+                            style: AppTypography.body
+                                .copyWith(color: Colors.white)),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 

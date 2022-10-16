@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
 import 'package:skeletons/skeletons.dart';
 
 import '../../../bloc/video/video_cubit.dart';
@@ -20,7 +19,7 @@ class VideoPage extends StatefulWidget {
 }
 
 class _VideoPageState extends State<VideoPage>
-    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   var _currentPageKey = 1;
   final PagingController<int, VideoYoutubeInfo> _pagingController =
       PagingController(firstPageKey: 1);
@@ -56,7 +55,6 @@ class _VideoPageState extends State<VideoPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return BlocConsumer<VideoCubit, VideoState>(
       listener: (context, state) {
         if (state is VideoYoutubeInfoSuccess) {
@@ -99,6 +97,7 @@ class _VideoPageState extends State<VideoPage>
           opacity: _animationEaseIn,
           child: PagedListView<int, VideoYoutubeInfo>(
             pagingController: _pagingController,
+            addAutomaticKeepAlives: true,
             padding: EdgeInsets.symmetric(vertical: 10.r),
             builderDelegate: PagedChildBuilderDelegate<VideoYoutubeInfo>(
               itemBuilder: (ctx, item, index) => VideoYoutubeItem(
@@ -195,7 +194,4 @@ class _VideoPageState extends State<VideoPage>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
