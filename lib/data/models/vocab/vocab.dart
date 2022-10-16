@@ -26,18 +26,21 @@ class VocabInfo {
   VocabInfo({
     required this.vocab,
     required this.vocabType,
+    required this.id,
     required this.pronounce,
     required this.translate,
   });
 
   late final String vocab;
   late final String vocabType;
+  late final int id;
   late final Pronounce pronounce;
   late final List<TranslateInfo> translate;
 
   VocabInfo.fromJson(Map<String, dynamic> json) {
     vocab = json["vocab"];
     vocabType = json["vocabType"];
+    id = json["id"];
     pronounce = Pronounce.fromJson(json['pronounce']);
     translate = (json["translate"] as List)
         .map((i) => TranslateInfo.fromJson(i))
