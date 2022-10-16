@@ -49,18 +49,46 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
     List<TextSpan> arrayOfTextSpan = [];
     for (int index = 0; index < arrayStrings.length; index++) {
       final text = "${arrayStrings[index]} ";
-      final span = (text[0] == '[')
-          ? TextSpan(
-              text: '${text.substring(1, text.length - 2)} ',
-              style: style.copyWith(color: AppColor.secondary),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () => _onDictionarySearch(
-                    '${text.substring(1, text.length - 2)}'),
-            )
-          : TextSpan(
-              text: text,
-              style: style,
-            );
+      TextSpan span = const TextSpan();
+
+      // first is the word highlight recommended by admin [example] and ending with , or .
+      if ((text[0] == '[') && (text.contains('.') || text.contains(','))) {
+        span = TextSpan(
+          text: '${text.substring(1, text.length - 2)} ',
+          style: style.copyWith(color: AppColor.secondary),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () =>
+                _onDictionarySearch('${text.substring(1, text.length - 3)}'),
+        );
+      } else if (text[0] == '[') {
+        // is the word highlight recommended by admin [example]
+        span = TextSpan(
+          text: '${text.substring(1, text.length - 2)} ',
+          style: style.copyWith(color: AppColor.secondary),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () =>
+                _onDictionarySearch('${text.substring(1, text.length - 2)}'),
+        );
+      } else if (text.contains('.') || text.contains(',')) {
+        // the word ending with , or .
+        span = TextSpan(
+          text: text,
+          style: style,
+          recognizer: TapGestureRecognizer()
+            ..onTap = () =>
+                _onDictionarySearch('${text.substring(0, text.length - 2)}'),
+        );
+      } else {
+        // the normalword
+        span = TextSpan(
+          text: text,
+          style: style,
+          recognizer: TapGestureRecognizer()
+            ..onTap = () =>
+                _onDictionarySearch('${text.substring(0, text.length - 1)}'),
+        );
+      }
+
       arrayOfTextSpan.add(span);
     }
     return arrayOfTextSpan;
@@ -227,8 +255,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
                 randomLength: true,
                 height: 15.r,
                 borderRadius: BorderRadius.circular(8),
-                minLength: MediaQuery.of(context).size.width / 6,
-                maxLength: MediaQuery.of(context).size.width / 3,
+                minLength: 100.r,
+                maxLength: 200.r,
               ),
             ),
             SizedBox(height: 6.r),

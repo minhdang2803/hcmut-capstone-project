@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletons/skeletons.dart';
+import 'package:translator/translator.dart';
 
 import '../../../../bloc/vocab/vocab_cubit.dart';
 import '../../../../data/models/vocab/vocab.dart';
@@ -23,6 +24,8 @@ class _BottomVocabState extends State<BottomVocab>
   final List<String> _vocabTypeList = [];
   final List<List<TranslateInfo>> _translateInfoList = [];
   int _currentTab = 0;
+
+  String _translateFromGG = '';
 
   // for animation loading //////////
   late final AnimationController _controller = AnimationController(
@@ -60,7 +63,7 @@ class _BottomVocabState extends State<BottomVocab>
           color: Colors.white,
         ),
         child: BlocConsumer<VocabCubit, VocabState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is VocabSuccess) {
               setState(() {
                 _vocabInfos = state.data;
@@ -71,6 +74,13 @@ class _BottomVocabState extends State<BottomVocab>
                       .addAll(_vocabInfos!.list.map((e) => e.translate));
                 }
               });
+              if (_vocabTypeList.isEmpty) {
+                // https://www.youtube.com/watch?v=zwrC2vigls8
+                final translation = await widget.text.translate(to: 'vi');
+                setState(() {
+                  _translateFromGG = translation.text;
+                });
+              }
             }
           },
           builder: (context, state) {
@@ -104,7 +114,7 @@ class _BottomVocabState extends State<BottomVocab>
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      _vocabInfos?.list[0].vocab ?? '',
+                      widget.text,
                       style: AppTypography.headline.copyWith(
                         fontWeight: FontWeight.bold,
                         color: AppColor.primary,
@@ -169,26 +179,30 @@ class _BottomVocabState extends State<BottomVocab>
   }
 
   Widget _buildTranslate() {
-    return Column(
-      children: _translateInfoList[_currentTab]
-          .map(
-            (e) => Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                10.verticalSpace,
-                Divider(height: 1.r, color: Colors.black38),
-                10.verticalSpace,
-                Text(e.vn, style: AppTypography.title),
-                5.verticalSpace,
-                Text(e.en, style: AppTypography.body),
-                5.verticalSpace,
-                Text(e.example, style: AppTypography.body),
-              ],
-            ),
+    return _translateInfoList.isNotEmpty
+        ? Column(
+            children: _translateInfoList[_currentTab]
+                .map(
+                  (e) => Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      10.verticalSpace,
+                      Divider(height: 1.r, color: Colors.black38),
+                      10.verticalSpace,
+                      Text(e.vn, style: AppTypography.title),
+                      5.verticalSpace,
+                      Text(e.en, style: AppTypography.body),
+                      5.verticalSpace,
+                      Text(e.example, style: AppTypography.body),
+                    ],
+                  ),
+                )
+                .toList(),
           )
-          .toList(),
-    );
+        : SizedBox(
+            child: Text(_translateFromGG),
+          );
   }
 
   Widget _buildVocabTypes() {
@@ -196,28 +210,34 @@ class _BottomVocabState extends State<BottomVocab>
       children: _vocabTypeList
           .map(
             (e) => Expanded(
-              child: GestureDetector(
-                onTap: (() => setState(() {
-                      _currentTab = _vocabTypeList.indexOf(e);
-                    })),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 3.r),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColor.secondary,
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    width: 30.r,
-                    child: Center(
-                      child: RotatedBox(
-                        quarterTurns: 1,
-                        child: Text(e,
-                            style: AppTypography.body
-                                .copyWith(color: Colors.white)),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => setState(() {
+                        _currentTab = _vocabTypeList.indexOf(e);
+                      }),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColor.secondary,
+                          borderRadius: BorderRadius.circular(16.r),
+                        ),
+                        width: 28.r,
+                        child: Center(
+                          child: RotatedBox(
+                            quarterTurns: 1,
+                            child: Text(
+                              e,
+                              style: AppTypography.body
+                                  .copyWith(color: Colors.white),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                  SizedBox(height: 8.r),
+                ],
               ),
             ),
           )
@@ -239,7 +259,7 @@ class _BottomVocabState extends State<BottomVocab>
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    _vocabInfos?.list[0].vocab ?? '',
+                    widget.text,
                     style: AppTypography.headline.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColor.primary,
