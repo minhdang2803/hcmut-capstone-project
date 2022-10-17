@@ -1,14 +1,15 @@
-import 'package:bke/presentation/pages/video/video_player_page.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/about_us/about_us.dart';
 import '../pages/authentication/authentication_page.dart';
 import '../pages/game_quiz/game/start_game02_page.dart';
 import '../pages/game_quiz/game/game02_page.dart';
+import '../pages/my_dictionary/my_dictionary.dart';
 import '../pages/notification/notifications_page.dart';
 import '../pages/toeic_test/components/result_component.dart';
 import '../pages/toeic_test/test/start_toeic_page.dart';
 import '../pages/toeic_test/test/test_toeic_page.dart';
+import '../pages/video/video_player_page.dart';
 import '../pages/welcome/welcome.dart';
 import '../pages/main/main_page.dart';
 import '../pages/profile/main/profile_page.dart';
@@ -57,6 +58,10 @@ class RouteGenerator {
       case RouteName.videoPlayer:
         final videoId = settings.arguments as String;
         page = VideoPlayerPage(videoId: videoId);
+        break;
+
+      case RouteName.myDictionary:
+        page = const MyDictionaryPage();
         break;
     }
 

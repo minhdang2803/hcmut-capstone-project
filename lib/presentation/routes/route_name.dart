@@ -16,4 +16,5 @@ class RouteName {
   static const resultToeic = '/result_toeic';
 
   static const videoPlayer = '/video_player';
+  static const myDictionary = '/my_dictionary';
 }

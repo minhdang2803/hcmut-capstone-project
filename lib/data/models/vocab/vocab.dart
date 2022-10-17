@@ -3,9 +3,17 @@ import 'package:hive_flutter/hive_flutter.dart';
 part '../../adapters/vocab.g.dart';
 
 @HiveType(typeId: 3)
-class Dictionary {
+class LocalVocabInfo {
   @HiveField(0)
-  List<VocabInfos> dictionary = [];
+  late final String vocab;
+
+  @HiveField(1)
+  late final int id;
+
+  LocalVocabInfo({
+    required this.vocab,
+    required this.id,
+  });
 }
 
 class VocabInfos {

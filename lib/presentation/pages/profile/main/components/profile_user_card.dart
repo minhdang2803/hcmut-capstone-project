@@ -1,14 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../../../../bloc/authentication/auth_cubit.dart';
-import '../../../../../utils/string_util.dart';
 import '../../../../theme/app_color.dart';
-import '../../../../theme/app_typography.dart';
 
 class ProfileUserCard extends StatelessWidget {
   const ProfileUserCard({Key? key}) : super(key: key);
@@ -26,7 +20,7 @@ class ProfileUserCard extends StatelessWidget {
   Container _buildUserScore(BuildContext context) {
     return Container(
       alignment: Alignment.bottomCenter,
-      height: 165.r,
+      height: 130.r,
       decoration: BoxDecoration(
         color: AppColor.primary,
         borderRadius: BorderRadius.only(
@@ -34,14 +28,32 @@ class ProfileUserCard extends StatelessWidget {
           bottomRight: Radius.circular(20.r),
         ),
       ),
-      child: SizedBox(
-        width: 1.sw,
-        height: 57.r,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.r),
-          child: Row(
-            children: [],
-          ),
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.white),
+                  borderRadius: BorderRadius.all(Radius.circular(40.r))),
+              child: Padding(
+                padding: EdgeInsets.all(3.r),
+                child: Image.asset(
+                  'assets/images/default_logo.png',
+                  width: 40.r,
+                  height: 40.r,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            12.horizontalSpace,
+            Text(
+              "BkE",
+              style: AppTypography.superHeadline
+                  .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
       ),
     );

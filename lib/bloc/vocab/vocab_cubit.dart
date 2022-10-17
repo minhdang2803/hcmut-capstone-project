@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
 
 import '../../data/models/network/base_response.dart';
 import '../../data/models/network/cvn_exception.dart';
@@ -43,4 +44,16 @@ class VocabCubit extends Cubit<VocabState> {
       LogUtil.error('Get vocabulary error ', error: e, stackTrace: s);
     }
   }
+
+  void saveToMyDictionary(LocalVocabInfo vocabInfo) {
+    _vocabRepository.addToMyDictionary(vocabInfo);
+  }
+
+  void deleteFromMyDictionary(LocalVocabInfo vocabInfo) {
+    _vocabRepository.delete(vocabInfo);
+  }
+
+  List<LocalVocabInfo>? getAll() => _vocabRepository.getAll();
+
+  Box getUserBox() => _vocabRepository.getMyDictionaryBox();
 }

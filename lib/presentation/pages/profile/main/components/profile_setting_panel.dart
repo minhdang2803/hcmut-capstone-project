@@ -68,6 +68,13 @@ class ProfileSettingPanel extends StatelessWidget {
                             );
                           },
                         ),
+                        SizedBox(height: 20.r),
+                        ProfileSettingItem(
+                          asset: 'assets/icons/ic_quiz.svg',
+                          label: 'My dictionary',
+                          onPress: () => Navigator.of(context)
+                              .pushNamed(RouteName.myDictionary),
+                        ),
                       ],
                     ),
                   ),
@@ -98,7 +105,6 @@ class ProfileSettingPanel extends StatelessWidget {
                   ),
                   Expanded(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         ProfileSettingItem(
                           asset: 'assets/icons/ic_info.svg',

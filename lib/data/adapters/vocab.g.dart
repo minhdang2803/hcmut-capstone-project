@@ -6,25 +6,30 @@ part of '../models/vocab/vocab.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class DictionaryAdapter extends TypeAdapter<Dictionary> {
+class LocalVocabInfoAdapter extends TypeAdapter<LocalVocabInfo> {
   @override
   final int typeId = 3;
 
   @override
-  Dictionary read(BinaryReader reader) {
+  LocalVocabInfo read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Dictionary()..dictionary = (fields[0] as List).cast<VocabInfos>();
+    return LocalVocabInfo(
+      vocab: fields[0] as String,
+      id: fields[1] as int,
+    );
   }
 
   @override
-  void write(BinaryWriter writer, Dictionary obj) {
+  void write(BinaryWriter writer, LocalVocabInfo obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.dictionary);
+      ..write(obj.vocab)
+      ..writeByte(1)
+      ..write(obj.id);
   }
 
   @override
@@ -33,7 +38,7 @@ class DictionaryAdapter extends TypeAdapter<Dictionary> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DictionaryAdapter &&
+      other is LocalVocabInfoAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

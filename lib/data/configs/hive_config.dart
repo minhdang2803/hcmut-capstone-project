@@ -1,6 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../models/authentication/user.dart';
+import '../models/vocab/vocab.dart';
 
 class HiveConfig {
   static const userBox = 'USER';
@@ -13,7 +14,9 @@ class HiveConfig {
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(UserAdapter());
+    Hive.registerAdapter(LocalVocabInfoAdapter());
 
     await Hive.openBox(userBox);
+    await Hive.openBox(myDictionary);
   }
 }
