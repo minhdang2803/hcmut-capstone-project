@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:like_button/like_button.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:translator/translator.dart';
 
@@ -10,6 +9,7 @@ import '../../../../data/models/vocab/vocab.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_typography.dart';
 import '../../../widgets/holder_widget.dart';
+import 'vocabulary_tab.dart';
 
 class BottomVocab extends StatefulWidget {
   const BottomVocab({super.key, required this.text});
@@ -27,6 +27,8 @@ class _BottomVocabState extends State<BottomVocab>
   int _currentTab = 0;
 
   String _translateFromGG = '';
+
+  bool isLikeed = true;
 
   // for animation loading //////////
   late final AnimationController _controller = AnimationController(
@@ -49,7 +51,7 @@ class _BottomVocabState extends State<BottomVocab>
   void initState() {
     super.initState();
 
-    //context.read<VocabCubit>().getVocab('can');
+    // context.read<VocabCubit>().getVocab('can');
     context.read<VocabCubit>().getVocab(widget.text);
   }
 
@@ -76,6 +78,7 @@ class _BottomVocabState extends State<BottomVocab>
                     }
                   }
 
+                  // map data thành list các tab, động từ, giới từ ,....
                   for (var element in _vocabTypeList) {
                     final wordTab = _vocabInfos!.list
                         .where((e) => e.vocabType == element)
@@ -122,16 +125,26 @@ class _BottomVocabState extends State<BottomVocab>
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.text,
-                    style: AppTypography.headline.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColor.primary,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        widget.text,
+                        style: AppTypography.headline.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppColor.primary,
+                        ),
+                      ),
+                      10.horizontalSpace,
+                      _buildVocabTypes(),
+                    ],
                   ),
-                  6.horizontalSpace,
-                  _buildVocabTypes(),
+                  Icon(
+                    Icons.volume_up,
+                    size: 20.r,
+                    color: AppColor.textSecondary,
+                  ),
                 ],
               ),
               10.verticalSpace,
@@ -147,56 +160,10 @@ class _BottomVocabState extends State<BottomVocab>
     return _translateInfoList.isNotEmpty
         ? Column(
             children: _translateInfoList[_currentTab]
-                .map(
-                  (e) => Padding(
-                    padding: EdgeInsets.only(bottom: 8.r),
-                    child: Stack(
-                      alignment: Alignment.topRight,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 3.r, color: AppColor.secondary),
-                            borderRadius: BorderRadius.circular(16.h),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(8.r),
-                            child: _buildTranslateTab(e),
-                          ),
-                        ),
-                        _buildLikeButton(),
-                      ],
-                    ),
-                  ),
-                )
+                .map((e) => VocabularyTab(vocabInfo: e))
                 .toList(),
           )
         : SizedBox(child: Text(_translateFromGG));
-  }
-
-  Widget _buildTranslateTab(VocabInfo vocabInfo) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: vocabInfo.translate
-          .map(
-            (e) => Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                10.verticalSpace,
-                Text(e.vn, style: AppTypography.title),
-                5.verticalSpace,
-                Text(e.en, style: AppTypography.body),
-                5.verticalSpace,
-                Text(e.example, style: AppTypography.body),
-                10.verticalSpace,
-                Divider(height: 1.r, color: Colors.black38),
-              ],
-            ),
-          )
-          .toList(),
-    );
   }
 
   Widget _buildVocabTypes() {
@@ -241,28 +208,6 @@ class _BottomVocabState extends State<BottomVocab>
             ),
           )
           .toList(),
-    );
-  }
-
-  Widget _buildLikeButton() {
-    return LikeButton(
-      likeBuilder: (isLiked) {
-        return Icon(
-          Icons.star_rounded,
-          size: 25.r,
-          color: isLiked ? AppColor.primary : Colors.black38,
-        );
-      },
-      likeCountPadding: EdgeInsets.zero,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      mainAxisAlignment: MainAxisAlignment.end,
-      isLiked: false,
-      onTap: (isLiked) async {
-        setState(() {
-          isLiked = !isLiked;
-        });
-        return isLiked;
-      },
     );
   }
 

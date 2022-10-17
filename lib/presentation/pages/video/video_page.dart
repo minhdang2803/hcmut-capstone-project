@@ -98,7 +98,7 @@ class _VideoPageState extends State<VideoPage>
           child: PagedListView<int, VideoYoutubeInfo>(
             pagingController: _pagingController,
             addAutomaticKeepAlives: true,
-            padding: EdgeInsets.symmetric(vertical: 10.r),
+            padding: EdgeInsets.symmetric(vertical: 5.r),
             builderDelegate: PagedChildBuilderDelegate<VideoYoutubeInfo>(
               itemBuilder: (ctx, item, index) => VideoYoutubeItem(
                 videoYoutubeInfo: item,

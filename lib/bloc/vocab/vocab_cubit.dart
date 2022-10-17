@@ -49,11 +49,13 @@ class VocabCubit extends Cubit<VocabState> {
     _vocabRepository.addToMyDictionary(vocabInfo);
   }
 
-  void deleteFromMyDictionary(LocalVocabInfo vocabInfo) {
-    _vocabRepository.delete(vocabInfo);
+  void deleteFromMyDictionary(int id) {
+    _vocabRepository.deleteAtKey(id);
   }
 
-  List<LocalVocabInfo>? getAll() => _vocabRepository.getAll();
+  List<LocalVocabInfo> getAll() => _vocabRepository.getAll();
+
+  // List<LocalVocabInfo> getAll() => _vocabRepository.getAll();
 
   Box getUserBox() => _vocabRepository.getMyDictionaryBox();
 }

@@ -134,52 +134,57 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final topPadding = MediaQuery.of(context).padding.top;
+
     return Scaffold(
-      body: Column(
-        children: [
-          GestureDetector(
-            onTap: () => _controller.play(),
-            child: Column(
-              children: [
-                YoutubePlayerBuilder(
-                  player: YoutubePlayer(controller: _controller),
-                  builder: (context, player) {
-                    return Listener(
-                        onPointerUp: _resetCurrentIndex, child: player);
-                  },
-                ),
-              ],
+      body: Padding(
+        padding: EdgeInsets.only(top: topPadding),
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () => _controller.play(),
+              child: Column(
+                children: [
+                  YoutubePlayerBuilder(
+                    player: YoutubePlayer(controller: _controller),
+                    builder: (context, player) {
+                      return Listener(
+                          onPointerUp: _resetCurrentIndex, child: player);
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: BlocConsumer<VideoCubit, VideoState>(
-              listener: (context, state) {
-                if (state is SubVideoSuccess) {
-                  setState(() {
-                    _subVideo = state.subVideo;
-                  });
-                }
-              },
-              builder: (context, state) {
-                if (state is SubVideoFailure) {
-                  return const HolderWidget(
-                    asset: 'assets/images/default_logo.png',
-                    message: 'Fail to load video script!',
-                  );
-                }
-                return _subVideo?.subs == null
-                    ? _buildLoadingSkeleton()
-                    : ValueListenableBuilder(
-                        valueListenable: _controller,
-                        builder: (context, YoutubePlayerValue value, child) {
-                          _currentDuration = value.position.inMilliseconds;
-                          return _buildSub();
-                        },
-                      );
-              },
-            ),
-          )
-        ],
+            Expanded(
+              child: BlocConsumer<VideoCubit, VideoState>(
+                listener: (context, state) {
+                  if (state is SubVideoSuccess) {
+                    setState(() {
+                      _subVideo = state.subVideo;
+                    });
+                  }
+                },
+                builder: (context, state) {
+                  if (state is SubVideoFailure) {
+                    return const HolderWidget(
+                      asset: 'assets/images/default_logo.png',
+                      message: 'Fail to load video script!',
+                    );
+                  }
+                  return _subVideo?.subs == null
+                      ? _buildLoadingSkeleton()
+                      : ValueListenableBuilder(
+                          valueListenable: _controller,
+                          builder: (context, YoutubePlayerValue value, child) {
+                            _currentDuration = value.position.inMilliseconds;
+                            return _buildSub();
+                          },
+                        );
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

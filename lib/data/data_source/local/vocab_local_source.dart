@@ -8,8 +8,8 @@ import '../../models/vocab/vocab.dart';
 abstract class VocabLocalSource {
   void addToMyDictionary(LocalVocabInfo dictionary);
 
-  dynamic getAll();
-  void delete(LocalVocabInfo dictionary);
+  List<LocalVocabInfo> getAll();
+  void deleteAtKey(int id);
 
   Box getMyDictionaryBox();
 }
@@ -19,8 +19,12 @@ class VocabLocalSourceImpl extends VocabLocalSource {
   void addToMyDictionary(LocalVocabInfo dictionary) async {
     try {
       final myDictionaryBox = Hive.box(HiveConfig.myDictionary);
-      myDictionaryBox.add(dictionary);
-      LogUtil.debug('Saved dictionary: ${dictionary}');
+
+      if (!myDictionaryBox.containsKey(dictionary.id)) {
+        myDictionaryBox.put(dictionary.id, dictionary);
+
+        LogUtil.debug('Saved dictionary: ${dictionary}');
+      }
     } catch (e, s) {
       LogUtil.error('Save dictionary error: $e', error: e, stackTrace: s);
       throw LocalException(
@@ -29,16 +33,18 @@ class VocabLocalSourceImpl extends VocabLocalSource {
   }
 
   @override
-  dynamic getAll() {
+  List<LocalVocabInfo> getAll() {
+    List<LocalVocabInfo> res = [];
     final myDictionaryBox = Hive.box(HiveConfig.myDictionary);
     final myVocabList = myDictionaryBox.values;
-    return myVocabList;
+    res.addAll(myVocabList.map((e) => e));
+    return res;
   }
 
   @override
-  void delete(LocalVocabInfo dictionary) {
+  void deleteAtKey(int id) {
     final myDictionaryBox = Hive.box(HiveConfig.myDictionary);
-    myDictionaryBox.delete(dictionary);
+    myDictionaryBox.delete(id);
   }
 
   @override

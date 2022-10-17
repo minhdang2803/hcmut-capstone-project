@@ -14,6 +14,11 @@ class LocalVocabInfo {
     required this.vocab,
     required this.id,
   });
+
+  LocalVocabInfo.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
+    vocab = json["vocab"];
+  }
 }
 
 class VocabInfos {
@@ -80,17 +85,17 @@ class Pronounce {
 class TranslateInfo {
   TranslateInfo({
     required this.en,
-    required this.vn,
+    required this.vi,
     required this.example,
   });
 
   late final String en;
-  late final String vn;
+  late final String vi;
   late final String example;
 
   TranslateInfo.fromJson(Map<String, dynamic> json) {
     en = json["en"];
-    vn = json["vn"];
+    vi = json["vi"];
     example = json["example"];
   }
 }
