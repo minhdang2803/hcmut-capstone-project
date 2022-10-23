@@ -45,7 +45,7 @@ class ProfileSettingPanel extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 30.r),
             child: Container(
-              width: 300.r,
+              width: 350.r,
               height: 300.r,
               padding: EdgeInsets.symmetric(vertical: 20.r),
               decoration: BoxDecoration(
@@ -108,9 +108,9 @@ class ProfileSettingPanel extends StatelessWidget {
                       children: [
                         ProfileSettingItem(
                           asset: 'assets/icons/ic_info.svg',
-                          label: 'About us',
+                          label: 'Lịch sử hoạt động',
                           onPress: () => Navigator.of(context)
-                              .pushNamed(RouteName.aboutUs),
+                              .pushNamed(RouteName.historicalActivies),
                         ),
                       ],
                     ),

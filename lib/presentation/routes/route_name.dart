@@ -5,7 +5,7 @@ class RouteName {
   static const authentication = '/authentication';
   static const profile = '/profile';
   static const updateProfile = '/update_profile';
-  static const aboutUs = '/about_us';
+  static const historicalActivies = '/historical_activities';
   static const notifications = '/notifications';
 
   static const start = '/start';

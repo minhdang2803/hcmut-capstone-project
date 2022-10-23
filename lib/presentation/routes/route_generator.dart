@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../pages/about_us/about_us.dart';
+import '../pages/historical_activities/historical_activities.dart';
 import '../pages/authentication/authentication_page.dart';
 import '../pages/game_quiz/game/start_game02_page.dart';
 import '../pages/game_quiz/game/game02_page.dart';
@@ -31,8 +31,8 @@ class RouteGenerator {
       case RouteName.profile:
         page = const ProfilePage();
         break;
-      case RouteName.aboutUs:
-        page = const AboutUsPage();
+      case RouteName.historicalActivies:
+        page = const HistoricalActivitiesPage();
         break;
 
       case RouteName.notifications:

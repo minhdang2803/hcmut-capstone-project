@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../theme/app_color.dart';
 import '../../widgets/cvn_app_bar.dart';
 
-class AboutUsPage extends StatelessWidget {
-  const AboutUsPage({super.key});
+class HistoricalActivitiesPage extends StatelessWidget {
+  const HistoricalActivitiesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class AboutUsPage extends StatelessWidget {
       body: Stack(
         children: [
           _buildBody(context),
-          const CVNAppBar(label: 'About Us'),
+          const CVNAppBar(label: 'Lịch sử hoạt động'),
         ],
       ),
     );
