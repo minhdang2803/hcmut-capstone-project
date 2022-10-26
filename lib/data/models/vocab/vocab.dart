@@ -5,18 +5,11 @@ part '../../adapters/vocab.g.dart';
 @HiveType(typeId: 3)
 class LocalVocabInfo {
   @HiveField(0)
-  late final String vocab;
+  late final VocabInfo vocab;
 
-  @HiveField(1)
-  late final int id;
+  LocalVocabInfo({required this.vocab});
 
-  LocalVocabInfo({
-    required this.vocab,
-    required this.id,
-  });
-
-  LocalVocabInfo.fromJson(Map<String, dynamic> json) {
-    id = json["id"];
+  LocalVocabInfo.fromJson(Map<dynamic, dynamic> json) {
     vocab = json["vocab"];
   }
 }
@@ -35,6 +28,7 @@ class VocabInfos {
   }
 }
 
+@HiveType(typeId: 4)
 class VocabInfo {
   VocabInfo({
     required this.vocab,
@@ -44,10 +38,19 @@ class VocabInfo {
     required this.translate,
   });
 
+  @HiveField(0)
   late final String vocab;
+
+  @HiveField(1)
   late final String vocabType;
+
+  @HiveField(2)
   late final int id;
+
+  @HiveField(3)
   late final Pronounce pronounce;
+
+  @HiveField(4)
   late final List<TranslateInfo> translate;
 
   VocabInfo.fromJson(Map<String, dynamic> json) {
@@ -61,6 +64,7 @@ class VocabInfo {
   }
 }
 
+@HiveType(typeId: 5)
 class Pronounce {
   Pronounce({
     required this.uk,
@@ -69,9 +73,16 @@ class Pronounce {
     required this.usmp3,
   });
 
+  @HiveField(0)
   late final String uk;
+
+  @HiveField(1)
   late final String ukmp3;
+
+  @HiveField(2)
   late final String us;
+
+  @HiveField(3)
   late final String usmp3;
 
   Pronounce.fromJson(Map<String, dynamic> json) {
@@ -82,6 +93,7 @@ class Pronounce {
   }
 }
 
+@HiveType(typeId: 6)
 class TranslateInfo {
   TranslateInfo({
     required this.en,
@@ -89,8 +101,13 @@ class TranslateInfo {
     required this.example,
   });
 
+  @HiveField(0)
   late final String en;
+
+  @HiveField(1)
   late final String vi;
+
+  @HiveField(2)
   late final String example;
 
   TranslateInfo.fromJson(Map<String, dynamic> json) {

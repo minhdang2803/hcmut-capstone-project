@@ -37,7 +37,7 @@ class MyDictionaryPage extends StatelessWidget {
           scrollDirection: Axis.vertical,
           itemCount: myDictionary.length,
           itemBuilder: (context, index) =>
-              VocabDictionaryItem(vocabId: myDictionary[index].id),
+              VocabDictionaryItem(vocabInfo: myDictionary[index].vocab),
         ),
       ),
     );

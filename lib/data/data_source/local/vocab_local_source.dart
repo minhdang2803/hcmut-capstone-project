@@ -20,8 +20,8 @@ class VocabLocalSourceImpl extends VocabLocalSource {
     try {
       final myDictionaryBox = Hive.box(HiveConfig.myDictionary);
 
-      if (!myDictionaryBox.containsKey(dictionary.id)) {
-        myDictionaryBox.put(dictionary.id, dictionary);
+      if (!myDictionaryBox.containsKey(dictionary.vocab.id)) {
+        myDictionaryBox.put(dictionary.vocab.id, dictionary);
 
         LogUtil.debug('Saved dictionary: ${dictionary}');
       }

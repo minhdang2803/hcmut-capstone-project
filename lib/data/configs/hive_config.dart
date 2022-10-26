@@ -14,7 +14,11 @@ class HiveConfig {
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(UserAdapter());
-    Hive.registerAdapter(LocalVocabInfoAdapter());
+    Hive
+      ..registerAdapter(VocabInfoAdapter())
+      ..registerAdapter(PronounceAdapter())
+      ..registerAdapter(TranslateInfoAdapter())
+      ..registerAdapter(LocalVocabInfoAdapter());
 
     await Hive.openBox(userBox);
     await Hive.openBox(myDictionary);

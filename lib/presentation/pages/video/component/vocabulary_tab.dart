@@ -69,7 +69,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
   Widget _buildLikeButton(VocabInfo vocabInfo) {
     final myDictionary = BlocProvider.of<VocabCubit>(context).getAll();
 
-    final vocabIdList = myDictionary.map((e) => e.id).toList();
+    final vocabIdList = myDictionary.map((e) => e.vocab.id).toList();
     final isLiked = vocabIdList.contains(vocabInfo.id);
     return LikeButton(
       likeBuilder: (isLiked) {
@@ -87,8 +87,8 @@ class _VocabularyTabState extends State<VocabularyTab> {
         if (isLiked == true) {
           context.read<VocabCubit>().deleteFromMyDictionary(vocabInfo.id);
         } else {
-          context.read<VocabCubit>().saveToMyDictionary(LocalVocabInfo.fromJson(
-              {"vocab": vocabInfo.vocab, "id": vocabInfo.id}));
+          context.read<VocabCubit>().saveToMyDictionary(
+              LocalVocabInfo.fromJson({"vocab": vocabInfo}));
         }
         setState(() {
           isLiked = !isLiked;

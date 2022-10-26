@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../bloc/vocab/vocab_cubit.dart';
+import '../../../data/models/vocab/vocab.dart';
 
 class VocabDictionaryItem extends StatefulWidget {
-  const VocabDictionaryItem({super.key, required this.vocabId});
+  const VocabDictionaryItem({super.key, required this.vocabInfo});
 
-  final int vocabId;
+  final VocabInfo vocabInfo;
 
   @override
   State<VocabDictionaryItem> createState() => _VocabDictionaryItemState();
@@ -15,8 +14,8 @@ class VocabDictionaryItem extends StatefulWidget {
 class _VocabDictionaryItemState extends State<VocabDictionaryItem> {
   @override
   Widget build(BuildContext context) {
-    //final appDictionary = BlocProvider.of<VocabCubit>(context).getAll();
-
-    return Container();
+    return Container(
+      child: Text(widget.vocabInfo.vocab),
+    );
   }
 }
