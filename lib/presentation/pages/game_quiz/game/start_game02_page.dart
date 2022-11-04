@@ -50,7 +50,7 @@ class _StartComponent extends State<StartGame02> {
       listener: (context, state) {
         if (state is GameSuccess) {
           final game = state.props.first as Game;
-          quizs = game.quizs;
+          quizs = game.quizs; 
         } else if (state is GameFailure) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(state.errorMessage)));

@@ -10,6 +10,7 @@ import '../home/home_page.dart';
 import '../profile/main/profile_page.dart';
 import '../toeic_test/main/toeictest_page.dart';
 import '../video/video_page.dart';
+import '../book/books_screen.dart';
 import 'components/monastery_search_delegate.dart';
 
 class MainPage extends StatefulWidget {
@@ -24,7 +25,8 @@ class _MainPageState extends State<MainPage> {
   final List<Widget> _pages = [
     const HomePage(),
     const GameQuizPage(),
-    const ToeicPage(),
+    // const ToeicPage(),
+    const BookPage(),
     const VideoPage(),
     const ProfilePage(),
   ];
@@ -59,10 +61,10 @@ class _MainPageState extends State<MainPage> {
         title = 'QUIZ GAME';
         break;
       case 2:
-        title = 'TOEIC';
+        title = 'BOOK';
         break;
       case 3:
-        title = 'Video';
+        title = 'VIDEO';
         break;
       case 4:
         title = 'USER';
@@ -194,7 +196,7 @@ class _MainPageState extends State<MainPage> {
               height: 24.r,
             ),
           ),
-          label: 'Toeic',
+          label: 'Book',
         ),
         BottomNavigationBarItem(
           icon: Padding(

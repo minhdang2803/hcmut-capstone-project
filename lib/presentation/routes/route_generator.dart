@@ -1,3 +1,7 @@
+
+
+import 'package:bke/data/models/book/book_listener.dart';
+
 import 'package:flutter/material.dart';
 
 import '../pages/about_us/about_us.dart';
@@ -13,6 +17,9 @@ import '../pages/video/video_player_page.dart';
 import '../pages/welcome/welcome.dart';
 import '../pages/main/main_page.dart';
 import '../pages/profile/main/profile_page.dart';
+import '../pages/book/book_details.dart';
+import '../pages/book/book_listen.dart';
+import '../pages/book/book_read.dart';
 import 'route_name.dart';
 
 class RouteGenerator {
@@ -63,6 +70,22 @@ class RouteGenerator {
       case RouteName.myDictionary:
         page = const MyDictionaryPage();
         break;
+
+      case RouteName.bookDetails:
+        final bookId = settings.arguments as String;
+        page = BookDetails(bookId: bookId);
+        break;
+
+      case RouteName.bookRead:
+        final bookId = settings.arguments as String;
+        page = BookRead(bookId: bookId);
+        break;
+  
+      case RouteName.bookListen:
+        final book = settings.arguments as BookListenArguments;
+        page = BookListen(bookInfo: book);
+        break;
+  
     }
 
     return _getPageRoute(page, settings);

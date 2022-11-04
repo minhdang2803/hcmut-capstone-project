@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ import 'bloc/game/game_cubit.dart';
 import 'bloc/video/video_cubit.dart';
 import 'bloc/toeic/toeic_cubit.dart';
 import 'bloc/vocab/vocab_cubit.dart';
+import 'bloc/book/book_bloc.dart';
 import 'data/configs/hive_config.dart';
 import 'presentation/routes/route_generator.dart';
 import 'presentation/routes/route_name.dart';
@@ -62,6 +64,7 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (ctx) => ToeicCubit()),
               BlocProvider(create: (ctx) => VideoCubit()),
               BlocProvider(create: (ctx) => VocabCubit()),
+              BlocProvider(create: (ctx) => BookBloc())
             ],
             child: MaterialApp(
               title: 'Funny Englisk',

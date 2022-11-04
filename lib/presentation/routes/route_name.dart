@@ -17,4 +17,8 @@ class RouteName {
 
   static const videoPlayer = '/video_player';
   static const myDictionary = '/my_dictionary';
+
+  static const bookDetails = '/book_details';
+  static const bookRead = '/ebook';
+  static const bookListen = '/audio_book';
 }

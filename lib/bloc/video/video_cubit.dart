@@ -21,7 +21,7 @@ class VideoCubit extends Cubit<VideoState> {
       final BaseResponse<SubVideo> response =
           await _videoRepository.getSubVideo(videoId);
 
-      final data = response.data!;
+      final data = response.data;
       emit(SubVideoSuccess(data));
       LogUtil.debug('Get SubVideo success');
     } on RemoteException catch (e, s) {
