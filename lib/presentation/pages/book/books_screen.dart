@@ -11,6 +11,7 @@ import '../../../bloc/book/book_bloc.dart';
 import '../../../bloc/book/book_state.dart';
 import '../../../bloc/book/book_event.dart';
 import '../../routes/route_name.dart';
+import '../../widgets/holder_widget.dart';
 
 
 class BookPage extends StatelessWidget {
@@ -66,7 +67,7 @@ class BookPage extends StatelessWidget {
                           ),
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            color: AppColor.appBackground,
+                            color: Colors.white,
                             borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(40),
                               // topRight: Radius.circular(40),
@@ -82,6 +83,7 @@ class BookPage extends StatelessWidget {
           );
   }
   Widget contentSection(BuildContext context) {
+      late final String heading;
       return BlocBuilder<BookListBloc, BookListState>(
                 builder: (context, state)  {
                   if (state is BookListLoadingState){
@@ -91,7 +93,7 @@ class BookPage extends StatelessWidget {
                   }
 
                   if (state is BookListLoadedState){
-                    final String heading = state.category;
+                    heading = state.category;
                     // print(heading);
                     List <BookInfo> bookList = state.books; 
                   
@@ -100,8 +102,8 @@ class BookPage extends StatelessWidget {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              BookSection(heading: 'Continue reading', bookList: bookList),
-                              BookSection(heading: 'My list', bookList: bookList),
+                              BookSection(heading: 'Tiếp tục xem', bookList: bookList),
+                              BookSection(heading: 'Danh sách của tôi', bookList: bookList),
                               //BookSection(); //Discover more
                               //BookSection(); //Adventures
                               //BookSection(); //Romance
@@ -109,7 +111,7 @@ class BookPage extends StatelessWidget {
                             ],
                           );//Continue reading   
                     }
-                    else if (heading == 'Continue reading'){}
+                    else if (heading == 'Continue Reading'){}
                     else if (heading == 'My List'){}
                     else{
                       return BookSectionDisplayAll(heading: heading, bookList: bookList);
@@ -117,7 +119,14 @@ class BookPage extends StatelessWidget {
                   }
 
                   if (state is BookErrorState){
-                    return const Center(child: Text("Can't not load this content right now"));
+                    return HolderWidget(
+                      asset: 'assets/images/error.png',
+                      onRetry: () => {
+                        heading != 'Home' ?
+                                        context.read<BookListBloc>().add(LoadByCategoryEvent(category: heading))
+                                        : context.read<BookListBloc>().add(LoadAllEvent())
+                      },
+                  );
                   }
                   return Container();
                 }
@@ -237,11 +246,23 @@ class BookSection extends StatelessWidget {
                     width: size.width * 0.3,
                     child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            child: Image.network(
-                              bookList[i].coverUrl,
-                              height: size.height*0.25
-                            ),
-                          ),           
+                            child: Container(
+                              height: size.height*0.25,
+                              color: AppColor.lightGray,
+                              child: FadeInImage.assetNetwork(
+                                placeholder: 'assets/images/default_logo.png',
+                                image: bookList[i].coverUrl,
+                                fadeInDuration: const Duration(milliseconds: 350),
+                                fit: BoxFit.fill,
+                                // placeholderFit: BoxFit.fill,
+                                imageErrorBuilder: (context, error, stackTrace) =>
+                                  Image.asset(
+                                    'assets/images/default_logo.png',
+                                  
+                                  ),
+                                ),
+                            ),           
+                    )                       
                   ),
                 ],
               ),

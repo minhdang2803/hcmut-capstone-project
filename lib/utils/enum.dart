@@ -5,3 +5,12 @@ enum AuthAction {
   verifyRegisterOTP,
   authentication
 }
+
+enum RecentAction{
+  watchVideo,
+  readBook,
+  listenBook,
+  learnVocab,
+  doTest,
+  playQuiz
+}

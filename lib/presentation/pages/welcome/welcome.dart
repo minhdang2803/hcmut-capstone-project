@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../routes/route_name.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_typography.dart';
+import '../../widgets/holder_widget.dart';
 import '../../widgets/rounded_elevated_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -32,26 +33,27 @@ class WelcomeScreen extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(25.r),
                   ),
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(4),
                   child: Column(
                     children: [
+                      10.verticalSpace,
                       Text(
-                        'Login or Sign Up',
-                        style: AppTypography.superHeadline
+                        'Bắt đầu học cùng Casper',
+                        style: AppTypography.headline
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                       10.verticalSpace,
                       Text(
-                        'Login or create an account to learn English and take part in challenges.',
+                        'Đăng nhập hoặc tạo một tài khoản để bắt đầu cuộc hành trình nào!',
                         style: AppTypography.subHeadline.copyWith(
                           color: AppColor.textSecondary,
                         ),
                         textAlign: TextAlign.center,
                       ),
                       15.verticalSpace,
-                      _buildSubButton(context, "Login", true),
+                      _buildSubButton(context, "Đăng nhập", true),
                       10.verticalSpace,
-                      _buildSubButton(context, "Create an account", false),
+                      _buildSubButton(context, "Tạo tài khoản", false),
                     ],
                   ),
                 ),
@@ -66,17 +68,9 @@ class WelcomeScreen extends StatelessWidget {
   Widget _buildHuman() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset(
-          'assets/authentication/6.svg',
-          width: 150.r,
-          height: 250.r,
-        ),
-        SvgPicture.asset(
-          'assets/authentication/3.svg',
-          width: 150.r,
-          height: 250.r,
-        ),
+      children: const [
+        HolderWidget(
+                          asset: 'assets/images/peace.png')
       ],
     );
   }

@@ -17,7 +17,6 @@ class MyDictionaryPage extends StatelessWidget {
       body: Stack(
         children: [
           _buildBody(context),
-          const CVNAppBar(label: 'Từ của tui'),
         ],
       ),
     );
@@ -27,19 +26,25 @@ class MyDictionaryPage extends StatelessWidget {
     final topPadding = MediaQuery.of(context).padding.top;
 
     final myDictionary = BlocProvider.of<VocabCubit>(context).getAll();
-    return SingleChildScrollView(
-      padding: EdgeInsets.only(top: 63.r + topPadding),
-      child: Container(
-        height: 300.r,
-        width: 1.sw,
-        child: ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 30.r),
-          scrollDirection: Axis.vertical,
-          itemCount: myDictionary.length,
-          itemBuilder: (context, index) =>
-              VocabDictionaryItem(vocabId: myDictionary[index].id),
-        ),
-      ),
+    return Expanded(
+              child: 
+                Container(
+                padding: const EdgeInsets.only(
+                  left: 5,
+                  right: 5
+                ),
+                width: double.infinity,
+                child:  ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: myDictionary.length,
+                  itemBuilder: (context, index) =>
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: VocabDictionaryItem(vocab: myDictionary[index], borderColor: AppColor.primary),
+                      ),
+              ),
+            ),
+
     );
   }
 }

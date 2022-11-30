@@ -167,7 +167,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
                 builder: (context, state) {
                   if (state is SubVideoFailure) {
                     return const HolderWidget(
-                      asset: 'assets/images/default_logo.png',
+                      asset: 'assets/images/error.png',
                       message: 'Fail to load video script!',
                     );
                   }

@@ -87,13 +87,20 @@ class _VocabularyTabState extends State<VocabularyTab> {
         if (isLiked == true) {
           context.read<VocabCubit>().deleteFromMyDictionary(vocabInfo.id);
         } else {
-          context.read<VocabCubit>().saveToMyDictionary(LocalVocabInfo.fromJson(
-              {"vocab": vocabInfo.vocab, "id": vocabInfo.id}));
-        }
+          context.read<VocabCubit>().saveToMyDictionary(
+            LocalVocabInfo(vocab: vocabInfo.vocab, 
+            vocabType: vocabInfo.vocabType, 
+            id: vocabInfo.id, 
+            pronounce: vocabInfo.pronounce, 
+            translate: vocabInfo.translate)
+          );
+            
+        
         setState(() {
           isLiked = !isLiked;
         });
         return isLiked;
+        }
       },
     );
   }

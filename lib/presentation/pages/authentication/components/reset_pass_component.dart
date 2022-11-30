@@ -50,7 +50,7 @@ class _ResetPassComponentState extends State<ResetPassComponent> {
           WidgetUtil.showSnackBar(context, state.errorMessage);
         }
         if (state is ResetPasswordSuccess) {
-          WidgetUtil.showSnackBar(context, "Change password successfully");
+          WidgetUtil.showSnackBar(context, "Đổi mật khẩu thành công");
           Navigator.of(context).pushReplacementNamed(RouteName.main);
         }
       },
@@ -61,7 +61,7 @@ class _ResetPassComponentState extends State<ResetPassComponent> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Create new password',
+              'Tạo mật khẩu mới',
               style: AppTypography.title.copyWith(
                 color: AppColor.primary,
                 fontWeight: FontWeight.bold,
@@ -74,13 +74,13 @@ class _ResetPassComponentState extends State<ResetPassComponent> {
                 children: [
                   AuthInputField(
                     obscure: true,
-                    hintText: 'New password',
+                    hintText: 'Mật khẩu mới',
                     inputAction: TextInputAction.next,
                     inputType: TextInputType.text,
                     validator: (value) {
                       if (value == null ||
                           !ValidationUtil.isPasswordValid(value)) {
-                        return 'Password should have at least 6 characters';
+                        return 'Mật khẩu phải có nhiều hơn 6 ký tự';
                       }
                       return null;
                     },
@@ -91,12 +91,12 @@ class _ResetPassComponentState extends State<ResetPassComponent> {
                   ),
                   AuthInputField(
                     obscure: true,
-                    hintText: 'Confirm password',
+                    hintText: 'Xác nhận mật khẩu',
                     inputAction: TextInputAction.done,
                     inputType: TextInputType.text,
                     validator: (value) {
                       if (value == null || !(value == _password)) {
-                        return 'Passwords do not match';
+                        return 'Mật khẩu không trùng khớp';
                       }
                       return null;
                     },

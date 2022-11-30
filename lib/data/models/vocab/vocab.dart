@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-part '../../adapters/vocab.g.dart';
+part 'vocab.g.dart';
 
 @HiveType(typeId: 3)
 class LocalVocabInfo {
@@ -10,14 +10,31 @@ class LocalVocabInfo {
   @HiveField(1)
   late final int id;
 
+  @HiveField(2)
+  late final String vocabType;
+
+  @HiveField(3)
+    late final Pronounce pronounce;
+
+  @HiveField(4)
+    late final List<TranslateInfo> translate;
+
   LocalVocabInfo({
     required this.vocab,
+    required this.vocabType,
     required this.id,
+    required this.pronounce,
+    required this.translate,
   });
 
   LocalVocabInfo.fromJson(Map<String, dynamic> json) {
-    id = json["id"];
     vocab = json["vocab"];
+    vocabType = json["vocabType"];
+    id = json["id"];
+    pronounce = Pronounce.fromJson(json['pronounce']);
+    translate = (json["translate"] as List)
+        .map((i) => TranslateInfo.fromJson(i))
+        .toList();
   }
 }
 
@@ -61,6 +78,7 @@ class VocabInfo {
   }
 }
 
+@HiveType(typeId: 4)
 class Pronounce {
   Pronounce({
     required this.uk,
@@ -68,10 +86,16 @@ class Pronounce {
     required this.us,
     required this.usmp3,
   });
-
+  @HiveField(0)
   late final String uk;
+
+  @HiveField(1)
   late final String ukmp3;
+
+  @HiveField(2)
   late final String us;
+
+  @HiveField(3)
   late final String usmp3;
 
   Pronounce.fromJson(Map<String, dynamic> json) {
@@ -82,6 +106,7 @@ class Pronounce {
   }
 }
 
+@HiveType(typeId: 5)
 class TranslateInfo {
   TranslateInfo({
     required this.en,
@@ -89,8 +114,13 @@ class TranslateInfo {
     required this.example,
   });
 
+  @HiveField(0)
   late final String en;
+
+  @HiveField(1)
   late final String vi;
+
+  @HiveField(2)
   late final String example;
 
   TranslateInfo.fromJson(Map<String, dynamic> json) {

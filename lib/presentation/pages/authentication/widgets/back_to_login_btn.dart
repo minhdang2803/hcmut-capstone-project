@@ -29,7 +29,7 @@ class _BackToLoginBtnState extends State<BackToLoginBtn> {
           ),
           4.horizontalSpace,
           Text(
-            'Back to Login',
+            'Trở lại bước đăng nhập',
             style: AppTypography.body.copyWith(
               color: AppColor.textSecondary,
             ),

@@ -42,7 +42,7 @@ class HolderWidget extends StatelessWidget {
             : const SizedBox(),
         if (onRetry != null)
           RoundedElevatedButton(
-            label: 'Retry',
+            label: 'Thử lại',
             labelStyle: AppTypography.title.copyWith(color: Colors.white),
             width: 100.w,
             height: 44.h,

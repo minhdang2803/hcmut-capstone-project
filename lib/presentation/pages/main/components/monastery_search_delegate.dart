@@ -3,46 +3,63 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../theme/app_color.dart';
 import '../../../theme/app_typography.dart';
-import '../../../widgets/circle_border_container.dart';
 
 class MonasterySearchDelegate extends SearchDelegate {
   final List<String> _historySearch = [];
 
   @override
   List<Widget>? buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: const Icon(Icons.clear_rounded),
-        onPressed: () {
-          if (query.isNotEmpty) {
-            query = '';
-            showSuggestions(context);
-          } else {
-            close(context, null);
-          }
-        },
-      ),
-    ];
+    return [SizedBox(width: 20.r)];
+    // return [
+    //   IconButton(
+    //     icon: const Icon(Icons.clear_rounded, color: Colors.white),
+    //     onPressed: () {
+    //       if (query.isNotEmpty) {
+    //         query = '';
+    //         showSuggestions(context);
+    //       } else {
+    //         close(context, null);
+    //       }
+    //     },
+    //   ),
+    // ];
   }
 
   @override
   Widget? buildLeading(BuildContext context) {
-    return CircleBorderContainer(
-      radius: 28.r,
-      elevation: null,
-      borderColor: Colors.transparent,
-      borderWidth: null,
-      onPressed: () => Navigator.of(context).pop(),
-      child: Icon(
-        Icons.arrow_back_ios_rounded,
-        size: 16.r,
-      ),
+    return IconButton(
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: () {close(context, null);}
     );
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    return Center(child: Text(query));
+    return Container(
+      color: AppColor.primary,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: Expanded(
+            child: 
+            Container(
+              padding: const EdgeInsets.only(
+                top: 20,
+                left: 10,
+                right: 10
+              ),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Center(child: Text(query))
+            )
+        )
+      )
+    );
   }
 
   @override
@@ -57,33 +74,57 @@ class MonasterySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return ListView.separated(
-      padding: EdgeInsets.symmetric(vertical: 20.r),
-      separatorBuilder: (context, index) => 10.verticalSpace,
-      itemCount: _historySearch.length,
-      itemBuilder: (context, index) => ListTile(
-        leading: Image.asset(
-          'assets/images/default_logo.png',
-          width: 36.r,
-          height: 36.r,
-          fit: BoxFit.contain,
-        ),
-        title: Text(_historySearch[index], style: AppTypography.body),
-        trailing: const Icon(Icons.history_rounded),
-        onTap: () {
-          query = _historySearch[index];
-          showResults(context);
-        },
+    return Container(
+      color: AppColor.primary,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: Expanded(
+            child: 
+            Container(
+              padding: const EdgeInsets.only(
+                top: 20,
+                left: 10,
+                right: 10
+              ),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: ListView.separated(
+                padding: EdgeInsets.symmetric(vertical: 20.r),
+                separatorBuilder: (context, index) => 10.verticalSpace,
+                itemCount: _historySearch.length,
+                itemBuilder: (context, index) => ListTile(
+                  leading: Image.asset(
+                    'assets/images/default_logo.png',
+                    width: 36.r,
+                    height: 36.r,
+                    fit: BoxFit.contain,
+                  ),
+                  title: Text(_historySearch[index], style: AppTypography.body),
+                  trailing: const Icon(Icons.history_rounded),
+                  onTap: () {
+                    query = _historySearch[index];
+                    showResults(context);
+                  },
+                ),
+              ),
+            ),
+          ),
       ),
     );
   }
 
   @override
-  String get searchFieldLabel => 'Search something';
+  String get searchFieldLabel => 'Tra từ vựng, video, sách,...';
 
   @override
   TextStyle? get searchFieldStyle =>
-      AppTypography.body.copyWith(color: AppColor.textSecondary);
+      AppTypography.body.copyWith(color: AppColor.lightGray);
 
   @override
   TextInputType? get keyboardType => TextInputType.name;
@@ -93,20 +134,25 @@ class MonasterySearchDelegate extends SearchDelegate {
     final theme = Theme.of(context);
     return theme.copyWith(
         appBarTheme: AppBarTheme(
-          toolbarHeight: 63.r,
-          backgroundColor: Colors.white,
+          toolbarHeight: 50.r,
+          backgroundColor: AppColor.primary,
           titleSpacing: 0,
           iconTheme: const IconThemeData(
-            color: AppColor.textSecondary,
+            color: Colors.white,
           ),
-          elevation: 3,
+          elevation: 0
         ),
-        inputDecorationTheme: const InputDecorationTheme(
-          border: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          errorBorder: InputBorder.none,
-          disabledBorder: InputBorder.none,
-        ));
+      
+        inputDecorationTheme: 
+          InputDecorationTheme(
+            hintStyle: AppTypography.body.copyWith(color: AppColor.lightGray),
+            filled: true,
+            fillColor: Colors.black.withOpacity(0.1),
+            border: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(15.r),  
+            ),
+          ),
+        );
   }
+
 }

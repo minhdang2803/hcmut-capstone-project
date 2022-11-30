@@ -67,7 +67,7 @@ class _VerifyOTPComponentState extends State<VerifyOTPComponent> {
             RichText(
               text: TextSpan(
                 text:
-                    'Please enter the OTP Code that has been sent to your email ',
+                    'Hãy nhập mã OTP đã được gửi tới email của bạn',
                 style: AppTypography.body,
                 children: [
                   TextSpan(

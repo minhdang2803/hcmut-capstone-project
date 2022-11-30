@@ -82,7 +82,7 @@ class _VideoPageState extends State<VideoPage>
             child: SizedBox(
               width: 1.sw,
               child: HolderWidget(
-                asset: 'assets/images/default_logo.png',
+                asset: 'assets/images/error.png',
                 onRetry: () => {
                   context
                       .read<VideoCubit>()

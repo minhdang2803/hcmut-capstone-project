@@ -38,6 +38,7 @@ class VocabLocalSourceImpl extends VocabLocalSource {
     final myDictionaryBox = Hive.box(HiveConfig.myDictionary);
     final myVocabList = myDictionaryBox.values;
     res.addAll(myVocabList.map((e) => e));
+    print(res);
     return res;
   }
 

@@ -13,7 +13,7 @@ class CVNAppBar extends StatelessWidget {
     this.label,
     this.onBackButtonPress,
     this.onSearchButtonPress,
-    this.showNotificationAction = true,
+    this.showNotificationAction = false,
     this.leading,
   }) : super(key: key);
 
@@ -26,12 +26,10 @@ class CVNAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
-    return Material(
-      elevation: 3,
-      child: Container(
+    return Container(
         width: 1.sw,
         height: 63.r + topPadding,
-        color: Colors.white,
+        color: AppColor.primary,
         child: Padding(
           padding: EdgeInsets.only(
             top: topPadding,
@@ -40,6 +38,7 @@ class CVNAppBar extends StatelessWidget {
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildLeading(context),
               10.horizontalSpace,
@@ -53,16 +52,16 @@ class CVNAppBar extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 
   Widget _buildLabel() {
     return Expanded(
       child: AutoSizeText(
         label ?? '',
-        style: AppTypography.title.copyWith(
-          fontWeight: FontWeight.bold,
+        style: AppTypography.superHeadline.copyWith(
+          fontWeight: FontWeight.w900,
+          color:  Colors.white,
         ),
         maxLines: 1,
       ),
@@ -72,19 +71,22 @@ class CVNAppBar extends StatelessWidget {
   Widget _buildLeading(BuildContext context) {
     return leading != null
         ? leading!
-        : CircleBorderContainer(
-            radius: 28.r,
-            elevation: null,
-            borderColor: Colors.transparent,
-            borderWidth: null,
-            onPressed: onBackButtonPress != null
-                ? onBackButtonPress!
-                : (() => Navigator.of(context).pop()),
-            child: Icon(
-              Icons.arrow_back_ios_rounded,
-              size: 16.r,
-            ),
+        : Visibility(
+            visible: onBackButtonPress != null,
+            child: CircleBorderContainer(
+              radius: 32.r,
+              elevation: 2,
+              borderColor: AppColor.iconBorder,
+              borderWidth: 3.r,
+              onPressed: onBackButtonPress,
+              child: const Icon(
+                  Icons.arrow_back,
+                  color: AppColor.primary,
+                  size: 16,
+                )
+           )
           );
+        
   }
 
   Widget _buildNotificationIcon(BuildContext context) {

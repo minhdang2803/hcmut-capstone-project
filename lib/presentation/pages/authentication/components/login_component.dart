@@ -1,3 +1,4 @@
+import 'package:bke/presentation/pages/authentication/widgets/3rdservices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,10 +58,10 @@ class _LoginComponentState extends State<LoginComponent> {
                     enableErrorText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Email should not be empty';
+                        return 'Email không được để trống';
                       }
                       if (!ValidationUtil.isValidEmail(value)) {
-                        return 'Email is invalid';
+                        return 'Email không hợp lệ';
                       }
                       return null;
                     },
@@ -69,17 +70,17 @@ class _LoginComponentState extends State<LoginComponent> {
                     },
                   ),
                   AuthInputField(
-                    hintText: 'Password',
+                    hintText: 'Mật khẩu',
                     inputAction: TextInputAction.done,
                     inputType: TextInputType.text,
                     obscure: true,
                     enableErrorText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Password should not be empty';
+                        return 'Mật khẩu không được để trống';
                       }
                       if (!ValidationUtil.isPasswordValid(value)) {
-                        return 'Password length must be greater than 6';
+                        return 'Mật khẩu phải có nhiều hơn 6 ký tự';
                       }
                       return null;
                     },
@@ -93,7 +94,7 @@ class _LoginComponentState extends State<LoginComponent> {
                       onTap: () =>
                           widget.onChangeAction(AuthAction.forgotPassword),
                       child: Text(
-                        'Forgot Password?',
+                        'Quên mật khẩu?',
                         style: AppTypography.body.copyWith(
                           color: AppColor.textSecondary,
                         ),
@@ -102,9 +103,10 @@ class _LoginComponentState extends State<LoginComponent> {
                   ),
                 ],
               ),
-            ),
+            ), 
+            _buildLoginButton(),
             Expanded(
-              child: _buildLoginAction(),
+              child: Option(),
             ),
           ],
         ),
@@ -112,70 +114,6 @@ class _LoginComponentState extends State<LoginComponent> {
     );
   }
 
-  Widget _buildLoginAction() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        _buildLoginButton(),
-        Text(
-          'OR',
-          style: AppTypography.body.copyWith(
-            color: AppColor.textSecondary,
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularBorderIcon(
-              icon: SvgPicture.asset(
-                'assets/icons/ic_facebook.svg',
-                width: 24.r,
-                height: 24.r,
-              ),
-              borderColor: Colors.grey[400]!,
-              onIconClick: () {
-                // context.read<AuthCubit>().doFacebookLogin();
-              },
-            ),
-            14.horizontalSpace,
-            CircularBorderIcon(
-              icon: SvgPicture.asset(
-                'assets/icons/ic_google.svg',
-                width: 24.r,
-                height: 24.r,
-              ),
-              borderColor: Colors.grey[400]!,
-              onIconClick: () {
-                //context.read<AuthCubit>().doGoogleLogin();
-              },
-            ),
-          ],
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushReplacementNamed(RouteName.main);
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Login as anonymous',
-                style: AppTypography.body.copyWith(
-                  color: AppColor.textSecondary,
-                ),
-              ),
-              Icon(
-                Icons.arrow_right_alt_rounded,
-                size: 32.r,
-                color: AppColor.textSecondary,
-              ),
-            ],
-          ),
-        )
-      ],
-    );
-  }
 
   Widget _buildLoginButton() {
     return BlocConsumer<AuthCubit, AuthState>(

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../pages/main/components/monastery_search_delegate.dart';
 import '../theme/app_color.dart';
 
-class SearchInputField extends StatelessWidget {
-  const SearchInputField({
+class InputField extends StatelessWidget {
+  const InputField({
     Key? key,
     this.hintText,
     this.hintStyle,
@@ -13,6 +14,7 @@ class SearchInputField extends StatelessWidget {
     this.controller,
     this.onChange,
     this.focusNode,
+    this.color
   }) : super(key: key);
 
   final String? hintText;
@@ -22,22 +24,27 @@ class SearchInputField extends StatelessWidget {
   final TextEditingController? controller;
   final Function(String)? onChange;
   final FocusNode? focusNode;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
       focusNode: focusNode,
-      onChanged: onChange,
+      
+      onTap: () {
+                showSearch(
+                  context: context,
+                  delegate: MonasterySearchDelegate(),
+                );
+              },
       decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(32.r),
-          borderSide: const BorderSide(color: Colors.grey),
+        filled: true,
+        fillColor: color,
+        border: UnderlineInputBorder(
+          borderRadius: BorderRadius.circular(15.r),  
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(32.r),
-          borderSide: const BorderSide(color: AppColor.primary),
-        ),
+
         hintText: hintText,
         hintStyle: hintStyle,
         prefixIcon: prefixIcon,

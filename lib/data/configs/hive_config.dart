@@ -15,6 +15,8 @@ class HiveConfig {
     await Hive.initFlutter();
     Hive.registerAdapter(UserAdapter());
     Hive.registerAdapter(LocalVocabInfoAdapter());
+    Hive.registerAdapter(PronounceAdapter());
+    Hive.registerAdapter(TranslateInfoAdapter());
 
     await Hive.openBox(userBox);
     await Hive.openBox(myDictionary);

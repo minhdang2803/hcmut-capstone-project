@@ -7,11 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:skeletons/skeletons.dart';
 
 import '../../../bloc/book/book_state.dart';
 import '../../../utils/constants.dart';
-// import '../../routes/route_name.dart';
 import '../../widgets/holder_widget.dart';
 
 import 'package:bke/presentation/theme/app_color.dart';
@@ -107,7 +105,7 @@ class _BookReadState extends State<BookRead>
                 builder: (context, state) {
                   if (state is BookLoadingState  && _pagingController.itemList == null) {
                     return FadeTransition(
-                      opacity: _animationEaseOut,
+                      opacity: _animationEaseIn,
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 30.r),
                         child: const Center(
@@ -122,7 +120,7 @@ class _BookReadState extends State<BookRead>
                       child: SizedBox(
                         width: 1.sw,
                         child: HolderWidget(
-                          asset: 'assets/images/default_logo.png',
+                          asset: 'assets/images/error.png',
                           onRetry: () => {
                             context
                                 .read<BookBloc>()
@@ -135,10 +133,12 @@ class _BookReadState extends State<BookRead>
 
                   return FadeTransition(
                     opacity: _animationEaseIn,
-                    child: PagedListView<int, String>.separated(
+                    child: Scaffold(
+                      backgroundColor: AppColor.primary,
+                      body: PagedListView<int, String>(
                       pagingController: _pagingController,
                       addAutomaticKeepAlives: true,
-                      padding: EdgeInsets.symmetric(vertical: 5.r),
+                      // padding: EdgeInsets.symmetric(vertical: 5.r),
                       builderDelegate: PagedChildBuilderDelegate<String>(
                         itemBuilder: (ctx, item, index) => 
                        
@@ -151,11 +151,8 @@ class _BookReadState extends State<BookRead>
                                                 color: AppColor.appBackground,
                                               )
                                           ),
-                                        
-                            
-                          
-                      ),
-                      separatorBuilder: (context, index) => const Divider(height: 20),
+                      )
+                    )
                     )
                   );
                 },

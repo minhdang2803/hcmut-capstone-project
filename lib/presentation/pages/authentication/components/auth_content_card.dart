@@ -26,8 +26,8 @@ class AuthContentCard extends StatefulWidget {
 class _AuthContentCardState extends State<AuthContentCard>
     with TickerProviderStateMixin {
   static const authTabs = <Tab>[
-    Tab(child: FittedBox(child: Text('Login'))),
-    Tab(child: FittedBox(child: Text('Register'))),
+    Tab(child: FittedBox(child: Text('Đăng nhập'))),
+    Tab(child: FittedBox(child: Text('Đăng ký'))),
   ];
 
   late TabController _tabController;

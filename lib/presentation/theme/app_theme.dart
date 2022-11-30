@@ -15,7 +15,7 @@ class AppTheme {
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       scrollbarTheme: ScrollbarThemeData(
-        thumbColor: MaterialStateProperty.all(AppColor.scrollBarIndicator),
+        thumbColor: MaterialStateProperty.all(AppColor.darkGray),
       )
       //useMaterial3: true,
       );
@@ -25,7 +25,7 @@ class AppTheme {
     height: 32.r,
     textStyle: AppTypography.body,
     decoration: BoxDecoration(
-      border: Border.all(color: AppColor.pinBorder),
+      border: Border.all(color: AppColor.lightGray),
       borderRadius: BorderRadius.circular(8),
     ),
   );

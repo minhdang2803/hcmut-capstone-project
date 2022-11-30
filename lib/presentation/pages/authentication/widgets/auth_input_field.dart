@@ -51,7 +51,7 @@ class _AuthInputFieldState extends State<AuthInputField> {
         border: const UnderlineInputBorder(),
         hintText: widget.hintText,
         hintStyle: widget.showHintError
-            ? AppTypography.body.copyWith(color: Colors.red)
+            ? AppTypography.body.copyWith(color: AppColor.falseColor)
             : AppTypography.body.copyWith(color: AppColor.textSecondary),
         suffixIcon: widget.obscure
             ? IconButton(
@@ -75,7 +75,7 @@ class _AuthInputFieldState extends State<AuthInputField> {
       obscureText: _isObscure,
       maxLines: 1,
       style: widget.showHintError
-          ? AppTypography.body.copyWith(color: Colors.red)
+          ? AppTypography.body.copyWith(color: AppColor.falseColor)
           : AppTypography.body.copyWith(color: AppColor.textSecondary),
     );
   }

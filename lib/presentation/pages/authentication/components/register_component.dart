@@ -8,6 +8,7 @@ import '../../../../utils/enum.dart';
 import '../../../../utils/validation_util.dart';
 import '../../../theme/app_typography.dart';
 import '../../../widgets/rounded_elevated_button.dart';
+import '../widgets/3rdservices.dart';
 import '../widgets/auth_input_field.dart';
 
 class RegisterComponent extends StatefulWidget {
@@ -44,10 +45,9 @@ class _RegisterComponentState extends State<RegisterComponent> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Expanded(
-              child: _buildRegisterForms(context),
-            ),
+            _buildRegisterForms(context),
             _buildRegisterButton(),
+            Expanded(child: Option())
           ],
         ),
       ),
@@ -68,7 +68,7 @@ class _RegisterComponentState extends State<RegisterComponent> {
       builder: (context, state) {
         if (state is AuthLoading) {
           return SizedBox(
-            height: 44.h,
+            height: 4.h,
             child: FittedBox(
               child: Padding(
                   padding: EdgeInsets.all(10.r),
@@ -77,7 +77,7 @@ class _RegisterComponentState extends State<RegisterComponent> {
           );
         }
         return RoundedElevatedButton(
-          label: 'Register',
+          label: 'Đăng ký',
           labelStyle: AppTypography.title.copyWith(color: Colors.white),
           width: 225.w,
           height: 44.h,
@@ -90,17 +90,17 @@ class _RegisterComponentState extends State<RegisterComponent> {
 
   Widget _buildRegisterForms(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         AuthInputField(
-          hintText: 'Fullname',
+          hintText: 'Tên',
           inputAction: TextInputAction.next,
           inputType: TextInputType.text,
           capitalization: TextCapitalization.words,
           showHintError: _registerModel.invalidFullname,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Fullname should not be empty';
+              return 'Tên không được để trống';
             }
             return null;
           },
@@ -115,10 +115,10 @@ class _RegisterComponentState extends State<RegisterComponent> {
           showHintError: _registerModel.invalidEmail,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Email should not be empty';
+              return 'Email không được để trống';
             }
             if (!ValidationUtil.isValidEmail(value)) {
-              return 'Email is invalid';
+              return 'Email không hợp lệ';
             }
             return null;
           },
@@ -127,17 +127,17 @@ class _RegisterComponentState extends State<RegisterComponent> {
           },
         ),
         AuthInputField(
-          hintText: 'Password',
+          hintText: 'Mật khẩu',
           inputAction: TextInputAction.done,
           inputType: TextInputType.text,
           obscure: true,
           enableErrorText: true,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Password should not be empty';
+              return 'Mật khẩu không được để trống';
             }
             if (!ValidationUtil.isPasswordValid(value)) {
-              return 'Password length must be greater than 6';
+              return 'Mật khẩu phải có nhiều hơn 6 ký tự';
             }
             return null;
           },

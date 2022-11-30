@@ -7,6 +7,7 @@ import '../../theme/app_typography.dart';
 import '../../widgets/cvn_app_bar.dart';
 import '../game_quiz/main/gamequiz_page.dart';
 import '../home/home_page.dart';
+import '../lookup/lookup.dart';
 import '../profile/main/profile_page.dart';
 import '../toeic_test/main/toeictest_page.dart';
 import '../video/video_page.dart';
@@ -24,10 +25,8 @@ class _MainPageState extends State<MainPage> {
   int _pageIndex = 0;
   final List<Widget> _pages = [
     const HomePage(),
-    const GameQuizPage(),
-    // const ToeicPage(),
-    const BookPage(),
-    const VideoPage(),
+    const LookUpPage(),
+    const HomePage(),
     const ProfilePage(),
   ];
   late final PageController _pageController;
@@ -51,38 +50,38 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  String _getAppBarTitle() {
-    var title = '';
-    switch (_pageIndex) {
-      case 0:
-        title = 'HOME';
-        break;
-      case 1:
-        title = 'QUIZ GAME';
-        break;
-      case 2:
-        title = 'BOOK';
-        break;
-      case 3:
-        title = 'VIDEO';
-        break;
-      case 4:
-        title = 'USER';
-        break;
-    }
-    return title;
-  }
+  // String _getAppBarTitle() {
+  //   var title = '';
+  //   switch (_pageIndex) {
+  //     case 0:
+  //       title = 'HOME';
+  //       break;
+  //     case 1:
+  //       title = 'QUIZ GAME';
+  //       break;
+  //     case 2:
+  //       title = 'BOOK';
+  //       break;
+  //     case 3:
+  //       title = 'VIDEO';
+  //       break;
+  //     case 4:
+  //       title = 'USER';
+  //       break;
+  //   }
+  //   return title;
+  // }
 
   @override
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
     return Scaffold(
-      backgroundColor: AppColor.appBackground,
+      backgroundColor: AppColor.primary,
       body: Stack(
         alignment: Alignment.topCenter,
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 63.r + topPadding),
+            padding: EdgeInsets.only(top: topPadding),
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
               transitionBuilder: (Widget child, Animation<double> animation) {
@@ -95,31 +94,31 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
           ),
-          _buildAppBar(),
+          // _buildAppBar()
         ],
       ),
       bottomNavigationBar: _buildBottomNav(),
     );
   }
 
-  Widget _buildAppBar() {
-    return Builder(
-      builder: (ctx) => CVNAppBar(
-        label: _getAppBarTitle(),
-        leading: _pageIndex == 0 ? const SizedBox() : null,
-        showNotificationAction: false,
-        onBackButtonPress: () => _onPageSelected(0),
-        onSearchButtonPress: _pageIndex != 1
-            ? null
-            : () {
-                showSearch(
-                  context: context,
-                  delegate: MonasterySearchDelegate(),
-                );
-              },
-      ),
-    );
-  }
+  // Widget _buildAppBar() {
+  //   return Builder(
+  //     builder: (ctx) => CVNAppBar(
+  //       label: _getAppBarTitle(),
+  //       leading: _pageIndex == 0 ? const SizedBox() : null,
+  //       showNotificationAction: false,
+  //       onBackButtonPress: () => _onPageSelected(0),
+  //       onSearchButtonPress: _pageIndex != 1
+  //           ? null
+  //           : () {
+  //               showSearch(
+  //                 context: context,
+  //                 delegate: MonasterySearchDelegate(),
+  //               );
+  //             },
+  //     ),
+  //   );
+  // }
 
   Widget _buildBottomNav() {
     return BottomNavigationBar(
@@ -154,13 +153,13 @@ class _MainPageState extends State<MainPage> {
               height: 24.r,
             ),
           ),
-          label: 'Home',
+          label: 'Trang chính',
         ),
         BottomNavigationBarItem(
           icon: Padding(
             padding: EdgeInsets.only(bottom: 4.r),
             child: SvgPicture.asset(
-              'assets/icons/ic_quiz.svg',
+              'assets/icons/ic_search.svg',
               color: AppColor.inactiveIconColor,
               width: 24.r,
               height: 24.r,
@@ -169,19 +168,20 @@ class _MainPageState extends State<MainPage> {
           activeIcon: Padding(
             padding: EdgeInsets.only(bottom: 4.r),
             child: SvgPicture.asset(
-              'assets/icons/ic_quiz.svg',
+              'assets/icons/ic_search.svg',
               color: AppColor.primary,
               width: 24.r,
               height: 24.r,
             ),
           ),
-          label: 'Quiz',
+          label: 'Tra từ',
         ),
+        
         BottomNavigationBarItem(
           icon: Padding(
             padding: EdgeInsets.only(bottom: 4.r),
             child: SvgPicture.asset(
-              'assets/icons/ic_toeic.svg',
+              'assets/icons/ic_add.svg',
               color: AppColor.inactiveIconColor,
               width: 24.r,
               height: 24.r,
@@ -190,34 +190,13 @@ class _MainPageState extends State<MainPage> {
           activeIcon: Padding(
             padding: EdgeInsets.only(bottom: 4.r),
             child: SvgPicture.asset(
-              'assets/icons/ic_toeic.svg',
+              'assets/icons/ic_add.svg',
               color: AppColor.primary,
               width: 24.r,
               height: 24.r,
             ),
           ),
-          label: 'Book',
-        ),
-        BottomNavigationBarItem(
-          icon: Padding(
-            padding: EdgeInsets.only(bottom: 4.r),
-            child: SvgPicture.asset(
-              'assets/icons/ic_quiz.svg',
-              color: AppColor.inactiveIconColor,
-              width: 24.r,
-              height: 24.r,
-            ),
-          ),
-          activeIcon: Padding(
-            padding: EdgeInsets.only(bottom: 4.r),
-            child: SvgPicture.asset(
-              'assets/icons/ic_quiz.svg',
-              color: AppColor.primary,
-              width: 24.r,
-              height: 24.r,
-            ),
-          ),
-          label: 'Video',
+          label: 'Thêm',
         ),
         BottomNavigationBarItem(
           icon: Padding(
@@ -238,7 +217,7 @@ class _MainPageState extends State<MainPage> {
               height: 24.r,
             ),
           ),
-          label: 'User',
+          label: 'Tài khoản',
         ),
       ],
     );

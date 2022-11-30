@@ -55,25 +55,25 @@ class _ForgotPassComponentState extends State<ForgotPassComponent> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Opp.. You forgot password?',
+              'Ối! Bạn quên mật khẩu?',
               style: AppTypography.headline.copyWith(
                 color: AppColor.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              'Please enter the registered email to recover the password',
+              'Nhập vào email đã dùng để đăng ký để khổi phục mật khẩu',
               style: AppTypography.body,
             ),
             Form(
               key: _verifyEmailFormKey,
               child: AuthInputField(
-                hintText: 'Your email',
+                hintText: 'Email của bạn',
                 inputAction: TextInputAction.done,
                 inputType: TextInputType.text,
                 validator: (value) {
                   if (value == null || !ValidationUtil.isValidEmail(value)) {
-                    return 'Email is invalid';
+                    return 'Email không tồn tại';
                   }
                   return null;
                 },
@@ -107,7 +107,7 @@ class _ForgotPassComponentState extends State<ForgotPassComponent> {
             );
           }
           return RoundedElevatedButton(
-            label: 'Verify email',
+            label: 'Xác nhận email',
             labelStyle: AppTypography.title.copyWith(color: Colors.white),
             width: 225.w,
             height: 44.h,
