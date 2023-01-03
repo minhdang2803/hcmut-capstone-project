@@ -19,76 +19,74 @@ class VocabDictionaryItem extends StatefulWidget {
   State<VocabDictionaryItem> createState() => _VocabDictionaryItemState();
 }
 
-
-
 class _VocabDictionaryItemState extends State<VocabDictionaryItem> {
   String _translation = "";
-   @override
+  @override
   void initState() {
     super.initState();
     concat();
   }
 
-  void concat(){
-    for (var trans in widget.vocab.translate){
+  void concat() {
+    for (var trans in widget.vocab.translate) {
       _translation += " ${trans.vi};";
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
         height: 60.h,
         padding: EdgeInsets.symmetric(vertical: 5.r),
         decoration: BoxDecoration(
-          borderRadius: widget.borderColor != null ? BorderRadius.circular(5.r) : BorderRadius.circular(0),
+          borderRadius: widget.borderColor != null
+              ? BorderRadius.circular(5.r)
+              : BorderRadius.circular(0),
           border: Border.all(
-            width: 1.r, 
-            color: widget.borderColor != null ? AppColor.primary : AppColor.lightGray                 
-          ),
+              width: 1.r,
+              color: widget.borderColor != null
+                  ? AppColor.primary
+                  : AppColor.lightGray),
         ),
-        child:  _buildVocabPanel()
-      );
+        child: _buildVocabPanel());
   }
+
   Widget _buildVocabPanel() {
     return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        widget.vocab.vocab,
-                        style: AppTypography.title.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColor.primary,
-                        ),
-                      ),
-                      5.horizontalSpace,
-                      Text(
-                        "(${widget.vocab.vocabType})",
-                        style: AppTypography.body.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColor.secondary,
-                        ),
-                      ),
-                    ],
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  widget.vocab.vocab,
+                  style: AppTypography.title.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.primary,
                   ),
-                ],
-              ),
-              5.verticalSpace,
-              AutoSizeText(
-                _translation,
-                style: AppTypography.bodySmall,
-                maxLines: 2,
-              ),
-
-            ],
-          
-      );
+                ),
+                5.horizontalSpace,
+                Text(
+                  "(${widget.vocab.vocabType})",
+                  style: AppTypography.body.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.secondary,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        5.verticalSpace,
+        AutoSizeText(
+          _translation,
+          style: AppTypography.bodySmall,
+          maxLines: 2,
+        ),
+      ],
+    );
   }
 }

@@ -7,10 +7,8 @@ import '../book/books_screen.dart';
 import '../chat/chat.dart';
 import '../game_quiz/main/gamequiz_page.dart';
 import '../main/components/monastery_search_delegate.dart';
-import '../profile/main/profile_page.dart';
 import '../toeic_test/main/toeictest_page.dart';
 import '../video/video_page.dart';
-import 'components/user_card.dart';
 import 'navigation_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -38,7 +36,7 @@ class _HomePageState extends State<HomePage>
       const MyDictionaryPage(),
       const ToeicPage(),
       const GameQuizPage(),
-      const ChatPage(),
+      // const ChatPage(),
     ];
   }
 
@@ -48,7 +46,6 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
-  
   void _onPageSelected(int index) {
     setState(() {
       _pageIndex = index;
@@ -62,30 +59,30 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    
+
     Size size = MediaQuery.of(context).size;
     final topPadding = MediaQuery.of(context).padding.top;
 
     return Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 63.r + topPadding),
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              transitionBuilder: (Widget child, Animation<double> animation) {
-                return FadeTransition(opacity: animation, child: child);
-              },
-              child: PageView(
-                controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: _pages,
-              ),
+      alignment: Alignment.topCenter,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top:  topPadding),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: PageView(
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: _pages,
             ),
           ),
-          _buildAppBar()
-        ],
-      );
+        ),
+        _buildAppBar()
+      ],
+    );
   }
 
   String _getAppBarTitle() {
@@ -116,9 +113,7 @@ class _HomePageState extends State<HomePage>
     return title;
   }
 
-
   Widget _buildAppBar() {
-    
     return Builder(
       builder: (ctx) => CVNAppBar(
         label: _getAppBarTitle(),
@@ -137,4 +132,3 @@ class _HomePageState extends State<HomePage>
     );
   }
 }
-

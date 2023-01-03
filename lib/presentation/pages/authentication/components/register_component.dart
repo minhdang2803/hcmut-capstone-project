@@ -108,6 +108,7 @@ class _RegisterComponentState extends State<RegisterComponent> {
             _registerModel.fullName = value;
           },
         ),
+        20.verticalSpace,
         AuthInputField(
           hintText: 'Email',
           inputAction: TextInputAction.next,
@@ -126,6 +127,7 @@ class _RegisterComponentState extends State<RegisterComponent> {
             _registerModel.email = value;
           },
         ),
+        20.verticalSpace,
         AuthInputField(
           hintText: 'Mật khẩu',
           inputAction: TextInputAction.done,

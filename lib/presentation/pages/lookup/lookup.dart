@@ -16,10 +16,10 @@ class LookUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-        children: [
-          _buildBody(context),
-          const CVNAppBar(label: 'Từ điển'),
-        ],
+      children: [
+        _buildBody(context),
+        const CVNAppBar(label: 'Từ điển'),
+      ],
     );
   }
 
@@ -28,24 +28,18 @@ class LookUpPage extends StatelessWidget {
 
     final myDictionary = BlocProvider.of<VocabCubit>(context).getAll();
     return Expanded(
-            child: 
-              Container(
-                color: AppColor.appBackground,
-                padding: EdgeInsets.only(
-                  top: topPadding + 63.r,
-                  left: 5,
-                  right: 5
-                ),
-                width: double.infinity,
-                child: ListView.builder(
-                  // padding: EdgeInsets.symmetric(horizontal: 30.r),
-                  scrollDirection: Axis.vertical,
-                  itemCount: myDictionary.length,
-                  itemBuilder: (context, index) =>
-                      VocabDictionaryItem(vocab: myDictionary[index]),
-                ),
-            ),
-      
+      child: Container(
+        color: AppColor.appBackground,
+        padding: EdgeInsets.only(left: 10.w, right: 10.w),
+        width: double.infinity,
+        child: ListView.builder(
+          // padding: EdgeInsets.symmetric(horizontal: 30.r),
+          scrollDirection: Axis.vertical,
+          itemCount: myDictionary.length,
+          itemBuilder: (context, index) =>
+              VocabDictionaryItem(vocab: myDictionary[index]),
+        ),
+      ),
     );
   }
 }

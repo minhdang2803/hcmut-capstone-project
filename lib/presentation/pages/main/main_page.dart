@@ -25,7 +25,7 @@ class _MainPageState extends State<MainPage> {
   int _pageIndex = 0;
   final List<Widget> _pages = [
     const HomePage(),
-    const LookUpPage(),
+  const LookUpPage(),
     const HomePage(),
     const ProfilePage(),
   ];

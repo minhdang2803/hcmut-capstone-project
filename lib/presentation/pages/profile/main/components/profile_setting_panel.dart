@@ -136,11 +136,15 @@ class ProfileSettingPanel extends StatelessWidget {
           children: [
             Text(
               'Logout',
-              style: AppTypography.body.copyWith(color: AppColor.textSecondary),
+              style: AppTypography.title.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Icon(
               Icons.keyboard_arrow_right_rounded,
               size: 24.r,
+              color: Colors.white,
             ),
           ],
         ),

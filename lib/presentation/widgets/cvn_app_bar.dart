@@ -27,32 +27,34 @@ class CVNAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
     return Container(
-        width: 1.sw,
-        height: 63.r + topPadding,
-        color: AppColor.primary,
-        child: Padding(
-          padding: EdgeInsets.only(
-            top: topPadding,
-            right: 30.r,
-            left: onBackButtonPress != null ? 20.r : 30.r,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildLeading(context),
-              10.horizontalSpace,
-              _buildLabel(),
-              20.horizontalSpace,
-              _buildNotificationIcon(context),
-              if (onSearchButtonPress != null) 12.horizontalSpace,
-              _buildSearchIcon(context),
-              // 10.horizontalSpace,
-              // _buildUserProfileIcon(context),
-            ],
-          ),
+      width: 1.sw,
+      // height: 63.r + topPadding,
+      // height: 50.h,
+      color: AppColor.primary,
+      child: Padding(
+        padding: EdgeInsets.only(
+          // top: topPadding,
+          top: 0,
+          right: 30.r,
+          left: onBackButtonPress != null ? 20.r : 30.r,
         ),
-      );
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildLeading(context),
+            10.horizontalSpace,
+            _buildLabel(),
+            20.horizontalSpace,
+            _buildNotificationIcon(context),
+            if (onSearchButtonPress != null) 12.horizontalSpace,
+            _buildSearchIcon(context),
+            // 10.horizontalSpace,
+            // _buildUserProfileIcon(context),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildLabel() {
@@ -61,7 +63,7 @@ class CVNAppBar extends StatelessWidget {
         label ?? '',
         style: AppTypography.superHeadline.copyWith(
           fontWeight: FontWeight.w900,
-          color:  Colors.white,
+          color: Colors.white,
         ),
         maxLines: 1,
       ),
@@ -80,13 +82,12 @@ class CVNAppBar extends StatelessWidget {
               borderWidth: 3.r,
               onPressed: onBackButtonPress,
               child: const Icon(
-                  Icons.arrow_back,
-                  color: AppColor.primary,
-                  size: 16,
-                )
-           )
+                Icons.arrow_back,
+                color: AppColor.primary,
+                size: 16,
+              ),
+            ),
           );
-        
   }
 
   Widget _buildNotificationIcon(BuildContext context) {
