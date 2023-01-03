@@ -1,3 +1,5 @@
+import 'package:bke/data/models/video/video_youtube_info.dart';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +17,8 @@ import '../../widgets/holder_widget.dart';
 import 'component/bottom_vocabulary.dart';
 
 class VideoPlayerPage extends StatefulWidget {
-  const VideoPlayerPage({super.key, required this.videoId});
-  final String videoId;
+  const VideoPlayerPage({super.key, required this.video});
+  final VideoYoutubeInfo video;
   @override
   State<VideoPlayerPage> createState() => _VideoPlayerPageState();
 }
@@ -27,7 +29,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
 
   final itemController = ItemScrollController();
   SubVideo? _subVideo;
-
+  bool isCaptionOn = false;
   int _currentIndex = 0;
   int _currentDuration = 0;
 
@@ -57,8 +59,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
           text: '${text.substring(1, text.length - 2)} ',
           style: style.copyWith(color: AppColor.secondary),
           recognizer: TapGestureRecognizer()
-            ..onTap = () =>
-                _onDictionarySearch('${text.substring(1, text.length - 3)}'),
+            ..onTap =
+                () => _onDictionarySearch(text.substring(1, text.length - 3)),
         );
       } else if (text[0] == '[') {
         // is the word highlight recommended by admin [example]
@@ -66,8 +68,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
           text: '${text.substring(1, text.length - 2)} ',
           style: style.copyWith(color: AppColor.secondary),
           recognizer: TapGestureRecognizer()
-            ..onTap = () =>
-                _onDictionarySearch('${text.substring(1, text.length - 2)}'),
+            ..onTap =
+                () => _onDictionarySearch(text.substring(1, text.length - 2)),
         );
       } else if (text.contains('.') || text.contains(',')) {
         // the word ending with , or .
@@ -75,8 +77,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
           text: text,
           style: style,
           recognizer: TapGestureRecognizer()
-            ..onTap = () =>
-                _onDictionarySearch('${text.substring(0, text.length - 2)}'),
+            ..onTap =
+                () => _onDictionarySearch(text.substring(0, text.length - 2)),
         );
       } else {
         // the normalword
@@ -84,8 +86,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
           text: text,
           style: style,
           recognizer: TapGestureRecognizer()
-            ..onTap = () =>
-                _onDictionarySearch('${text.substring(0, text.length - 1)}'),
+            ..onTap =
+                () => _onDictionarySearch(text.substring(0, text.length - 1)),
         );
       }
 
@@ -99,13 +101,14 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
     super.initState();
 
     _controller = YoutubePlayerController(
-      initialVideoId: widget.videoId,
+      initialVideoId: widget.video.videoId,
       flags: const YoutubePlayerFlags(
         autoPlay: false,
+        enableCaption: false,
       ),
     );
 
-    context.read<VideoCubit>().getSubVideo(widget.videoId);
+    context.read<VideoCubit>().getSubVideo(widget.video.videoId);
   }
 
   void _goToSpan(int spanIndex) {
@@ -134,57 +137,87 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final topPadding = MediaQuery.of(context).padding.top;
-
+    // final topPadding = MediaQuery.of(context).padding.top;
+    final orientation = MediaQuery.of(context).orientation;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(top: topPadding),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: () => _controller.play(),
-              child: Column(
-                children: [
-                  YoutubePlayerBuilder(
-                    player: YoutubePlayer(controller: _controller),
-                    builder: (context, player) {
-                      return Listener(
-                          onPointerUp: _resetCurrentIndex, child: player);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: BlocConsumer<VideoCubit, VideoState>(
-                listener: (context, state) {
-                  if (state is SubVideoSuccess) {
-                    setState(() {
-                      _subVideo = state.subVideo;
-                    });
-                  }
-                },
-                builder: (context, state) {
-                  if (state is SubVideoFailure) {
-                    return const HolderWidget(
-                      asset: 'assets/images/error.png',
-                      message: 'Fail to load video script!',
-                    );
-                  }
-                  return _subVideo?.subs == null
-                      ? _buildLoadingSkeleton()
-                      : ValueListenableBuilder(
-                          valueListenable: _controller,
-                          builder: (context, YoutubePlayerValue value, child) {
-                            _currentDuration = value.position.inMilliseconds;
-                            return _buildSub();
-                          },
-                        );
-                },
+      appBar: orientation == Orientation.portrait
+          ? AppBar(
+              title: Text(
+                widget.video.title,
+                style: AppTypography.title.copyWith(color: Colors.white),
               ),
             )
-          ],
-        ),
+          : null,
+      body: Column(
+        children: [
+          GestureDetector(
+            onTap: () => _controller.play(),
+            child: YoutubePlayerBuilder(
+              player: YoutubePlayer(
+                bottomActions: [
+                  CurrentPosition(),
+                  5.horizontalSpace,
+                  ProgressBar(isExpanded: true),
+                  PlaybackSpeedButton(controller: _controller),
+                  FullScreenButton(),
+                ],
+                controller: _controller,
+              ),
+              builder: (context, player) {
+                return Column(
+                  children: [
+                    orientation == Orientation.landscape
+                        ? SizedBox(
+                            width: size.width,
+                            height: size.height,
+                            child: Listener(
+                              onPointerUp: _resetCurrentIndex,
+                              child: player,
+                            ),
+                          )
+                        : Listener(
+                            onPointerUp: _resetCurrentIndex,
+                            child: player,
+                          ),
+                  ],
+                );
+              },
+            ),
+          ),
+          orientation == Orientation.portrait
+              ? Expanded(
+                  child: BlocConsumer<VideoCubit, VideoState>(
+                    listener: (context, state) {
+                      if (state is SubVideoSuccess) {
+                        setState(() {
+                          _subVideo = state.subVideo;
+                        });
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is SubVideoFailure) {
+                        return const HolderWidget(
+                          asset: 'assets/images/error.png',
+                          message: 'Fail to load video script!',
+                        );
+                      }
+                      return _subVideo?.subs == null
+                          ? _buildLoadingSkeleton()
+                          : ValueListenableBuilder(
+                              valueListenable: _controller,
+                              builder:
+                                  (context, YoutubePlayerValue value, child) {
+                                _currentDuration =
+                                    value.position.inMilliseconds;
+                                return _buildSub();
+                              },
+                            );
+                    },
+                  ),
+                )
+              : Container()
+        ],
       ),
     );
   }

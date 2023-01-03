@@ -1,6 +1,5 @@
-
-
 import 'package:bke/data/models/book/book_listener.dart';
+import 'package:bke/data/models/video/video_youtube_info.dart';
 
 import 'package:flutter/material.dart';
 
@@ -63,8 +62,8 @@ class RouteGenerator {
         page = const ResultToeicPage();
         break;
       case RouteName.videoPlayer:
-        final videoId = settings.arguments as String;
-        page = VideoPlayerPage(videoId: videoId);
+        final videoId = settings.arguments as VideoYoutubeInfo;
+        page = VideoPlayerPage(video: videoId);
         break;
 
       case RouteName.myDictionary:
@@ -80,12 +79,11 @@ class RouteGenerator {
         final bookId = settings.arguments as String;
         page = BookRead(bookId: bookId);
         break;
-  
+
       case RouteName.bookListen:
         final book = settings.arguments as BookListenArguments;
         page = BookListen(bookInfo: book);
         break;
-  
     }
 
     return _getPageRoute(page, settings);

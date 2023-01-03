@@ -103,9 +103,8 @@ class _VideoPageState extends State<VideoPage>
               itemBuilder: (ctx, item, index) => VideoYoutubeItem(
                 videoYoutubeInfo: item,
                 onItemClick: () {
-                  final argument = item.videoId;
                   Navigator.of(context)
-                      .pushNamed(RouteName.videoPlayer, arguments: argument);
+                      .pushNamed(RouteName.videoPlayer, arguments: item);
                 },
               ),
               noItemsFoundIndicatorBuilder: (context) {
