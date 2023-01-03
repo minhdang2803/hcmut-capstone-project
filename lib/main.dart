@@ -1,66 +1,90 @@
-import 'package:capstone_project_hcmut/data/api_constant.dart';
-import 'package:capstone_project_hcmut/data/client/api_client.dart';
-import 'package:capstone_project_hcmut/data/database/recipe_database.dart';
-import 'package:capstone_project_hcmut/data/mapper.dart';
-import 'package:capstone_project_hcmut/data/repository/recipe_repository.dart';
-import 'package:capstone_project_hcmut/utils/shared_preference_wrapper.dart';
-import 'package:capstone_project_hcmut/view_models/router/app_router.dart';
-import 'view_models/view_models.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-Future<void> main() async {
+import 'bloc/authentication/auth_cubit.dart';
+import 'bloc/game/game_cubit.dart';
+import 'bloc/video/video_cubit.dart';
+import 'bloc/toeic/toeic_cubit.dart';
+import 'bloc/vocab/vocab_cubit.dart';
+import 'bloc/book/book_bloc.dart';
+import 'data/configs/hive_config.dart';
+import 'presentation/routes/route_generator.dart';
+import 'presentation/routes/route_name.dart';
+import 'presentation/theme/app_scroll_behavior.dart';
+import 'presentation/theme/app_theme.dart';
+import 'presentation/widgets/cvn_restart_widget.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = SharedPreferencesWrapper.instance;
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final themeManager =
-      ThemeManager(isDarkMode: await prefs.getBool('isDarkTheme'));
-  final appStateManager = AppStateManagerViewModel();
-  final appRouter = AppRouter(appStateManager,
-      await prefs.getBool('isLoggedIn'), await prefs.getBool('isSecondTime'));
-  final loginStateViewModel = LoginStateViewModel();
-  final registerViewModel = RegisterViewModel();
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => registerViewModel),
-        ChangeNotifierProvider(create: (context) => themeManager),
-        ChangeNotifierProvider(create: (context) => loginStateViewModel),
-        ChangeNotifierProvider(create: (context) => appStateManager),
-        ChangeNotifierProvider<AppRouter>(
-          lazy: false,
-          create: (context) => appRouter,
-        ),
-      ],
-      child: const CapStoneProject(),
-    ),
-  );
+
+  await HiveConfig().init();
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarBrightness: Brightness.light,
+    statusBarIconBrightness: Brightness.dark,
+    systemNavigationBarIconBrightness: Brightness.dark,
+  ));
+  await SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  runApp(MyApp(
+    initialRoute: await _getInitialRoute(),
+  ));
 }
 
-class CapStoneProject extends StatefulWidget {
-  const CapStoneProject({Key? key}) : super(key: key);
-
-  @override
-  State<CapStoneProject> createState() => _CapStoneProjectState();
+Future<String> _getInitialRoute() async {
+  try {
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    return token == null ? RouteName.welcome : RouteName.main;
+  } catch (e) {
+    return RouteName.welcome;
+  }
 }
 
-class _CapStoneProjectState extends State<CapStoneProject> {
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key, required this.initialRoute}) : super(key: key);
+
+  final String initialRoute;
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeManager>(builder: (context, value, child) {
-      final router = Provider.of<AppRouter>(context, listen: false).myRouter;
-      return MaterialApp.router(
-        theme: value.getTheme,
-        debugShowCheckedModeBanner: false,
-        title: 'English Learning Application',
-        routerDelegate: router.routerDelegate,
-        routeInformationParser: router.routeInformationParser,
-        routeInformationProvider: router.routeInformationProvider,
-      );
-    });
+    return CVNRestartWidget(
+      child: ScreenUtilInit(
+        designSize: const Size(360, 690),
+        builder: (ctx, child) {
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (ctx) => AuthCubit()),
+              BlocProvider(create: (ctx) => GameCubit()),
+              BlocProvider(create: (ctx) => ToeicCubit()),
+              BlocProvider(create: (ctx) => VideoCubit()),
+              BlocProvider(create: (ctx) => VocabCubit()),
+              BlocProvider(create: (ctx) => BookBloc())
+            ],
+            child: MaterialApp(
+              title: 'Funny Englisk',
+              theme: AppTheme.lightTheme,
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                DefaultWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: const [Locale('en'), Locale('vi')],
+              builder: (ctx, child) => ScrollConfiguration(
+                behavior: AppScrollBehavior(),
+                child: child!,
+              ),
+              debugShowCheckedModeBanner: false,
+              initialRoute: initialRoute,
+              onGenerateRoute: RouteGenerator.onGenerateAppRoute,
+            ),
+          );
+        },
+      ),
+    );
   }
 }

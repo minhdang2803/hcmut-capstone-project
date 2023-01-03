@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is off -->
-    <string name="facebook_app_id">1053549961981830</string>
-    <string name="app_name">BK English</string>
-    <string name="facebook_client_token">bb8021861bebb52bf26ee5fd0097acab</string>
-    <string name="facbook_login_protocol_scheme">fb1053549961981830</string>
-</resources>
