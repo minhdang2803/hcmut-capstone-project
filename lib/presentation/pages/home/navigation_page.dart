@@ -66,8 +66,8 @@ class _NavigationPageState extends State<NavigationPage> {
         children: [
           Positioned.fill(
             child: SvgPicture.asset(
-              'assets/texture/home.svg',
-              fit: BoxFit.fill,
+              'assets/texture/hoatiet.svg',
+              fit: BoxFit.contain,
             ),
           ),
           Column(
