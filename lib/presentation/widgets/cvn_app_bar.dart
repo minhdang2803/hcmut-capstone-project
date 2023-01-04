@@ -7,8 +7,8 @@ import '../theme/app_color.dart';
 import '../theme/app_typography.dart';
 import 'circle_border_container.dart';
 
-class CVNAppBar extends StatelessWidget {
-  const CVNAppBar({
+class BkEAppBar extends StatelessWidget {
+  const BkEAppBar({
     Key? key,
     this.label,
     this.onBackButtonPress,

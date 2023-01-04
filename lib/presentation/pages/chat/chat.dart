@@ -11,10 +11,9 @@ class ChatPage extends StatelessWidget {
       backgroundColor: AppColor.appBackground,
       body: Stack(
         children: const [
-          CVNAppBar(label: 'Chat'),
+          BkEAppBar(label: 'Chat'),
         ],
       ),
     );
   }
 }
- 

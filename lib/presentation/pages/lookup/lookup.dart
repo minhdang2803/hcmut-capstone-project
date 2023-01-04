@@ -18,7 +18,7 @@ class LookUpPage extends StatelessWidget {
     return Stack(
       children: [
         _buildBody(context),
-        const CVNAppBar(label: 'Từ điển'),
+        const BkEAppBar(label: 'Từ điển'),
       ],
     );
   }

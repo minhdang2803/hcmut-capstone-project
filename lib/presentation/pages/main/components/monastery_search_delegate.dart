@@ -29,37 +29,30 @@ class MonasterySearchDelegate extends SearchDelegate {
   Widget? buildLeading(BuildContext context) {
     return IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () {close(context, null);}
-    );
+        onPressed: () {
+          close(context, null);
+        });
   }
 
   @override
   Widget buildResults(BuildContext context) {
     return Container(
-      color: AppColor.primary,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: Expanded(
-            child: 
-            Container(
-              padding: const EdgeInsets.only(
-                top: 20,
-                left: 10,
-                right: 10
-              ),
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              child: Center(child: Text(query))
-            )
-        )
-      )
-    );
+        color: AppColor.primary,
+        child: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Expanded(
+                child: Container(
+                    padding:
+                        const EdgeInsets.only(top: 20, left: 10, right: 10),
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
+                    child: Center(child: Text(query))))));
   }
 
   @override
@@ -79,42 +72,37 @@ class MonasterySearchDelegate extends SearchDelegate {
       child: Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: Expanded(
-            child: 
-            Container(
-              padding: const EdgeInsets.only(
-                top: 20,
-                left: 10,
-                right: 10
+          child: Container(
+            padding: EdgeInsets.only(top: 20.r, left: 10.r, right: 10.r),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.r),
+                topRight: Radius.circular(20.r),
               ),
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
+            ),
+            child: ListView.separated(
+              padding: EdgeInsets.symmetric(vertical: 20.r),
+              separatorBuilder: (context, index) => 10.verticalSpace,
+              itemCount: _historySearch.length,
+              itemBuilder: (context, index) => ListTile(
+                leading: Image.asset(
+                  'assets/images/default_logo.png',
+                  width: 36.r,
+                  height: 36.r,
+                  fit: BoxFit.contain,
                 ),
-              ),
-              child: ListView.separated(
-                padding: EdgeInsets.symmetric(vertical: 20.r),
-                separatorBuilder: (context, index) => 10.verticalSpace,
-                itemCount: _historySearch.length,
-                itemBuilder: (context, index) => ListTile(
-                  leading: Image.asset(
-                    'assets/images/default_logo.png',
-                    width: 36.r,
-                    height: 36.r,
-                    fit: BoxFit.contain,
-                  ),
-                  title: Text(_historySearch[index], style: AppTypography.body),
-                  trailing: const Icon(Icons.history_rounded),
-                  onTap: () {
-                    query = _historySearch[index];
-                    showResults(context);
-                  },
-                ),
+                title: Text(_historySearch[index], style: AppTypography.body),
+                trailing: const Icon(Icons.history_rounded),
+                onTap: () {
+                  query = _historySearch[index];
+                  showResults(context);
+                },
               ),
             ),
           ),
+        ),
       ),
     );
   }
@@ -133,26 +121,22 @@ class MonasterySearchDelegate extends SearchDelegate {
   ThemeData appBarTheme(BuildContext context) {
     final theme = Theme.of(context);
     return theme.copyWith(
-        appBarTheme: AppBarTheme(
+      appBarTheme: AppBarTheme(
           toolbarHeight: 50.r,
           backgroundColor: AppColor.primary,
           titleSpacing: 0,
           iconTheme: const IconThemeData(
             color: Colors.white,
           ),
-          elevation: 0
+          elevation: 0),
+      inputDecorationTheme: InputDecorationTheme(
+        hintStyle: AppTypography.body.copyWith(color: AppColor.lightGray),
+        filled: true,
+        fillColor: Colors.black.withOpacity(0.1),
+        border: UnderlineInputBorder(
+          borderRadius: BorderRadius.circular(15.r),
         ),
-      
-        inputDecorationTheme: 
-          InputDecorationTheme(
-            hintStyle: AppTypography.body.copyWith(color: AppColor.lightGray),
-            filled: true,
-            fillColor: Colors.black.withOpacity(0.1),
-            border: UnderlineInputBorder(
-              borderRadius: BorderRadius.circular(15.r),  
-            ),
-          ),
-        );
+      ),
+    );
   }
-
 }

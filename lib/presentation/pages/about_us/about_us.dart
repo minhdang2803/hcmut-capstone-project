@@ -14,7 +14,7 @@ class AboutUsPage extends StatelessWidget {
       body: Stack(
         children: [
           _buildBody(context),
-          const CVNAppBar(label: 'About Us'),
+          const BkEAppBar(label: 'About Us'),
         ],
       ),
     );

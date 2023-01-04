@@ -76,7 +76,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
         return Icon(
           Icons.star_rounded,
           size: 25.r,
-          color: isLiked ? Colors.amber : Colors.black38,
+          color: isLiked ? Colors.red : Colors.black38,
         );
       },
       likeCountPadding: EdgeInsets.zero,
@@ -88,18 +88,18 @@ class _VocabularyTabState extends State<VocabularyTab> {
           context.read<VocabCubit>().deleteFromMyDictionary(vocabInfo.id);
         } else {
           context.read<VocabCubit>().saveToMyDictionary(
-            LocalVocabInfo(vocab: vocabInfo.vocab, 
-            vocabType: vocabInfo.vocabType, 
-            id: vocabInfo.id, 
-            pronounce: vocabInfo.pronounce, 
-            translate: vocabInfo.translate)
-          );
-            
-        
-        setState(() {
-          isLiked = !isLiked;
-        });
-        return isLiked;
+                LocalVocabInfo(
+                    vocab: vocabInfo.vocab,
+                    vocabType: vocabInfo.vocabType,
+                    id: vocabInfo.id,
+                    pronounce: vocabInfo.pronounce,
+                    translate: vocabInfo.translate),
+              );
+
+          setState(() {
+            isLiked = !isLiked;
+          });
+          return isLiked;
         }
       },
     );

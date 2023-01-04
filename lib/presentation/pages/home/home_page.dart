@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage>
       const MyDictionaryPage(),
       const ToeicPage(),
       const GameQuizPage(),
-      // const ChatPage(),
+      const ChatPage(),
     ];
   }
 
@@ -59,7 +59,6 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     Size size = MediaQuery.of(context).size;
     final topPadding = MediaQuery.of(context).padding.top;
 
@@ -67,7 +66,7 @@ class _HomePageState extends State<HomePage>
       alignment: Alignment.topCenter,
       children: [
         Padding(
-          padding: EdgeInsets.only(top:  topPadding),
+          padding: EdgeInsets.only(top: topPadding),
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 200),
             transitionBuilder: (Widget child, Animation<double> animation) {
@@ -115,7 +114,7 @@ class _HomePageState extends State<HomePage>
 
   Widget _buildAppBar() {
     return Builder(
-      builder: (ctx) => CVNAppBar(
+      builder: (ctx) => BkEAppBar(
         label: _getAppBarTitle(),
         leading: _pageIndex == 0 ? const SizedBox() : null,
         showNotificationAction: false,

@@ -89,9 +89,11 @@ class _NavigationPageState extends State<NavigationPage> {
                               Container(
                                 color: AppColor.accentBlue,
                               ),
-                              Image.asset('assets/icons/${menuList[i]}.png',
-                                  height: size.height * 0.05,
-                                  width: size.height * 0.05),
+                              Image.asset(
+                                'assets/icons/${menuList[i]}.png',
+                                height: size.height * 0.05,
+                                width: size.height * 0.05,
+                              ),
                             ]),
                         // Image.network(
                         //   bookList[i].coverUrl,

@@ -12,7 +12,7 @@ class NotificationsPage extends StatelessWidget {
       body: Stack(
         children: [
           _buildBody(context),
-          const CVNAppBar(label: 'THÔNG BÁO'),
+          const BkEAppBar(label: 'THÔNG BÁO'),
         ],
       ),
     );
