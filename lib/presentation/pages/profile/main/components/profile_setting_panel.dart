@@ -59,7 +59,7 @@ class ProfileSettingPanel extends StatelessWidget {
                       children: [
                         ProfileSettingItem(
                           asset: 'assets/icons/ic_setting.svg',
-                          label: 'Setting',
+                          label: 'Cài đặt',
                           onPress: () {
                             WidgetUtil.showDialog(
                               context: context,

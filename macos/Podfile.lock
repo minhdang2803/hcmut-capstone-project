@@ -3,6 +3,8 @@ PODS:
     - FlutterMacOS
   - assets_audio_player_web (0.0.1):
     - FlutterMacOS
+  - audioplayers_darwin (0.0.1):
+    - FlutterMacOS
   - connectivity_plus_macos (0.0.1):
     - FlutterMacOS
     - ReachabilitySwift
@@ -24,6 +26,7 @@ PODS:
 DEPENDENCIES:
   - assets_audio_player (from `Flutter/ephemeral/.symlinks/plugins/assets_audio_player/macos`)
   - assets_audio_player_web (from `Flutter/ephemeral/.symlinks/plugins/assets_audio_player_web/macos`)
+  - audioplayers_darwin (from `Flutter/ephemeral/.symlinks/plugins/audioplayers_darwin/macos`)
   - connectivity_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/connectivity_plus_macos/macos`)
   - flutter_secure_storage_macos (from `Flutter/ephemeral/.symlinks/plugins/flutter_secure_storage_macos/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
@@ -41,6 +44,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/assets_audio_player/macos
   assets_audio_player_web:
     :path: Flutter/ephemeral/.symlinks/plugins/assets_audio_player_web/macos
+  audioplayers_darwin:
+    :path: Flutter/ephemeral/.symlinks/plugins/audioplayers_darwin/macos
   connectivity_plus_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/connectivity_plus_macos/macos
   flutter_secure_storage_macos:
@@ -57,6 +62,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   assets_audio_player: be2578e6f11dd4d183412e97143673c3c4cb2e8a
   assets_audio_player_web: 917101123b6db8f73156835c0fa266c11340ff15
+  audioplayers_darwin: dcad41de4fbd0099cb3749f7ab3b0cb8f70b810c
   connectivity_plus_macos: f6e86fd000e971d361e54b5afcadc8c8fa773308
   flutter_secure_storage_macos: 6ceee8fbc7f484553ad17f79361b556259df89aa
   FlutterMacOS: ae6af50a8ea7d6103d888583d46bd8328a7e9811

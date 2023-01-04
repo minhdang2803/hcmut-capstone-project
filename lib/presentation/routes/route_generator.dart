@@ -1,5 +1,6 @@
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/video/video_youtube_info.dart';
+import 'package:bke/presentation/pages/book/books_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -68,6 +69,10 @@ class RouteGenerator {
 
       case RouteName.myDictionary:
         page = const MyDictionaryPage();
+        break;
+
+      case RouteName.bookPage:
+        page = const BookPage();
         break;
 
       case RouteName.bookDetails:

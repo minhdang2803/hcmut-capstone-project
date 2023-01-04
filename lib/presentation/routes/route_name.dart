@@ -1,3 +1,5 @@
+import 'package:bke/presentation/pages/book/books_screen.dart';
+
 class RouteName {
   static const splash = '/';
   static const main = '/main';
@@ -18,6 +20,7 @@ class RouteName {
   static const videoPlayer = '/video_player';
   static const myDictionary = '/my_dictionary';
 
+  static const bookPage = '/book_page';
   static const bookDetails = '/book_details';
   static const bookRead = '/ebook';
   static const bookListen = '/audio_book';

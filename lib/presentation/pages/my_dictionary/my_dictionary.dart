@@ -1,3 +1,4 @@
+import 'package:bke/presentation/widgets/cvn_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,11 +12,18 @@ class MyDictionaryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.appBackground,
-      body: Stack(
-        children: [
-          _buildBody(context),
-        ],
+      backgroundColor: AppColor.primary,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            BkEAppBar(
+              label: "Thẻ ghi nhớ",
+              onBackButtonPress: () => Navigator.pop(context),
+            ),
+            _buildBody(context),
+          ],
+        ),
       ),
     );
   }
@@ -25,24 +33,20 @@ class MyDictionaryPage extends StatelessWidget {
 
     final myDictionary = BlocProvider.of<VocabCubit>(context).getAll();
     return Expanded(
-              child: 
-                Container(
-                padding: const EdgeInsets.only(
-                  left: 5,
-                  right: 5
-                ),
-                width: double.infinity,
-                child:  ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: myDictionary.length,
-                  itemBuilder: (context, index) =>
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: VocabDictionaryItem(vocab: myDictionary[index], borderColor: AppColor.primary),
-                      ),
-              ),
-            ),
-
+      child: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.only(left: 5, right: 5),
+        width: double.infinity,
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: myDictionary.length,
+          itemBuilder: (context, index) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: VocabDictionaryItem(
+                vocab: myDictionary[index], borderColor: AppColor.primary),
+          ),
+        ),
+      ),
     );
   }
 }

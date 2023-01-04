@@ -28,15 +28,15 @@ class ProfileSettingItem extends StatelessWidget {
         children: [
           SvgPicture.asset(
             asset,
-            width: 16.r,
-            height: 16.r,
+            width: 30.r,
+            height: 30.r,
             fit: BoxFit.contain,
             color: iconColor,
           ),
           SizedBox(height: 10.r),
           Text(
             label,
-            style: AppTypography.bodySmall,
+            style: AppTypography.body.copyWith(fontSize: 13.r),
           )
         ],
       ),

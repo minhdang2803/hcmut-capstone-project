@@ -15,8 +15,9 @@ class AppColor {
   static const Color accentGreen = Color(0xFFC9F2E9);
 
   static const Color falseColor = Color(0xFFFF6666);
-   static const Color trueColor = Color(0xFF53DF83);
+  static const Color trueColor = Color(0xFF53DF83);
 
+  static const Color pastelPink = Color(0xffFFD6DD);
   static const Color textPrimary = Color(0xFF000000);
   static const Color textSecondary = Color(0xFF49465F);
   static const Color textSub = Color(0xFF858494);

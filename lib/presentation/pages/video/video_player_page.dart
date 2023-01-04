@@ -1,4 +1,5 @@
 import 'package:bke/data/models/video/video_youtube_info.dart';
+import 'package:bke/presentation/widgets/cvn_app_bar.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -137,87 +138,91 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    // final topPadding = MediaQuery.of(context).padding.top;
     final orientation = MediaQuery.of(context).orientation;
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: orientation == Orientation.portrait
-          ? AppBar(
-              title: Text(
-                widget.video.title,
-                style: AppTypography.title.copyWith(color: Colors.white),
-              ),
-            )
-          : null,
-      body: Column(
-        children: [
-          GestureDetector(
-            onTap: () => _controller.play(),
-            child: YoutubePlayerBuilder(
-              player: YoutubePlayer(
-                bottomActions: [
-                  CurrentPosition(),
-                  5.horizontalSpace,
-                  ProgressBar(isExpanded: true),
-                  PlaybackSpeedButton(controller: _controller),
-                  FullScreenButton(),
-                ],
-                controller: _controller,
-              ),
-              builder: (context, player) {
-                return Column(
-                  children: [
-                    orientation == Orientation.landscape
-                        ? SizedBox(
-                            width: size.width,
-                            height: size.height,
-                            child: Listener(
+      backgroundColor: AppColor.primary,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            orientation == Orientation.portrait
+                ? BkEAppBar(
+                    onBackButtonPress: () => Navigator.pop(context),
+                    label: widget.video.title,
+                  )
+                : Container(),
+            GestureDetector(
+              onTap: () => _controller.play(),
+              child: YoutubePlayerBuilder(
+                player: YoutubePlayer(
+                  bottomActions: [
+                    CurrentPosition(),
+                    5.horizontalSpace,
+                    ProgressBar(isExpanded: true),
+                    PlaybackSpeedButton(controller: _controller),
+                    FullScreenButton(),
+                  ],
+                  controller: _controller,
+                ),
+                builder: (context, player) {
+                  return Column(
+                    children: [
+                      orientation == Orientation.landscape
+                          ? SizedBox(
+                              width: size.width,
+                              height: size.height,
+                              child: Listener(
+                                onPointerUp: _resetCurrentIndex,
+                                child: player,
+                              ),
+                            )
+                          : Listener(
                               onPointerUp: _resetCurrentIndex,
                               child: player,
                             ),
-                          )
-                        : Listener(
-                            onPointerUp: _resetCurrentIndex,
-                            child: player,
-                          ),
-                  ],
-                );
-              },
+                    ],
+                  );
+                },
+              ),
             ),
-          ),
-          orientation == Orientation.portrait
-              ? Expanded(
-                  child: BlocConsumer<VideoCubit, VideoState>(
-                    listener: (context, state) {
-                      if (state is SubVideoSuccess) {
-                        setState(() {
-                          _subVideo = state.subVideo;
-                        });
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is SubVideoFailure) {
-                        return const HolderWidget(
-                          asset: 'assets/images/error.png',
-                          message: 'Fail to load video script!',
-                        );
-                      }
-                      return _subVideo?.subs == null
-                          ? _buildLoadingSkeleton()
-                          : ValueListenableBuilder(
-                              valueListenable: _controller,
-                              builder:
-                                  (context, YoutubePlayerValue value, child) {
-                                _currentDuration =
-                                    value.position.inMilliseconds;
-                                return _buildSub();
-                              },
-                            );
-                    },
-                  ),
-                )
-              : Container()
-        ],
+            orientation == Orientation.portrait
+                ? Expanded(
+                    child: BlocConsumer<VideoCubit, VideoState>(
+                      listener: (context, state) {
+                        if (state is SubVideoSuccess) {
+                          setState(() {
+                            _subVideo = state.subVideo;
+                          });
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is SubVideoFailure) {
+                          return const HolderWidget(
+                            asset: 'assets/images/error.png',
+                            message: 'Fail to load video script!',
+                          );
+                        }
+                        return _subVideo?.subs == null
+                            ? _buildLoadingSkeleton()
+                            : Container(
+                                color: Colors.white,
+                                child: ValueListenableBuilder(
+                                  valueListenable: _controller,
+                                  builder: (context, YoutubePlayerValue value,
+                                      child) {
+                                    _currentDuration =
+                                        value.position.inMilliseconds;
+                                    return _buildSub();
+                                  },
+                                ),
+                              );
+                      },
+                    ),
+                  )
+                : Container()
+          ],
+        ),
       ),
     );
   }

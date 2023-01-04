@@ -1,3 +1,5 @@
+import 'package:bke/presentation/theme/app_color.dart';
+import 'package:bke/presentation/widgets/cvn_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,68 +57,99 @@ class _VideoPageState extends State<VideoPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<VideoCubit, VideoState>(
-      listener: (context, state) {
-        if (state is VideoYoutubeInfoSuccess) {
-          try {
-            final newItems = state.data;
-            final isLastPage = newItems.length < Constants.defaultPageSize;
-            if (isLastPage) {
-              _pagingController.appendLastPage(newItems);
-            } else {
-              _currentPageKey++;
-              _pagingController.appendPage(newItems, _currentPageKey);
-            }
-          } catch (e) {
-            _pagingController.error = e;
-          }
-        }
-      },
-      builder: (context, state) {
-        if (state is VideoLoading && _pagingController.itemList == null) {
-          return _buildLoadingSkeleton();
-        }
+    return Scaffold(
+      backgroundColor: AppColor.primary,
+      body: SafeArea(
+        top: true,
+        bottom: false,
+        child: Column(
+          children: [
+            BkEAppBar(
+              label: "Video",
+              showNotificationAction: false,
+              onBackButtonPress: () => Navigator.pop(context),
+            ),
+            10.verticalSpace,
+            _buildVideoList(context),
+          ],
+        ),
+      ),
+    );
+  }
 
-        if (state is VideoYoutubeInfoFailure) {
-          return Center(
-            child: SizedBox(
-              width: 1.sw,
-              child: HolderWidget(
-                asset: 'assets/images/error.png',
-                onRetry: () => {
-                  context
-                      .read<VideoCubit>()
-                      .getYoutubeVideoList(pageKey: _currentPageKey)
-                },
+  Widget _buildVideoList(BuildContext context) {
+    return Expanded(
+      child: BlocConsumer<VideoCubit, VideoState>(
+        listener: (context, state) {
+          if (state is VideoYoutubeInfoSuccess) {
+            try {
+              final newItems = state.data;
+              final isLastPage = newItems.length < Constants.defaultPageSize;
+              if (isLastPage) {
+                _pagingController.appendLastPage(newItems);
+              } else {
+                _currentPageKey++;
+                _pagingController.appendPage(newItems, _currentPageKey);
+              }
+            } catch (e) {
+              _pagingController.error = e;
+            }
+          }
+        },
+        builder: (context, state) {
+          if (state is VideoLoading && _pagingController.itemList == null) {
+            return _buildLoadingSkeleton();
+          }
+
+          if (state is VideoYoutubeInfoFailure) {
+            return Center(
+              child: SizedBox(
+                width: 1.sw,
+                child: HolderWidget(
+                  asset: 'assets/images/error.png',
+                  onRetry: () => {
+                    context
+                        .read<VideoCubit>()
+                        .getYoutubeVideoList(pageKey: _currentPageKey)
+                  },
+                ),
+              ),
+            );
+          }
+
+          return FadeTransition(
+            opacity: _animationEaseIn,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.r),
+                ),
+                color: Colors.white,
+              ),
+              child: PagedListView<int, VideoYoutubeInfo>(
+                pagingController: _pagingController,
+                addAutomaticKeepAlives: true,
+                padding: EdgeInsets.symmetric(vertical: 10.r),
+                builderDelegate: PagedChildBuilderDelegate<VideoYoutubeInfo>(
+                  itemBuilder: (ctx, item, index) => VideoYoutubeItem(
+                    videoYoutubeInfo: item,
+                    onItemClick: () {
+                      Navigator.of(context)
+                          .pushNamed(RouteName.videoPlayer, arguments: item);
+                    },
+                  ),
+                  noItemsFoundIndicatorBuilder: (context) {
+                    return const HolderWidget(
+                      asset: 'assets/images/default_logo.png',
+                      message: 'Fail to load',
+                    );
+                  },
+                ),
               ),
             ),
           );
-        }
-
-        return FadeTransition(
-          opacity: _animationEaseIn,
-          child: PagedListView<int, VideoYoutubeInfo>(
-            pagingController: _pagingController,
-            addAutomaticKeepAlives: true,
-            padding: EdgeInsets.symmetric(vertical: 5.r),
-            builderDelegate: PagedChildBuilderDelegate<VideoYoutubeInfo>(
-              itemBuilder: (ctx, item, index) => VideoYoutubeItem(
-                videoYoutubeInfo: item,
-                onItemClick: () {
-                  Navigator.of(context)
-                      .pushNamed(RouteName.videoPlayer, arguments: item);
-                },
-              ),
-              noItemsFoundIndicatorBuilder: (context) {
-                return const HolderWidget(
-                  asset: 'assets/images/default_logo.png',
-                  message: 'Fail to load',
-                );
-              },
-            ),
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 
