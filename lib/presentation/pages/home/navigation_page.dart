@@ -94,8 +94,11 @@ class _NavigationPageState extends State<NavigationPage> {
                             top: 30, bottom: 30, left: 50, right: 50),
                         child: JoinQuizCard(),
                       ),
-                      Image.asset('assets/images/proud.png',
-                          height: size.height * 0.2, width: size.height * 0.12),
+                      Image.asset(
+                        'assets/images/proud.png',
+                        height: size.height * 0.2,
+                        width: size.height * 0.12,
+                      ),
                     ],
                   )),
               _buildFeaturesList(size, context, menuList),
@@ -133,16 +136,19 @@ class _NavigationPageState extends State<NavigationPage> {
               width: size.height * 0.08,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Stack(alignment: AlignmentDirectional.center, children: [
-                  Container(
-                    color: AppColor.accentBlue,
-                  ),
-                  Image.asset(
-                    'assets/icons/${menuList[index]}.png',
-                    height: size.height * 0.05,
-                    width: size.height * 0.05,
-                  ),
-                ]),
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    Container(
+                      color: AppColor.accentBlue,
+                    ),
+                    Image.asset(
+                      'assets/icons/${menuList[index]}.png',
+                      height: size.height * 0.05,
+                      width: size.height * 0.05,
+                    ),
+                  ],
+                ),
                 // Image.network(
                 //   bookList[i].coverUrl,
                 //   height: size.height*0.25
@@ -168,7 +174,6 @@ class _NavigationPageState extends State<NavigationPage> {
       }
       return 'buổi tối 🌙 ';
     }
-
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.r),
       child: Row(
@@ -242,50 +247,6 @@ class _NavigationPageState extends State<NavigationPage> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  String _getAppBarTitle() {
-    var title = '';
-    switch (_pageIndex) {
-      case 0:
-        title = 'Video';
-        break;
-      case 1:
-        title = 'Thư viện';
-        break;
-      case 2:
-        title = 'Từ vựng';
-        break;
-      case 3:
-        title = 'TOEIC';
-        break;
-      case 4:
-        title = 'GAME';
-        break;
-      case 6:
-        title = 'CHAT';
-        break;
-    }
-    return title;
-  }
-
-  Widget _buildAppBar() {
-    return Builder(
-      builder: (ctx) => BkEAppBar(
-        label: _getAppBarTitle(),
-        leading: _pageIndex == 0 ? const SizedBox() : null,
-        showNotificationAction: false,
-        onBackButtonPress: () => Navigator.pop(context),
-        onSearchButtonPress: _pageIndex == 0
-            ? null
-            : () {
-                showSearch(
-                  context: context,
-                  delegate: MonasterySearchDelegate(),
-                );
-              },
       ),
     );
   }

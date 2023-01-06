@@ -15,7 +15,7 @@ import '../pages/toeic_test/test/start_toeic_page.dart';
 import '../pages/toeic_test/test/test_toeic_page.dart';
 import '../pages/video/video_player_page.dart';
 import '../pages/welcome/welcome.dart';
-import '../pages/main/main_page.dart';
+import '../pages/main/home_page.dart';
 import '../pages/profile/main/profile_page.dart';
 import '../pages/book/book_details.dart';
 import '../pages/book/book_listen.dart';
@@ -46,7 +46,7 @@ class RouteGenerator {
         page = const NotificationsPage();
         break;
 
-      case RouteName.start:
+      case RouteName.startQuiz:
         page = const StartGame02();
         break;
       case RouteName.game:

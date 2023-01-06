@@ -8,11 +8,20 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.appBackground,
-      body: Stack(
-        children: const [
-          BkEAppBar(label: 'Chat'),
-        ],
+      backgroundColor: AppColor.primary,
+      body: SafeArea(
+        bottom: false,
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            children: [
+              BkEAppBar(
+                label: 'Trò chuyện',
+                onBackButtonPress: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

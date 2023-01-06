@@ -27,18 +27,16 @@ class LookUpPage extends StatelessWidget {
     final topPadding = MediaQuery.of(context).padding.top;
 
     final myDictionary = BlocProvider.of<VocabCubit>(context).getAll();
-    return Expanded(
-      child: Container(
-        color: AppColor.appBackground,
-        padding: EdgeInsets.only(left: 10.w, right: 10.w),
-        width: double.infinity,
-        child: ListView.builder(
-          // padding: EdgeInsets.symmetric(horizontal: 30.r),
-          scrollDirection: Axis.vertical,
-          itemCount: myDictionary.length,
-          itemBuilder: (context, index) =>
-              VocabDictionaryItem(vocab: myDictionary[index]),
-        ),
+    return Container(
+      color: AppColor.appBackground,
+      padding: EdgeInsets.only(left: 10.w, right: 10.w),
+      width: double.infinity,
+      child: ListView.builder(
+        // padding: EdgeInsets.symmetric(horizontal: 30.r),
+        scrollDirection: Axis.vertical,
+        itemCount: myDictionary.length,
+        itemBuilder: (context, index) =>
+            VocabDictionaryItem(vocab: myDictionary[index]),
       ),
     );
   }

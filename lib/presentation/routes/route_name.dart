@@ -10,7 +10,7 @@ class RouteName {
   static const aboutUs = '/about_us';
   static const notifications = '/notifications';
 
-  static const start = '/start';
+  static const startQuiz = '/start';
   static const game = '/game';
 
   static const startToeic = '/start_toeic';
