@@ -3,6 +3,7 @@ import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../routes/route_name.dart';
 import '../../widgets/cvn_app_bar.dart';
@@ -17,10 +18,22 @@ class LookUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        const BkEAppBar(label: 'Từ điển'),
-        _buildBody(context),
+        Positioned.fill(
+          child: SvgPicture.asset(
+            'assets/texture/hoatiet.svg',
+            fit: BoxFit.contain,
+          ),
+        ),
+        Column(
+          children: [
+            BkEAppBar(
+              label: 'Tra từ',
+            ),
+            _buildBody(context),
+          ],
+        ),
       ],
     );
   }
@@ -50,8 +63,7 @@ class LookUpPage extends StatelessWidget {
 
   ListView _buildDictionary(List<LocalVocabInfo> vocabList) {
     return ListView.separated(
-      padding: EdgeInsets.zero,
-      // padding: EdgeInsets.symmetric(horizontal: 30.r),
+      padding: EdgeInsets.only(top: 20.r),
       scrollDirection: Axis.vertical,
       itemCount: vocabList.length,
       itemBuilder: (context, index) => GestureDetector(

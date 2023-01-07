@@ -6,7 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../../../../data/configs/hive_config.dart';
 import '../../../../../utils/widget_util.dart';
 import '../../../../routes/route_name.dart';
-import '../../../../theme/app_color.dart';
+
 import '../../../../theme/app_typography.dart';
 import '../widgets/profile_setting_item.dart';
 
@@ -83,10 +83,10 @@ class ProfileSettingPanel extends StatelessWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          ProfileSettingItem(
+                          const ProfileSettingItem(
                             asset: 'assets/icons/ic_user.svg',
                             label: 'User',
-                            iconColor: const Color(0xFFDE5900),
+                            iconColor: Color(0xFFDE5900),
                             // onPress: () => Navigator.of(context)
                             //     .pushNamed(RouteName.updateProfile),
                           ),
