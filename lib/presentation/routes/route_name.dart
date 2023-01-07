@@ -24,4 +24,6 @@ class RouteName {
   static const bookDetails = '/book_details';
   static const bookRead = '/ebook';
   static const bookListen = '/audio_book';
+
+  static const vocabFullInfo = '/vocab_full_info_page';
 }

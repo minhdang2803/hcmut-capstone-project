@@ -174,6 +174,7 @@ class _NavigationPageState extends State<NavigationPage> {
       }
       return 'buổi tối 🌙 ';
     }
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.r),
       child: Row(
@@ -184,12 +185,14 @@ class _NavigationPageState extends State<NavigationPage> {
             children: [
               Text(
                 "Xin chào ${greeting()}!",
-                style: AppTypography.headline.copyWith(
-                    color: AppColor.pastelPink, fontWeight: FontWeight.w700),
+                style: AppTypography.title.copyWith(
+                    color: AppColor.pastelPink,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18.r),
               ),
               Text(
-                user!.fullName!,
-                style: AppTypography.headline
+                user?.fullName ?? "clm",
+                style: AppTypography.subHeadline
                     .copyWith(color: Colors.white, fontWeight: FontWeight.w700),
               ),
             ],

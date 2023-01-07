@@ -176,23 +176,4 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-  // Widget _buildAppBar() {
-  //   return Builder(
-  //     builder: (ctx) => CVNAppBar(
-  //       label: _getAppBarTitle(),
-  //       leading: _pageIndex == 0 ? const SizedBox() : null,
-  //       showNotificationAction: false,
-  //       onBackButtonPress: () => _onPageSelected(0),
-  //       onSearchButtonPress: _pageIndex != 1
-  //           ? null
-  //           : () {
-  //               showSearch(
-  //                 context: context,
-  //                 delegate: MonasterySearchDelegate(),
-  //               );
-  //             },
-  //     ),
-  //   );
-  // }
-
 }

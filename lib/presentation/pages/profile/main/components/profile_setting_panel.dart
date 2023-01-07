@@ -52,70 +52,73 @@ class ProfileSettingPanel extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.r),
                 color: Colors.white,
               ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        ProfileSettingItem(
-                          asset: 'assets/icons/ic_setting.svg',
-                          label: 'Cài đặt',
-                          onPress: () {
-                            WidgetUtil.showDialog(
-                              context: context,
-                              title: 'Coming soon',
-                              message: 'Feature is being updated',
-                            );
-                          },
-                        ),
-                        SizedBox(height: 20.r),
-                        ProfileSettingItem(
-                          asset: 'assets/icons/ic_quiz.svg',
-                          label: 'My dictionary',
-                          onPress: () => Navigator.of(context)
-                              .pushNamed(RouteName.myDictionary),
-                        ),
-                      ],
+              child: Padding(
+                padding: EdgeInsets.all(10.r),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          ProfileSettingItem(
+                            asset: 'assets/icons/ic_setting.svg',
+                            label: 'Cài đặt',
+                            onPress: () {
+                              WidgetUtil.showDialog(
+                                context: context,
+                                title: 'Coming soon',
+                                message: 'Feature is being updated',
+                              );
+                            },
+                          ),
+                          SizedBox(height: 20.r),
+                          ProfileSettingItem(
+                            asset: 'assets/icons/ic_quiz.svg',
+                            label: 'Từ vựng yêu thích',
+                            onPress: () => Navigator.of(context)
+                                .pushNamed(RouteName.myDictionary),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        ProfileSettingItem(
-                          asset: 'assets/icons/ic_user.svg',
-                          label: 'User',
-                          iconColor: const Color(0xFFDE5900),
-                          // onPress: () => Navigator.of(context)
-                          //     .pushNamed(RouteName.updateProfile),
-                        ),
-                        SizedBox(height: 20.r),
-                        ProfileSettingItem(
-                          asset: 'assets/icons/ic_activity_setting.svg',
-                          label: 'Events',
-                          onPress: () {
-                            WidgetUtil.showDialog(
-                              context: context,
-                              title: 'Coming soon',
-                              message: 'Feature is being updated',
-                            );
-                          },
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        children: [
+                          ProfileSettingItem(
+                            asset: 'assets/icons/ic_user.svg',
+                            label: 'User',
+                            iconColor: const Color(0xFFDE5900),
+                            // onPress: () => Navigator.of(context)
+                            //     .pushNamed(RouteName.updateProfile),
+                          ),
+                          SizedBox(height: 20.r),
+                          ProfileSettingItem(
+                            asset: 'assets/icons/ic_activity_setting.svg',
+                            label: 'Events',
+                            onPress: () {
+                              WidgetUtil.showDialog(
+                                context: context,
+                                title: 'Coming soon',
+                                message: 'Feature is being updated',
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        ProfileSettingItem(
-                          asset: 'assets/icons/ic_info.svg',
-                          label: 'About us',
-                          onPress: () => Navigator.of(context)
-                              .pushNamed(RouteName.aboutUs),
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        children: [
+                          ProfileSettingItem(
+                            asset: 'assets/icons/ic_info.svg',
+                            label: 'About us',
+                            onPress: () => Navigator.of(context)
+                                .pushNamed(RouteName.aboutUs),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

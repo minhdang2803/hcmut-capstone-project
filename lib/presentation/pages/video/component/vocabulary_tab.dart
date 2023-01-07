@@ -89,13 +89,13 @@ class _VocabularyTabState extends State<VocabularyTab> {
         } else {
           context.read<VocabCubit>().saveToMyDictionary(
                 LocalVocabInfo(
-                    vocab: vocabInfo.vocab,
-                    vocabType: vocabInfo.vocabType,
-                    id: vocabInfo.id,
-                    pronounce: vocabInfo.pronounce,
-                    translate: vocabInfo.translate),
+                  vocab: vocabInfo.vocab,
+                  vocabType: vocabInfo.vocabType,
+                  id: vocabInfo.id,
+                  pronounce: vocabInfo.pronounce,
+                  translate: vocabInfo.translate,
+                ),
               );
-
           setState(() {
             isLiked = !isLiked;
           });

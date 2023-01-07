@@ -1,11 +1,13 @@
-import 'package:bke/presentation/theme/app_color.dart';
+import 'package:bke/data/configs/hive_config.dart';
+import 'package:bke/data/models/vocab/vocab.dart';
+import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../bloc/vocab/vocab_cubit.dart';
+import '../../routes/route_name.dart';
 import '../../widgets/cvn_app_bar.dart';
 import '../my_dictionary/vocab_item.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 // import '../../theme/app_color.dart';
 // import '../../widgets/cvn_app_bar.dart';
 // import 'vocab_item.dart';
@@ -15,29 +17,77 @@ class LookUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
       children: [
-        _buildBody(context),
         const BkEAppBar(label: 'Từ điển'),
+        _buildBody(context),
       ],
     );
   }
 
   Widget _buildBody(BuildContext context) {
-    final topPadding = MediaQuery.of(context).padding.top;
+    return Expanded(
+      child: Container(
+        color: Colors.transparent,
+        padding: EdgeInsets.only(left: 10.w, right: 10.w),
+        width: double.infinity,
+        child: ValueListenableBuilder(
+          valueListenable: Hive.box(HiveConfig.myDictionary).listenable(),
+          builder: (context, value, child) {
+            List<LocalVocabInfo> vocabList = [];
+            final myVocab = value.values;
+            vocabList.addAll(myVocab.map((e) => e));
 
-    final myDictionary = BlocProvider.of<VocabCubit>(context).getAll();
-    return Container(
-      color: AppColor.appBackground,
-      padding: EdgeInsets.only(left: 10.w, right: 10.w),
-      width: double.infinity,
-      child: ListView.builder(
-        // padding: EdgeInsets.symmetric(horizontal: 30.r),
-        scrollDirection: Axis.vertical,
-        itemCount: myDictionary.length,
-        itemBuilder: (context, index) =>
-            VocabDictionaryItem(vocab: myDictionary[index]),
+            if (value.isEmpty) {
+              return _buildEmpty();
+            }
+            return _buildDictionary(vocabList);
+          },
+        ),
       ),
+    );
+  }
+
+  ListView _buildDictionary(List<LocalVocabInfo> vocabList) {
+    return ListView.separated(
+      padding: EdgeInsets.zero,
+      // padding: EdgeInsets.symmetric(horizontal: 30.r),
+      scrollDirection: Axis.vertical,
+      itemCount: vocabList.length,
+      itemBuilder: (context, index) => GestureDetector(
+        onTap: () {
+          print(vocabList[index].id);
+          Navigator.pushNamed(
+            context,
+            RouteName.vocabFullInfo,
+            arguments: vocabList[index],
+          );
+        },
+        child: VocabDictionaryItem(
+          vocab: vocabList[index],
+        ),
+      ),
+      separatorBuilder: (BuildContext context, int index) => 5.verticalSpace,
+    );
+  }
+
+  Column _buildEmpty() {
+    return Column(
+      children: [
+        120.verticalSpace,
+        Image(
+          image: const AssetImage("assets/images/angry.png"),
+          height: 200.r,
+          width: 200.r,
+        ),
+        Text(
+          "Bạn chưa lưu từ vựng nào!",
+          style: AppTypography.subHeadline.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+          ),
+        )
+      ],
     );
   }
 }

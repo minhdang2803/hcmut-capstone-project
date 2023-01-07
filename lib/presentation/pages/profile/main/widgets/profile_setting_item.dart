@@ -37,6 +37,7 @@ class ProfileSettingItem extends StatelessWidget {
           Text(
             label,
             style: AppTypography.body.copyWith(fontSize: 13.r),
+            textAlign: TextAlign.center,
           )
         ],
       ),
