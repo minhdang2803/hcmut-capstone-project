@@ -1,5 +1,5 @@
 import 'package:bke/presentation/theme/app_color.dart';
-import 'package:bke/presentation/widgets/cvn_app_bar.dart';
+import 'package:bke/presentation/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

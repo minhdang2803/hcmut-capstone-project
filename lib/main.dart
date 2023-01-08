@@ -17,7 +17,7 @@ import 'presentation/routes/route_generator.dart';
 import 'presentation/routes/route_name.dart';
 import 'presentation/theme/app_scroll_behavior.dart';
 import 'presentation/theme/app_theme.dart';
-import 'presentation/widgets/cvn_restart_widget.dart';
+import 'presentation/widgets/custom_restart_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

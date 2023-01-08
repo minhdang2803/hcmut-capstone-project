@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../presentation/theme/app_typography.dart';
-import '../presentation/widgets/cvn_dialog.dart';
+import '../presentation/widgets/custom_dialog.dart';
 
 class WidgetUtil {
   static void showSnackBar(BuildContext context, String message) {

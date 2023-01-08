@@ -26,4 +26,7 @@ class RouteName {
   static const bookListen = '/audio_book';
 
   static const vocabFullInfo = '/vocab_full_info_page';
+
+  static const flashCard = '/flashcard_screen';
+  static const flashCardCollectiom = "flashcard_collection";
 }

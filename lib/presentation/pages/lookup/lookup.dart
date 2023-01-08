@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../routes/route_name.dart';
-import '../../widgets/cvn_app_bar.dart';
+import '../../widgets/custom_app_bar.dart';
 import '../my_dictionary/vocab_item.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 // import '../../theme/app_color.dart';

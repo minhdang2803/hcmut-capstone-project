@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../theme/app_color.dart';
-import '../../widgets/cvn_app_bar.dart';
+import '../../widgets/custom_app_bar.dart';
 
 class AboutUsPage extends StatelessWidget {
   const AboutUsPage({super.key});

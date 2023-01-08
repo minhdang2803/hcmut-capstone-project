@@ -1,7 +1,7 @@
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
-import 'package:bke/presentation/widgets/cvn_app_bar.dart';
+import 'package:bke/presentation/widgets/custom_app_bar.dart';
 import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

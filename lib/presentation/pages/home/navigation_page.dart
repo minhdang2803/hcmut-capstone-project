@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bke/data/data_source/local/auth_local_source.dart';
 import 'package:bke/presentation/pages/book/books_screen.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
+import 'package:bke/presentation/pages/flashcard/flashcard_page.dart';
 import 'package:bke/presentation/pages/game_quiz/main/gamequiz_page.dart';
 import 'package:bke/presentation/pages/home/components/continue_card.dart';
 import 'package:bke/presentation/pages/home/components/join_quiz_card.dart';
@@ -16,7 +17,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../theme/app_color.dart';
-import '../../widgets/cvn_app_bar.dart';
+import '../../widgets/custom_app_bar.dart';
 import '../main/components/monastery_search_delegate.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _NavigationPageState extends State<NavigationPage> {
     _pages = [
       const VideoPage(),
       const BookPage(),
-      const MyDictionaryPage(),
+      const FlashcardScreen(),
       const ToeicPage(),
       const GameQuizPage(),
       const ChatPage(),
@@ -226,7 +227,7 @@ class _NavigationPageState extends State<NavigationPage> {
             height: size.height * 0.05,
             width: size.width * 0.95,
             color: AppColor.secondary,
-            padding: EdgeInsets.symmetric(vertical: 0.8),
+            padding: EdgeInsets.symmetric(vertical: 0.8.r),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
