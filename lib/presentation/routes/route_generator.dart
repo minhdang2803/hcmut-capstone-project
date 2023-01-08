@@ -1,5 +1,7 @@
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/video/video_youtube_info.dart';
+import 'package:bke/data/models/vocab/vocab.dart';
+import 'package:bke/presentation/pages/book/books_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -8,13 +10,14 @@ import '../pages/authentication/authentication_page.dart';
 import '../pages/game_quiz/game/start_game02_page.dart';
 import '../pages/game_quiz/game/game02_page.dart';
 import '../pages/my_dictionary/my_dictionary.dart';
+import '../pages/my_dictionary/vocab_full_info_page.dart';
 import '../pages/notification/notifications_page.dart';
 import '../pages/toeic_test/components/result_component.dart';
 import '../pages/toeic_test/test/start_toeic_page.dart';
 import '../pages/toeic_test/test/test_toeic_page.dart';
 import '../pages/video/video_player_page.dart';
 import '../pages/welcome/welcome.dart';
-import '../pages/main/main_page.dart';
+import '../pages/main/home_page.dart';
 import '../pages/profile/main/profile_page.dart';
 import '../pages/book/book_details.dart';
 import '../pages/book/book_listen.dart';
@@ -45,7 +48,7 @@ class RouteGenerator {
         page = const NotificationsPage();
         break;
 
-      case RouteName.start:
+      case RouteName.startQuiz:
         page = const StartGame02();
         break;
       case RouteName.game:
@@ -68,6 +71,17 @@ class RouteGenerator {
 
       case RouteName.myDictionary:
         page = const MyDictionaryPage();
+        break;
+
+      case RouteName.vocabFullInfo:
+        final vocab = settings.arguments as LocalVocabInfo;
+        page = VocabFullInfoPage(
+          vocabInfo: vocab,
+        );
+        break;
+
+      case RouteName.bookPage:
+        page = const BookPage();
         break;
 
       case RouteName.bookDetails:

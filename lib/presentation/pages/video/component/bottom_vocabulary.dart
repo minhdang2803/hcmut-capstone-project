@@ -1,3 +1,4 @@
+import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -107,14 +108,14 @@ class _BottomVocabState extends State<BottomVocab>
             }
             return _vocabInfos == null
                 ? _buildLoadingSkeleton()
-                : _buildVocabPanel();
+                : _buildVocabPanel(context);
           },
         ),
       ),
     );
   }
 
-  Widget _buildVocabPanel() {
+  Widget _buildVocabPanel(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 18.r),
       child: FadeTransition(
@@ -127,16 +128,17 @@ class _BottomVocabState extends State<BottomVocab>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.text,
+                        widget.text.toCapitalize(),
                         style: AppTypography.headline.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppColor.primary,
                         ),
                       ),
-                      10.horizontalSpace,
+                      5.verticalSpace,
                       _buildVocabTypes(),
                     ],
                   ),
@@ -167,47 +169,53 @@ class _BottomVocabState extends State<BottomVocab>
   }
 
   Widget _buildVocabTypes() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: _vocabTypeList
-          .map(
-            (e) => Padding(
-              padding: EdgeInsets.only(right: 10.r),
-              child: GestureDetector(
-                onTap: () => setState(() {
-                  _currentTab = _vocabTypeList.indexOf(e);
-                }),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: _vocabTypeList[_currentTab] == e
-                        ? AppColor.secondary
-                        : Colors.white,
-                    border: Border.all(width: 1.r, color: AppColor.secondary),
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 6.r, vertical: 2.r),
-                    child: Center(
-                      child: Text(
-                        e,
-                        style: _vocabTypeList.length > 2
-                            ? AppTypography.bodySmall.copyWith(
-                                color: _vocabTypeList[_currentTab] == e
-                                    ? Colors.white
-                                    : Colors.black)
-                            : AppTypography.body.copyWith(
-                                color: _vocabTypeList[_currentTab] == e
-                                    ? Colors.white
-                                    : Colors.black),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        // scrollDirection: Axis.horizontal,
+        // physics: NeverScrollableScrollPhysics(),
+        // mainAxisAlignment: MainAxisAlignment.start,
+        // shrinkWrap: true,
+        children: _vocabTypeList
+            .map(
+              (e) => Padding(
+                padding: EdgeInsets.only(right: 10.r),
+                child: GestureDetector(
+                  onTap: () => setState(() {
+                    _currentTab = _vocabTypeList.indexOf(e);
+                  }),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: _vocabTypeList[_currentTab] == e
+                          ? AppColor.secondary
+                          : Colors.white,
+                      border: Border.all(width: 1.r, color: AppColor.secondary),
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 6.r, vertical: 2.r),
+                      child: Center(
+                        child: Text(
+                          e,
+                          style: _vocabTypeList.length > 2
+                              ? AppTypography.bodySmall.copyWith(
+                                  color: _vocabTypeList[_currentTab] == e
+                                      ? Colors.white
+                                      : Colors.black)
+                              : AppTypography.body.copyWith(
+                                  color: _vocabTypeList[_currentTab] == e
+                                      ? Colors.white
+                                      : Colors.black),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          )
-          .toList(),
+            )
+            .toList(),
+      ),
     );
   }
 

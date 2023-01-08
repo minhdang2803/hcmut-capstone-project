@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 part 'vocab.g.dart';
 
 @HiveType(typeId: 3)
-class LocalVocabInfo {
+class LocalVocabInfo extends Equatable {
   @HiveField(0)
   late final String vocab;
 
@@ -14,10 +15,10 @@ class LocalVocabInfo {
   late final String vocabType;
 
   @HiveField(3)
-    late final Pronounce pronounce;
+  late final Pronounce pronounce;
 
   @HiveField(4)
-    late final List<TranslateInfo> translate;
+  late final List<TranslateInfo> translate;
 
   LocalVocabInfo({
     required this.vocab,
@@ -36,6 +37,10 @@ class LocalVocabInfo {
         .map((i) => TranslateInfo.fromJson(i))
         .toList();
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [vocab, vocabType, id, pronounce, translate];
 }
 
 class VocabInfos {

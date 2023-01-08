@@ -26,7 +26,7 @@ class _VideoYoutubeItemState extends State<VideoYoutubeItem> {
       onTap: widget.onItemClick,
       behavior: HitTestBehavior.translucent,
       child: Container(
-        color: Colors.white,
+        color: Colors.transparent,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.r, vertical: 5.h),
           child: SizedBox(

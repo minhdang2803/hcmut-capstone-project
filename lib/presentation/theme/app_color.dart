@@ -15,8 +15,9 @@ class AppColor {
   static const Color accentGreen = Color(0xFFC9F2E9);
 
   static const Color falseColor = Color(0xFFFF6666);
-   static const Color trueColor = Color(0xFF53DF83);
+  static const Color trueColor = Color(0xFF53DF83);
 
+  static const Color pastelPink = Color(0xffFFD6DD);
   static const Color textPrimary = Color(0xFF000000);
   static const Color textSecondary = Color(0xFF49465F);
   static const Color textSub = Color(0xFF858494);
@@ -39,6 +40,7 @@ class AppColor {
 
   // // Bottom Navigation Icon colors
   static const Color inactiveIconColor = Color(0xFFE3E3E3);
+  static const Color greyBackground = Color(0xffE6E6E6);
   // static const Color viengchuaColor = Color(0xFF96682D);
   // static const Color hocphapColor = Color(0xFFFF5151);
   // static const Color hoatdongColor = Color(0xFFFFC919);

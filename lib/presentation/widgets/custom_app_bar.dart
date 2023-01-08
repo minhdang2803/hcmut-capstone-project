@@ -15,6 +15,7 @@ class BkEAppBar extends StatelessWidget {
     this.onSearchButtonPress,
     this.showNotificationAction = false,
     this.leading,
+    this.color = AppColor.primary,
   }) : super(key: key);
 
   final String? label;
@@ -22,15 +23,16 @@ class BkEAppBar extends StatelessWidget {
   final VoidCallback? onSearchButtonPress;
   final bool showNotificationAction;
   final Widget? leading;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
     return Container(
-      width: 1.sw,
+      width: MediaQuery.of(context).size.width,
       // height: 63.r + topPadding,
-      // height: 50.h,
-      color: AppColor.primary,
+      height: 50.h,
+      color: color,
       child: Padding(
         padding: EdgeInsets.only(
           // top: topPadding,
@@ -75,18 +77,7 @@ class BkEAppBar extends StatelessWidget {
         ? leading!
         : Visibility(
             visible: onBackButtonPress != null,
-            child: CircleBorderContainer(
-              radius: 32.r,
-              elevation: 2,
-              borderColor: AppColor.iconBorder,
-              borderWidth: 3.r,
-              onPressed: onBackButtonPress,
-              child: const Icon(
-                Icons.arrow_back,
-                color: AppColor.primary,
-                size: 16,
-              ),
-            ),
+            child: const BackButton(color: Colors.white),
           );
   }
 

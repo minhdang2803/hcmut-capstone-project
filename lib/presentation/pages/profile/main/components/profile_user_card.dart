@@ -32,20 +32,11 @@ class ProfileUserCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.all(Radius.circular(40.r))),
-              child: Padding(
-                padding: EdgeInsets.all(3.r),
-                child: Image.asset(
-                  'assets/images/default_logo.png',
-                  width: 40.r,
-                  height: 40.r,
-                  fit: BoxFit.cover,
-                ),
-              ),
+            Image.asset(
+              'assets/images/peace.png',
+              width: 50.r,
+              height: 50.r,
+              fit: BoxFit.cover,
             ),
             12.horizontalSpace,
             Text(

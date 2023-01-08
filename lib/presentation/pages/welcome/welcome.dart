@@ -39,13 +39,13 @@ class WelcomeScreen extends StatelessWidget {
                       10.verticalSpace,
                       Text(
                         'Bắt đầu học cùng Casper',
-                        style: AppTypography.headline
+                        style: AppTypography.subHeadline
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                       10.verticalSpace,
                       Text(
                         'Đăng nhập hoặc tạo một tài khoản để bắt đầu cuộc hành trình nào!',
-                        style: AppTypography.subHeadline.copyWith(
+                        style: AppTypography.title.copyWith(
                           color: AppColor.textSecondary,
                         ),
                         textAlign: TextAlign.center,
@@ -68,10 +68,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget _buildHuman() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        HolderWidget(
-                          asset: 'assets/images/peace.png')
-      ],
+      children: const [HolderWidget(asset: 'assets/images/peace.png')],
     );
   }
 

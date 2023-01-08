@@ -6,15 +6,15 @@ import 'app_color.dart';
 
 class AppTypography {
   static TextStyle superHeadline = GoogleFonts.montserrat(
-    fontSize: 26.r,
+    fontSize: 30.r,
     color: AppColor.textPrimary,
   );
   static TextStyle headline = GoogleFonts.montserrat(
-    fontSize: 20.r,
+    fontSize: 26.r,
     color: AppColor.textPrimary,
   );
   static TextStyle subHeadline = GoogleFonts.montserrat(
-    fontSize: 18.r,
+    fontSize: 22.r,
     color: AppColor.textPrimary,
   );
   static TextStyle title = GoogleFonts.montserrat(

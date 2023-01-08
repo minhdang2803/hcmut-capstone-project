@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/cvn_app_bar.dart';
+import '../../widgets/custom_app_bar.dart';
 import 'components/notifications_content.dart';
 
 class NotificationsPage extends StatelessWidget {

@@ -1,3 +1,4 @@
+import 'package:bke/data/dependency_injection%20/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,11 +17,11 @@ import 'presentation/routes/route_generator.dart';
 import 'presentation/routes/route_name.dart';
 import 'presentation/theme/app_scroll_behavior.dart';
 import 'presentation/theme/app_theme.dart';
-import 'presentation/widgets/cvn_restart_widget.dart';
+import 'presentation/widgets/custom_restart_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await initServices();
   await HiveConfig().init();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -63,7 +64,6 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (ctx) => ToeicCubit()),
               BlocProvider(create: (ctx) => VideoCubit()),
               BlocProvider(create: (ctx) => VocabCubit()),
-              BlocProvider(create: (ctx) => BookBloc())
             ],
             child: MaterialApp(
               title: 'Funny Englisk',
