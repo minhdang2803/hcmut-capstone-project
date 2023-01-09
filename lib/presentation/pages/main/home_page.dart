@@ -156,11 +156,12 @@ class _MainPageState extends State<MainPage> {
 
   Padding _buildMainScreen(double topPadding) {
     return Padding(
-        padding: EdgeInsets.only(top: topPadding),
-        child: IndexedStack(
-          index: _pageIndex,
-          children: _pages,
-        ));
+      padding: EdgeInsets.only(top: topPadding),
+      child: IndexedStack(
+        index: _pageIndex,
+        children: _pages,
+      ),
+    );
   }
 
   Widget _buildFloattingButton(BuildContext context) {

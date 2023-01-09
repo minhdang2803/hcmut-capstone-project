@@ -1,8 +1,10 @@
+import 'package:bke/bloc/flashcard/cubit/flashcard_cubit.dart';
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
 import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_component.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../widgets/widgets.dart';
 
@@ -14,39 +16,19 @@ class FlashcardScreen extends StatefulWidget {
 }
 
 class _FlashcardScreenState extends State<FlashcardScreen> {
-  List<String> pictures = [
-    "assets/images/hi.png",
-    "assets/images/full.png",
-    "assets/images/proud.png",
-    "assets/images/peace.png",
-    "assets/images/mocking.png",
-    "assets/images/run.png",
-    "assets/images/sad.png",
-    "assets/images/eat.png",
-    "assets/images/love.png",
-    "assets/images/yoga.png",
-    "assets/images/yawn.png",
-    "assets/images/birthday.png",
-    "assets/images/relaxed.png",
-    "assets/images/no.png",
-  ];
-  List<FlashcardCollectionModel> collections = [
-    FlashcardCollectionModel(
-      imgUrl: "assets/images/eat.png",
-      title: "Thức ăn",
-      flashcards: [],
-    ),
-    FlashcardCollectionModel(
-      imgUrl: "assets/images/full.png",
-      title: "Phương tiện di chuyển trong và ngoài",
-      flashcards: [],
-    ),
-    FlashcardCollectionModel(
-      imgUrl: "assets/images/love.png",
-      title: "Các môn thể thao",
-      flashcards: [],
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    context.read<FlashcardCubit>().getFlashcardCollections();
+  }
+
+  @override
+  void dispose() {
+    _editTitle.dispose();
+    _addFlashcardCollection.dispose();
+    super.dispose();
+  }
+
   final _editTitle = TextEditingController();
   final _addFlashcardCollection = TextEditingController();
   Offset _position = Offset.zero;
@@ -96,9 +78,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
 
     switch (result) {
       case "delete":
-        setState(() {
-          collections.removeAt(index);
-        });
+        _deleteCollection(context, index);
         break;
       case "changetitle":
         _changeTitle(context, index);
@@ -109,7 +89,12 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
     }
   }
 
+  void _deleteCollection(BuildContext context, int current) {
+    context.read<FlashcardCubit>().deleteFlashCardCollection(current);
+  }
+
   void _changePicture(BuildContext context, int current) {
+    final cubit = context.read<FlashcardCubit>();
     showDialog(
       context: context,
       builder: (context) {
@@ -132,17 +117,13 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    setState(() {
-                      collections[current] = collections[current]
-                          .copyWith(imgUrl: pictures[index]);
-                    });
-
+                    cubit.updateImg(cubit.pictures[index], current);
                     Navigator.pop(context);
                   },
-                  child: Image(image: AssetImage(pictures[index])),
+                  child: Image(image: AssetImage(cubit.pictures[index])),
                 );
               },
-              itemCount: pictures.length,
+              itemCount: cubit.pictures.length,
             ),
           ),
           actions: [
@@ -167,6 +148,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   }
 
   void _changeTitle(BuildContext context, int current) {
+    final cubit = context.read<FlashcardCubit>();
     showDialog(
       context: context,
       builder: (context) {
@@ -196,10 +178,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                   onPressed: value.text.isEmpty
                       ? null
                       : () {
-                          setState(() {
-                            collections[current] = collections[current]
-                                .copyWith(title: _editTitle.text);
-                          });
+                          cubit.updateTitle(_editTitle.text, current);
                           _editTitle.clear();
                           Navigator.pop(context);
                         },
@@ -237,9 +216,10 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   }
 
   void _addCollection(BuildContext context) {
+    ValueNotifier<int> selected = ValueNotifier<int>(-1);
     String name = "";
     String imgUrl = "";
-
+    final cubit = context.read<FlashcardCubit>();
     showDialog(
       context: context,
       builder: (context) {
@@ -276,11 +256,19 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                             crossAxisCount: 3),
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: () => imgUrl = pictures[index],
-                        child: Image(image: AssetImage(pictures[index])),
+                        onTap: () {
+                          selected.value = index;
+                          imgUrl = cubit.pictures[index];
+                        },
+                        child: ValueListenableBuilder(
+                          valueListenable: selected,
+                          builder: (context, value, child) {
+                            return _buildHoverIcon(value, index, cubit);
+                          },
+                        ),
                       );
                     },
-                    itemCount: pictures.length,
+                    itemCount: cubit.pictures.length,
                   ),
                 ),
               ],
@@ -298,12 +286,14 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                   onPressed: value.text.isEmpty
                       ? null
                       : () {
-                          setState(
-                            () => collections.add(
-                              FlashcardCollectionModel(
-                                  imgUrl: imgUrl, title: name, flashcards: []),
-                            ),
-                          );
+                          context.read<FlashcardCubit>().addFlashcardCollection(
+                                FlashcardCollectionModel(
+                                  imgUrl: imgUrl,
+                                  title: name,
+                                  flashcards: [],
+                                ),
+                              );
+
                           _addFlashcardCollection.clear();
                           Navigator.pop(context);
                         },
@@ -337,6 +327,20 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildHoverIcon(int value, int index, FlashcardCubit cubit) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(
+            color: value == index ? AppColor.primary : Colors.transparent,
+            width: 2.0),
+      ),
+      child: Image(
+        image: AssetImage(cubit.pictures[index]),
+      ),
     );
   }
 
@@ -378,34 +382,49 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   }
 
   Widget _buildCollection(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(20.r),
-      child:
-          collections.isEmpty ? _buildEmptyScreen() : _buildFlashcardScreen(),
+    return BlocSelector<FlashcardCubit, FlashcardCollectionState, bool>(
+      selector: (state) {
+        return state.listOfFlashcardColection!.isEmpty;
+      },
+      builder: (context, isEmpty) {
+        return Padding(
+          padding: EdgeInsets.all(20.r),
+          child: isEmpty ? _buildEmptyScreen() : _buildFlashcardScreen(),
+        );
+      },
     );
   }
 
-  GridView _buildFlashcardScreen() {
-    return GridView.builder(
-      itemCount: collections.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 10.r,
-        crossAxisSpacing: 10.r,
-        childAspectRatio: 0.75,
-      ),
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onLongPress: () {
-            _showContextMenu(context, index);
-          },
-          onTapDown: (details) {
-            _getTapPosition(details);
-          },
-          child: FlashcardComponent(
-            imgUrl: collections[index].imgUrl,
-            title: collections[index].title,
+  Widget _buildFlashcardScreen() {
+    return BlocBuilder<FlashcardCubit, FlashcardCollectionState>(
+      builder: (context, state) {
+        if (state.status == FlashcardStatus.loading) {
+          return const Center(
+            child: CircularProgressIndicator(color: AppColor.primary),
+          );
+        }
+        return GridView.builder(
+          itemCount: state.listOfFlashcardColection!.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 10.r,
+            crossAxisSpacing: 10.r,
+            childAspectRatio: 0.75,
           ),
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onLongPress: () {
+                _showContextMenu(context, index);
+              },
+              onTapDown: (details) {
+                _getTapPosition(details);
+              },
+              child: FlashcardComponent(
+                imgUrl: state.listOfFlashcardColection![index].imgUrl,
+                title: state.listOfFlashcardColection![index].title,
+              ),
+            );
+          },
         );
       },
     );

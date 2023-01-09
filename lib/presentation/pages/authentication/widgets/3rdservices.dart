@@ -8,6 +8,8 @@ import '../../../theme/app_typography.dart';
 import '../../../widgets/circular_border_icon.dart';
 
 class Option extends StatelessWidget {
+  const Option({super.key});
+
   
   @override
   Widget build(BuildContext context) {

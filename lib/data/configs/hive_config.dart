@@ -1,3 +1,4 @@
+import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../models/authentication/user.dart';
@@ -10,15 +11,18 @@ class HiveConfig {
 
   static const dictionary = 'DICTIONARY';
   static const myDictionary = 'MY_DICTIONARY';
-
+  static const fcByUser = "FlashcardByUser";
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(UserAdapter());
     Hive.registerAdapter(LocalVocabInfoAdapter());
     Hive.registerAdapter(PronounceAdapter());
     Hive.registerAdapter(TranslateInfoAdapter());
+    Hive.registerAdapter(FlashcardCollectionModelAdapter());
+    Hive.registerAdapter(FCCollectionByUserAdapter());
 
     await Hive.openBox(userBox);
     await Hive.openBox(myDictionary);
+    await Hive.openBox(fcByUser);
   }
 }

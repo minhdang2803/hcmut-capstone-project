@@ -47,7 +47,7 @@ class MyDictionaryPage extends StatelessWidget {
             List<LocalVocabInfo> vocabList = [];
             final myVocab = value.values;
             vocabList.addAll(myVocab.map((e) => e));
-            print(vocabList);
+    
             if (value.isEmpty) {
               return _buildEmpty();
             }
@@ -66,7 +66,7 @@ class MyDictionaryPage extends StatelessWidget {
       itemCount: vocabList.length,
       itemBuilder: (context, index) => GestureDetector(
         onTap: () {
-          print(vocabList[index].id);
+  
           Navigator.pushNamed(
             context,
             RouteName.vocabFullInfo,

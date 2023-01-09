@@ -39,7 +39,6 @@ class LocalVocabInfo extends Equatable {
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [vocab, vocabType, id, pronounce, translate];
 }
 
