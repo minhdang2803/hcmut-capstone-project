@@ -1,5 +1,6 @@
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
 import 'package:bke/data/models/network/cvn_exception.dart';
+import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/data/repositories/flashcard_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -57,7 +58,7 @@ class FlashcardCubit extends Cubit<FlashcardCollectionState> {
 
   void updateImg(String imgUrl, int index) {
     try {
-      instance.updateImg(imgUrl, index);
+      instance.updateCollectionImg(imgUrl, index);
       final result = instance.getFCCollection();
       emit(state.copyWith(
           listOfFlashcardColection: result, status: FlashcardStatus.success));
@@ -72,7 +73,22 @@ class FlashcardCubit extends Cubit<FlashcardCollectionState> {
 
   void updateTitle(String title, int index) {
     try {
-      instance.updateTitle(title, index);
+      instance.updateCollectionTitle(title, index);
+      final result = instance.getFCCollection();
+      emit(state.copyWith(
+          listOfFlashcardColection: result, status: FlashcardStatus.success));
+    } on RemoteException catch (error) {
+      emit(state.copyWith(
+        listOfFlashcardColection: [],
+        status: FlashcardStatus.fail,
+        errorMessage: error.errorMessage,
+      ));
+    }
+  }
+
+   void addFlashcard(LocalVocabInfo vocabInfo, int index) {
+    try {
+      instance.addFlashcard(vocabInfo, index);
       final result = instance.getFCCollection();
       emit(state.copyWith(
           listOfFlashcardColection: result, status: FlashcardStatus.success));

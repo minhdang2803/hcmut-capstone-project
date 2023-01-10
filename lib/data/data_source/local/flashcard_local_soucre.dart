@@ -1,14 +1,17 @@
 import 'package:bke/data/configs/hive_config.dart';
 import 'package:bke/data/models/authentication/user.dart';
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
+import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 abstract class FCLocalSource {
-  void add(FlashcardCollectionModel flashcardCollectionModel);
+  void addCollection(FlashcardCollectionModel flashcardCollectionModel);
   List<FlashcardCollectionModel> getListOfLCCollections();
-  void delete(int index);
-  void updateTitle(String title, int index);
-  void updateImg(String imgUrl, int index);
+  void deleteCollection(int index);
+  void updateCollectionTitle(String title, int index);
+  void updateCollectionImg(String imgUrl, int index);
+  void addFlashcard(LocalVocabInfo vocabInfo, int current);
+  void deleteFlashcard(int currentColection, int currentFlashcard);
   Box getFCCollectionBoxByUser();
 }
 
@@ -26,7 +29,7 @@ class FCLocalSourceImpl extends FCLocalSource {
   }
 
   @override
-  void delete(int index) {
+  void deleteCollection(int index) {
     final box = getFCCollectionBoxByUser();
     final userId = getUserId();
     final listOfCollection = getListOfLCCollections();
@@ -35,7 +38,7 @@ class FCLocalSourceImpl extends FCLocalSource {
   }
 
   @override
-  void add(FlashcardCollectionModel flashcardCollectionModel) {
+  void addCollection(FlashcardCollectionModel flashcardCollectionModel) {
     final listOfCollection = getListOfLCCollections();
     listOfCollection.add(flashcardCollectionModel);
     final box = getFCCollectionBoxByUser();
@@ -44,7 +47,7 @@ class FCLocalSourceImpl extends FCLocalSource {
   }
 
   @override
-  void updateImg(String imgUrl, int index) {
+  void updateCollectionImg(String imgUrl, int index) {
     final box = getFCCollectionBoxByUser();
     final userid = getUserId();
     final listOfCollection = getListOfLCCollections();
@@ -53,11 +56,29 @@ class FCLocalSourceImpl extends FCLocalSource {
   }
 
   @override
-  void updateTitle(String title, int index) {
+  void updateCollectionTitle(String title, int index) {
     final box = getFCCollectionBoxByUser();
     final userid = getUserId();
     final listOfCollection = getListOfLCCollections();
     listOfCollection[index] = listOfCollection[index].copyWith(title: title);
+    box.put(userid, listOfCollection);
+  }
+
+  @override
+  void addFlashcard(LocalVocabInfo vocabInfo, int current) {
+    final box = getFCCollectionBoxByUser();
+    final userid = getUserId();
+    final listOfCollection = getListOfLCCollections();
+    listOfCollection[current].flashcards.add(vocabInfo);
+    box.put(userid, listOfCollection);
+  }
+
+  @override
+  void deleteFlashcard(int currentColection, int currentFlashcard) {
+    final box = getFCCollectionBoxByUser();
+    final userid = getUserId();
+    final listOfCollection = getListOfLCCollections();
+    listOfCollection[currentColection].flashcards.removeAt(currentFlashcard);
     box.put(userid, listOfCollection);
   }
 

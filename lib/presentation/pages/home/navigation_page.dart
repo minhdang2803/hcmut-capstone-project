@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bke/data/data_source/local/auth_local_source.dart';
 import 'package:bke/presentation/pages/book/books_screen.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
-import 'package:bke/presentation/pages/flashcard/flashcard_page.dart';
+import 'package:bke/presentation/pages/flashcard/flashcard_collection_page.dart';
 import 'package:bke/presentation/pages/game_quiz/main/gamequiz_page.dart';
 import 'package:bke/presentation/pages/home/components/continue_card.dart';
 import 'package:bke/presentation/pages/home/components/join_quiz_card.dart';
@@ -37,7 +37,7 @@ class _NavigationPageState extends State<NavigationPage> {
     _pages = [
       const VideoPage(),
       const BookPage(),
-      const FlashcardScreen(),
+      const FlashcardCollectionScreen(),
       const ToeicPage(),
       const GameQuizPage(),
       const ChatPage(),
