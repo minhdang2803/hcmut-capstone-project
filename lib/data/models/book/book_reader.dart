@@ -1,4 +1,3 @@
-import '../meta_data.dart';
 
 class BookReader {
   BookReader({required this.bookId, required this.sentences, required this.ckpt});

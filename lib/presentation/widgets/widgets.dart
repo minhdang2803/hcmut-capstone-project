@@ -13,3 +13,4 @@ export 'rounded_elevated_button.dart';
 export 'row_text_item.dart';
 export 'step_indicator_item.dart';
 export 'text_field_custom.dart';
+export 'custom_button.dart';

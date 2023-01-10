@@ -1,8 +1,15 @@
 import 'package:bke/data/models/vocab/vocab.dart';
+import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
+part "flashcard_collection_model.g.dart";
 
-class FlashcardCollectionModel {
+@HiveType(typeId: 6)
+class FlashcardCollectionModel extends HiveObject {
+  @HiveField(0)
   final String imgUrl;
+  @HiveField(1)
   final String title;
+  @HiveField(2)
   final List<LocalVocabInfo> flashcards;
 
   FlashcardCollectionModel({
@@ -19,4 +26,22 @@ class FlashcardCollectionModel {
       flashcards: flashcards ?? this.flashcards,
     );
   }
+
+  factory FlashcardCollectionModel.fromJson(Map<String, dynamic> json) {
+    return FlashcardCollectionModel(
+      imgUrl: json["imgUrl"],
+      title: json["title"],
+      flashcards: (json["flashcards"] as List<dynamic>)
+          .map((e) => LocalVocabInfo.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+@HiveType(typeId: 0)
+class FCCollectionByUser extends HiveObject {
+  @HiveField(0)
+  final List<FlashcardCollectionModel> flashcardCollectionList;
+
+  FCCollectionByUser(this.flashcardCollectionList);
 }

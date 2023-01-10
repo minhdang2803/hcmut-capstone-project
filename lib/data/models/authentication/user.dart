@@ -28,7 +28,7 @@ class User {
   });
 
   User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['_id'];
     fullName = json['fullName'];
     email = json['email'];
     photoUrl = json['photoUrl'];
@@ -36,7 +36,7 @@ class User {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['id'] = id;
+    map['_id'] = id;
     map['fullName'] = fullName;
     map['email'] = email;
     map['password'] = password;

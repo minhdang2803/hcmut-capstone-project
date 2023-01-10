@@ -29,7 +29,7 @@ class _BottomVocabState extends State<BottomVocab>
 
   String _translateFromGG = '';
 
-  bool isLikeed = true;
+  bool isLiked = true;
 
   // for animation loading //////////
   late final AnimationController _controller = AnimationController(
@@ -172,10 +172,6 @@ class _BottomVocabState extends State<BottomVocab>
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        // scrollDirection: Axis.horizontal,
-        // physics: NeverScrollableScrollPhysics(),
-        // mainAxisAlignment: MainAxisAlignment.start,
-        // shrinkWrap: true,
         children: _vocabTypeList
             .map(
               (e) => Padding(

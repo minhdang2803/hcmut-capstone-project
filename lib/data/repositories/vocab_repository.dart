@@ -16,6 +16,7 @@ class VocabRepository {
   static final _instance = VocabRepository._internal();
 
   factory VocabRepository.instance() => _instance;
+
   Future<BaseResponse<VocabInfos>> getVocabInfos(String vocab) async {
     return _vocabSource.getVocabInfos(vocab);
   }

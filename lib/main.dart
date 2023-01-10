@@ -1,3 +1,4 @@
+import 'package:bke/bloc/flashcard/cubit/flashcard_cubit.dart';
 import 'package:bke/data/dependency_injection%20/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +12,6 @@ import 'bloc/game/game_cubit.dart';
 import 'bloc/video/video_cubit.dart';
 import 'bloc/toeic/toeic_cubit.dart';
 import 'bloc/vocab/vocab_cubit.dart';
-import 'bloc/book/book_bloc.dart';
 import 'data/configs/hive_config.dart';
 import 'presentation/routes/route_generator.dart';
 import 'presentation/routes/route_name.dart';
@@ -29,8 +29,8 @@ void main() async {
     statusBarIconBrightness: Brightness.dark,
     systemNavigationBarIconBrightness: Brightness.dark,
   ));
-  await SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  // await SystemChrome.setPreferredOrientations(
+  //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(MyApp(
     initialRoute: await _getInitialRoute(),
   ));
@@ -64,6 +64,7 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (ctx) => ToeicCubit()),
               BlocProvider(create: (ctx) => VideoCubit()),
               BlocProvider(create: (ctx) => VocabCubit()),
+              BlocProvider(create: (ctx) => FlashcardCubit()),
             ],
             child: MaterialApp(
               title: 'Funny Englisk',
