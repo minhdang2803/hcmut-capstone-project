@@ -1,5 +1,5 @@
 import 'package:bke/bloc/flashcard/cubit/flashcard_cubit.dart';
-import 'package:bke/data/dependency_injection%20/di.dart';
+import 'package:bke/data/dependency_injection/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
