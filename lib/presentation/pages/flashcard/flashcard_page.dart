@@ -4,12 +4,13 @@ import 'package:bke/bloc/flashcard/cubit/flashcard_cubit.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
-import 'package:bke/presentation/widgets/custom_app_bar.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
 import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../routes/route_name.dart';
 
 class FlashcardPageModel {
   final String collectionTitle;
@@ -69,7 +70,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
         child: BlocSelector<FlashcardCollectionCubit, FlashcardCollectionState,
             List<LocalVocabInfo>>(
           selector: (state) {
-            return state.listOfFlashcardColection![_currentIndex].flashcards;
+            return state.flashcards!;
           },
           builder: (context, listOfFlashcard) {
             return Column(
@@ -107,15 +108,17 @@ class _FlashCardScreenState extends State<FlashCardScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            GestureDetector(
-              onTap: () {},
-              child: BlocSelector<FlashcardCollectionCubit,
-                  FlashcardCollectionState, List<LocalVocabInfo>>(
-                selector: (state) {
-                  return state.flashcards!;
-                },
-                builder: (context, state) {
-                  return Draggable(
+            BlocSelector<FlashcardCollectionCubit, FlashcardCollectionState,
+                List<LocalVocabInfo>>(
+              selector: (state) {
+                return state.flashcards!;
+              },
+              builder: (context, listOfFlashcard) {
+                return GestureDetector(
+                  onTap: () => Navigator.pushNamed(
+                      context, RouteName.flashCardInfoScreen,
+                      arguments: listOfFlashcard[_currentIndex]),
+                  child: Draggable(
                       onDragEnd: (details) {
                         if (details.velocity.pixelsPerSecond.dx < 0) {
                           setState(() {
@@ -133,11 +136,11 @@ class _FlashCardScreenState extends State<FlashCardScreen>
                           });
                         }
                       },
-                      feedback: _buildCard(_currentIndex, state),
-                      childWhenDragging: _buildCard(_newIndex, state),
-                      child: _buildCard(_currentIndex, state));
-                },
-              ),
+                      feedback: _buildCard(_currentIndex, listOfFlashcard),
+                      childWhenDragging: _buildCard(_newIndex, listOfFlashcard),
+                      child: _buildCard(_currentIndex, listOfFlashcard)),
+                );
+              },
             ),
             _buildRoundedLinearProcessIndicator(),
             CustomButton(
@@ -297,101 +300,6 @@ class _FlashCardScreenState extends State<FlashCardScreen>
           ),
         )
       ],
-    );
-  }
-}
-
-// ignore: must_be_immutable
-class FlipCard extends StatefulWidget {
-  FlipCard({
-    Key? key,
-    this.front,
-    this.back,
-    this.angle,
-  }) : super(key: key);
-  final Widget? front;
-  final Widget? back;
-  double? angle;
-  void Function(Offset)? onSwipeLeft;
-  void Function(Offset)? onSwipeRight;
-  @override
-  State<FlipCard> createState() => _FlipCardState();
-}
-
-class _FlipCardState extends State<FlipCard> {
-  bool isBack = true;
-
-  // void _flip() {
-  //   setState(() {
-  //     widget.angle = (widget.angle! + pi) % (2 * pi);
-  //   });
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      borderRadius: BorderRadius.circular(30.r),
-      child: TweenAnimationBuilder(
-        tween: Tween<double>(begin: 0, end: widget.angle),
-        duration: const Duration(milliseconds: 300),
-        builder: (BuildContext context, double val, _) {
-          //here we will change the isBack val so we can change the content of the card
-
-          if (val >= (pi / 2)) {
-            isBack = false;
-          } else {
-            isBack = true;
-          }
-          return Container(
-            color: AppColor.greyBackground,
-            child: Transform(
-              alignment: Alignment.center,
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.001)
-                ..rotateY(val),
-              child: _buildCard(
-                child: isBack
-                    ? _buildEachInterface(
-                        child:
-                            widget.front ?? const Center(child: Text('Front')),
-                      )
-                    : Transform(
-                        alignment: Alignment.center,
-                        transform: Matrix4.identity()..rotateY(pi),
-                        child: _buildEachInterface(
-                          child:
-                              widget.back ?? const Center(child: Text('Back')),
-                        ),
-                      ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildCard({required Widget child}) {
-    return Container(
-      height: 400.h,
-      width: 300.w,
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColor.primary, width: 3),
-        borderRadius: BorderRadius.circular(30.r),
-        color: Colors.white,
-      ),
-      child: child,
-    );
-  }
-
-  Widget _buildEachInterface({required Widget child}) {
-    return Container(
-      height: 400.h,
-      width: 300.w,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30.r),
-      ),
-      child: child,
     );
   }
 }

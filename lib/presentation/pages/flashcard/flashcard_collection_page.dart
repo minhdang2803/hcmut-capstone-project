@@ -428,7 +428,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
               child: GestureDetector(
                 onTap: () => Navigator.pushNamed(
                   context,
-                  RouteName.flashCard,
+                  RouteName.flashCardScreen,
                   arguments: FlashcardPageModel(
                     collectionTitle:
                         state.listOfFlashcardColection![index].title,

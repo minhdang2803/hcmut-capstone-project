@@ -27,6 +27,7 @@ class RouteName {
 
   static const vocabFullInfo = '/vocab_full_info_page';
 
-  static const flashCard = '/flashcard_screen';
-  static const flashCardCollection = "flashcard_collection_screen";
+  static const flashCardScreen = '/flashcard_screen';
+  static const flashCardCollectionScreen = "flashcard_collection_screen";
+  static const flashCardInfoScreen = "flashcard_info_screen";
 }
