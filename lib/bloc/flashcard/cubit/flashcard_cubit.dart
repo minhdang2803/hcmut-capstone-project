@@ -7,16 +7,21 @@ import 'package:equatable/equatable.dart';
 
 part 'flashcard_state.dart';
 
-class FlashcardCubit extends Cubit<FlashcardCollectionState> {
-  FlashcardCubit() : super(FlashcardCollectionState.initial());
+class FlashcardCollectionCubit extends Cubit<FlashcardCollectionState> {
+  FlashcardCollectionCubit() : super(FlashcardCollectionState.initial());
 
   final instance = FlashcardRepository.instance();
-  void getFlashcardCollections() {
+  void getFlashcardCollections({int? currentCollection}) {
     try {
       emit(state.copyWith(status: FlashcardStatus.loading));
       final result = instance.getFCCollection();
       emit(state.copyWith(
-          listOfFlashcardColection: result, status: FlashcardStatus.success));
+        flashcards: currentCollection != null
+            ? result[currentCollection].flashcards
+            : [],
+        listOfFlashcardColection: result,
+        status: FlashcardStatus.success,
+      ));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],
@@ -86,12 +91,34 @@ class FlashcardCubit extends Cubit<FlashcardCollectionState> {
     }
   }
 
-   void addFlashcard(LocalVocabInfo vocabInfo, int index) {
+  void addFlashcard(LocalVocabInfo vocabInfo, int index,
+      ) {
     try {
       instance.addFlashcard(vocabInfo, index);
       final result = instance.getFCCollection();
       emit(state.copyWith(
-          listOfFlashcardColection: result, status: FlashcardStatus.success));
+        flashcards: result[index].flashcards,
+        listOfFlashcardColection: result,
+        status: FlashcardStatus.success,
+      ));
+    } on RemoteException catch (error) {
+      emit(state.copyWith(
+        listOfFlashcardColection: [],
+        status: FlashcardStatus.fail,
+        errorMessage: error.errorMessage,
+      ));
+    }
+  }
+
+  void deleteFlashcard(int currentCollection, int currentcard) {
+    try {
+      instance.deleteFlashcard(currentCollection, currentcard);
+      final result = instance.getFCCollection();
+      emit(state.copyWith(
+        flashcards: result[currentCollection].flashcards,
+        listOfFlashcardColection: result,
+        status: FlashcardStatus.success,
+      ));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],

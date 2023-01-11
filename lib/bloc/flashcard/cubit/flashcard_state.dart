@@ -6,15 +6,17 @@ class FlashcardCollectionState extends Equatable {
   late final List<FlashcardCollectionModel>? listOfFlashcardColection;
   late final String? errorMessage;
   late final FlashcardStatus? status;
+  late final List<LocalVocabInfo>? flashcards;
 
-  FlashcardCollectionState({
-    this.listOfFlashcardColection,
-    this.status,
-    this.errorMessage,
-  });
+  FlashcardCollectionState(
+      {this.listOfFlashcardColection,
+      this.status,
+      this.errorMessage,
+      this.flashcards});
 
   FlashcardCollectionState.initial() {
     listOfFlashcardColection = [];
+    flashcards = [];
     errorMessage = "";
     status = FlashcardStatus.initial;
   }
@@ -22,12 +24,14 @@ class FlashcardCollectionState extends Equatable {
     List<FlashcardCollectionModel>? listOfFlashcardColection,
     String? errorMessage,
     FlashcardStatus? status,
+    List<LocalVocabInfo>? flashcards,
   }) {
     return FlashcardCollectionState(
       listOfFlashcardColection:
           listOfFlashcardColection ?? this.listOfFlashcardColection,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
+      flashcards: flashcards ?? this.flashcards,
     );
   }
 
