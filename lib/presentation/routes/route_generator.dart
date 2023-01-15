@@ -3,6 +3,7 @@ import 'package:bke/data/models/video/video_youtube_info.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/pages/book/books_screen.dart';
 import 'package:bke/presentation/pages/flashcard/flashcard_page.dart';
+import 'package:bke/utils/enum.dart';
 
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ import '../pages/notification/notifications_page.dart';
 import '../pages/toeic_test/components/result_component.dart';
 import '../pages/toeic_test/test/start_toeic_page.dart';
 import '../pages/toeic_test/test/test_toeic_page.dart';
+import '../pages/video/see_more/video_see_more_page.dart';
 import '../pages/video/video_player_page.dart';
 import '../pages/welcome/welcome.dart';
 import '../pages/main/home_page.dart';
@@ -59,15 +61,23 @@ class RouteGenerator {
       case RouteName.startToeic:
         page = const StartToeic();
         break;
+
       case RouteName.testToeic:
         page = const TestToeicPage();
         break;
+
       case RouteName.resultToeic:
         page = const ResultToeicPage();
         break;
+
       case RouteName.videoPlayer:
         final videoId = settings.arguments as VideoYoutubeInfo;
         page = VideoPlayerPage(video: videoId);
+        break;
+
+      case RouteName.videoSeeMore:
+        final action = settings.arguments as SeeMoreVideoAction?;
+        page = VideoSeeMorePage(action: action);
         break;
 
       case RouteName.myDictionary:

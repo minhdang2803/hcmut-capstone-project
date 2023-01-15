@@ -35,7 +35,7 @@ class SubVideoFailure extends VideoState {
 class VideoYoutubeInfoSuccess extends VideoState {
   const VideoYoutubeInfoSuccess(this.data);
 
-  final List<VideoYoutubeInfo> data;
+  final Map<String, List<VideoYoutubeInfo>> data;
 
   @override
   List<Object?> get props => [data];

@@ -35,8 +35,8 @@ class BkEAppBar extends StatelessWidget {
       color: color,
       child: Padding(
         padding: EdgeInsets.only(
-          // top: topPadding,
-          top: 0,
+          top: topPadding,
+          //top: 0,
           right: 30.r,
           left: onBackButtonPress != null ? 20.r : 30.r,
         ),
@@ -63,7 +63,7 @@ class BkEAppBar extends StatelessWidget {
     return Expanded(
       child: AutoSizeText(
         label ?? '',
-        style: AppTypography.superHeadline.copyWith(
+        style: AppTypography.headline.copyWith(
           fontWeight: FontWeight.w900,
           color: Colors.white,
         ),

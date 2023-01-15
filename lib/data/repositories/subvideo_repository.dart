@@ -15,8 +15,13 @@ class VideoRepository {
     return _videoSource.getSubVideo(videoId);
   }
 
-  Future<BaseResponse<VideoYoutubeInfos>> getYoutubeVideoList(
-      {required int pageKey}) async {
-    return _videoSource.getYoutubeVideoList(pageKey: pageKey);
+  Future<BaseResponse<VideoYoutubeInfos>> getCategory1({
+    required int pageKey,
+    required int pageSize,
+  }) {
+    return _videoSource.getCategory1(
+      pageKey: pageKey,
+      pageSize: pageSize,
+    );
   }
 }
