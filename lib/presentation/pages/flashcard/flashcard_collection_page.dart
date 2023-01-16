@@ -432,8 +432,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
                   arguments: FlashcardPageModel(
                     collectionTitle:
                         state.listOfFlashcardColection![index].title,
-                    vocabInfo:
-                        state.listOfFlashcardColection![index].flashcards,
+                   
                     currentCollection: index,
                   ),
                 ),

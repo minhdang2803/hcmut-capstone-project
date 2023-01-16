@@ -24,12 +24,18 @@ class FlashcardRepository {
   void updateCollectionImg(String imgUrl, int index) =>
       _fcLocalSource.updateCollectionImg(imgUrl, index);
 
-  void addFlashcard(LocalVocabInfo vocabInfo, int currentCollection) =>
+  List<LocalVocabInfo> addFlashcard(
+          LocalVocabInfo vocabInfo, int currentCollection) =>
       _fcLocalSource.addFlashcard(vocabInfo, currentCollection);
 
-  void deleteFlashcard(int currentCollection, int currentFlashcard) =>
+  List<LocalVocabInfo> deleteFlashcard(
+          int currentCollection, int currentFlashcard) =>
       _fcLocalSource.deleteFlashcard(currentCollection, currentFlashcard);
 
   List<FlashcardCollectionModel> getFCCollection() =>
       _fcLocalSource.getListOfLCCollections();
+
+  List<LocalVocabInfo> getFlashcards(int currentCollection) {
+    return _fcLocalSource.getFlashcards(currentCollection);
+  }
 }

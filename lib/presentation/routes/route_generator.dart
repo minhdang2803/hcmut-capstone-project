@@ -94,7 +94,6 @@ class RouteGenerator {
       case RouteName.flashCardScreen:
         final flashcard = settings.arguments as FlashcardPageModel;
         page = FlashCardScreen(
-            vocabInfo: flashcard.vocabInfo,
             currentCollection: flashcard.currentCollection,
             collectionTitle: flashcard.collectionTitle);
         break;

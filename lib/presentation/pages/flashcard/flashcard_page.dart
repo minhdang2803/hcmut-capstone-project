@@ -8,17 +8,15 @@ import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import '../../../bloc/flashcard/flashcard_card/flashcard_cubit.dart';
 import '../../routes/route_name.dart';
 
 class FlashcardPageModel {
   final String collectionTitle;
-  final List<LocalVocabInfo> vocabInfo;
   final int currentCollection;
 
   FlashcardPageModel({
     required this.collectionTitle,
-    required this.vocabInfo,
     required this.currentCollection,
   });
 }
@@ -26,13 +24,11 @@ class FlashcardPageModel {
 class FlashCardScreen extends StatefulWidget {
   const FlashCardScreen({
     super.key,
-    required this.vocabInfo,
     required this.currentCollection,
     required this.collectionTitle,
   });
 
   final String collectionTitle;
-  final List<LocalVocabInfo> vocabInfo;
   final int currentCollection;
   @override
   State<FlashCardScreen> createState() => _FlashCardScreenState();
@@ -40,16 +36,14 @@ class FlashCardScreen extends StatefulWidget {
 
 class _FlashCardScreenState extends State<FlashCardScreen>
     with SingleTickerProviderStateMixin {
-  int _currentIndex = 0;
+  // int _currentIndex = 0;
   double angle = 0;
-  late List<FlipCard> item;
+
   late AnimationController _controller;
   @override
   void initState() {
     super.initState();
-    context
-        .read<FlashcardCollectionCubit>()
-        .getFlashcardCollections(currentCollection: widget.currentCollection);
+    context.read<FlashcardCubit>().getFlashcard(widget.currentCollection);
     _controller = AnimationController(vsync: this);
   }
 
@@ -65,16 +59,15 @@ class _FlashCardScreenState extends State<FlashCardScreen>
       backgroundColor: AppColor.primary,
       body: SafeArea(
         bottom: false,
-        child: BlocSelector<FlashcardCollectionCubit, FlashcardCollectionState,
-            List<LocalVocabInfo>>(
+        child: BlocSelector<FlashcardCubit, FlashcardState, bool>(
           selector: (state) {
-            return state.flashcards!;
+            return state.flashcards.isEmpty;
           },
-          builder: (context, listOfFlashcard) {
+          builder: (context, isEmpty) {
             return Column(
               children: [
                 _buildAppBar(context),
-                listOfFlashcard.isNotEmpty
+                !isEmpty
                     ? _buildFlashcard()
                     : const EmptyScreen(title: "Không có thẻ ghi nhớ nào!"),
               ],
@@ -104,39 +97,22 @@ class _FlashCardScreenState extends State<FlashCardScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            BlocSelector<FlashcardCollectionCubit, FlashcardCollectionState,
-                List<LocalVocabInfo>>(
-              selector: (state) {
-                return state.flashcards!;
-              },
-              builder: (context, listOfFlashcard) {
+            BlocBuilder<FlashcardCubit, FlashcardState>(
+              builder: (context, state) {
                 return GestureDetector(
                   onTap: () => Navigator.pushNamed(
                       context, RouteName.flashCardInfoScreen,
-                      arguments: listOfFlashcard[_currentIndex]),
+                      arguments: state.flashcards[state.index]),
                   child: Draggable(
                       onDragEnd: (details) {
                         if (details.velocity.pixelsPerSecond.dx < 0) {
-                          setState(() {
-                            _currentIndex =
-                                _currentIndex + 1 < widget.vocabInfo.length
-                                    ? _currentIndex + 1
-                                    : 0;
-                          });
-                          print("currentIndex: " + _currentIndex.toString());
-                          print("length: " + listOfFlashcard.length.toString());
+                          context.read<FlashcardCubit>().increaseIndex();
                         }
                         if (details.velocity.pixelsPerSecond.dx > 0) {
-                          setState(() {
-                            _currentIndex = _currentIndex > 0
-                                ? _currentIndex - 1
-                                : widget.vocabInfo.length - 1;
-                          });
-                          print("currentIndex: " + _currentIndex.toString());
-                          print("length: " + listOfFlashcard.length.toString());
+                          context.read<FlashcardCubit>().decreaseIndex();
                         }
                       },
-                      feedback: _buildCard(listOfFlashcard),
+                      feedback: _buildCard(state.index, state.flashcards),
                       childWhenDragging: FlipCard(
                         angle: 0,
                         front: Container(
@@ -152,7 +128,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
                           ),
                         ),
                       ),
-                      child: _buildCard(listOfFlashcard)),
+                      child: _buildCard(state.index, state.flashcards)),
                 );
               },
             ),
@@ -169,11 +145,11 @@ class _FlashCardScreenState extends State<FlashCardScreen>
     );
   }
 
-  Widget _buildCard(List<LocalVocabInfo> listOfFlashcard) {
+  Widget _buildCard(int index, List<LocalVocabInfo> listOfFlashcard) {
     return FlipCard(
       angle: angle,
-      front: _buildFront(listOfFlashcard),
-      back: _buildBack(listOfFlashcard),
+      front: _buildFront(index, listOfFlashcard),
+      back: _buildBack(index, listOfFlashcard),
     );
   }
 
@@ -185,7 +161,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
     return temp;
   }
 
-  Widget _buildBack(List<LocalVocabInfo> listOfFlashcard) {
+  Widget _buildBack(int index, List<LocalVocabInfo> listOfFlashcard) {
     return Stack(
       children: [
         Positioned(
@@ -194,13 +170,8 @@ class _FlashCardScreenState extends State<FlashCardScreen>
           child: IconButton(
             onPressed: () {
               context
-                  .read<FlashcardCollectionCubit>()
-                  .deleteFlashcard(widget.currentCollection, _currentIndex);
-              setState(() {
-                if (_currentIndex > 0) {
-                  _currentIndex = _currentIndex - 1;
-                }
-              });
+                  .read<FlashcardCubit>()
+                  .deleteFlashcard(widget.currentCollection, index);
             },
             icon: Icon(
               Icons.close,
@@ -212,11 +183,15 @@ class _FlashCardScreenState extends State<FlashCardScreen>
         Positioned.fill(
           child: Align(
             alignment: Alignment.center,
-            child: Text(
-              concatMeaning(listOfFlashcard[_currentIndex].translate),
-              textAlign: TextAlign.center,
-              style: AppTypography.subHeadline
-                  .copyWith(fontWeight: FontWeight.bold),
+            child: BlocBuilder<FlashcardCubit, FlashcardState>(
+              builder: (context, state) {
+                return Text(
+                  concatMeaning(state.flashcards[state.index].translate),
+                  textAlign: TextAlign.center,
+                  style: AppTypography.subHeadline
+                      .copyWith(fontWeight: FontWeight.bold),
+                );
+              },
             ),
           ),
         ),
@@ -224,7 +199,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
     );
   }
 
-  Widget _buildFront(List<LocalVocabInfo> listOfFlashcard) {
+  Widget _buildFront(int index, List<LocalVocabInfo> listOfFlashcard) {
     return Stack(
       children: [
         Positioned(
@@ -233,13 +208,8 @@ class _FlashCardScreenState extends State<FlashCardScreen>
           child: IconButton(
             onPressed: () {
               context
-                  .read<FlashcardCollectionCubit>()
-                  .deleteFlashcard(widget.currentCollection, _currentIndex);
-              setState(() {
-                if (_currentIndex > 0) {
-                  _currentIndex = _currentIndex - 1;
-                }
-              });
+                  .read<FlashcardCubit>()
+                  .deleteFlashcard(widget.currentCollection, index);
             },
             icon: Icon(
               Icons.close,
@@ -251,47 +221,51 @@ class _FlashCardScreenState extends State<FlashCardScreen>
         Positioned.fill(
           child: Align(
             alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  listOfFlashcard[_currentIndex].vocab.toCapitalize(),
-                  style: AppTypography.subHeadline
-                      .copyWith(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '(${listOfFlashcard[_currentIndex].vocabType.toCapitalize()})',
-                  style: AppTypography.title.copyWith(
-                      fontWeight: FontWeight.bold, color: AppColor.primary),
-                ),
-                5.verticalSpace,
-                Text.rich(
-                  TextSpan(
-                      text: "UK: ",
-                      style:
-                          AppTypography.title.copyWith(color: AppColor.primary),
-                      children: [
-                        TextSpan(
-                          text: listOfFlashcard[_currentIndex].pronounce.uk,
-                          style: AppTypography.title,
-                        )
-                      ]),
-                ),
-                5.verticalSpace,
-                Text.rich(
-                  TextSpan(
-                    text: "US: ",
-                    style:
-                        AppTypography.title.copyWith(color: AppColor.primary),
-                    children: [
+            child: BlocBuilder<FlashcardCubit, FlashcardState>(
+              builder: (context, state) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      state.flashcards[state.index].vocab.toCapitalize(),
+                      style: AppTypography.subHeadline
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      '(${state.flashcards[state.index].vocabType.toCapitalize()})',
+                      style: AppTypography.title.copyWith(
+                          fontWeight: FontWeight.bold, color: AppColor.primary),
+                    ),
+                    5.verticalSpace,
+                    Text.rich(
                       TextSpan(
-                        text: widget.vocabInfo[_currentIndex].pronounce.us,
-                        style: AppTypography.title,
-                      )
-                    ],
-                  ),
-                ),
-              ],
+                          text: "UK: ",
+                          style: AppTypography.title
+                              .copyWith(color: AppColor.primary),
+                          children: [
+                            TextSpan(
+                              text: state.flashcards[state.index].pronounce.uk,
+                              style: AppTypography.title,
+                            )
+                          ]),
+                    ),
+                    5.verticalSpace,
+                    Text.rich(
+                      TextSpan(
+                        text: "US: ",
+                        style: AppTypography.title
+                            .copyWith(color: AppColor.primary),
+                        children: [
+                          TextSpan(
+                            text: state.flashcards[state.index].pronounce.us,
+                            style: AppTypography.title,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ),
@@ -300,28 +274,32 @@ class _FlashCardScreenState extends State<FlashCardScreen>
   }
 
   Widget _buildRoundedLinearProcessIndicator() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 300.w,
-          height: 15.h,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(30.r),
-            child: LinearProgressIndicator(
-              backgroundColor: AppColor.secondary.withOpacity(0.5),
-              value: (_currentIndex + 1) / widget.vocabInfo.length,
+    return BlocBuilder<FlashcardCubit, FlashcardState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 300.w,
+              height: 15.h,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30.r),
+                child: LinearProgressIndicator(
+                  backgroundColor: AppColor.secondary.withOpacity(0.5),
+                  value: (state.index + 1) / state.flashcards.length,
+                ),
+              ),
             ),
-          ),
-        ),
-        5.verticalSpace,
-        Text(
-          "${_currentIndex + 1}/${widget.vocabInfo.length}",
-          style: AppTypography.title.copyWith(
-            fontWeight: FontWeight.w700,
-          ),
-        )
-      ],
+            5.verticalSpace,
+            Text(
+              "${state.index + 1}/${state.flashcards.length}",
+              style: AppTypography.title.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            )
+          ],
+        );
+      },
     );
   }
 }

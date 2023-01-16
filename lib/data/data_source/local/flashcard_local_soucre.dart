@@ -10,8 +10,10 @@ abstract class FCLocalSource {
   void deleteCollection(int index);
   void updateCollectionTitle(String title, int index);
   void updateCollectionImg(String imgUrl, int index);
-  void addFlashcard(LocalVocabInfo vocabInfo, int current);
-  void deleteFlashcard(int currentColection, int currentFlashcard);
+  List<LocalVocabInfo> addFlashcard(LocalVocabInfo vocabInfo, int current);
+  List<LocalVocabInfo> deleteFlashcard(
+      int currentColection, int currentFlashcard);
+  List<LocalVocabInfo> getFlashcards(int currentCollection);
   Box getFCCollectionBoxByUser();
 }
 
@@ -26,6 +28,12 @@ class FCLocalSourceImpl extends FCLocalSource {
       result.add(element);
     }
     return result;
+  }
+
+  @override
+  List<LocalVocabInfo> getFlashcards(int currentCollection) {
+    final collection = getListOfLCCollections();
+    return collection[currentCollection].flashcards;
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:bke/bloc/flashcard/flashcard_card/flashcard_cubit.dart';
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -177,16 +178,17 @@ class _VocabularyTabState extends State<VocabularyTab> {
                             splashColor: AppColor.secondary,
                             splashRadius: 20.r,
                             padding: EdgeInsets.zero,
-                            onPressed: () => flashcardCubit.addFlashcard(
-                              LocalVocabInfo(
-                                vocab: vocabInfo.vocab,
-                                vocabType: vocabInfo.vocabType,
-                                id: vocabInfo.id,
-                                pronounce: vocabInfo.pronounce,
-                                translate: vocabInfo.translate,
-                              ),
-                              index,
-                            ),
+                            onPressed: () =>
+                                context.read<FlashcardCubit>().addFlashcard(
+                                      LocalVocabInfo(
+                                        vocab: vocabInfo.vocab,
+                                        vocabType: vocabInfo.vocabType,
+                                        id: vocabInfo.id,
+                                        pronounce: vocabInfo.pronounce,
+                                        translate: vocabInfo.translate,
+                                      ),
+                                      index,
+                                    ),
                             icon: Icon(
                               Icons.add,
                               color: Colors.black38,
