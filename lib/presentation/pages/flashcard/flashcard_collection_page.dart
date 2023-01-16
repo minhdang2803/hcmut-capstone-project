@@ -22,7 +22,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<FlashcardCubit>().getFlashcardCollections();
+    context.read<FlashcardCollectionCubit>().getFlashcardCollections();
   }
 
   @override
@@ -93,11 +93,11 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
   }
 
   void _deleteCollection(BuildContext context, int current) {
-    context.read<FlashcardCubit>().deleteFlashCardCollection(current);
+    context.read<FlashcardCollectionCubit>().deleteFlashCardCollection(current);
   }
 
   void _changePicture(BuildContext context, int current) {
-    final cubit = context.read<FlashcardCubit>();
+    final cubit = context.read<FlashcardCollectionCubit>();
     showDialog(
       context: context,
       builder: (context) {
@@ -151,7 +151,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
   }
 
   void _changeTitle(BuildContext context, int current) {
-    final cubit = context.read<FlashcardCubit>();
+    final cubit = context.read<FlashcardCollectionCubit>();
     showDialog(
       context: context,
       builder: (context) {
@@ -222,7 +222,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
     ValueNotifier<int> selected = ValueNotifier<int>(-1);
     String name = "";
     String imgUrl = "";
-    final cubit = context.read<FlashcardCubit>();
+    final cubit = context.read<FlashcardCollectionCubit>();
     showDialog(
       context: context,
       builder: (context) {
@@ -289,7 +289,9 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
                   onPressed: value.text.isEmpty
                       ? null
                       : () {
-                          context.read<FlashcardCubit>().addFlashcardCollection(
+                          context
+                              .read<FlashcardCollectionCubit>()
+                              .addFlashcardCollection(
                                 FlashcardCollectionModel(
                                   imgUrl: imgUrl,
                                   title: name,
@@ -333,7 +335,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
     );
   }
 
-  Widget _buildHoverIcon(int value, int index, FlashcardCubit cubit) {
+  Widget _buildHoverIcon(int value, int index, FlashcardCollectionCubit cubit) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
@@ -385,7 +387,8 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
   }
 
   Widget _buildCollection(BuildContext context) {
-    return BlocSelector<FlashcardCubit, FlashcardCollectionState, bool>(
+    return BlocSelector<FlashcardCollectionCubit, FlashcardCollectionState,
+        bool>(
       selector: (state) {
         return state.listOfFlashcardColection!.isEmpty;
       },
@@ -399,7 +402,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
   }
 
   Widget _buildFlashcardScreen() {
-    return BlocBuilder<FlashcardCubit, FlashcardCollectionState>(
+    return BlocBuilder<FlashcardCollectionCubit, FlashcardCollectionState>(
       builder: (context, state) {
         if (state.status == FlashcardStatus.loading) {
           return const Center(
@@ -425,7 +428,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
               child: GestureDetector(
                 onTap: () => Navigator.pushNamed(
                   context,
-                  RouteName.flashCard,
+                  RouteName.flashCardScreen,
                   arguments: FlashcardPageModel(
                     collectionTitle:
                         state.listOfFlashcardColection![index].title,

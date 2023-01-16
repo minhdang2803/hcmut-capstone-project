@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (ctx) => ToeicCubit()),
               BlocProvider(create: (ctx) => VideoCubit()),
               BlocProvider(create: (ctx) => VocabCubit()),
-              BlocProvider(create: (ctx) => FlashcardCubit()),
+              BlocProvider(create: (ctx) => FlashcardCollectionCubit()),
             ],
             child: MaterialApp(
               title: 'Funny Englisk',

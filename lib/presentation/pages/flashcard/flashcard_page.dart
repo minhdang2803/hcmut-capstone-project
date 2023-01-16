@@ -1,12 +1,16 @@
 import 'dart:math';
 
+import 'package:bke/bloc/flashcard/cubit/flashcard_cubit.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
-import 'package:bke/presentation/widgets/custom_app_bar.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
+import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../routes/route_name.dart';
 
 class FlashcardPageModel {
   final String collectionTitle;
@@ -40,12 +44,14 @@ class _FlashCardScreenState extends State<FlashCardScreen>
   int _currentIndex = 0;
   int _newIndex = 0;
   double angle = 0;
-  late List<FlashcardComponentItem> item;
+  late List<FlipCard> item;
   late AnimationController _controller;
   @override
   void initState() {
     super.initState();
-
+    context
+        .read<FlashcardCollectionCubit>()
+        .getFlashcardCollections(currentCollection: widget.currentCollection);
     _controller = AnimationController(vsync: this);
   }
 
@@ -61,11 +67,21 @@ class _FlashCardScreenState extends State<FlashCardScreen>
       backgroundColor: AppColor.primary,
       body: SafeArea(
         bottom: false,
-        child: Column(
-          children: [
-            _buildAppBar(context),
-            _buildFlashcard(),
-          ],
+        child: BlocSelector<FlashcardCollectionCubit, FlashcardCollectionState,
+            List<LocalVocabInfo>>(
+          selector: (state) {
+            return state.flashcards!;
+          },
+          builder: (context, listOfFlashcard) {
+            return Column(
+              children: [
+                _buildAppBar(context),
+                listOfFlashcard.isNotEmpty
+                    ? _buildFlashcard()
+                    : const EmptyScreen(title: "Không có thẻ ghi nhớ nào!"),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -86,35 +102,45 @@ class _FlashCardScreenState extends State<FlashCardScreen>
       child: Container(
         width: size.width,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColor.greyBackground,
           borderRadius: BorderRadius.only(topLeft: Radius.circular(30.r)),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            GestureDetector(
-              onTap: () {},
-              child: Draggable(
-                  onDragEnd: (details) {
-                    if (details.velocity.pixelsPerSecond.dx < 0) {
-                      setState(() {
-                        _currentIndex =
-                            _currentIndex + 1 < widget.vocabInfo.length
-                                ? _currentIndex + 1
-                                : 0;
-                      });
-                    }
-                    if (details.velocity.pixelsPerSecond.dx > 0) {
-                      setState(() {
-                        _currentIndex = _currentIndex > 0
-                            ? _currentIndex - 1
-                            : widget.vocabInfo.length - 1;
-                      });
-                    }
-                  },
-                  feedback: _buildCard(_currentIndex),
-                  childWhenDragging: _buildCard(_newIndex),
-                  child: _buildCard(_currentIndex)),
+            BlocSelector<FlashcardCollectionCubit, FlashcardCollectionState,
+                List<LocalVocabInfo>>(
+              selector: (state) {
+                return state.flashcards!;
+              },
+              builder: (context, listOfFlashcard) {
+                return GestureDetector(
+                  onTap: () => Navigator.pushNamed(
+                      context, RouteName.flashCardInfoScreen,
+                      arguments: listOfFlashcard[_currentIndex]),
+                  child: Draggable(
+                      onDragEnd: (details) {
+                        if (details.velocity.pixelsPerSecond.dx < 0) {
+                          setState(() {
+                            _currentIndex =
+                                _currentIndex + 1 < widget.vocabInfo.length
+                                    ? _currentIndex + 1
+                                    : 0;
+                          });
+                        }
+                        if (details.velocity.pixelsPerSecond.dx > 0) {
+                          setState(() {
+                            _currentIndex = _currentIndex > 0
+                                ? _currentIndex - 1
+                                : widget.vocabInfo.length - 1;
+                          });
+                        }
+                      },
+                      feedback: _buildCard(_currentIndex, listOfFlashcard),
+                      childWhenDragging: _buildCard(_newIndex, listOfFlashcard),
+                      child: _buildCard(_currentIndex, listOfFlashcard)),
+                );
+              },
             ),
             _buildRoundedLinearProcessIndicator(),
             CustomButton(
@@ -129,15 +155,125 @@ class _FlashCardScreenState extends State<FlashCardScreen>
     );
   }
 
-  Widget _buildCard(int index) {
-    return FlashcardComponentItem(
+  Widget _buildCard(int index, List<LocalVocabInfo> listOfFlashcard) {
+    return FlipCard(
       angle: angle,
-      front: Center(
-        child: Text(widget.vocabInfo[index].vocab),
-      ),
-      back: Center(
-        child: Text(widget.vocabInfo[index].id.toString()),
-      ),
+      front: _buildFront(index, listOfFlashcard),
+      back: _buildBack(index, listOfFlashcard),
+    );
+  }
+
+  String concatMeaning(List<TranslateInfo> list) {
+    String temp = '';
+    for (var trans in list) {
+      temp += " ${trans.vi.toCapitalize()}; ";
+    }
+    return temp;
+  }
+
+  Widget _buildBack(int index, List<LocalVocabInfo> listOfFlashcard) {
+    return Stack(
+      children: [
+        Positioned(
+          top: 0,
+          right: 0,
+          child: IconButton(
+            onPressed: () {
+              context
+                  .read<FlashcardCollectionCubit>()
+                  .deleteFlashcard(widget.currentCollection, index);
+              setState(() {});
+            },
+            icon: Icon(
+              Icons.close,
+              color: AppColor.primary,
+              size: 25.r,
+            ),
+          ),
+        ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: Text(
+              concatMeaning(listOfFlashcard[index].translate),
+              textAlign: TextAlign.center,
+              style: AppTypography.subHeadline
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFront(int index, List<LocalVocabInfo> listOfFlashcard) {
+    return Stack(
+      children: [
+        Positioned(
+          top: 0,
+          right: 0,
+          child: IconButton(
+            onPressed: () {
+              context
+                  .read<FlashcardCollectionCubit>()
+                  .deleteFlashcard(widget.currentCollection, index);
+              setState(() {});
+            },
+            icon: Icon(
+              Icons.close,
+              color: AppColor.primary,
+              size: 25.r,
+            ),
+          ),
+        ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  listOfFlashcard[index].vocab.toCapitalize(),
+                  style: AppTypography.subHeadline
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  '(${listOfFlashcard[index].vocabType.toCapitalize()})',
+                  style: AppTypography.title.copyWith(
+                      fontWeight: FontWeight.bold, color: AppColor.primary),
+                ),
+                5.verticalSpace,
+                Text.rich(
+                  TextSpan(
+                      text: "UK: ",
+                      style:
+                          AppTypography.title.copyWith(color: AppColor.primary),
+                      children: [
+                        TextSpan(
+                          text: listOfFlashcard[index].pronounce.uk,
+                          style: AppTypography.title,
+                        )
+                      ]),
+                ),
+                5.verticalSpace,
+                Text.rich(
+                  TextSpan(
+                    text: "US: ",
+                    style:
+                        AppTypography.title.copyWith(color: AppColor.primary),
+                    children: [
+                      TextSpan(
+                        text: widget.vocabInfo[index].pronounce.us,
+                        style: AppTypography.title,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -164,82 +300,6 @@ class _FlashCardScreenState extends State<FlashCardScreen>
           ),
         )
       ],
-    );
-  }
-}
-
-// ignore: must_be_immutable
-class FlashcardComponentItem extends StatefulWidget {
-  FlashcardComponentItem({
-    Key? key,
-    this.front,
-    this.back,
-    this.angle,
-  }) : super(key: key);
-  final Widget? front;
-  final Widget? back;
-  double? angle;
-  void Function(Offset)? onSwipeLeft;
-  void Function(Offset)? onSwipeRight;
-  @override
-  State<FlashcardComponentItem> createState() => _FlashcardComponentItemState();
-}
-
-class _FlashcardComponentItemState extends State<FlashcardComponentItem> {
-  bool isBack = true;
-
-  // void _flip() {
-  //   setState(() {
-  //     widget.angle = (widget.angle! + pi) % (2 * pi);
-  //   });
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      child: TweenAnimationBuilder(
-        tween: Tween<double>(begin: 0, end: widget.angle),
-        duration: const Duration(milliseconds: 300),
-        builder: (BuildContext context, double val, __) {
-          //here we will change the isBack val so we can change the content of the card
-          if (val >= (pi / 2)) {
-            isBack = false;
-          } else {
-            isBack = true;
-          }
-          return Transform(
-            alignment: Alignment.center,
-            transform: Matrix4.identity()
-              ..setEntry(3, 2, 0.001)
-              ..rotateY(val),
-            child: _buildInterface(
-              child: isBack
-                  ? _buildInterface(
-                      child: widget.front ?? const Center(child: Text('Front')),
-                    )
-                  : Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.identity()..rotateY(pi),
-                      child: _buildInterface(
-                        child: widget.back ?? const Center(child: Text('Back')),
-                      ),
-                    ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Container _buildInterface({required Widget child}) {
-    return Container(
-      height: 400.h,
-      width: 300.w,
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColor.primary, width: 2),
-        borderRadius: BorderRadius.circular(30.r),
-      ),
-      child: child,
     );
   }
 }

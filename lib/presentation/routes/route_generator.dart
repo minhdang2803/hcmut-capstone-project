@@ -2,6 +2,7 @@ import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/video/video_youtube_info.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/pages/book/books_screen.dart';
+import 'package:bke/presentation/pages/flashcard/flashcard_info_page.dart';
 import 'package:bke/presentation/pages/flashcard/flashcard_page.dart';
 import 'package:bke/utils/enum.dart';
 
@@ -90,13 +91,19 @@ class RouteGenerator {
           vocabInfo: vocab,
         );
         break;
-      case RouteName.flashCard:
+      case RouteName.flashCardScreen:
         final flashcard = settings.arguments as FlashcardPageModel;
         page = FlashCardScreen(
             vocabInfo: flashcard.vocabInfo,
             currentCollection: flashcard.currentCollection,
             collectionTitle: flashcard.collectionTitle);
         break;
+
+      case RouteName.flashCardInfoScreen:
+        final vocab = settings.arguments as LocalVocabInfo;
+        page = FlashcardInfoScreen(vocab: vocab);
+        break;
+
       case RouteName.bookPage:
         page = const BookPage();
         break;
