@@ -30,6 +30,7 @@ class VideoYoutubeHorizontalList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 230.r,
+      width: double.infinity,
       padding: EdgeInsets.only(left: 16.r, right: 8.r),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,6 +59,7 @@ class VideoYoutubeHorizontalList extends StatelessWidget {
           SizedBox(height: 10.r),
           Expanded(
             child: ListView.separated(
+              shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemCount: data.length,
               separatorBuilder: (ctx, index) => SizedBox(width: 16.r),

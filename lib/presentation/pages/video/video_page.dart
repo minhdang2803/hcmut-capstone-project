@@ -54,27 +54,39 @@ class _VideoPageState extends State<VideoPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          _buildBody(),
-          const BkEAppBar(label: 'Video'),
-        ],
+      backgroundColor: AppColor.primary,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            BkEAppBar(
+              label: 'Video',
+              onBackButtonPress: () => Navigator.pop(context),
+            ),
+            _buildBody(),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildBody() {
-    final topPadding = MediaQuery.of(context).padding.top + 63.r;
-    return Padding(
-      padding: EdgeInsets.only(top: topPadding),
+    return Expanded(
       child: RefreshIndicator(
         onRefresh: _onRefresh,
-        child: ListView(
-          padding: EdgeInsets.only(bottom: 30.r),
-          children: [
-            SizedBox(height: 20.r),
-            _buildActivitiesSection(),
-          ],
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20.r)),
+          ),
+          child: ListView(
+            padding: EdgeInsets.only(bottom: 30.r),
+            children: [
+              SizedBox(height: 20.r),
+              _buildActivitiesSection(),
+            ],
+          ),
         ),
       ),
     );

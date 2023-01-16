@@ -59,8 +59,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
           text: '${text.substring(1, text.length - 2)} ',
           style: style.copyWith(color: AppColor.secondary),
           recognizer: TapGestureRecognizer()
-            ..onTap =
-                () => _onDictionarySearch(text.substring(1, text.length - 3)),
+            ..onTap = () => _onDictionarySearch(
+                text.substring(1, text.length - 3).toLowerCase()),
         );
       } else if (text[0] == '[') {
         // is the word highlight recommended by admin [example]
@@ -68,17 +68,71 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
           text: '${text.substring(1, text.length - 2)} ',
           style: style.copyWith(color: AppColor.secondary),
           recognizer: TapGestureRecognizer()
-            ..onTap =
-                () => _onDictionarySearch(text.substring(1, text.length - 2)),
+            ..onTap = () => _onDictionarySearch(
+                text.substring(1, text.length - 2).toLowerCase()),
         );
       } else if (text.contains('.') || text.contains(',')) {
         // the word ending with , or .
+        if (text.length > 4 &&
+            !text.contains("ies") &&
+            !text.contains("tes") &&
+            text.substring(text.length - 4).contains('es')) {
+          span = TextSpan(
+            text: text,
+            style: style,
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => _onDictionarySearch(
+                  text.substring(0, text.length - 4).toLowerCase()),
+          );
+        } else if (text.length > 4 &&
+            !text.contains("ous") &&
+            !text.contains("ines") &&
+            text.substring(text.length - 3).contains('s')) {
+          span = TextSpan(
+            text: text,
+            style: style,
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => _onDictionarySearch(
+                  text.substring(0, text.length - 3).toLowerCase()),
+          );
+        } else {
+          span = TextSpan(
+            text: text,
+            style: style,
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => _onDictionarySearch(
+                  text.substring(0, text.length - 2).toLowerCase()),
+          );
+        }
+      } else if (text.length > 4 &&
+          !text.contains("tes") &&
+          text.substring(text.length - 3).contains("es")) {
         span = TextSpan(
           text: text,
           style: style,
           recognizer: TapGestureRecognizer()
-            ..onTap =
-                () => _onDictionarySearch(text.substring(0, text.length - 2)),
+            ..onTap = () => _onDictionarySearch(
+                text.substring(0, text.length - 3).toLowerCase()),
+        );
+      } else if (text.length > 4 &&
+          !text.contains("ous") &&
+          !text.contains("ines") &&
+          text.substring(text.length - 2).contains('s')) {
+        span = TextSpan(
+          text: text,
+          style: style,
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => _onDictionarySearch(
+                text.substring(0, text.length - 2).toLowerCase()),
+        );
+      } else if (text.length > 4 &&
+          text.substring(text.length - 3).contains('ed')) {
+        span = TextSpan(
+          text: text,
+          style: style,
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => _onDictionarySearch(
+                text.substring(0, text.length - 3).toLowerCase()),
         );
       } else {
         // the normalword
@@ -86,8 +140,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
           text: text,
           style: style,
           recognizer: TapGestureRecognizer()
-            ..onTap =
-                () => _onDictionarySearch(text.substring(0, text.length - 1)),
+            ..onTap = () => _onDictionarySearch(
+                text.substring(0, text.length - 1).toLowerCase()),
         );
       }
 

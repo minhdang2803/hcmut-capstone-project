@@ -120,22 +120,25 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          _buildBody(),
-          BkEAppBar(
-            label: _getAppBarLabel(),
-            showNotificationAction: true,
-          ),
-        ],
+      backgroundColor: AppColor.primary,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            BkEAppBar(
+              label: _getAppBarLabel(),
+              showNotificationAction: true,
+              onBackButtonPress: () => Navigator.pop(context),
+            ),
+            _buildBody(),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildBody() {
-    final topPadding = MediaQuery.of(context).padding.top + 63.r;
-    return Padding(
-      padding: EdgeInsets.only(top: topPadding),
+    return Expanded(
       child: RefreshIndicator(
         onRefresh: () => Future.sync(
           () {
@@ -145,6 +148,8 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
         child: FadeTransition(
           opacity: _animationEaseIn,
           child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30.r),
@@ -152,6 +157,7 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
               color: Colors.white,
             ),
             child: PagedListView<int, VideoYoutubeInfo>(
+              shrinkWrap: true,
               padding: EdgeInsets.only(top: 16.r, bottom: 30.r),
               pagingController: _pagingController,
               builderDelegate: PagedChildBuilderDelegate<VideoYoutubeInfo>(
@@ -220,7 +226,9 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
   Widget _buildLoadingSkeleton() {
     return FadeTransition(
       opacity: _animationEaseOut,
-      child: Padding(
+      child: Container(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.symmetric(horizontal: 30.r),
         child: ListView.separated(
           physics: const NeverScrollableScrollPhysics(),
