@@ -36,7 +36,6 @@ class FlashCardScreen extends StatefulWidget {
 
 class _FlashCardScreenState extends State<FlashCardScreen>
     with SingleTickerProviderStateMixin {
-  // int _currentIndex = 0;
   double angle = 0;
 
   late AnimationController _controller;
@@ -156,7 +155,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
   String concatMeaning(List<TranslateInfo> list) {
     String temp = '';
     for (var trans in list) {
-      temp += " ${trans.vi.toCapitalize()}; ";
+      temp += " ${trans.vi.toCapitalize()}, ";
     }
     return temp;
   }
@@ -206,11 +205,9 @@ class _FlashCardScreenState extends State<FlashCardScreen>
           top: 0,
           right: 0,
           child: IconButton(
-            onPressed: () {
-              context
-                  .read<FlashcardCubit>()
-                  .deleteFlashcard(widget.currentCollection, index);
-            },
+            onPressed: () => context
+                .read<FlashcardCubit>()
+                .deleteFlashcard(widget.currentCollection, index),
             icon: Icon(
               Icons.close,
               color: AppColor.primary,
