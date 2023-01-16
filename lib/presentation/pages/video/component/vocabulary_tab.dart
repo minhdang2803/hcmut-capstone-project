@@ -1,11 +1,10 @@
-import 'package:bke/bloc/flashcard/cubit/flashcard_cubit.dart';
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
 
+import '../../../../bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
 import '../../../../bloc/vocab/vocab_cubit.dart';
 import '../../../../data/models/vocab/vocab.dart';
 import '../../../theme/app_color.dart';

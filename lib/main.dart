@@ -1,4 +1,4 @@
-import 'package:bke/bloc/flashcard/cubit/flashcard_cubit.dart';
+import 'package:bke/bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
 import 'package:bke/data/dependency_injection/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

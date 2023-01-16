@@ -1,6 +1,5 @@
 import 'dart:math';
-
-import 'package:bke/bloc/flashcard/cubit/flashcard_cubit.dart';
+import 'package:bke/bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
@@ -42,7 +41,6 @@ class FlashCardScreen extends StatefulWidget {
 class _FlashCardScreenState extends State<FlashCardScreen>
     with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
-  int _newIndex = 0;
   double angle = 0;
   late List<FlipCard> item;
   late AnimationController _controller;
@@ -95,8 +93,6 @@ class _FlashCardScreenState extends State<FlashCardScreen>
   }
 
   Widget _buildFlashcard() {
-    _newIndex =
-        _currentIndex + 1 < widget.vocabInfo.length ? _currentIndex + 1 : 0;
     final size = MediaQuery.of(context).size;
     return Expanded(
       child: Container(
@@ -127,6 +123,8 @@ class _FlashCardScreenState extends State<FlashCardScreen>
                                     ? _currentIndex + 1
                                     : 0;
                           });
+                          print("currentIndex: " + _currentIndex.toString());
+                          print("length: " + listOfFlashcard.length.toString());
                         }
                         if (details.velocity.pixelsPerSecond.dx > 0) {
                           setState(() {
@@ -134,11 +132,27 @@ class _FlashCardScreenState extends State<FlashCardScreen>
                                 ? _currentIndex - 1
                                 : widget.vocabInfo.length - 1;
                           });
+                          print("currentIndex: " + _currentIndex.toString());
+                          print("length: " + listOfFlashcard.length.toString());
                         }
                       },
-                      feedback: _buildCard(_currentIndex, listOfFlashcard),
-                      childWhenDragging: _buildCard(_newIndex, listOfFlashcard),
-                      child: _buildCard(_currentIndex, listOfFlashcard)),
+                      feedback: _buildCard(listOfFlashcard),
+                      childWhenDragging: FlipCard(
+                        angle: 0,
+                        front: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(30.r),
+                          ),
+                        ),
+                        back: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(30.r),
+                          ),
+                        ),
+                      ),
+                      child: _buildCard(listOfFlashcard)),
                 );
               },
             ),
@@ -155,11 +169,11 @@ class _FlashCardScreenState extends State<FlashCardScreen>
     );
   }
 
-  Widget _buildCard(int index, List<LocalVocabInfo> listOfFlashcard) {
+  Widget _buildCard(List<LocalVocabInfo> listOfFlashcard) {
     return FlipCard(
       angle: angle,
-      front: _buildFront(index, listOfFlashcard),
-      back: _buildBack(index, listOfFlashcard),
+      front: _buildFront(listOfFlashcard),
+      back: _buildBack(listOfFlashcard),
     );
   }
 
@@ -171,7 +185,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
     return temp;
   }
 
-  Widget _buildBack(int index, List<LocalVocabInfo> listOfFlashcard) {
+  Widget _buildBack(List<LocalVocabInfo> listOfFlashcard) {
     return Stack(
       children: [
         Positioned(
@@ -181,8 +195,12 @@ class _FlashCardScreenState extends State<FlashCardScreen>
             onPressed: () {
               context
                   .read<FlashcardCollectionCubit>()
-                  .deleteFlashcard(widget.currentCollection, index);
-              setState(() {});
+                  .deleteFlashcard(widget.currentCollection, _currentIndex);
+              setState(() {
+                if (_currentIndex > 0) {
+                  _currentIndex = _currentIndex - 1;
+                }
+              });
             },
             icon: Icon(
               Icons.close,
@@ -195,7 +213,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
           child: Align(
             alignment: Alignment.center,
             child: Text(
-              concatMeaning(listOfFlashcard[index].translate),
+              concatMeaning(listOfFlashcard[_currentIndex].translate),
               textAlign: TextAlign.center,
               style: AppTypography.subHeadline
                   .copyWith(fontWeight: FontWeight.bold),
@@ -206,7 +224,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
     );
   }
 
-  Widget _buildFront(int index, List<LocalVocabInfo> listOfFlashcard) {
+  Widget _buildFront(List<LocalVocabInfo> listOfFlashcard) {
     return Stack(
       children: [
         Positioned(
@@ -216,8 +234,12 @@ class _FlashCardScreenState extends State<FlashCardScreen>
             onPressed: () {
               context
                   .read<FlashcardCollectionCubit>()
-                  .deleteFlashcard(widget.currentCollection, index);
-              setState(() {});
+                  .deleteFlashcard(widget.currentCollection, _currentIndex);
+              setState(() {
+                if (_currentIndex > 0) {
+                  _currentIndex = _currentIndex - 1;
+                }
+              });
             },
             icon: Icon(
               Icons.close,
@@ -233,12 +255,12 @@ class _FlashCardScreenState extends State<FlashCardScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  listOfFlashcard[index].vocab.toCapitalize(),
+                  listOfFlashcard[_currentIndex].vocab.toCapitalize(),
                   style: AppTypography.subHeadline
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '(${listOfFlashcard[index].vocabType.toCapitalize()})',
+                  '(${listOfFlashcard[_currentIndex].vocabType.toCapitalize()})',
                   style: AppTypography.title.copyWith(
                       fontWeight: FontWeight.bold, color: AppColor.primary),
                 ),
@@ -250,7 +272,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
                           AppTypography.title.copyWith(color: AppColor.primary),
                       children: [
                         TextSpan(
-                          text: listOfFlashcard[index].pronounce.uk,
+                          text: listOfFlashcard[_currentIndex].pronounce.uk,
                           style: AppTypography.title,
                         )
                       ]),
@@ -263,7 +285,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
                         AppTypography.title.copyWith(color: AppColor.primary),
                     children: [
                       TextSpan(
-                        text: widget.vocabInfo[index].pronounce.us,
+                        text: widget.vocabInfo[_currentIndex].pronounce.us,
                         style: AppTypography.title,
                       )
                     ],

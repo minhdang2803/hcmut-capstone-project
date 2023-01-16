@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../theme/app_color.dart';
+
 class FlipCard extends StatefulWidget {
   FlipCard({
     Key? key,
@@ -45,7 +46,10 @@ class _FlipCardState extends State<FlipCard> {
             isBack = true;
           }
           return Container(
-            color: AppColor.greyBackground,
+            decoration: BoxDecoration(
+              color: AppColor.greyBackground,
+              borderRadius: BorderRadius.circular(30.r),
+            ),
             child: Transform(
               alignment: Alignment.center,
               transform: Matrix4.identity()

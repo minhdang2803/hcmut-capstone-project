@@ -5,7 +5,7 @@ import 'package:bke/data/repositories/flashcard_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-part 'flashcard_state.dart';
+part 'flashcard_collection_state.dart';
 
 class FlashcardCollectionCubit extends Cubit<FlashcardCollectionState> {
   FlashcardCollectionCubit() : super(FlashcardCollectionState.initial());
@@ -13,19 +13,19 @@ class FlashcardCollectionCubit extends Cubit<FlashcardCollectionState> {
   final instance = FlashcardRepository.instance();
   void getFlashcardCollections({int? currentCollection}) {
     try {
-      emit(state.copyWith(status: FlashcardStatus.loading));
+      emit(state.copyWith(status: FlashcardCollectionStatus.loading));
       final result = instance.getFCCollection();
       emit(state.copyWith(
         flashcards: currentCollection != null
             ? result[currentCollection].flashcards
             : [],
         listOfFlashcardColection: result,
-        status: FlashcardStatus.success,
+        status: FlashcardCollectionStatus.success,
       ));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],
-        status: FlashcardStatus.fail,
+        status: FlashcardCollectionStatus.fail,
         errorMessage: error.errorMessage,
       ));
     }
@@ -36,11 +36,12 @@ class FlashcardCollectionCubit extends Cubit<FlashcardCollectionState> {
       instance.addToCollection(flashcardCollection);
       final result = instance.getFCCollection();
       emit(state.copyWith(
-          listOfFlashcardColection: result, status: FlashcardStatus.success));
+          listOfFlashcardColection: result,
+          status: FlashcardCollectionStatus.success));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],
-        status: FlashcardStatus.fail,
+        status: FlashcardCollectionStatus.fail,
         errorMessage: error.errorMessage,
       ));
     }
@@ -51,11 +52,12 @@ class FlashcardCollectionCubit extends Cubit<FlashcardCollectionState> {
       instance.deleteCollection(index);
       final result = instance.getFCCollection();
       emit(state.copyWith(
-          listOfFlashcardColection: result, status: FlashcardStatus.success));
+          listOfFlashcardColection: result,
+          status: FlashcardCollectionStatus.success));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],
-        status: FlashcardStatus.fail,
+        status: FlashcardCollectionStatus.fail,
         errorMessage: error.errorMessage,
       ));
     }
@@ -66,11 +68,12 @@ class FlashcardCollectionCubit extends Cubit<FlashcardCollectionState> {
       instance.updateCollectionImg(imgUrl, index);
       final result = instance.getFCCollection();
       emit(state.copyWith(
-          listOfFlashcardColection: result, status: FlashcardStatus.success));
+          listOfFlashcardColection: result,
+          status: FlashcardCollectionStatus.success));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],
-        status: FlashcardStatus.fail,
+        status: FlashcardCollectionStatus.fail,
         errorMessage: error.errorMessage,
       ));
     }
@@ -81,30 +84,33 @@ class FlashcardCollectionCubit extends Cubit<FlashcardCollectionState> {
       instance.updateCollectionTitle(title, index);
       final result = instance.getFCCollection();
       emit(state.copyWith(
-          listOfFlashcardColection: result, status: FlashcardStatus.success));
+          listOfFlashcardColection: result,
+          status: FlashcardCollectionStatus.success));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],
-        status: FlashcardStatus.fail,
+        status: FlashcardCollectionStatus.fail,
         errorMessage: error.errorMessage,
       ));
     }
   }
 
-  void addFlashcard(LocalVocabInfo vocabInfo, int index,
-      ) {
+  void addFlashcard(
+    LocalVocabInfo vocabInfo,
+    int index,
+  ) {
     try {
       instance.addFlashcard(vocabInfo, index);
       final result = instance.getFCCollection();
       emit(state.copyWith(
         flashcards: result[index].flashcards,
         listOfFlashcardColection: result,
-        status: FlashcardStatus.success,
+        status: FlashcardCollectionStatus.success,
       ));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],
-        status: FlashcardStatus.fail,
+        status: FlashcardCollectionStatus.fail,
         errorMessage: error.errorMessage,
       ));
     }
@@ -117,12 +123,12 @@ class FlashcardCollectionCubit extends Cubit<FlashcardCollectionState> {
       emit(state.copyWith(
         flashcards: result[currentCollection].flashcards,
         listOfFlashcardColection: result,
-        status: FlashcardStatus.success,
+        status: FlashcardCollectionStatus.success,
       ));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],
-        status: FlashcardStatus.fail,
+        status: FlashcardCollectionStatus.fail,
         errorMessage: error.errorMessage,
       ));
     }

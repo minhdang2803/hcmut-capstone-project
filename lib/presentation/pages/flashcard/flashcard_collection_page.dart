@@ -1,4 +1,3 @@
-import 'package:bke/bloc/flashcard/cubit/flashcard_cubit.dart';
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
 import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_component.dart';
 import 'package:bke/presentation/pages/flashcard/flashcard_page.dart';
@@ -7,6 +6,7 @@ import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
 import '../../routes/route_name.dart';
 import '../../widgets/widgets.dart';
 
@@ -404,7 +404,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
   Widget _buildFlashcardScreen() {
     return BlocBuilder<FlashcardCollectionCubit, FlashcardCollectionState>(
       builder: (context, state) {
-        if (state.status == FlashcardStatus.loading) {
+        if (state.status == FlashcardCollectionStatus.loading) {
           return const Center(
             child: CircularProgressIndicator(color: AppColor.primary),
           );

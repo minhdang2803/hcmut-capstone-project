@@ -65,21 +65,24 @@ class FCLocalSourceImpl extends FCLocalSource {
   }
 
   @override
-  void addFlashcard(LocalVocabInfo vocabInfo, int current) {
+  List<LocalVocabInfo> addFlashcard(LocalVocabInfo vocabInfo, int current) {
     final box = getFCCollectionBoxByUser();
     final userid = getUserId();
     final listOfCollection = getListOfLCCollections();
     listOfCollection[current].flashcards.add(vocabInfo);
     box.put(userid, listOfCollection);
+    return listOfCollection[current].flashcards;
   }
 
   @override
-  void deleteFlashcard(int currentColection, int currentFlashcard) {
+  List<LocalVocabInfo> deleteFlashcard(
+      int currentColection, int currentFlashcard) {
     final box = getFCCollectionBoxByUser();
     final userid = getUserId();
     final listOfCollection = getListOfLCCollections();
     listOfCollection[currentColection].flashcards.removeAt(currentFlashcard);
     box.put(userid, listOfCollection);
+    return listOfCollection[currentColection].flashcards;
   }
 
   @override
