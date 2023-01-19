@@ -16,4 +16,6 @@ class EndPoint {
   static const getYoutubeVideoInfos = '$_baseUrl/videoYoutubeInfo';
 
   static const getVocabInfos = '$_baseUrl/vocab';
+  static const getAllFlashcard = '$_baseUrl/flashCard/getAll';
+  static const updateFlashcard = '$_baseUrl/flashCard/upsert';
 }

@@ -3,6 +3,21 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 part 'vocab.g.dart';
 
+@HiveType(typeId: 7)
+class LocalVocabInfoList extends HiveObject {
+  @HiveField(0)
+  late final List<LocalVocabInfo> vocabList;
+  LocalVocabInfoList(this.vocabList);
+
+  factory LocalVocabInfoList.fromJson(Map<String, dynamic> json) {
+    return LocalVocabInfoList(
+      (json['vocabList'] as List<dynamic>)
+          .map((e) => LocalVocabInfo.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
 @HiveType(typeId: 3)
 class LocalVocabInfo extends Equatable {
   @HiveField(0)

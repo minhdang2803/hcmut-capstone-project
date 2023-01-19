@@ -26,11 +26,19 @@ class VocabRepository {
   }
 
   List<LocalVocabInfo> getAll() {
-    return _vocabLocalSource.getAll();
+    return _vocabLocalSource.getAllFromDictionary();
   }
 
   void deleteAtKey(int id) {
     _vocabLocalSource.deleteAtKey(id);
+  }
+
+  LocalVocabInfo? getVocabFromLocal(int id) {
+    return _vocabLocalSource.getVocabFromLocalbyId(id);
+  }
+
+  void addVocabToLocal(LocalVocabInfo vocab) {
+    _vocabLocalSource.addVocabToLocal(vocab);
   }
 
   Box getMyDictionaryBox() => _vocabLocalSource.getMyDictionaryBox();

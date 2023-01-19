@@ -105,15 +105,16 @@ class _VocabularyTabState extends State<VocabularyTab> {
           context.read<VocabCubit>().deleteFromMyDictionary(vocabInfo.id);
           return false;
         } else {
-          context.read<VocabCubit>().saveToMyDictionary(
-                LocalVocabInfo(
-                  vocab: vocabInfo.vocab,
-                  vocabType: vocabInfo.vocabType,
-                  id: vocabInfo.id,
-                  pronounce: vocabInfo.pronounce,
-                  translate: vocabInfo.translate,
-                ),
-              );
+          final localVocab = LocalVocabInfo(
+            vocab: vocabInfo.vocab,
+            vocabType: vocabInfo.vocabType,
+            id: vocabInfo.id,
+            pronounce: vocabInfo.pronounce,
+            translate: vocabInfo.translate,
+          );
+
+          context.read<VocabCubit>().saveToMyDictionary(localVocab);
+          context.read<VocabCubit>().addVocabToLocal(localVocab);
           return true;
         }
       },

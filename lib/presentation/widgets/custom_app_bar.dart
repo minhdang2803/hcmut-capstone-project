@@ -35,8 +35,8 @@ class BkEAppBar extends StatelessWidget {
       color: color,
       child: Padding(
         padding: EdgeInsets.only(
-          top: topPadding,
-          //top: 0,
+          // top: topPadding,
+          top: 0,
           right: 30.r,
           left: onBackButtonPress != null ? 20.r : 30.r,
         ),

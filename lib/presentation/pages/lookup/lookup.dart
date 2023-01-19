@@ -18,23 +18,26 @@ class LookUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: SvgPicture.asset(
-            'assets/texture/hoatiet.svg',
-            fit: BoxFit.contain,
-          ),
-        ),
-        Column(
-          children: [
-            BkEAppBar(
-              label: 'Tra từ',
+    return SafeArea(
+      bottom: false,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: SvgPicture.asset(
+              'assets/texture/hoatiet.svg',
+              fit: BoxFit.contain,
             ),
-            _buildBody(context),
-          ],
-        ),
-      ],
+          ),
+          Column(
+            children: [
+              const BkEAppBar(
+                label: 'Tra từ',
+              ),
+              _buildBody(context),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -68,7 +71,6 @@ class LookUpPage extends StatelessWidget {
       itemCount: vocabList.length,
       itemBuilder: (context, index) => GestureDetector(
         onTap: () {
-          print(vocabList[index].id);
           Navigator.pushNamed(
             context,
             RouteName.vocabFullInfo,

@@ -17,8 +17,8 @@ class MyDictionaryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.primary,
-      body: Padding(
-        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+      body: SafeArea(
+        bottom: false,
         child: Column(
           children: [
             BkEAppBar(
@@ -47,7 +47,7 @@ class MyDictionaryPage extends StatelessWidget {
             List<LocalVocabInfo> vocabList = [];
             final myVocab = value.values;
             vocabList.addAll(myVocab.map((e) => e));
-    
+
             if (value.isEmpty) {
               return _buildEmpty();
             }
@@ -66,7 +66,6 @@ class MyDictionaryPage extends StatelessWidget {
       itemCount: vocabList.length,
       itemBuilder: (context, index) => GestureDetector(
         onTap: () {
-  
           Navigator.pushNamed(
             context,
             RouteName.vocabFullInfo,

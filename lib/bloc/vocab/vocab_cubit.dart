@@ -53,6 +53,14 @@ class VocabCubit extends Cubit<VocabState> {
     _vocabRepository.deleteAtKey(id);
   }
 
+  void addVocabToLocal(LocalVocabInfo vocab) {
+    _vocabRepository.addVocabToLocal(vocab);
+  }
+
+  LocalVocabInfo? getVocabFromLocalById(int id) {
+    return _vocabRepository.getVocabFromLocal(id);
+  }
+
   List<LocalVocabInfo> getAll() => _vocabRepository.getAll();
 
   // List<LocalVocabInfo> getAll() => _vocabRepository.getAll();
