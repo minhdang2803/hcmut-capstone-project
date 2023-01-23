@@ -47,7 +47,7 @@ class VocabSourceImpl extends VocabSource {
       (response) => BaseResponse<VocabInfo>.fromJson(
           json: response, dataBuilder: VocabInfo.fromJson),
     );
-    LogUtil.debug('Vocab id:: $path $id');
+    LogUtil.debug('Vocab id: $path $id');
     return _api.get(getVocabById);
   }
 }

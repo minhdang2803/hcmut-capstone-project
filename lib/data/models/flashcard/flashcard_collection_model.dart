@@ -1,3 +1,4 @@
+import 'package:bke/data/configs/hive_config.dart';
 import 'package:bke/data/data_source/local/vocab_local_source.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:get_it/get_it.dart';
@@ -40,34 +41,41 @@ class FlashcardCollectionModel extends HiveObject {
     );
   }
 
-  static Future<FlashcardCollectionModel> fromServer(
-      Map<String, dynamic> json) async {
+  factory FlashcardCollectionModel.fromServer(Map<String, dynamic> json) {
     final localInstance = GetIt.I.get<VocabLocalSourceImpl>(); // VocabLocal
     final remoteInstance = GetIt.I.get<VocabSourceImpl>(); // VocabRemote
     List<LocalVocabInfo> flashCards = [];
-    if (json["flashCards"] != null) {
-      for (var e in (json["flashCards"] as List)) {
-        final LocalVocabInfo? vocab =
-            localInstance.getVocabFromLocalbyId(e as int);
-        if (vocab != null) {
-          // search vocab local
-          continue;
-        } else {
-          // Xu li goi api de tim vocab dua tren ID
-          final response = await remoteInstance.getVocabById(e);
-          final vocab = response.data!;
-          final tempVocabInfo = LocalVocabInfo(
-            vocab: vocab.vocab,
-            vocabType: vocab.vocabType,
-            id: vocab.id,
-            pronounce: vocab.pronounce,
-            translate: vocab.translate,
-          );
-
-          flashCards.add(tempVocabInfo);
-        }
-      }
-    } //fnd by ID
+    if (json["flashcards"] != null) {
+      Stream.fromIterable(json["flashcards"]).asyncMap(
+        (event) async {
+          final LocalVocabInfo? vocab =
+              localInstance.getVocabFromLocalbyId(event as int);
+          if (vocab != null) {
+            // search vocab local
+            return vocab;
+          } else {
+            // Xu li goi api de tim vocab dua tren ID
+            final response = await remoteInstance.getVocabById(event);
+            final vocab = response.data!;
+            final tempVocabInfo = LocalVocabInfo(
+              vocab: vocab.vocab,
+              vocabType: vocab.vocabType,
+              id: vocab.id,
+              pronounce: vocab.pronounce,
+              translate: vocab.translate,
+            );
+            //store local vocab
+            final box = Hive.box(HiveConfig.localVocabs);
+            if (!box.containsKey(vocab.id)) {
+              localInstance.addVocabToLocal(tempVocabInfo);
+            }
+            return tempVocabInfo;
+          }
+        },
+      ).listen((event) {
+        flashCards.add(event);
+      });
+    }
 
     return FlashcardCollectionModel(
       imgUrl: json["imgUrl"],
@@ -78,7 +86,11 @@ class FlashcardCollectionModel extends HiveObject {
 
   Map<String, dynamic> toJson() {
     final listId = flashCards.map((e) => e.id).toList();
-    return {"imgUrl": imgUrl, "title": title, "flashcards": listId};
+    return {
+      "imgUrl": imgUrl,
+      "title": title,
+      "flashcards": listId,
+    };
   }
 }
 
@@ -97,32 +109,19 @@ class FlashcardCollectionResponseModel {
   FlashcardCollectionResponseModel(
       {required this.userId, required this.flashcardsData});
 
-  static Future<FlashcardCollectionResponseModel> fromJson(
-      Map<String, dynamic> json) async {
+  factory FlashcardCollectionResponseModel.fromJson(Map<String, dynamic> json) {
     List<FlashcardCollectionModel> flashcardsData = [];
     if (json['listFlashCard'] != null) {
       for (var e in (json['listFlashCard'] as List)) {
         FlashcardCollectionModel tempFlashCard =
-            await FlashcardCollectionModel.fromServer(e);
+            FlashcardCollectionModel.fromServer(e);
         flashcardsData.add(tempFlashCard);
       }
     }
 
     return FlashcardCollectionResponseModel(
-        userId: json['userId'], flashcardsData: flashcardsData);
+      userId: json['userId'],
+      flashcardsData: flashcardsData,
+    );
   }
 }
-
-// class FlashcardDataResponseModel {
-//   final String title;
-//   final String imgUrl;
-//   final List<int> flashCardId;
-//   FlashcardDataResponseModel(this.title, this.imgUrl, this.flashCardId);
-//   factory FlashcardDataResponseModel.fromJson(Map<String, dynamic> json) {
-//     return FlashcardDataResponseModel(
-//       json['title'],
-//       json['imgUrl'],
-//       (json['flashcards'] as List<dynamic>).map((e) => (e as int)).toList(),
-//     );
-//   }
-// }
