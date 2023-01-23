@@ -22,7 +22,16 @@ class VocabCubit extends Cubit<VocabState> {
           await _vocabRepository.getVocabInfos(vocab);
 
       final data = response.data!;
-
+      for (final element in data.list) {
+        _vocabRepository.addVocabToLocal(
+          LocalVocabInfo(
+              vocab: element.vocab,
+              vocabType: element.vocabType,
+              id: element.id,
+              pronounce: element.pronounce,
+              translate: element.translate),
+        );
+      }
       emit(VocabSuccess(data));
       LogUtil.debug('Get vocabulary success ${data.list}');
     } on RemoteException catch (e, s) {

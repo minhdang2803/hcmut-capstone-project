@@ -1,4 +1,5 @@
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
+import 'package:bke/data/models/network/base_response.dart';
 import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/data/repositories/flashcard_repository.dart';
@@ -11,10 +12,18 @@ class FlashcardCollectionCubit extends Cubit<FlashcardCollectionState> {
   FlashcardCollectionCubit() : super(FlashcardCollectionState.initial());
 
   final instance = FlashcardRepository.instance();
-  void getFlashcardCollections({int? currentCollection}) {
+
+  void getFlashcardCollections({int? currentCollection}) async {
     try {
+      late List<FlashcardCollectionModel> result;
       emit(state.copyWith(status: FlashcardCollectionStatus.loading));
-      final result = instance.getFCCollection();
+      result = instance.getFCCollection();
+      if (result.isEmpty) {
+        final request = await instance.getFlashcardFromServer();
+        final response = request.data;
+        result = response!.flashcardsData;
+        instance.saveCollectionToLocal(result);
+      }
       emit(state.copyWith(
         flashcards: currentCollection != null
             ? result[currentCollection].flashcards
@@ -150,4 +159,8 @@ class FlashcardCollectionCubit extends Cubit<FlashcardCollectionState> {
     "assets/images/relaxed.png",
     "assets/images/no.png",
   ];
+
+  Future<BaseResponse> updateToServer(List<Map<String, dynamic>> data) async {
+    return await instance.updateFlashcardToServer(data);
+  }
 }

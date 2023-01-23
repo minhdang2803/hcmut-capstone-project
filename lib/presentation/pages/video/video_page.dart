@@ -113,7 +113,14 @@ class _VideoPageState extends State<VideoPage>
         }
 
         if (state is VideoLoading) {
-          return Center(child: SizedBox(width: 0.5.sw));
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.75,
+            width: double.infinity,
+            child: const Center(
+                child: CircularProgressIndicator(
+              color: AppColor.primary,
+            )),
+          );
         }
 
         return Column(
@@ -147,80 +154,6 @@ class _VideoPageState extends State<VideoPage>
           ],
         );
       },
-    );
-  }
-
-  Widget _buildLoadingSkeleton() {
-    return FadeTransition(
-      opacity: _animationEaseOut,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 30.r),
-        child: ListView.separated(
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: 15,
-          itemBuilder: (context, index) => Row(
-            children: [
-              SkeletonAvatar(
-                style: SkeletonAvatarStyle(
-                    shape: BoxShape.rectangle, width: 100.r, height: 70.r),
-              ),
-              SizedBox(width: 15.r),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SkeletonLine(
-                      style: SkeletonLineStyle(
-                        height: 15.r,
-                        borderRadius: BorderRadius.circular(8),
-                        width: double.infinity,
-                      ),
-                    ),
-                    SizedBox(height: 4.r),
-                    SkeletonLine(
-                      style: SkeletonLineStyle(
-                        randomLength: true,
-                        height: 15.r,
-                        borderRadius: BorderRadius.circular(8),
-                        minLength: MediaQuery.of(context).size.width / 6,
-                        maxLength: MediaQuery.of(context).size.width / 3,
-                      ),
-                    ),
-                    SizedBox(height: 12.r),
-                    Row(
-                      children: [
-                        SkeletonLine(
-                          style: SkeletonLineStyle(
-                            randomLength: true,
-                            height: 20.r,
-                            borderRadius: BorderRadius.circular(8),
-                            minLength: 40.r,
-                            maxLength: 70.r,
-                          ),
-                        ),
-                        10.horizontalSpace,
-                        SkeletonLine(
-                          style: SkeletonLineStyle(
-                            randomLength: true,
-                            height: 20.r,
-                            borderRadius: BorderRadius.circular(8),
-                            minLength: 60.r,
-                            maxLength: 90.r,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-          separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(height: 10.r);
-          },
-        ),
-      ),
     );
   }
 }

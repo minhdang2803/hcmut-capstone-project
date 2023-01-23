@@ -18,26 +18,23 @@ class LookUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: SvgPicture.asset(
-              'assets/texture/hoatiet.svg',
-              fit: BoxFit.contain,
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: SvgPicture.asset(
+            'assets/texture/hoatiet.svg',
+            fit: BoxFit.contain,
+          ),
+        ),
+        Column(
+          children: [
+            const BkEAppBar(
+              label: 'Tra từ',
             ),
-          ),
-          Column(
-            children: [
-              const BkEAppBar(
-                label: 'Tra từ',
-              ),
-              _buildBody(context),
-            ],
-          ),
-        ],
-      ),
+            _buildBody(context),
+          ],
+        ),
+      ],
     );
   }
 

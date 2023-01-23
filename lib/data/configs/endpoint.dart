@@ -18,4 +18,6 @@ class EndPoint {
   static const getVocabInfos = '$_baseUrl/vocab';
   static const getAllFlashcard = '$_baseUrl/flashCard/getAll';
   static const updateFlashcard = '$_baseUrl/flashCard/upsert';
+  // {{baseURL}}/api/vocab/getById?vocabId=7154
+  static const findVocabById = "$_baseUrl/vocab/getById";
 }

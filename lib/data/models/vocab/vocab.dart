@@ -11,9 +11,9 @@ class LocalVocabInfoList extends HiveObject {
 
   factory LocalVocabInfoList.fromJson(Map<String, dynamic> json) {
     return LocalVocabInfoList(
-      (json['vocabList'] as List<dynamic>)
-          .map((e) => LocalVocabInfo.fromJson(e))
-          .toList(),
+      (json['vocabList'] as List<dynamic>).map((e) {
+        return LocalVocabInfo.fromJson(e);
+      }).toList(),
     );
   }
 }

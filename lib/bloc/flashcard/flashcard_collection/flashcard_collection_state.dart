@@ -8,11 +8,12 @@ class FlashcardCollectionState extends Equatable {
   late final FlashcardCollectionStatus? status;
   late final List<LocalVocabInfo>? flashcards;
 
-  FlashcardCollectionState(
-      {this.listOfFlashcardColection,
-      this.status,
-      this.errorMessage,
-      this.flashcards});
+  FlashcardCollectionState({
+    this.listOfFlashcardColection,
+    this.status,
+    this.errorMessage,
+    this.flashcards,
+  });
 
   FlashcardCollectionState.initial() {
     listOfFlashcardColection = [];

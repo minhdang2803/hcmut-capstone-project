@@ -5,6 +5,7 @@ import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 abstract class FCLocalSource {
+  void saveCollectionFromServer(List<FlashcardCollectionModel> data);
   void addCollection(FlashcardCollectionModel flashcardCollectionModel);
   List<FlashcardCollectionModel> getListOfLCCollections();
   void deleteCollection(int index);
@@ -103,5 +104,12 @@ class FCLocalSourceImpl extends FCLocalSource {
     final userBox = Hive.box(HiveConfig.userBox);
     final User user = userBox.get(HiveConfig.currentUserKey);
     return user.id!;
+  }
+
+  @override
+  void saveCollectionFromServer(List<FlashcardCollectionModel> data) {
+    final box = getFCCollectionBoxByUser();
+    final userId = getUserId();
+    box.put(userId, data);
   }
 }

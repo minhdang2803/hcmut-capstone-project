@@ -29,6 +29,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
   void dispose() {
     _editTitle.dispose();
     _addFlashcardCollection.dispose();
+
     super.dispose();
   }
 
@@ -360,6 +361,23 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
             BkEAppBar(
               label: "Bộ sưu tập Flashcard",
               onBackButtonPress: () => Navigator.pop(context),
+              trailing: IconButton(
+                  onPressed: () async {
+                    final flashcardCollections = context
+                        .read<FlashcardCollectionCubit>()
+                        .state
+                        .listOfFlashcardColection!
+                        .map((e) => e.toJson())
+                        .toList();
+                    await context
+                        .read<FlashcardCollectionCubit>()
+                        .updateToServer(flashcardCollections);
+                  },
+                  icon: Icon(
+                    Icons.sync,
+                    color: Colors.white,
+                    size: 25.r,
+                  )),
             ),
             Expanded(
               child: Container(
@@ -432,7 +450,6 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
                   arguments: FlashcardPageModel(
                     collectionTitle:
                         state.listOfFlashcardColection![index].title,
-                   
                     currentCollection: index,
                   ),
                 ),

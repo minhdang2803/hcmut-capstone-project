@@ -114,7 +114,6 @@ class _VocabularyTabState extends State<VocabularyTab> {
           );
 
           context.read<VocabCubit>().saveToMyDictionary(localVocab);
-          context.read<VocabCubit>().addVocabToLocal(localVocab);
           return true;
         }
       },

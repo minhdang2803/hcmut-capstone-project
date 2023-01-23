@@ -33,4 +33,21 @@ class VocabSourceImpl extends VocabSource {
     LogUtil.debug('get vocab infos: $path ${params}');
     return _api.get(getVocabInfos);
   }
+
+  Future<BaseResponse<VocabInfo>> getVocabById(int id) async {
+    const String path = EndPoint.findVocabById;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+    final params = {'vocabId': id};
+    final getVocabById = APIServiceRequest(
+      path,
+      header: header,
+      queryParams: params,
+      (response) => BaseResponse<VocabInfo>.fromJson(
+          json: response, dataBuilder: VocabInfo.fromJson),
+    );
+    LogUtil.debug('Vocab id:: $path $id');
+    return _api.get(getVocabById);
+  }
 }
