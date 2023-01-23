@@ -69,6 +69,7 @@ class VocabLocalSourceImpl extends VocabLocalSource {
   LocalVocabInfo? getVocabFromLocalbyId(int id) {
     final box = Hive.box(HiveConfig.localVocabs);
     final result = box.get(id, defaultValue: null) as LocalVocabInfo?;
+    LogUtil.debug('Get vocab from local: $result');
     return result;
   }
 }
