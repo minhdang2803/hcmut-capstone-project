@@ -296,7 +296,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
                                 FlashcardCollectionModel(
                                   imgUrl: imgUrl,
                                   title: name,
-                                  flashcards: [],
+                                  flashCards: [],
                                 ),
                               );
 

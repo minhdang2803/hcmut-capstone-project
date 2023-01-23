@@ -318,7 +318,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
                                 FlashcardCollectionModel(
                                   imgUrl: imgUrl,
                                   title: name,
-                                  flashcards: [],
+                                  flashCards: [],
                                 ),
                               );
 

@@ -26,7 +26,7 @@ class FlashcardCollectionCubit extends Cubit<FlashcardCollectionState> {
       }
       emit(state.copyWith(
         flashcards: currentCollection != null
-            ? result[currentCollection].flashcards
+            ? result[currentCollection].flashCards
             : [],
         listOfFlashcardColection: result,
         status: FlashcardCollectionStatus.success,
@@ -112,7 +112,7 @@ class FlashcardCollectionCubit extends Cubit<FlashcardCollectionState> {
       instance.addFlashcard(vocabInfo, index);
       final result = instance.getFCCollection();
       emit(state.copyWith(
-        flashcards: result[index].flashcards,
+        flashcards: result[index].flashCards,
         listOfFlashcardColection: result,
         status: FlashcardCollectionStatus.success,
       ));
@@ -130,7 +130,7 @@ class FlashcardCollectionCubit extends Cubit<FlashcardCollectionState> {
       instance.deleteFlashcard(currentCollection, currentcard);
       final result = instance.getFCCollection();
       emit(state.copyWith(
-        flashcards: result[currentCollection].flashcards,
+        flashcards: result[currentCollection].flashCards,
         listOfFlashcardColection: result,
         status: FlashcardCollectionStatus.success,
       ));

@@ -34,7 +34,7 @@ class FCLocalSourceImpl extends FCLocalSource {
   @override
   List<LocalVocabInfo> getFlashcards(int currentCollection) {
     final collection = getListOfLCCollections();
-    return collection[currentCollection].flashcards;
+    return collection[currentCollection].flashCards;
   }
 
   @override
@@ -78,9 +78,9 @@ class FCLocalSourceImpl extends FCLocalSource {
     final box = getFCCollectionBoxByUser();
     final userid = getUserId();
     final listOfCollection = getListOfLCCollections();
-    listOfCollection[current].flashcards.add(vocabInfo);
+    listOfCollection[current].flashCards.add(vocabInfo);
     box.put(userid, listOfCollection);
-    return listOfCollection[current].flashcards;
+    return listOfCollection[current].flashCards;
   }
 
   @override
@@ -89,9 +89,9 @@ class FCLocalSourceImpl extends FCLocalSource {
     final box = getFCCollectionBoxByUser();
     final userid = getUserId();
     final listOfCollection = getListOfLCCollections();
-    listOfCollection[currentColection].flashcards.removeAt(currentFlashcard);
+    listOfCollection[currentColection].flashCards.removeAt(currentFlashcard);
     box.put(userid, listOfCollection);
-    return listOfCollection[currentColection].flashcards;
+    return listOfCollection[currentColection].flashCards;
   }
 
   @override
