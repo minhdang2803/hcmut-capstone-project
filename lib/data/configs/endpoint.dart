@@ -16,4 +16,9 @@ class EndPoint {
   static const getYoutubeVideoInfos = '$_baseUrl/videoYoutubeInfo';
 
   static const getVocabInfos = '$_baseUrl/vocab';
+
+  static const getAllBooks = '$_baseUrl/BookInfo';
+  static const getBookInfo = '$_baseUrl/bookInfo/getOne';
+
+  static const getEbook = '$_baseUrl/bookDetail';
 }

@@ -26,7 +26,7 @@ class BookRead extends StatefulWidget {
 class _BookReadState extends State<BookRead>
     with SingleTickerProviderStateMixin {
   var _currentPageKey = 1;
-  bool _ckptReached = false;
+  // bool _ckptReached = false;
   late BookReader _book;
   late final BookBloc _bookBloc;
   final PagingController<int, String> _pagingController = PagingController(firstPageKey: 1);
@@ -50,7 +50,6 @@ class _BookReadState extends State<BookRead>
     super.initState();
     _bookBloc = BookBloc();
     _bookBloc.add(LoadEbookEvent(bookId: widget.bookId, pageKey : _currentPageKey));
-
     _pagingController.addPageRequestListener((pageKey) {
         _currentPageKey = pageKey;
         _bookBloc.add(LoadEbookEvent(bookId: widget.bookId, pageKey : _currentPageKey));
@@ -65,14 +64,14 @@ class _BookReadState extends State<BookRead>
     super.dispose();
   }
 
-  Future<void> setCkpt() async{
-    _currentPageKey = _book.ckpt;
-    _ckptReached = true;
-    print(_book.ckpt);
-    if (_currentPageKey != 1){
-      _bookBloc.add(LoadEbookEvent(bookId: widget.bookId, pageKey : _currentPageKey));
-    }
-  }
+  // Future<void> setCkpt() async{
+  //   _currentPageKey = _book.ckpt;
+  //   _ckptReached = true;
+  //   print(_book.ckpt);
+  //   if (_currentPageKey != 1){
+  //     _bookBloc.add(LoadEbookEvent(bookId: widget.bookId, pageKey : _currentPageKey));
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -83,12 +82,12 @@ class _BookReadState extends State<BookRead>
                 listener: (context, state) {
                   if (state is EbookLoadedState) {
                     try {
-                      _book = state.book;
-                      if (!_ckptReached){
-                        setCkpt();
-                      }
-                      else{
-                        final newItems = _book.sentences;
+                      _book = state.book!;
+                      // if (!_ckptReached){
+                      //   setCkpt();
+                      // }
+                      // else{
+                        final newItems = (_book.ebook.sentences).map((s) => s.text).toList();
                         final isLastPage = newItems.length < Constants.defaultPageSize;
                         if (isLastPage) {
                           _pagingController.appendLastPage(newItems);
@@ -96,7 +95,6 @@ class _BookReadState extends State<BookRead>
                           _currentPageKey++;
                           _pagingController.appendPage(newItems, _currentPageKey);
                         }
-                      }
                     } catch (e) {
                       _pagingController.error = e;
                     }
@@ -138,7 +136,7 @@ class _BookReadState extends State<BookRead>
                       body: PagedListView<int, String>(
                       pagingController: _pagingController,
                       addAutomaticKeepAlives: true,
-                      // padding: EdgeInsets.symmetric(vertical: 5.r),
+                      padding: EdgeInsets.symmetric(vertical: 5.r),
                       builderDelegate: PagedChildBuilderDelegate<String>(
                         itemBuilder: (ctx, item, index) => 
                        

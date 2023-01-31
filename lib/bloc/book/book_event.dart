@@ -30,6 +30,7 @@ class LoadDetailsEvent extends BookEvent{
   List<Object?> get props => [bookId];
 }
 
+
 class LoadEbookEvent extends BookEvent{
   final String bookId;
   final int pageKey;

@@ -31,8 +31,9 @@ class BookInfo {
     required this.genre,
     required this.totalWords,
     required this.length,
-    required this.isLiked,
-    required this.mode
+    required this.mp3Url,
+    this.isLiked,
+    this.mode
   });
 
   late final String bookId;
@@ -46,8 +47,8 @@ class BookInfo {
   late final String length;
   late final String mp3Url;
 
-  late final bool isLiked;
-  late final int mode; //to go to Info page, Read page or Listen page?
+  late final bool? isLiked;
+  late final int? mode; //to go to Info page, Read page or Listen page?
 
   BookInfo.fromJson(Map<String, dynamic> json) {
     bookId = json["bookId"];

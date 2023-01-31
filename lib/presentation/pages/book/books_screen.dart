@@ -95,7 +95,7 @@ class BookPage extends StatelessWidget {
   }
 
   Widget contentSection(BuildContext context) {
-    late final String heading;
+    late String heading;
     return BlocBuilder<BookListBloc, BookListState>(builder: (context, state) {
       if (state is BookListLoadingState) {
         return Center(
@@ -154,18 +154,8 @@ class _MenuSheetState extends State<MenuSheet> {
   bool picked = false;
   int at = 0;
   final String category = 'Home';
-  final List<String> menuList = <String>[
-    'Home',
-    'My List',
-    'Adventures',
-    'Biographies',
-    'Children',
-    'Crime',
-    'Fiction',
-    'Horror',
-    'Poetry',
-    'Romance'
-  ];
+  final List<String> menuList = <String>['adventure', 'detective', 'non-fiction', 'short-story', 'biography', 'fantasy', 'Classics', 'thriller', 'fairytale', 'fiction', 'Technology & Science', 'human interest', 'documentary', 'science', 'Biography', 'crime', 'science fiction', 'mystery', 'Human interest', 'classics', 'horror', 'novella', 'business', 'novel', 'love story', 'Romance', 'drama', 'gothic horror', 'Horror', 'satire', 'romance', 'historical', 'Historical', 'Culture', 'Historical fiction', 'folk tale', 'Young life/adventure', 'Movies', 'Thriller', 'comedy', 'Adventure', 'movies', 'tale', 'Short stories', 'Science fiction'];
+  
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -322,8 +312,17 @@ class BookSectionDisplayAll extends StatelessWidget {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: Image.network(bookList[i].coverUrl,
-                              height: size.height * 0.2),
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/images/default_logo.png',
+                            image: bookList[i].coverUrl,
+                            fadeInDuration: const Duration(milliseconds: 350),
+                            fit: BoxFit.fill,
+                            // placeholderFit: BoxFit.fill,
+                            imageErrorBuilder: (context, error, stackTrace) =>
+                                Image.asset(
+                              'assets/images/default_logo.png',
+                            ),
+                          )
                         ),
                         const SizedBox(height: 10),
                         Text(

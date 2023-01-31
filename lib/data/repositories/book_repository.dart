@@ -1,6 +1,8 @@
 import 'package:bke/data/data_source/remote/book/book_source.dart';
+import 'package:bke/data/data_source/remote/book/example_data.dart';
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/book/book_reader.dart';
+import 'package:bke/data/models/network/base_response.dart';
 import '../models/book/book_info.dart';
 
 class BookRepository{
@@ -19,15 +21,15 @@ class BookRepository{
     return await _bookSource.getAll();
   }
 
-  Future<List<BookInfo>> getByCategory(String category) async {
+  Future<BaseResponse<BookInfos>> getByCategory(String category) async {
     return await _bookSource.getByCategory(category);
   }
 
-  Future<BookInfo> getBookInfo(String bookId) async {
+  Future<BaseResponse<BookInfo>> getBookInfo(String bookId) async {
     return await _bookSource.getBookInfo(bookId);
   }
 
-  Future<BookReader> getEbook(String bookId, int pageKey) async {
+  Future<BaseResponse<BookReader>> getEbook(String bookId, int pageKey) async {
     return await _bookSource.getEbook(bookId, pageKey);
   }
 

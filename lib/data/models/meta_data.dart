@@ -18,3 +18,25 @@ class MetaDataModel {
     totalPage = json["total_page"];
   }
 }
+
+class MetaDataBook {
+  late final String chapter;
+  late final String page;
+  late final String limit;
+  late final int totalPage;
+
+  MetaDataBook({
+    required this.chapter,
+    required this.page,
+    required this.limit,
+    required this.totalPage,
+  });
+
+  MetaDataBook.fromJson(Map<String, dynamic> json) {
+    chapter = json["chapter"];
+    page = json["page"];
+    limit = json["limit"];
+    totalPage = json["total_page"];
+  }
+}
+

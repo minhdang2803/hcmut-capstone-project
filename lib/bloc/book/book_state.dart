@@ -52,7 +52,7 @@ class BookLoadedState extends BookState{
 
 class EbookLoadedState extends BookState{
   EbookLoadedState(this.book);
-  final BookReader book;
+  final BookReader? book;
 
   @override
   List<Object?> get props => [book];

@@ -1,52 +1,109 @@
 import 'package:bke/data/models/book/book_info.dart';
 import 'package:bke/data/models/book/book_reader.dart';
 import 'package:bke/data/models/book/book_listener.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../../../utils/constants.dart';
 import 'example_data.dart';
 
+import '../../../configs/endpoint.dart';
+import '../../../configs/hive_config.dart';
+import '../../../models/network/api_service_request.dart';
+import '../../../models/network/base_response.dart';
+import '../../../models/video/sub_video.dart';
+import '../../../models/video/video_youtube_info.dart';
+import '../../../services/api_service.dart';
+
 abstract class BookSource {
    Future<List<BookInfo>> getAll();
-   Future<List<BookInfo>> getByCategory(String category);
+   Future<BaseResponse<BookInfos>> getByCategory(String category);
 
-   Future<BookInfo> getBookInfo(String bookId);
-   Future<BookReader> getEbook(String bookId, int pageKey);
+   Future<BaseResponse<BookInfo>> getBookInfo(String bookId);
+   Future<BaseResponse<BookReader>> getEbook(String bookId, int pageKey);
    Future<BookListener> getAudioBook(String bookId);
   //  void updateCkpt(String bookId, int ckpt);
 }
 
 class BookSourceImpl extends BookSource {
+  final APIService _api = APIService.instance();
+
+
   @override
   Future<List<BookInfo>> getAll() async{
-    return data.map((e)=>BookInfo.fromJson(e)).toList(); //return 20 most popular books of each category, for all categories
+    
+    return data.map((e)=>BookInfo.fromJson(e)).toList(); //return 10 most popular books of each category, for all categories
   }
 
   @override
-  Future<List<BookInfo>> getByCategory(String category) async{
-    return data.map((e)=>BookInfo.fromJson(e)).toList(); //return all books belong to a category
+  Future<BaseResponse<BookInfos>> getByCategory(String category) async{
+   
+    const path = EndPoint.getAllBooks;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+    final Map<String, dynamic> params = {
+      'genre': category,
+      'page': 1,
+    };
+
+    final request = APIServiceRequest(
+      path,
+      queryParams: params,
+      (response) => BaseResponse<BookInfos>.fromJson(
+        json: response,
+        dataBuilder: BookInfos.fromJson,
+      ),
+      header: header,
+    );
+    return _api.get(request);
+    // return data.map((e)=>BookInfo.fromJson(e)).toList(); //return all books belong to a category
   }
 
   @override
-  Future<BookInfo> getBookInfo(String bookId) async {
-    final data = await getAll();
-    return data.where((e) => (e.bookId == bookId)).toList()[0]; //return info of book bookId
+  Future<BaseResponse<BookInfo>> getBookInfo(String bookId) async {
+    const path = EndPoint.getBookInfo;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+    final params = {'bookId': bookId};
+
+    final request = APIServiceRequest(
+      path,
+      header: header,
+      queryParams: params,
+      (response) => BaseResponse<BookInfo>.fromJson(
+          json: response, dataBuilder: BookInfo.fromJson),
+    );
+
+    return _api.get(request);
+    // final data = await getAll();
+    // return data.where((e) => (e.bookId == bookId)).toList()[0]; //return info of book bookId
   }
 
   @override
-  Future<BookReader> getEbook(String bookId, int pageKey) async {
-    final rData = ebookData.map((e)=>BookReader.fromJson(e)).toList();
-    final List<BookReader> matches = rData.where((e) => (e.bookId == bookId)).toList();//return ebook that contains list of sentences, isLiked and page checkpoint
-    assert(matches[0].bookId == bookId);
-    final BookReader partialData = BookReader(bookId: bookId, 
-                                  sentences: pageKey*Constants.defaultReadingPageSize < matches[0].sentences.length
-                                            ? 
-                                            matches[0].sentences
-                                                      .sublist((pageKey-1)*Constants.defaultReadingPageSize, pageKey*Constants.defaultReadingPageSize)
-                                            :matches[0].sentences
-                                                      .sublist((pageKey-1)*Constants.defaultReadingPageSize),
-                                  ckpt: matches[0].ckpt);
-    return partialData;
-  }
+  Future<BaseResponse<BookReader>> getEbook(String bookId, int pageKey) async {
+    const path = EndPoint.getEbook;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+    final Map<String, dynamic> params = {
+      'bookId': bookId,
+      'limit': Constants.defaultReadingPageSize,
+      'page': pageKey
+    }; //1 page returns 200 sentences
 
+    final request = APIServiceRequest(
+      path,
+      queryParams: params,
+      (response) => BaseResponse<BookReader>.fromJson(
+        json: response,
+        dataBuilder: BookReader.fromJson,
+      ),
+      header: header,
+    );
+  
+    return _api.get(request);
+  
+  }
 
   @override
   Future<BookListener> getAudioBook(String bookId) async {
