@@ -89,20 +89,17 @@ class _UserComponentState extends State<UserComponent> {
                 // _getTapPosition(details);
                 widget.getTapPosition(details);
               },
-              child: GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  RouteName.flashCardScreen,
-                  arguments: FlashcardPageModel(
-                    collectionTitle:
-                        state.listOfFlashcardColection![index].title,
-                    currentCollection: index,
-                  ),
+              onTap: () => Navigator.pushNamed(
+                context,
+                RouteName.flashCardScreen,
+                arguments: FlashcardPageModel(
+                  collectionTitle: state.listOfFlashcardColection![index].title,
+                  currentCollection: index,
                 ),
-                child: FlashcardComponent(
-                  imgUrl: state.listOfFlashcardColection![index].imgUrl,
-                  title: state.listOfFlashcardColection![index].title,
-                ),
+              ),
+              child: FlashcardComponent(
+                imgUrl: state.listOfFlashcardColection![index].imgUrl,
+                title: state.listOfFlashcardColection![index].title,
               ),
             );
           },

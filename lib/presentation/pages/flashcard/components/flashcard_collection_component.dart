@@ -65,6 +65,7 @@ class FlashcardRandomComponent extends StatelessWidget {
           Image.network(
             "$imgUrl.png",
           ),
+          10.verticalSpace,
           AutoSizeText(
             title,
             textAlign: TextAlign.center,

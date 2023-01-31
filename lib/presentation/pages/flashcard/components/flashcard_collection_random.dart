@@ -31,7 +31,10 @@ class _RandomComponentState extends State<RandomComponent> {
       width: double.infinity,
       decoration: BoxDecoration(
         color: AppColor.greyBackground,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(30.r)),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.r),
+          topRight: Radius.circular(30.r),
+        ),
       ),
       child: _buildCollection(context),
     );
