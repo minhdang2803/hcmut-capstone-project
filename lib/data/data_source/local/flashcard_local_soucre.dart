@@ -111,6 +111,5 @@ class FCLocalSourceImpl extends FCLocalSource {
     final box = getFCCollectionBoxByUser();
     final userId = getUserId();
     box.put(userId, data);
-    print("clmdasd");
   }
 }

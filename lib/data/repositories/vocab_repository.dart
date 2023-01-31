@@ -21,6 +21,16 @@ class VocabRepository {
     return _vocabSource.getVocabInfos(vocab);
   }
 
+  Future<VocabInfo?> getVocabFromServer(int id) async {
+    final vocab = await _vocabSource.getVocabById(id);
+    return vocab.data;
+  }
+
+  Future<List<VocabInfo>?> getVocabListFromServer(List<int> ids) async {
+    final vocabList = await _vocabSource.getVocabsByIdList(ids);
+    return vocabList.data;
+  }
+
   void addToMyDictionary(LocalVocabInfo dictionary) async {
     _vocabLocalSource.addToMyDictionary(dictionary);
   }
@@ -39,6 +49,11 @@ class VocabRepository {
 
   void addVocabToLocal(LocalVocabInfo vocab) {
     _vocabLocalSource.addVocabToLocal(vocab);
+  }
+
+  void getVocabList(List<int> ids) {
+    final listVocabsFromLocal = _vocabLocalSource.getVocabsByListId(ids);
+    if (listVocabsFromLocal.length != ids.length) {}
   }
 
   Box getMyDictionaryBox() => _vocabLocalSource.getMyDictionaryBox();

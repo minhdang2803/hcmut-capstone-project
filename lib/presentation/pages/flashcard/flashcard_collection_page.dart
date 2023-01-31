@@ -6,6 +6,7 @@ import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
 import '../../routes/route_name.dart';
 import '../../widgets/widgets.dart';
@@ -18,10 +19,17 @@ class FlashcardCollectionScreen extends StatefulWidget {
       _FlashcardCollectionScreenState();
 }
 
-class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
+class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
+    with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    _tabController.addListener(() {
+      setState(() {
+        _selectedIndex = _tabController.index;
+      });
+    });
     context.read<FlashcardCollectionCubit>().getFlashcardCollections();
   }
 
@@ -29,12 +37,13 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
   void dispose() {
     _editTitle.dispose();
     _addFlashcardCollection.dispose();
-
     super.dispose();
   }
 
   final _editTitle = TextEditingController();
   final _addFlashcardCollection = TextEditingController();
+  int _selectedIndex = 0;
+  late TabController _tabController;
   Offset _position = Offset.zero;
   void _getTapPosition(TapDownDetails tapPosition) {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
@@ -353,54 +362,93 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColor.primary,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        bottom: TabBar(
+          indicatorColor: Colors.transparent,
+          tabs: const [
+            Tab(
+              icon: FaIcon(FontAwesomeIcons.userLarge),
+            ),
+            Tab(
+              icon: FaIcon(FontAwesomeIcons.layerGroup),
+            )
+          ],
+          controller: _tabController,
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const BackButton(),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Bộ sưu tập Flashcard",
+                style: AppTypography.subHeadline
+                    .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
+            IconButton(
+                onPressed: () async {
+                  final flashcardCollections = context
+                      .read<FlashcardCollectionCubit>()
+                      .state
+                      .listOfFlashcardColection!
+                      .map((e) => e.toJson())
+                      .toList();
+                  await context
+                      .read<FlashcardCollectionCubit>()
+                      .updateToServer(flashcardCollections);
+                },
+                icon: Icon(
+                  Icons.sync,
+                  color: Colors.white,
+                  size: 25.r,
+                )),
+          ],
+        ),
+      ),
       backgroundColor: AppColor.primary,
       body: SafeArea(
         bottom: false,
-        child: Column(
+        child: TabBarView(
+          controller: _tabController,
           children: [
-            BkEAppBar(
-              label: "Bộ sưu tập Flashcard",
-              onBackButtonPress: () => Navigator.pop(context),
-              trailing: IconButton(
-                  onPressed: () async {
-                    final flashcardCollections = context
-                        .read<FlashcardCollectionCubit>()
-                        .state
-                        .listOfFlashcardColection!
-                        .map((e) => e.toJson())
-                        .toList();
-                    await context
-                        .read<FlashcardCollectionCubit>()
-                        .updateToServer(flashcardCollections);
-                  },
-                  icon: Icon(
-                    Icons.sync,
-                    color: Colors.white,
-                    size: 25.r,
-                  )),
-            ),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColor.greyBackground,
-                  borderRadius:
-                      BorderRadius.only(topLeft: Radius.circular(30.r)),
-                ),
-                child: _buildCollection(context),
-              ),
+            _buildUserColleciton(),
+            Container(
+              height: MediaQuery.of(context).size.height,
+              width: double.infinity,
+              color: Colors.red,
             )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _addCollection(context),
-        backgroundColor: AppColor.primary,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton(
+              onPressed: () => _addCollection(context),
+              backgroundColor: AppColor.primary,
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+            )
+          : null,
+    );
+  }
+
+
+
+  Widget _buildUserColleciton() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: AppColor.greyBackground,
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(30.r)),
       ),
+      child: _buildCollection(context),
     );
   }
 

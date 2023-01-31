@@ -46,35 +46,73 @@ class FlashcardCollectionModel extends HiveObject {
     final remoteInstance = GetIt.I.get<VocabSourceImpl>(); // VocabRemote
     List<LocalVocabInfo> flashCards = [];
     if (json["flashcards"] != null) {
-      Stream.fromIterable(json["flashcards"]).asyncMap(
-        (event) async {
-          final LocalVocabInfo? vocab =
-              localInstance.getVocabFromLocalbyId(event as int);
-          if (vocab != null) {
-            // search vocab local
-            return vocab;
-          } else {
-            // Xu li goi api de tim vocab dua tren ID
-            final response = await remoteInstance.getVocabById(event);
-            final vocab = response.data!;
-            final tempVocabInfo = LocalVocabInfo(
-              vocab: vocab.vocab,
-              vocabType: vocab.vocabType,
-              id: vocab.id,
-              pronounce: vocab.pronounce,
-              translate: vocab.translate,
-            );
-            //store local vocab
-            final box = Hive.box(HiveConfig.localVocabs);
-            if (!box.containsKey(vocab.id)) {
-              localInstance.addVocabToLocal(tempVocabInfo);
-            }
-            return tempVocabInfo;
+      final List<int> list =
+          (json['flashcards'] as List<dynamic>).map((e) => e as int).toList();
+      final List<LocalVocabInfo?> localVocabList =
+          localInstance.getVocabsByListId(list);
+      if (localVocabList.isEmpty) {
+        //Not found anything from local
+        Stream.fromIterable([1]).asyncMap((event) async {
+          final response = await remoteInstance.getVocabsByIdList(list);
+          final List<VocabInfo>? data = response.data;
+          return data;
+        }).listen((event) {
+          if (event != null) {
+            final temp = event.map((e) {
+              final vocab = LocalVocabInfo(
+                  vocab: e.vocab,
+                  vocabType: e.vocabType,
+                  id: e.id,
+                  pronounce: e.pronounce,
+                  translate: e.translate);
+              final box = Hive.box(HiveConfig.localVocabs);
+              if (!box.containsKey(vocab.id)) {
+                localInstance.addVocabToLocal(vocab);
+              }
+              return vocab;
+            }).toList();
+            flashCards.addAll(temp);
           }
-        },
-      ).listen((event) {
-        flashCards.add(event);
-      });
+        });
+      } else if (localVocabList.length != list.length) {
+        //Found some from local
+        Stream.fromIterable(json["flashcards"]).asyncMap(
+          (event) async {
+            final LocalVocabInfo? vocab =
+                localInstance.getVocabFromLocalbyId(event as int);
+            if (vocab != null) {
+              // search vocab local
+              return vocab;
+            } else {
+              // Xu li goi api de tim vocab dua tren ID
+              final response = await remoteInstance.getVocabById(event);
+              final vocab = response.data!;
+              final tempVocabInfo = LocalVocabInfo(
+                vocab: vocab.vocab,
+                vocabType: vocab.vocabType,
+                id: vocab.id,
+                pronounce: vocab.pronounce,
+                translate: vocab.translate,
+              );
+              //store local vocab
+              final box = Hive.box(HiveConfig.localVocabs);
+              if (!box.containsKey(vocab.id)) {
+                localInstance.addVocabToLocal(tempVocabInfo);
+              }
+              return tempVocabInfo;
+            }
+          },
+        ).listen((event) {
+          flashCards.add(event);
+        });
+      } else {
+        //Found everythings from local
+        for (final element in localVocabList) {
+          if (element != null) {
+            flashCards.add(element);
+          }
+        }
+      }
     }
 
     return FlashcardCollectionModel(
