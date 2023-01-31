@@ -1,3 +1,4 @@
+import 'package:bke/bloc/flashcard/flashcard_collection_random/flashcard_collection_random_cubit.dart';
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
 import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_random.dart';
 import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_user_component.dart';
@@ -422,9 +423,9 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
               getTapPosition: _getTapPosition,
               showContextMenu: _showContextMenu,
             ),
-            RandomComponent(
-              getTapPosition: _getTapPosition,
-              showContextMenu: _showContextMenu,
+            BlocProvider(
+              create: (context) => FlashcardCollectionRandomCubit(),
+              child: const RandomComponent(),
             ),
           ],
         ),

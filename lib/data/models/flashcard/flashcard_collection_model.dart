@@ -163,3 +163,39 @@ class FlashcardCollectionResponseModel {
     );
   }
 }
+
+class FlashCardCollectionFromServer {
+  final List<FlashCardCollectionRandomModel> list;
+  FlashCardCollectionFromServer(this.list);
+  factory FlashCardCollectionFromServer.fromJson(Map<String, dynamic> json) {
+    List<FlashCardCollectionRandomModel> flashcardsData = [];
+    if (json['listCollection'] != null) {
+      for (var e in (json['listCollection'] as List)) {
+        FlashCardCollectionRandomModel tempFlashCard =
+            FlashCardCollectionRandomModel.fromJson(e);
+        flashcardsData.add(tempFlashCard);
+      }
+    }
+    return FlashCardCollectionFromServer(flashcardsData);
+  }
+}
+
+class FlashCardCollectionRandomModel {
+  final String category;
+  final String imgUrl;
+  final int numberOfWord;
+
+  FlashCardCollectionRandomModel({
+    required this.category,
+    required this.imgUrl,
+    required this.numberOfWord,
+  });
+
+  factory FlashCardCollectionRandomModel.fromJson(Map<String, dynamic> json) {
+    return FlashCardCollectionRandomModel(
+      category: json["category"],
+      imgUrl: json["imgUrl"],
+      numberOfWord: json['numOfWords'] as int,
+    );
+  }
+}

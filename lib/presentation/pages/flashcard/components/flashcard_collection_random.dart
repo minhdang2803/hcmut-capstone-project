@@ -1,23 +1,15 @@
-import 'package:bke/bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../bloc/flashcard/flashcard_collection_random/flashcard_collection_random_cubit.dart';
 import '../../../routes/route_name.dart';
 import '../../../theme/app_color.dart';
-import '../../../theme/app_typography.dart';
 import '../flashcard_page.dart';
 import 'flashcard_collection_component.dart';
 
 class RandomComponent extends StatefulWidget {
-  const RandomComponent({
-    super.key,
-    required this.getTapPosition,
-    required this.showContextMenu,
-  });
-  final void Function(TapDownDetails) getTapPosition;
-  final void Function(BuildContext, int) showContextMenu;
+  const RandomComponent({super.key});
   @override
   State<RandomComponent> createState() => _RandomComponentState();
 }
@@ -26,7 +18,7 @@ class _RandomComponentState extends State<RandomComponent> {
   @override
   void initState() {
     super.initState();
-    context.read<FlashcardCollectionCubit>().getFlashcardCollections();
+    context.read<FlashcardCollectionRandomCubit>().getFlashcardCollections();
   }
 
   @override
@@ -46,8 +38,8 @@ class _RandomComponentState extends State<RandomComponent> {
   }
 
   Widget _buildCollection(BuildContext context) {
-    return BlocSelector<FlashcardCollectionCubit, FlashcardCollectionState,
-        bool>(
+    return BlocSelector<FlashcardCollectionRandomCubit,
+        FlashcardCollectionRandomState, bool>(
       selector: (state) {
         return state.listOfFlashcardColection!.isEmpty;
       },
@@ -61,9 +53,10 @@ class _RandomComponentState extends State<RandomComponent> {
   }
 
   Widget _buildFlashcardScreen() {
-    return BlocBuilder<FlashcardCollectionCubit, FlashcardCollectionState>(
+    return BlocBuilder<FlashcardCollectionRandomCubit,
+        FlashcardCollectionRandomState>(
       builder: (context, state) {
-        if (state.status == FlashcardCollectionStatus.loading) {
+        if (state.status == FlashcardCollectionRandomStatus.loading) {
           return const Center(
             child: CircularProgressIndicator(color: AppColor.primary),
           );
@@ -78,28 +71,18 @@ class _RandomComponentState extends State<RandomComponent> {
           ),
           itemBuilder: (context, index) {
             return GestureDetector(
-              onLongPress: () {
-                // _showContextMenu(context, index);
-                widget.showContextMenu(context, index);
-              },
-              onTapDown: (details) {
-                // _getTapPosition(details);
-                widget.getTapPosition(details);
-              },
-              child: GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  RouteName.flashCardScreen,
-                  arguments: FlashcardPageModel(
-                    collectionTitle:
-                        state.listOfFlashcardColection![index].title,
-                    currentCollection: index,
-                  ),
+              onTap: () => Navigator.pushNamed(
+                context,
+                RouteName.flashCardScreen,
+                arguments: FlashcardPageModel(
+                  collectionTitle:
+                      state.listOfFlashcardColection![index].category,
+                  currentCollection: index,
                 ),
-                child: FlashcardComponent(
-                  imgUrl: state.listOfFlashcardColection![index].imgUrl,
-                  title: state.listOfFlashcardColection![index].title,
-                ),
+              ),
+              child: FlashcardRandomComponent(
+                imgUrl: state.listOfFlashcardColection![index].imgUrl,
+                title: state.listOfFlashcardColection![index].category,
               ),
             );
           },
@@ -109,25 +92,28 @@ class _RandomComponentState extends State<RandomComponent> {
   }
 
   Widget _buildEmptyScreen() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        150.verticalSpace,
-        Image(
-          image: const AssetImage("assets/images/no.png"),
-          height: 200.r,
-          width: 200.r,
-        ),
-        SizedBox(
-          width: 200.w,
-          child: Text(
-            "Bộ sưu tập flashcard trống!",
-            style:
-                AppTypography.subHeadline.copyWith(fontWeight: FontWeight.w700),
-            textAlign: TextAlign.center,
-          ),
-        )
-      ],
+    return const Center(
+      child: CircularProgressIndicator(color: AppColor.primary),
     );
+    // return Column(
+    //   mainAxisAlignment: MainAxisAlignment.start,
+    //   children: [
+    //     150.verticalSpace,
+    //     Image(
+    //       image: const AssetImage("assets/images/no.png"),
+    //       height: 200.r,
+    //       width: 200.r,
+    //     ),
+    //     SizedBox(
+    //       width: 200.w,
+    //       child: Text(
+    //         "Bộ sưu tập flashcard trống!",
+    //         style:
+    //             AppTypography.subHeadline.copyWith(fontWeight: FontWeight.w700),
+    //         textAlign: TextAlign.center,
+    //       ),
+    //     )
+    //   ],
+    // );
   }
 }

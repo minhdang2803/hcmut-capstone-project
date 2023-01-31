@@ -12,6 +12,7 @@ import '../../../configs/hive_config.dart';
 abstract class FlashcardRemoteSource {
   Future<BaseResponse<FlashcardCollectionResponseModel>>
       getAllFlashcardCollection();
+  Future<BaseResponse<FlashCardCollectionFromServer>> getRandomCollection();
   Future<BaseResponse> updateToServer(List<Map<String, dynamic>> data);
 }
 
@@ -29,7 +30,8 @@ class FlashcardRemoteSourceImpl implements FlashcardRemoteSource {
         path,
         header: header,
         (response) => BaseResponse<FlashcardCollectionResponseModel>.fromJson(
-            json: response, dataBuilder: FlashcardCollectionResponseModel.fromJson),
+            json: response,
+            dataBuilder: FlashcardCollectionResponseModel.fromJson),
       );
       return _api.get(request);
     } on RemoteException catch (error) {
@@ -53,6 +55,27 @@ class FlashcardRemoteSourceImpl implements FlashcardRemoteSource {
       );
       LogUtil.debug('Update Flashcard Collections as JSON: $path $data');
       return _api.post(request);
+    } on RemoteException catch (error) {
+      throw RemoteException(RemoteException.responseError, error.errorMessage);
+    }
+  }
+
+  @override
+  Future<BaseResponse<FlashCardCollectionFromServer>>
+      getRandomCollection() async {
+    try {
+      const String path = EndPoint.flashcardRandomGetAll;
+      final token = await const FlutterSecureStorage()
+          .read(key: HiveConfig.currentUserTokenKey);
+      final header = {'Authorization': 'Bearer $token'};
+      final request = APIServiceRequest(
+        path,
+        header: header,
+        (response) => BaseResponse<FlashCardCollectionFromServer>.fromJson(
+            json: response,
+            dataBuilder: FlashCardCollectionFromServer.fromJson),
+      );
+      return _api.get(request);
     } on RemoteException catch (error) {
       throw RemoteException(RemoteException.responseError, error.errorMessage);
     }
