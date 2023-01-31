@@ -1,6 +1,6 @@
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
-import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_component.dart';
-import 'package:bke/presentation/pages/flashcard/flashcard_page.dart';
+import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_random.dart';
+import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_user_component.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
-import '../../routes/route_name.dart';
+
 import '../../widgets/widgets.dart';
 
 class FlashcardCollectionScreen extends StatefulWidget {
@@ -21,6 +21,12 @@ class FlashcardCollectionScreen extends StatefulWidget {
 
 class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
     with TickerProviderStateMixin {
+  final _editTitle = TextEditingController();
+  final _addFlashcardCollection = TextEditingController();
+  int _selectedIndex = 0;
+  late TabController _tabController;
+  Offset _position = Offset.zero;
+
   @override
   void initState() {
     super.initState();
@@ -30,7 +36,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
         _selectedIndex = _tabController.index;
       });
     });
-    context.read<FlashcardCollectionCubit>().getFlashcardCollections();
+    // context.read<FlashcardCollectionCubit>().getFlashcardCollections();
   }
 
   @override
@@ -40,11 +46,6 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
     super.dispose();
   }
 
-  final _editTitle = TextEditingController();
-  final _addFlashcardCollection = TextEditingController();
-  int _selectedIndex = 0;
-  late TabController _tabController;
-  Offset _position = Offset.zero;
   void _getTapPosition(TapDownDetails tapPosition) {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     setState(() {
@@ -417,12 +418,14 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
         child: TabBarView(
           controller: _tabController,
           children: [
-            _buildUserColleciton(),
-            Container(
-              height: MediaQuery.of(context).size.height,
-              width: double.infinity,
-              color: Colors.red,
-            )
+            UserComponent(
+              getTapPosition: _getTapPosition,
+              showContextMenu: _showContextMenu,
+            ),
+            RandomComponent(
+              getTapPosition: _getTapPosition,
+              showContextMenu: _showContextMenu,
+            ),
           ],
         ),
       ),
@@ -436,103 +439,6 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
               ),
             )
           : null,
-    );
-  }
-
-
-
-  Widget _buildUserColleciton() {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: AppColor.greyBackground,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(30.r)),
-      ),
-      child: _buildCollection(context),
-    );
-  }
-
-  Widget _buildCollection(BuildContext context) {
-    return BlocSelector<FlashcardCollectionCubit, FlashcardCollectionState,
-        bool>(
-      selector: (state) {
-        return state.listOfFlashcardColection!.isEmpty;
-      },
-      builder: (context, isEmpty) {
-        return Padding(
-          padding: EdgeInsets.all(20.r),
-          child: isEmpty ? _buildEmptyScreen() : _buildFlashcardScreen(),
-        );
-      },
-    );
-  }
-
-  Widget _buildFlashcardScreen() {
-    return BlocBuilder<FlashcardCollectionCubit, FlashcardCollectionState>(
-      builder: (context, state) {
-        if (state.status == FlashcardCollectionStatus.loading) {
-          return const Center(
-            child: CircularProgressIndicator(color: AppColor.primary),
-          );
-        }
-        return GridView.builder(
-          itemCount: state.listOfFlashcardColection!.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 10.r,
-            crossAxisSpacing: 10.r,
-            childAspectRatio: 0.75,
-          ),
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onLongPress: () {
-                _showContextMenu(context, index);
-              },
-              onTapDown: (details) {
-                _getTapPosition(details);
-              },
-              child: GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  RouteName.flashCardScreen,
-                  arguments: FlashcardPageModel(
-                    collectionTitle:
-                        state.listOfFlashcardColection![index].title,
-                    currentCollection: index,
-                  ),
-                ),
-                child: FlashcardComponent(
-                  imgUrl: state.listOfFlashcardColection![index].imgUrl,
-                  title: state.listOfFlashcardColection![index].title,
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildEmptyScreen() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        150.verticalSpace,
-        Image(
-          image: const AssetImage("assets/images/no.png"),
-          height: 200.r,
-          width: 200.r,
-        ),
-        SizedBox(
-          width: 200.w,
-          child: Text(
-            "Bộ sưu tập flashcard trống!",
-            style:
-                AppTypography.subHeadline.copyWith(fontWeight: FontWeight.w700),
-            textAlign: TextAlign.center,
-          ),
-        )
-      ],
     );
   }
 }
