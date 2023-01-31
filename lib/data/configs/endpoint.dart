@@ -16,8 +16,11 @@ class EndPoint {
   static const getYoutubeVideoInfos = '$_baseUrl/videoYoutubeInfo';
 
   static const getVocabInfos = '$_baseUrl/vocab';
+  static const findVocabsByListId = "$_baseUrl/vocab/getListVocab";
   static const getAllFlashcard = '$_baseUrl/flashCard/getAll';
   static const updateFlashcard = '$_baseUrl/flashCard/upsert';
   // {{baseURL}}/api/vocab/getById?vocabId=7154
   static const findVocabById = "$_baseUrl/vocab/getById";
+  static const flashcardRandomGetAll =
+      "$_baseUrl/templateFlashCard/listCategory";
 }

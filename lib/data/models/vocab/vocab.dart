@@ -1,3 +1,4 @@
+import 'package:bke/data/configs/hive_config.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -85,6 +86,16 @@ class VocabInfo {
   late final int id;
   late final Pronounce pronounce;
   late final List<TranslateInfo> translate;
+
+  static List<VocabInfo> fromJsonList(Map<String, dynamic> json) {
+    if (json['dataVocab'] != null) {
+      return (json['dataVocab'] as List<dynamic>)
+          .map((e) => VocabInfo.fromJson(e))
+          .toList();
+    } else {
+      return [];
+    }
+  }
 
   VocabInfo.fromJson(Map<String, dynamic> json) {
     vocab = json["vocab"];

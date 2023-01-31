@@ -1,13 +1,15 @@
+import 'package:bke/bloc/flashcard/flashcard_collection_random/flashcard_collection_random_cubit.dart';
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
-import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_component.dart';
-import 'package:bke/presentation/pages/flashcard/flashcard_page.dart';
+import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_random.dart';
+import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_user_component.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
-import '../../routes/route_name.dart';
+
 import '../../widgets/widgets.dart';
 
 class FlashcardCollectionScreen extends StatefulWidget {
@@ -18,24 +20,33 @@ class FlashcardCollectionScreen extends StatefulWidget {
       _FlashcardCollectionScreenState();
 }
 
-class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
+class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
+    with TickerProviderStateMixin {
+  final _editTitle = TextEditingController();
+  final _addFlashcardCollection = TextEditingController();
+  int _selectedIndex = 0;
+  late TabController _tabController;
+  Offset _position = Offset.zero;
+
   @override
   void initState() {
     super.initState();
-    context.read<FlashcardCollectionCubit>().getFlashcardCollections();
+    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    _tabController.addListener(() {
+      setState(() {
+        _selectedIndex = _tabController.index;
+      });
+    });
+    // context.read<FlashcardCollectionCubit>().getFlashcardCollections();
   }
 
   @override
   void dispose() {
     _editTitle.dispose();
     _addFlashcardCollection.dispose();
-
     super.dispose();
   }
 
-  final _editTitle = TextEditingController();
-  final _addFlashcardCollection = TextEditingController();
-  Offset _position = Offset.zero;
   void _getTapPosition(TapDownDetails tapPosition) {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     setState(() {
@@ -353,138 +364,82 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            BkEAppBar(
-              label: "Bộ sưu tập Flashcard",
-              onBackButtonPress: () => Navigator.pop(context),
-              trailing: IconButton(
-                  onPressed: () async {
-                    final flashcardCollections = context
-                        .read<FlashcardCollectionCubit>()
-                        .state
-                        .listOfFlashcardColection!
-                        .map((e) => e.toJson())
-                        .toList();
-                    await context
-                        .read<FlashcardCollectionCubit>()
-                        .updateToServer(flashcardCollections);
-                  },
-                  icon: Icon(
-                    Icons.sync,
-                    color: Colors.white,
-                    size: 25.r,
-                  )),
+      appBar: AppBar(
+        backgroundColor: AppColor.primary,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        bottom: TabBar(
+          indicatorColor: Colors.transparent,
+          tabs: const [
+            Tab(
+              icon: FaIcon(FontAwesomeIcons.userLarge),
             ),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColor.greyBackground,
-                  borderRadius:
-                      BorderRadius.only(topLeft: Radius.circular(30.r)),
-                ),
-                child: _buildCollection(context),
-              ),
+            Tab(
+              icon: FaIcon(FontAwesomeIcons.layerGroup),
             )
+          ],
+          controller: _tabController,
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const BackButton(),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Bộ sưu tập Flashcard",
+                style: AppTypography.subHeadline
+                    .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
+            IconButton(
+                onPressed: () async {
+                  final flashcardCollections = context
+                      .read<FlashcardCollectionCubit>()
+                      .state
+                      .listOfFlashcardColection!
+                      .map((e) => e.toJson())
+                      .toList();
+                  await context
+                      .read<FlashcardCollectionCubit>()
+                      .updateToServer(flashcardCollections);
+                },
+                icon: Icon(
+                  Icons.sync,
+                  color: Colors.white,
+                  size: 25.r,
+                )),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _addCollection(context),
-        backgroundColor: AppColor.primary,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
+      backgroundColor: AppColor.primary,
+      body: SafeArea(
+        bottom: false,
+        child: TabBarView(
+          controller: _tabController,
+          children: [
+            UserComponent(
+              getTapPosition: _getTapPosition,
+              showContextMenu: _showContextMenu,
+            ),
+            BlocProvider(
+              create: (context) => FlashcardCollectionRandomCubit(),
+              child: const RandomComponent(),
+            ),
+          ],
         ),
       ),
-    );
-  }
-
-  Widget _buildCollection(BuildContext context) {
-    return BlocSelector<FlashcardCollectionCubit, FlashcardCollectionState,
-        bool>(
-      selector: (state) {
-        return state.listOfFlashcardColection!.isEmpty;
-      },
-      builder: (context, isEmpty) {
-        return Padding(
-          padding: EdgeInsets.all(20.r),
-          child: isEmpty ? _buildEmptyScreen() : _buildFlashcardScreen(),
-        );
-      },
-    );
-  }
-
-  Widget _buildFlashcardScreen() {
-    return BlocBuilder<FlashcardCollectionCubit, FlashcardCollectionState>(
-      builder: (context, state) {
-        if (state.status == FlashcardCollectionStatus.loading) {
-          return const Center(
-            child: CircularProgressIndicator(color: AppColor.primary),
-          );
-        }
-        return GridView.builder(
-          itemCount: state.listOfFlashcardColection!.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 10.r,
-            crossAxisSpacing: 10.r,
-            childAspectRatio: 0.75,
-          ),
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onLongPress: () {
-                _showContextMenu(context, index);
-              },
-              onTapDown: (details) {
-                _getTapPosition(details);
-              },
-              child: GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  RouteName.flashCardScreen,
-                  arguments: FlashcardPageModel(
-                    collectionTitle:
-                        state.listOfFlashcardColection![index].title,
-                    currentCollection: index,
-                  ),
-                ),
-                child: FlashcardComponent(
-                  imgUrl: state.listOfFlashcardColection![index].imgUrl,
-                  title: state.listOfFlashcardColection![index].title,
-                ),
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton(
+              onPressed: () => _addCollection(context),
+              backgroundColor: AppColor.primary,
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
               ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildEmptyScreen() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        150.verticalSpace,
-        Image(
-          image: const AssetImage("assets/images/no.png"),
-          height: 200.r,
-          width: 200.r,
-        ),
-        SizedBox(
-          width: 200.w,
-          child: Text(
-            "Bộ sưu tập flashcard trống!",
-            style:
-                AppTypography.subHeadline.copyWith(fontWeight: FontWeight.w700),
-            textAlign: TextAlign.center,
-          ),
-        )
-      ],
+            )
+          : null,
     );
   }
 }

@@ -10,6 +10,8 @@ import '../../../services/api_service.dart';
 
 abstract class VocabSource {
   Future<BaseResponse<VocabInfos>> getVocabInfos(String vocab);
+  Future<BaseResponse<VocabInfo>> getVocabById(int id);
+  Future<BaseResponse<List<VocabInfo>>> getVocabsByIdList(List<int> ids);
 }
 
 class VocabSourceImpl extends VocabSource {
@@ -30,10 +32,11 @@ class VocabSourceImpl extends VocabSource {
       (response) => BaseResponse<VocabInfos>.fromJson(
           json: response, dataBuilder: VocabInfos.fromJson),
     );
-    LogUtil.debug('get vocab infos: $path ${params}');
+    LogUtil.debug('get vocab infos: $path $params');
     return _api.get(getVocabInfos);
   }
 
+  @override
   Future<BaseResponse<VocabInfo>> getVocabById(int id) async {
     const String path = EndPoint.findVocabById;
     final token = await const FlutterSecureStorage()
@@ -49,5 +52,25 @@ class VocabSourceImpl extends VocabSource {
     );
     LogUtil.debug('Vocab id: $path $id');
     return _api.get(getVocabById);
+  }
+
+  @override
+  Future<BaseResponse<List<VocabInfo>>> getVocabsByIdList(List<int> ids) async {
+    const String path = EndPoint.findVocabsByListId;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+    final bodyRequest = {'listVocab': ids};
+    final getVocabById = APIServiceRequest(
+      path,
+      header: header,
+      dataBody: bodyRequest,
+      (response) {
+        return BaseResponse<List<VocabInfo>>.fromJson(
+            json: response, dataBuilder: VocabInfo.fromJsonList);
+      },
+    );
+    LogUtil.debug('Vocab id List: $path $ids');
+    return _api.post(getVocabById);
   }
 }

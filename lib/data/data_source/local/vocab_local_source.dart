@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../utils/log_util.dart';
@@ -10,6 +12,7 @@ abstract class VocabLocalSource {
   void addVocabToLocal(LocalVocabInfo vocab);
   LocalVocabInfo? getVocabFromLocalbyId(int id);
   List<LocalVocabInfo> getAllFromDictionary();
+  List<LocalVocabInfo> getVocabsByListId(List<int> ids);
   void deleteAtKey(int id);
   Box getMyDictionaryBox();
 }
@@ -70,6 +73,33 @@ class VocabLocalSourceImpl extends VocabLocalSource {
     final box = Hive.box(HiveConfig.localVocabs);
     final result = box.get(id, defaultValue: null) as LocalVocabInfo?;
     LogUtil.debug('Get vocab from local: $result');
+    return result;
+  }
+
+  @override
+  List<LocalVocabInfo> getVocabsByListId(List<int> ids) {
+    final List<LocalVocabInfo> result = [];
+    final box = Hive.box(HiveConfig.localVocabs);
+    int i = 0;
+    for (final element in ids) {
+      if (box.containsKey(element)) {
+        LocalVocabInfo vocab = box.get(
+          element,
+          defaultValue: LocalVocabInfo(
+            vocab: "clm",
+            vocabType: "$i",
+            id: -1,
+            pronounce: Pronounce(
+                uk: "hello", us: "hello", ukmp3: "hello", usmp3: "hello"),
+            translate: [
+              TranslateInfo(en: "hello", vi: "hello", example: "hello")
+            ],
+          ),
+        );
+        result.add(vocab);
+      }
+      i = i + 1;
+    }
     return result;
   }
 }
