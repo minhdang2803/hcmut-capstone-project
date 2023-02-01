@@ -1,5 +1,3 @@
-import 'package:bke/presentation/pages/book/books_screen.dart';
-
 class RouteName {
   static const splash = '/';
   static const main = '/main';
@@ -31,4 +29,5 @@ class RouteName {
   static const flashCardScreen = '/flashcard_screen';
   static const flashCardCollectionScreen = "flashcard_collection_screen";
   static const flashCardInfoScreen = "flashcard_info_screen";
+  static const flashCardRandomScreen = "flashcard_random_info_screen";
 }

@@ -56,8 +56,15 @@ class FlashcardRepository {
   void saveCollectionToLocal(List<FlashcardCollectionModel> data) =>
       _fcLocalSource.saveCollectionFromServer(data);
 
-  Future<FlashCardCollectionFromServer?> getRandomCollecion() async {
-    final response = await _fcRemoteSource.getRandomCollection();
+  Future<FlashcardCollectionFromServer?> getRandomCollecionThumbnail() async {
+    final response = await _fcRemoteSource.getRandomCollectionThumbnail();
+    return response.data;
+  }
+
+  Future<FlashcardCollectionRandomModel?> getRandomCollection(
+      String category) async {
+    final response =
+        await _fcRemoteSource.getRandomCollectionByCategory(category);
     return response.data;
   }
 }
