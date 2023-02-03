@@ -1,3 +1,4 @@
+import 'package:bke/bloc/flashcard/flashcard_collection_thumb/flashcard_collection_thumb_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +19,7 @@ class _RandomComponentState extends State<RandomComponent> {
   @override
   void initState() {
     super.initState();
-    context.read<FlashcardCollectionRandomCubit>().getFlashcardCollections();
+    context.read<FlashcardCollectionThumbCubit>().getFlashcardCollections();
   }
 
   @override
@@ -41,8 +42,8 @@ class _RandomComponentState extends State<RandomComponent> {
   }
 
   Widget _buildCollection(BuildContext context) {
-    return BlocSelector<FlashcardCollectionRandomCubit,
-        FlashcardCollectionRandomState, bool>(
+    return BlocSelector<FlashcardCollectionThumbCubit,
+        FlashcardCollectionThumbState, bool>(
       selector: (state) {
         return state.listOfFlashcardColection!.isEmpty;
       },
@@ -56,10 +57,10 @@ class _RandomComponentState extends State<RandomComponent> {
   }
 
   Widget _buildFlashcardScreen() {
-    return BlocBuilder<FlashcardCollectionRandomCubit,
-        FlashcardCollectionRandomState>(
+    return BlocBuilder<FlashcardCollectionThumbCubit,
+        FlashcardCollectionThumbState>(
       builder: (context, state) {
-        if (state.status == FlashcardCollectionRandomStatus.loading) {
+        if (state.status == FlashcardCollectionThumbStatus.loading) {
           return const Center(
             child: CircularProgressIndicator(color: AppColor.primary),
           );
@@ -74,15 +75,17 @@ class _RandomComponentState extends State<RandomComponent> {
           ),
           itemBuilder: (context, index) {
             return GestureDetector(
-              onTap: () => Navigator.pushNamed(
-                context,
-                RouteName.flashCardScreen,
-                arguments: FlashcardPageModel(
-                  collectionTitle:
-                      state.listOfFlashcardColection![index].category,
-                  currentCollection: index,
-                ),
-              ),
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  RouteName.flashCardRandomScreen,
+                  arguments: FlashcardPageModel(
+                    collectionTitle:
+                        state.listOfFlashcardColection![index].category,
+                    currentCollection: index,
+                  ),
+                );
+              },
               child: FlashcardRandomComponent(
                 imgUrl: state.listOfFlashcardColection![index].imgUrl,
                 title: state.listOfFlashcardColection![index].category,

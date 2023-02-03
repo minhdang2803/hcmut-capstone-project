@@ -1,39 +1,55 @@
 part of 'flashcard_collection_random_cubit.dart';
 
-enum FlashcardCollectionRandomStatus { initial, loading, success, fail }
+enum FlashcardRandomStatus { initial, loading, success, fail }
 
-class FlashcardCollectionRandomState extends Equatable {
-  late final List<FlashCardCollectionRandomModel>? listOfFlashcardColection;
-  late final String? errorMessage;
-  late final FlashcardCollectionRandomStatus? status;
-
-  FlashcardCollectionRandomState({
-    this.listOfFlashcardColection,
-    this.status,
+class FlashcardRandomState extends Equatable {
+  FlashcardRandomState({
+    this.index,
+    this.category,
+    this.imgUrl,
     this.errorMessage,
+    this.flashcards,
+    this.status,
   });
 
-  FlashcardCollectionRandomState.initial() {
-    listOfFlashcardColection = [];
+  FlashcardRandomState.initial() {
+    index = 0;
+    category = "";
+    imgUrl = "";
     errorMessage = "";
-    status = FlashcardCollectionRandomStatus.initial;
+    flashcards = [];
+    status = FlashcardRandomStatus.initial;
   }
-  FlashcardCollectionRandomState copyWith({
-    List<FlashCardCollectionRandomModel>? listOfFlashcardColection,
+  late final int? index;
+  late final String? category;
+  late final String? imgUrl;
+  late final List<LocalVocabInfo>? flashcards;
+  late final String? errorMessage;
+  late final FlashcardRandomStatus? status;
+
+  FlashcardRandomState copyWith({
+    int? index,
+    String? category,
+    String? imgUrl,
+    List<LocalVocabInfo>? flashcards,
     String? errorMessage,
-    FlashcardCollectionRandomStatus? status,
+    FlashcardRandomStatus? status,
   }) {
-    return FlashcardCollectionRandomState(
-      listOfFlashcardColection:
-          listOfFlashcardColection ?? this.listOfFlashcardColection,
-      status: status ?? this.status,
+    return FlashcardRandomState(
+      index: index ?? this.index,
+      category: category ?? this.category,
+      imgUrl: imgUrl ?? this.imgUrl,
+      flashcards: flashcards ?? this.flashcards,
       errorMessage: errorMessage ?? this.errorMessage,
+      status: status ?? this.status,
     );
   }
 
   @override
   List<Object?> get props => [
-        listOfFlashcardColection,
+        category,
+        imgUrl,
+        flashcards,
         status,
         errorMessage,
       ];

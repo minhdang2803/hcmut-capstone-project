@@ -4,6 +4,7 @@ import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/pages/book/books_screen.dart';
 import 'package:bke/presentation/pages/flashcard/flashcard_info_page.dart';
 import 'package:bke/presentation/pages/flashcard/flashcard_page.dart';
+import 'package:bke/presentation/pages/flashcard/flashcard_random_page.dart';
 import 'package:bke/utils/enum.dart';
 
 import 'package:flutter/material.dart';
@@ -94,6 +95,13 @@ class RouteGenerator {
       case RouteName.flashCardScreen:
         final flashcard = settings.arguments as FlashcardPageModel;
         page = FlashCardScreen(
+            currentCollection: flashcard.currentCollection,
+            collectionTitle: flashcard.collectionTitle);
+        break;
+
+      case RouteName.flashCardRandomScreen:
+        final flashcard = settings.arguments as FlashcardPageModel;
+        page = FlashcardRandomScreen(
             currentCollection: flashcard.currentCollection,
             collectionTitle: flashcard.collectionTitle);
         break;

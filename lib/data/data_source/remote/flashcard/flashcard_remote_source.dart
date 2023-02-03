@@ -12,8 +12,11 @@ import '../../../configs/hive_config.dart';
 abstract class FlashcardRemoteSource {
   Future<BaseResponse<FlashcardCollectionResponseModel>>
       getAllFlashcardCollection();
-  Future<BaseResponse<FlashCardCollectionFromServer>> getRandomCollection();
   Future<BaseResponse> updateToServer(List<Map<String, dynamic>> data);
+  Future<BaseResponse<FlashcardCollectionFromServer>>
+      getRandomCollectionThumbnail();
+  Future<BaseResponse<FlashcardCollectionRandomModel>> getRandomCollectionByCategory(
+      String category);
 }
 
 class FlashcardRemoteSourceImpl implements FlashcardRemoteSource {
@@ -61,19 +64,42 @@ class FlashcardRemoteSourceImpl implements FlashcardRemoteSource {
   }
 
   @override
-  Future<BaseResponse<FlashCardCollectionFromServer>>
-      getRandomCollection() async {
+  Future<BaseResponse<FlashcardCollectionFromServer>>
+      getRandomCollectionThumbnail() async {
     try {
-      const String path = EndPoint.flashcardRandomGetAll;
+      const String path = EndPoint.flashcardRandomGetAllThumbnail;
       final token = await const FlutterSecureStorage()
           .read(key: HiveConfig.currentUserTokenKey);
       final header = {'Authorization': 'Bearer $token'};
       final request = APIServiceRequest(
         path,
         header: header,
-        (response) => BaseResponse<FlashCardCollectionFromServer>.fromJson(
+        (response) => BaseResponse<FlashcardCollectionFromServer>.fromJson(
             json: response,
-            dataBuilder: FlashCardCollectionFromServer.fromJson),
+            dataBuilder: FlashcardCollectionFromServer.fromJson),
+      );
+      return _api.get(request);
+    } on RemoteException catch (error) {
+      throw RemoteException(RemoteException.responseError, error.errorMessage);
+    }
+  }
+
+  @override
+  Future<BaseResponse<FlashcardCollectionRandomModel>> getRandomCollectionByCategory(
+      String category) async {
+    try {
+      const String path = EndPoint.flashcardRandomGetAll;
+      final token = await const FlutterSecureStorage()
+          .read(key: HiveConfig.currentUserTokenKey);
+      final header = {'Authorization': 'Bearer $token'};
+      final params = {'category': category};
+      final request = APIServiceRequest(
+        path,
+        header: header,
+        queryParams: params,
+        (response) => BaseResponse<FlashcardCollectionRandomModel>.fromJson(
+            json: response,
+            dataBuilder: FlashcardCollectionRandomModel.fromJson),
       );
       return _api.get(request);
     } on RemoteException catch (error) {

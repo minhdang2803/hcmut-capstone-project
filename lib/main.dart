@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'bloc/authentication/auth_cubit.dart';
+import 'bloc/flashcard/flashcard_collection_random/flashcard_collection_random_cubit.dart';
 import 'bloc/game/game_cubit.dart';
 import 'bloc/video/video_cubit.dart';
 import 'bloc/toeic/toeic_cubit.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (ctx) => VocabCubit()),
               BlocProvider(create: (ctx) => FlashcardCollectionCubit()),
               BlocProvider(create: (ctx) => FlashcardCubit()),
+              BlocProvider(create: (ctx) => FlashcardRandomCubit()),
             ],
             child: MaterialApp(
               title: 'Funny Englisk',
