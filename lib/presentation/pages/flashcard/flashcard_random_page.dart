@@ -45,7 +45,6 @@ class _FlashcardRandomScreenState extends State<FlashcardRandomScreen>
   @override
   void dispose() {
     _controller.dispose();
-    context.read<FlashcardRandomCubit>().exit();
     super.dispose();
   }
 
