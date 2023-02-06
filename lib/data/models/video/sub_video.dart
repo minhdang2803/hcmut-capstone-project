@@ -6,7 +6,7 @@ class SubVideo {
 
   SubVideo.fromJson(Map<String, dynamic> json) {
     videoId = json["videoId"];
-    subs = (json["subs"] as List).map((i) => Subs.fromJson(i)).toList();
+    subs = (json["sentences"] as List).map((i) => Subs.fromJson(i)).toList();
   }
 }
 
