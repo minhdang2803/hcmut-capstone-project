@@ -46,102 +46,91 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
     );
   }
 
+  List<String> splitWord(String subText) {
+    final eachCharList = subText.split(" ");
+    List<String> result = [];
+    String tempWord = '';
+    for (final element in eachCharList) {
+      if (element.contains("[") && element.contains("]")) {
+        result.add(element);
+      } else if (element.contains('[') && !element.contains(']')) {
+        tempWord = "$tempWord$element ";
+      } else if (!element.contains('[') && element.contains(']')) {
+        tempWord = tempWord + element;
+        result.add(tempWord);
+        tempWord = "";
+      } else if (!element.contains('[') && !element.contains(']')) {
+        result.add(element);
+      }
+    }
+    return result;
+  }
+
   List<TextSpan> createTextSpans(String subText, TextStyle style) {
-    final arrayStrings = subText.split(" ");
+    final arrayStrings = splitWord(subText);
     List<TextSpan> arrayOfTextSpan = [];
     for (int index = 0; index < arrayStrings.length; index++) {
-      final text = "${arrayStrings[index]} ";
+      var text = arrayStrings[index];
       TextSpan span = const TextSpan();
 
       // first is the word highlight recommended by admin [example] and ending with , or .
-      if ((text[0] == '[') && (text.contains('.') || text.contains(','))) {
-        span = TextSpan(
-          text: '${text.substring(1, text.length - 2)} ',
-          style: style,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () => _onDictionarySearch(
-                text.substring(1, text.length - 3).toLowerCase()),
-        );
-      } else if (text[0] == '[') {
-        // is the word highlight recommended by admin [example]
-        span = TextSpan(
-          text: '${text.substring(1, text.length - 2)} ',
-          style: style,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () => _onDictionarySearch(
-                text.substring(1, text.length - 2).toLowerCase()),
-        );
-      } else if (text.contains('.') || text.contains(',')) {
-        // the word ending with , or .
+      if (text.contains('[') && text.contains(']')) {
+        text = text.trim().substring(1, text.length - 1);
         if (text.length > 4 &&
-            !text.contains("ies") &&
             !text.contains("tes") &&
-            text.substring(text.length - 4).contains('es')) {
+            text.substring(text.length - 2).contains("es")) {
           span = TextSpan(
-            text: text,
+            text: '$text ',
             style: style,
             recognizer: TapGestureRecognizer()
-              ..onTap = () => _onDictionarySearch(
-                  text.substring(0, text.length - 4).toLowerCase()),
+              ..onTap = () {
+                _onDictionarySearch(
+                    text.substring(1, text.length - 4).toLowerCase());
+              },
           );
         } else if (text.length > 4 &&
             !text.contains("ous") &&
             !text.contains("ines") &&
-            text.substring(text.length - 3).contains('s')) {
+            text.substring(text.length - 1).contains('s')) {
           span = TextSpan(
-            text: text,
+            text: '$text ',
             style: style,
             recognizer: TapGestureRecognizer()
-              ..onTap = () => _onDictionarySearch(
-                  text.substring(0, text.length - 3).toLowerCase()),
+              ..onTap = () {
+                _onDictionarySearch(
+                    text.substring(0, text.length - 1).toLowerCase());
+              },
+          );
+        } else if (text.length > 4 &&
+            text.substring(text.length - 2).contains('ed')) {
+          span = TextSpan(
+            text: '$text ',
+            style: style,
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                _onDictionarySearch(
+                    text.substring(0, text.length - 2).toLowerCase());
+              },
           );
         } else {
           span = TextSpan(
-            text: text,
+            text: '$text ',
             style: style,
             recognizer: TapGestureRecognizer()
-              ..onTap = () => _onDictionarySearch(
-                  text.substring(0, text.length - 2).toLowerCase()),
+              ..onTap = () {
+                _onDictionarySearch(text.toLowerCase());
+              },
           );
         }
-      } else if (text.length > 4 &&
-          !text.contains("tes") &&
-          text.substring(text.length - 3).contains("es")) {
-        span = TextSpan(
-          text: text,
-          style: style,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () => _onDictionarySearch(
-                text.substring(0, text.length - 3).toLowerCase()),
-        );
-      } else if (text.length > 4 &&
-          !text.contains("ous") &&
-          !text.contains("ines") &&
-          text.substring(text.length - 2).contains('s')) {
-        span = TextSpan(
-          text: text,
-          style: style,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () => _onDictionarySearch(
-                text.substring(0, text.length - 2).toLowerCase()),
-        );
-      } else if (text.length > 4 &&
-          text.substring(text.length - 3).contains('ed')) {
-        span = TextSpan(
-          text: text,
-          style: style,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () => _onDictionarySearch(
-                text.substring(0, text.length - 3).toLowerCase()),
-        );
       } else {
         // the normalword
         span = TextSpan(
-          text: text,
+          text: "$text ",
           style: style,
           recognizer: TapGestureRecognizer()
-            ..onTap = () => _onDictionarySearch(
-                text.substring(0, text.length - 1).toLowerCase()),
+            ..onTap = () {
+              _onDictionarySearch(text.toLowerCase());
+            },
         );
       }
 
@@ -153,7 +142,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   @override
   void initState() {
     super.initState();
-    print(widget.video.videoId);
+    // print(widget.video.videoId);
     _controller = YoutubePlayerController(
       initialVideoId: widget.video.videoId,
       flags: const YoutubePlayerFlags(
