@@ -1,4 +1,4 @@
-import 'package:bke/data/data_source/local/flashcard_local_soucre.dart';
+import 'package:bke/data/data_source/local/flashcard_local_source.dart';
 import 'package:bke/data/data_source/remote/flashcard/flashcard_remote_source.dart';
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
 import 'package:bke/data/models/network/base_response.dart';

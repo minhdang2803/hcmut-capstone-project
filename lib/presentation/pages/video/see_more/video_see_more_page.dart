@@ -1,16 +1,15 @@
-import 'package:bke/data/models/video/video_youtube_info.dart';
+import 'package:bke/data/models/video/video_youtube_info_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:skeletons/skeletons.dart';
 
-import '../../../../bloc/video/video_cubit.dart';
+import '../../../../bloc/video/category_video/category_video_cubit.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/enum.dart';
 import '../../../routes/route_name.dart';
 import '../../../theme/app_color.dart';
-import '../../../theme/app_typography.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../widgets/video_youtube_item.dart';
 
@@ -53,9 +52,9 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
         case SeeMoreVideoAction.category1:
           _getCategory1();
           break;
-        case SeeMoreVideoAction.category2:
-          _getCategory2();
-          break;
+        // case SeeMoreVideoAction.category2:
+        //   _getCategory2();
+        //   break;
 
         default:
           break;
@@ -71,25 +70,8 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
 
   Future<void> _getCategory1() async {
     try {
-      final newItems = await context.read<VideoCubit>().getCategory1(
-            pageKey: _currentPageKey,
-            pageSize: Constants.defaultPageSize,
-          );
-      final isLastPage = newItems.length < Constants.defaultPageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        _currentPageKey++;
-        _pagingController.appendPage(newItems, _currentPageKey);
-      }
-    } catch (e) {
-      _pagingController.error = e;
-    }
-  }
-
-  Future<void> _getCategory2() async {
-    try {
-      final newItems = await context.read<VideoCubit>().getCategory2(
+      final newItems = await context.read<CategoryVideoCubit>().getVideo(
+            category: "english ted-talk",
             pageKey: _currentPageKey,
             pageSize: Constants.defaultPageSize,
           );
@@ -183,42 +165,6 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildSubYoutubeData(VideoYoutubeInfo item) {
-    return Expanded(
-      child: Column(
-        children: [
-          Text(
-            item.title,
-            style:
-                AppTypography.bodySmall.copyWith(fontWeight: FontWeight.bold),
-            textAlign: TextAlign.start,
-          ),
-          10.verticalSpace,
-          Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(078),
-                    color: AppColor.primary),
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 12.r, vertical: 3.r),
-                  child: Text(
-                    'Basic',
-                    style:
-                        AppTypography.bodySmall.copyWith(color: Colors.white),
-                  ),
-                ),
-              ),
-              5.horizontalSpace,
-              Text('${item.viewCount} views', style: AppTypography.bodySmall),
-            ],
-          )
-        ],
       ),
     );
   }

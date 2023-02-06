@@ -1,4 +1,4 @@
-import 'package:bke/data/models/video/video_youtube_info.dart';
+import 'package:bke/data/models/video/video_youtube_info_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

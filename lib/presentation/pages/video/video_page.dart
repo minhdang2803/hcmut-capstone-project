@@ -1,14 +1,11 @@
+import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/widgets/custom_app_bar.dart';
 import 'package:bke/utils/enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:skeletons/skeletons.dart';
 
-import '../../../bloc/video/video_cubit.dart';
-import '../../../data/models/video/video_youtube_info.dart';
 import '../../routes/route_name.dart';
 import '../../widgets/holder_widget.dart';
 import 'component/video_horizontal_list.dart';
@@ -37,18 +34,10 @@ class _VideoPageState extends State<VideoPage>
     curve: Curves.easeOut,
   );
 
-  Map<String, List<VideoYoutubeInfo>> _data = {};
-
   @override
   void initState() {
     super.initState();
-    if (_data.isEmpty) {
-      context.read<VideoCubit>().getMainActivities();
-    }
-  }
-
-  Future<void> _onRefresh() {
-    return context.read<VideoCubit>().getMainActivities();
+    context.read<CategoryVideoCubit>().getMainActivities();
   }
 
   @override
@@ -61,7 +50,10 @@ class _VideoPageState extends State<VideoPage>
           children: [
             BkEAppBar(
               label: 'Video',
-              onBackButtonPress: () => Navigator.pop(context),
+              onBackButtonPress: () {
+                context.read<CategoryVideoCubit>().exit();
+                Navigator.pop(context);
+              },
             ),
             _buildBody(),
           ],
@@ -73,7 +65,7 @@ class _VideoPageState extends State<VideoPage>
   Widget _buildBody() {
     return Expanded(
       child: RefreshIndicator(
-        onRefresh: _onRefresh,
+        onRefresh: () => context.read<CategoryVideoCubit>().getMainActivities(),
         child: Container(
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
@@ -93,26 +85,19 @@ class _VideoPageState extends State<VideoPage>
   }
 
   Widget _buildActivitiesSection() {
-    return BlocConsumer<VideoCubit, VideoState>(
-      listener: (context, state) {
-        if (state is VideoYoutubeInfoSuccess) {
-          setState(() {
-            _data = state.data;
-          });
-        }
-      },
+    return BlocBuilder<CategoryVideoCubit, CategoryVideoState>(
       builder: (context, state) {
-        if (state is VideoYoutubeInfoFailure) {
+        if (state.status == CategoryVideoStatus.fail) {
           return HolderWidget(
             message: state.errorMessage,
             asset: 'assets/images/error_holder.png',
             onRetry: () {
-              context.read<VideoCubit>().getMainActivities();
+              context.read<CategoryVideoCubit>().getMainActivities();
             },
           );
         }
 
-        if (state is VideoLoading) {
+        if (state.status == CategoryVideoStatus.loading) {
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.75,
             width: double.infinity,
@@ -123,35 +108,26 @@ class _VideoPageState extends State<VideoPage>
           );
         }
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (_data['category1'] != null)
-              VideoYoutubeHorizontalList(
-                title: 'Category 1',
-                data: _data['category1']!,
-                onSeeMore: () {
-                  const action = SeeMoreVideoAction.category1;
-                  Navigator.of(context).pushNamed(
-                    RouteName.videoSeeMore,
-                    arguments: action,
-                  );
-                },
-              ),
-            if (_data['category2'] != null)
-              VideoYoutubeHorizontalList(
-                title: 'Category 2',
-                data: _data['category2']!,
-                onSeeMore: () {
-                  const action = SeeMoreVideoAction.category1;
-                  Navigator.of(context).pushNamed(
-                    RouteName.videoSeeMore,
-                    arguments: action,
-                  );
-                },
-              ),
-          ],
+        return FadeTransition(
+          opacity: _animationEaseIn,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (state.data!['category1'] != null)
+                VideoYoutubeHorizontalList(
+                  title: 'Category 1',
+                  data: state.data!['category1']!,
+                  onSeeMore: () {
+                    const action = SeeMoreVideoAction.category1;
+                    Navigator.of(context).pushNamed(
+                      RouteName.videoSeeMore,
+                      arguments: action,
+                    );
+                  },
+                ),
+            ],
+          ),
         );
       },
     );
