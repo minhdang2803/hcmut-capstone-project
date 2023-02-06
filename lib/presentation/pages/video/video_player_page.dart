@@ -57,7 +57,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
       if ((text[0] == '[') && (text.contains('.') || text.contains(','))) {
         span = TextSpan(
           text: '${text.substring(1, text.length - 2)} ',
-          style: style.copyWith(color: AppColor.secondary),
+          style: style,
           recognizer: TapGestureRecognizer()
             ..onTap = () => _onDictionarySearch(
                 text.substring(1, text.length - 3).toLowerCase()),
@@ -66,7 +66,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
         // is the word highlight recommended by admin [example]
         span = TextSpan(
           text: '${text.substring(1, text.length - 2)} ',
-          style: style.copyWith(color: AppColor.secondary),
+          style: style,
           recognizer: TapGestureRecognizer()
             ..onTap = () => _onDictionarySearch(
                 text.substring(1, text.length - 2).toLowerCase()),
