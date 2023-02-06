@@ -11,6 +11,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'bloc/authentication/auth_cubit.dart';
 import 'bloc/flashcard/flashcard_collection_random/flashcard_collection_random_cubit.dart';
 import 'bloc/game/game_cubit.dart';
+import 'bloc/video/category_video/category_video_cubit.dart';
 import 'bloc/video/video_cubit.dart';
 import 'bloc/toeic/toeic_cubit.dart';
 import 'bloc/vocab/vocab_cubit.dart';
@@ -64,7 +65,8 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (ctx) => AuthCubit()),
               BlocProvider(create: (ctx) => GameCubit()),
               BlocProvider(create: (ctx) => ToeicCubit()),
-              BlocProvider(create: (ctx) => VideoCubit()),
+              // BlocProvider(create: (ctx) => VideoCubit()),
+              BlocProvider(create: (ctx) => CategoryVideoCubit()),
               BlocProvider(create: (ctx) => VocabCubit()),
               BlocProvider(create: (ctx) => FlashcardCollectionCubit()),
               BlocProvider(create: (ctx) => FlashcardCubit()),

@@ -153,7 +153,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   @override
   void initState() {
     super.initState();
-
+    print(widget.video.videoId);
     _controller = YoutubePlayerController(
       initialVideoId: widget.video.videoId,
       flags: const YoutubePlayerFlags(
@@ -197,6 +197,12 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
     return Scaffold(
       appBar: orientation == Orientation.portrait
           ? AppBar(
+              leading: BackButton(
+                onPressed: () {
+                  context.read<VideoCubit>().exit();
+                  Navigator.pop(context);
+                },
+              ),
               title: Text(
                 widget.video.title,
                 style: AppTypography.title.copyWith(color: Colors.white),
@@ -243,30 +249,35 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
               ? Expanded(
                   child: BlocConsumer<VideoCubit, VideoState>(
                     listener: (context, state) {
-                      if (state is SubVideoSuccess) {
-                        setState(() {
-                          _subVideo = state.subVideo;
-                        });
+                      if (state.status == VideoStatus.done) {
+                        _subVideo = state.subVideo;
                       }
                     },
                     builder: (context, state) {
-                      if (state is SubVideoFailure) {
+                      if (state.status == VideoStatus.fail) {
                         return const HolderWidget(
                           asset: 'assets/images/error.png',
                           message: 'Fail to load video script!',
                         );
+                      } else if (state.status == VideoStatus.done) {
+                        return _subVideo?.subs == null
+                            ? _buildLoadingSkeleton()
+                            : ValueListenableBuilder(
+                                valueListenable: _controller,
+                                builder:
+                                    (context, YoutubePlayerValue value, child) {
+                                  _currentDuration =
+                                      value.position.inMilliseconds;
+                                  return _buildSub();
+                                },
+                              );
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColor.primary,
+                          ),
+                        );
                       }
-                      return _subVideo?.subs == null
-                          ? _buildLoadingSkeleton()
-                          : ValueListenableBuilder(
-                              valueListenable: _controller,
-                              builder:
-                                  (context, YoutubePlayerValue value, child) {
-                                _currentDuration =
-                                    value.position.inMilliseconds;
-                                return _buildSub();
-                              },
-                            );
                     },
                   ),
                 )

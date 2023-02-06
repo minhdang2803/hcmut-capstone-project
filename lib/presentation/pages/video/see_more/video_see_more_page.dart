@@ -5,12 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:skeletons/skeletons.dart';
 
-import '../../../../bloc/video/video_cubit.dart';
+import '../../../../bloc/video/category_video/category_video_cubit.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/enum.dart';
 import '../../../routes/route_name.dart';
 import '../../../theme/app_color.dart';
-import '../../../theme/app_typography.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../widgets/video_youtube_item.dart';
 
@@ -71,7 +70,7 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
 
   Future<void> _getCategory1() async {
     try {
-      final newItems = await context.read<VideoCubit>().getVideo(
+      final newItems = await context.read<CategoryVideoCubit>().getVideo(
             category: "english ted-talk",
             pageKey: _currentPageKey,
             pageSize: Constants.defaultPageSize,
@@ -87,25 +86,6 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
       _pagingController.error = e;
     }
   }
-
-  // Future<void> _getCategory2() async {
-  //   try {
-  //     final newItems = await context.read<VideoCubit>().getCategory2(
-
-  //           pageKey: _currentPageKey,
-  //           pageSize: Constants.defaultPageSize,
-  //         );
-  //     final isLastPage = newItems.length < Constants.defaultPageSize;
-  //     if (isLastPage) {
-  //       _pagingController.appendLastPage(newItems);
-  //     } else {
-  //       _currentPageKey++;
-  //       _pagingController.appendPage(newItems, _currentPageKey);
-  //     }
-  //   } catch (e) {
-  //     _pagingController.error = e;
-  //   }
-  // }
 
   String _getAppBarLabel() {
     switch (widget.action) {

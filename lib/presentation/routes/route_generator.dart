@@ -1,3 +1,4 @@
+import 'package:bke/bloc/video/video_cubit.dart';
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/video/video_youtube_info_model.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
@@ -8,6 +9,7 @@ import 'package:bke/presentation/pages/flashcard/flashcard_random_page.dart';
 import 'package:bke/utils/enum.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../pages/about_us/about_us.dart';
 import '../pages/authentication/authentication_page.dart';
@@ -74,7 +76,10 @@ class RouteGenerator {
 
       case RouteName.videoPlayer:
         final videoId = settings.arguments as VideoYoutubeInfo;
-        page = VideoPlayerPage(video: videoId);
+        page = BlocProvider(
+          create: (context) => VideoCubit(),
+          child: VideoPlayerPage(video: videoId),
+        );
         break;
 
       case RouteName.videoSeeMore:
