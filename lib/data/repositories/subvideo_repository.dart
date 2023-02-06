@@ -15,11 +15,11 @@ class VideoRepository {
     return _videoSource.getSubVideo(videoId);
   }
 
-  Future<BaseResponse<VideoYoutubeInfos>> getCategory1({
+  Future<BaseResponse<VideoYoutubeInfos>> getAllVideos({
     required int pageKey,
     required int pageSize,
   }) {
-    return _videoSource.getCategory1(
+    return _videoSource.getAllVideos(
       pageKey: pageKey,
       pageSize: pageSize,
     );

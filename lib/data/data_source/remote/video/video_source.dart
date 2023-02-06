@@ -13,7 +13,7 @@ import '../../../services/api_service.dart';
 abstract class VideoSource {
   Future<BaseResponse<SubVideo>> getSubVideo(String videoId);
 
-  Future<BaseResponse<VideoYoutubeInfos>> getCategory1({
+  Future<BaseResponse<VideoYoutubeInfos>> getAllVideos({
     required int pageKey,
     required int pageSize,
   });
@@ -42,7 +42,7 @@ class VideoSourceImpl extends VideoSource {
   }
 
   @override
-  Future<BaseResponse<VideoYoutubeInfos>> getCategory1({
+  Future<BaseResponse<VideoYoutubeInfos>> getAllVideos({
     required int pageKey,
     required int pageSize,
   }) async {

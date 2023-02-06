@@ -53,7 +53,7 @@ class VideoCubit extends Cubit<VideoState> {
     required pageSize,
   }) async {
     try {
-      final response = await _videoRepository.getCategory1(
+      final response = await _videoRepository.getAllVideos(
         pageKey: pageKey,
         pageSize: pageSize,
       );
@@ -80,7 +80,7 @@ class VideoCubit extends Cubit<VideoState> {
     required pageSize,
   }) async {
     try {
-      final response = await _videoRepository.getCategory1(
+      final response = await _videoRepository.getAllVideos(
         pageKey: pageKey,
         pageSize: pageSize,
       );
