@@ -1,4 +1,4 @@
-import 'package:bke/data/models/video/video_youtube_info.dart';
+import 'package:bke/data/models/video/video_youtube_info_model.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +10,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../bloc/video/video_cubit.dart';
-import '../../../data/models/video/sub_video.dart';
+import '../../../data/models/video/sub_video_model.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_typography.dart';
 import '../../widgets/holder_widget.dart';

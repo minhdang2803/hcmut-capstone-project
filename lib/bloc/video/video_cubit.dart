@@ -3,9 +3,9 @@ import 'package:equatable/equatable.dart';
 
 import '../../data/models/network/base_response.dart';
 import '../../data/models/network/cvn_exception.dart';
-import '../../data/models/video/sub_video.dart';
-import '../../data/models/video/video_youtube_info.dart';
-import '../../data/repositories/subvideo_repository.dart';
+import '../../data/models/video/sub_video_model.dart';
+import '../../data/models/video/video_youtube_info_model.dart';
+import '../../data/repositories/video_repository.dart';
 import '../../utils/connection_util.dart';
 import '../../utils/log_util.dart';
 
@@ -26,9 +26,9 @@ class VideoCubit extends Cubit<VideoState> {
       }
       Map<String, List<VideoYoutubeInfo>> data = {};
       final results = await Future.wait([
-        getCategory1(pageKey: 1, pageSize: 5),
-        getCategory1(pageKey: 1, pageSize: 5),
-        getCategory1(pageKey: 1, pageSize: 5)
+        getVideo(pageKey: 1, pageSize: 5, category: "english ted-talk"),
+        getVideo(pageKey: 1, pageSize: 5, category: "english ted-talk"),
+        getVideo(pageKey: 1, pageSize: 5, category: "english ted-talk")
       ]);
 
       if (results[0].isNotEmpty) {
@@ -48,14 +48,20 @@ class VideoCubit extends Cubit<VideoState> {
     }
   }
 
-  Future<List<VideoYoutubeInfo>> getCategory1({
+  Future<List<VideoYoutubeInfo>> getVideo({
     required int pageKey,
-    required pageSize,
+    required int pageSize,
+    required String category,
+    int? level,
+    String? title,
   }) async {
     try {
       final response = await _videoRepository.getAllVideos(
         pageKey: pageKey,
         pageSize: pageSize,
+        category: category,
+        level: level,
+        title: title,
       );
       final list = response.data?.list;
       return list ?? [];
@@ -77,12 +83,18 @@ class VideoCubit extends Cubit<VideoState> {
 
   Future<List<VideoYoutubeInfo>> getCategory2({
     required int pageKey,
-    required pageSize,
+    required int pageSize,
+    required String category,
+    int? level,
+    String? title,
   }) async {
     try {
       final response = await _videoRepository.getAllVideos(
-        pageKey: pageKey,
+pageKey: pageKey,
         pageSize: pageSize,
+        category: category,
+        level: level,
+        title: title,
       );
       final list = response.data?.list;
       return list ?? [];

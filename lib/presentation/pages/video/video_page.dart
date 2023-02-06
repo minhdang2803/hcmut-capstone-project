@@ -8,7 +8,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:skeletons/skeletons.dart';
 
 import '../../../bloc/video/video_cubit.dart';
-import '../../../data/models/video/video_youtube_info.dart';
+import '../../../data/models/video/video_youtube_info_model.dart';
 import '../../routes/route_name.dart';
 import '../../widgets/holder_widget.dart';
 import 'component/video_horizontal_list.dart';
@@ -107,7 +107,7 @@ class _VideoPageState extends State<VideoPage>
             message: state.errorMessage,
             asset: 'assets/images/error_holder.png',
             onRetry: () {
-              context.read<VideoCubit>().getMainActivities();
+              // context.read<VideoCubit>().getMainActivities();
             },
           );
         }

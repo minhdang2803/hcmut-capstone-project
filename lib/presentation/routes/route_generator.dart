@@ -1,5 +1,5 @@
 import 'package:bke/data/models/book/book_listener.dart';
-import 'package:bke/data/models/video/video_youtube_info.dart';
+import 'package:bke/data/models/video/video_youtube_info_model.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/pages/book/books_screen.dart';
 import 'package:bke/presentation/pages/flashcard/flashcard_info_page.dart';

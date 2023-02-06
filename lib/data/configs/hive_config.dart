@@ -1,4 +1,5 @@
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
+import 'package:bke/data/models/video/video_last_watch_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../models/authentication/user.dart';
@@ -12,6 +13,7 @@ class HiveConfig {
   static const dictionary = 'DICTIONARY';
   static const myDictionary = 'MY_DICTIONARY';
   static const fcByUser = "FlashcardByUser";
+  static const videoLastWatchByUser = "videoLastWatchByUser";
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(UserAdapter());
@@ -21,10 +23,12 @@ class HiveConfig {
     Hive.registerAdapter(FlashcardCollectionModelAdapter());
     Hive.registerAdapter(FCCollectionByUserAdapter());
     Hive.registerAdapter(LocalVocabInfoListAdapter());
+    Hive.registerAdapter(VideoLastWatchListsAdapter());
 
     await Hive.openBox(userBox);
     await Hive.openBox(localVocabs);
     await Hive.openBox(myDictionary);
     await Hive.openBox(fcByUser);
+    await Hive.openBox(videoLastWatchByUser);
   }
 }
