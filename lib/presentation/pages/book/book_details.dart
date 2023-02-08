@@ -137,7 +137,10 @@ class _BookDetails extends State<BookDetails> {
                                         const SizedBox(height: 10),
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                              book.mp3Url != '' 
+                                              ?
+                                              MainAxisAlignment.spaceAround 
+                                              : MainAxisAlignment.start,
                                           children: [
                                             Container(
                                               width: size.width * 0.4,
@@ -181,47 +184,50 @@ class _BookDetails extends State<BookDetails> {
                                             const SizedBox(
                                               width: 10,
                                             ),
-                                            Container(
-                                              width: size.width * 0.4,
-                                              height: 50,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(70),
-                                                color: AppColor.primary,
-                                              ),
-                                              child: TextButton(
-                                                onPressed: () {
-                                                  final argument =
-                                                      BookListenArguments(
-                                                          book.bookId,
-                                                          book.title,
-                                                          book.coverUrl,
-                                                          book.mp3Url);
-                                                  Navigator.of(context)
-                                                      .pushNamed(
-                                                          RouteName.bookListen,
-                                                          arguments: argument);
-                                                },
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(Icons.headphones,
-                                                        size: 20,
-                                                        color: AppColor
-                                                            .appBackground),
-                                                    Text(
-                                                      "Listen",
-                                                      style: TextStyle(
-                                                        color: AppColor
-                                                            .appBackground,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 15,
+                                            Visibility(
+                                              visible: book.mp3Url != '',
+                                              child: Container(
+                                                width: size.width * 0.4,
+                                                height: 50,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(70),
+                                                  color: AppColor.primary,
+                                                ),
+                                                child: TextButton(
+                                                  onPressed: () {
+                                                    final argument =
+                                                        BookListenArguments(
+                                                            book.bookId,
+                                                            book.title,
+                                                            book.coverUrl,
+                                                            book.mp3Url);
+                                                    Navigator.of(context)
+                                                        .pushNamed(
+                                                            RouteName.bookListen,
+                                                            arguments: argument);
+                                                  },
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Icon(Icons.headphones,
+                                                          size: 20,
+                                                          color: AppColor
+                                                              .appBackground),
+                                                      Text(
+                                                        "Listen",
+                                                        style: TextStyle(
+                                                          color: AppColor
+                                                              .appBackground,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 15,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),

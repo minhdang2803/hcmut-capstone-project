@@ -33,7 +33,7 @@ class _BookListen extends State<BookListen> {
   void initState() {
     super.initState();
     _bookBloc = BookBloc();
-    _bookBloc.add(LoadAudioBookEvent(bookId: widget.bookInfo.bookId));
+    // _bookBloc.add(LoadAudioBookEvent(bookId: widget.bookInfo.bookId));
 
     audioPlayer.onPlayerStateChanged.listen((state) {
       if (mounted){
@@ -59,9 +59,9 @@ class _BookListen extends State<BookListen> {
 
   }
 
-  void setAudioBook(state) async{
-    _audioBook = state.book;      
-    _position = Duration(seconds: _audioBook.ckpt);
+  void setAudioBook() async{
+    // _audioBook = state.book;      
+    // _position = Duration(seconds: _audioBook.ckpt);
     await audioPlayer.play(UrlSource(widget.bookInfo.mp3Url), position: _position);
     _isLoaded = true;
   }
@@ -81,15 +81,15 @@ class _BookListen extends State<BookListen> {
   Widget build(BuildContext context) {
     Size size =  MediaQuery.of(context).size;
 
-    return BlocProvider(
-              create: (context) => _bookBloc,
-              child:
-                BlocBuilder<BookBloc, BookState>(
-                  builder: (context, state) {
-                    print(state);
-                    if (state is AudioBookLoadedState){ 
+    // return BlocProvider(
+    //           create: (context) => _bookBloc,
+    //           child:
+    //             BlocBuilder<BookBloc, BookState>(
+    //               builder: (context, state) {
+    //                 print(state);
+    //                 if (state is AudioBookLoadedState){ 
                       if (_isLoaded == false){
-                        setAudioBook(state);
+                        setAudioBook();
                       }
                         return Scaffold(
                           body: Container(
@@ -271,14 +271,14 @@ class _BookListen extends State<BookListen> {
                         );  
                       }
                       
-                      return Center(
-                                    child: CircularProgressIndicator(color: AppColor.primary)
-                                  );
-                      }
-            )
+                      // return Center(
+                      //               child: CircularProgressIndicator(color: AppColor.primary)
+                      //             );
+                      // }
+            // )
   
-      );
-    }
+      // );
+    // }
   }
 
 Widget appBar(BuildContext context){

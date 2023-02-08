@@ -75,19 +75,14 @@ class BookBloc extends Bloc<BookEvent, BookState>{
   void _onLoadDetails(LoadDetailsEvent event, Emitter<BookState> emit) async{
     emit(BookLoadingState());
       try{
-        late final BookInfo book;
-        final List<BookInfo> matchBook = _books.where((e) => (e.bookId == event.bookId)).toList();
-
-        if (matchBook.isNotEmpty){//no need to call api since detail of selected book can be found in list _books
-          book = matchBook[0];
-        }
-
-        else{
+        BookInfo _matchBook = _books.firstWhere((e) => (e.bookId == event.bookId));
+        if (_matchBook == null){
           final response = await _bookRepos.getBookInfo(event.bookId);
-          book = response.data!;
+          _matchBook = response.data!;
         }
+        
 
-        emit(BookLoadedState(book));
+        emit(BookLoadedState(_matchBook));
       }
       catch(e){
         emit(BookErrorState(e.toString()));

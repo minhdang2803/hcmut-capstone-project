@@ -90,8 +90,8 @@ class BookInfoV2 {
 
   BookInfoV2.fromJson(Map<String, dynamic> json) {
     category = json['category'];
-    if (json['data'] != null) {
-      for (var e in (json['data'] as List)) {
+    if (json['list'] != null) {
+      for (var e in (json['list'] as List)) {
         list.add(BookInfo.fromJson(e));
       }
     }

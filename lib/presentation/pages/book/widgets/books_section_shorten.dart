@@ -33,18 +33,18 @@ class BookSection extends StatelessWidget {
               onTap: () {
                 final book = bookList.elementAt(i);
                 // assert(book.mode==2);
-                if (book.mode == Mode.start.index) {
+                // if (book.mode == Mode.start.index) {
                   Navigator.of(context)
                       .pushNamed(RouteName.bookDetails, arguments: book.bookId);
-                } else if (book.mode == Mode.reading.index) {
-                  Navigator.of(context)
-                      .pushNamed(RouteName.bookRead, arguments: book.bookId);
-                } else {
-                  var argument = BookListenArguments(
-                      book.bookId, book.title, book.coverUrl, book.mp3Url);
-                  Navigator.of(context)
-                      .pushNamed(RouteName.bookListen, arguments: argument);
-                }
+                // } else if (book.mode == Mode.reading.index) {
+                //   Navigator.of(context)
+                //       .pushNamed(RouteName.bookRead, arguments: book.bookId);
+                // } else {
+                //   var argument = BookListenArguments(
+                //       book.bookId, book.title, book.coverUrl, book.mp3Url);
+                //   Navigator.of(context)
+                //       .pushNamed(RouteName.bookListen, arguments: argument);
+                // }
               },
               child: Row(
                 children: [
