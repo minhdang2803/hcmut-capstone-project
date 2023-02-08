@@ -17,7 +17,7 @@ class BookRepository{
 
   factory BookRepository.instance() => _instance;
   
-  Future<List<BookInfo>> getAll() async{
+  Future<BaseResponse<BookInfosV2>> getAll() async{
     return await _bookSource.getAll();
   }
 

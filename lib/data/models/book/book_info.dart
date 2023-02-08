@@ -20,6 +20,22 @@ class BookInfos {
   }
 }
 
+class BookInfosV2 {
+  BookInfosV2({required this.list});
+
+  List<BookInfoV2> list = [];
+  // late final MetaDataModel metadata;
+
+  BookInfosV2.fromJson(Map<String, dynamic> json) {
+    if (json['data'] != null) {
+      for (var e in (json['data'] as List)) {
+        list.add(BookInfoV2.fromJson(e));
+      }
+    }
+    // metadata = MetaDataModel.fromJson(json['meta_data']);
+  }
+}
+
 class BookInfo {
   BookInfo({
     required this.bookId,
@@ -63,5 +79,22 @@ class BookInfo {
     mp3Url = json["mp3Url"];
     isLiked = json["isLiked"];
     mode = json["mode"];
+  }
+}
+
+class BookInfoV2 {
+  BookInfoV2({required this.category, required this.list});
+
+  late final String category; 
+  List<BookInfo> list = [];
+
+  BookInfoV2.fromJson(Map<String, dynamic> json) {
+    category = json['category'];
+    if (json['data'] != null) {
+      for (var e in (json['data'] as List)) {
+        list.add(BookInfo.fromJson(e));
+      }
+    }
+    // metadata = MetaDataModel.fromJson(json['meta_data']);
   }
 }

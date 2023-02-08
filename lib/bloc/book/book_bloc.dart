@@ -25,9 +25,18 @@ class BookListBloc extends Bloc<BookListEvent, BookListState>{
   void _onLoadAll(LoadAllEvent event, Emitter<BookListState> emit) async{
       emit(BookListLoadingState('Home'));
       try{
+  
+        var _response = await _bookRepos.getAll();
+        var _data = _response.data!.list ;
+        // print(_data);
+        _books = [];
+       
+        for (var category in _data) {
+          _books = _books + category.list;
+        }
+        // print(_books);
         
-        _books = await _bookRepos.getAll();
-        emit(BookListLoadedState(_books, 'Home'));
+        emit(BookListLoadedState(_data, 'Home'));
       }
       catch(e){
         emit(BookListErrorState(e.toString()));

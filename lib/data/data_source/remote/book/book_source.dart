@@ -14,7 +14,7 @@ import '../../../models/video/video_youtube_info.dart';
 import '../../../services/api_service.dart';
 
 abstract class BookSource {
-   Future<List<BookInfo>> getAll();
+   Future<BaseResponse<BookInfosV2>> getAll();
    Future<BaseResponse<BookInfos>> getByCategory(String category);
 
    Future<BaseResponse<BookInfo>> getBookInfo(String bookId);
@@ -28,9 +28,21 @@ class BookSourceImpl extends BookSource {
 
 
   @override
-  Future<List<BookInfo>> getAll() async{
-    
-    return data.map((e)=>BookInfo.fromJson(e)).toList(); //return 10 most popular books of each category, for all categories
+  Future<BaseResponse<BookInfosV2>> getAll() async{
+    const path = EndPoint.getHomepageList;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+
+    final request = APIServiceRequest(
+      path,
+      (response) => BaseResponse<BookInfosV2>.fromJson(
+        json: response,
+        dataBuilder: BookInfosV2.fromJson,
+      ),
+      header: header,
+    );
+    return _api.get(request);//return 5 most popular books of each category, for 5 categories
   }
 
   @override

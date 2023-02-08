@@ -17,7 +17,7 @@ class BookListLoadingState extends BookListState{
 
 class BookListLoadedState extends BookListState{
   BookListLoadedState(this.books, this.category);
-  final List<BookInfo> books;
+  final List<dynamic> books;
   final String category;
 
   @override

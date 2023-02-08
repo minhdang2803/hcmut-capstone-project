@@ -18,6 +18,7 @@ class EndPoint {
   static const getVocabInfos = '$_baseUrl/vocab';
 
   static const getAllBooks = '$_baseUrl/BookInfo';
+  static const getHomepageList = '$_baseUrl/BookInfo/listCategory';
   static const getBookInfo = '$_baseUrl/bookInfo/getOne';
 
   static const getEbook = '$_baseUrl/bookDetail';
