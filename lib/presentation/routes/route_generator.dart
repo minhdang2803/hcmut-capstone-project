@@ -83,8 +83,11 @@ class RouteGenerator {
         break;
 
       case RouteName.videoSeeMore:
-        final action = settings.arguments as SeeMoreVideoAction?;
-        page = VideoSeeMorePage(action: action);
+        final argeuments = settings.arguments as VideoSeeMorePageModel?;
+        page = VideoSeeMorePage(
+          action: argeuments!.action,
+          category: argeuments.category,
+        );
         break;
 
       case RouteName.myDictionary:

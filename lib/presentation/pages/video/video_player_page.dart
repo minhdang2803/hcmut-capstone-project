@@ -24,7 +24,7 @@ class VideoPlayerPage extends StatefulWidget {
 }
 
 class _VideoPlayerPageState extends State<VideoPlayerPage>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin<VideoPlayerPage> {
   late YoutubePlayerController _controller;
 
   final itemController = ItemScrollController();
@@ -72,56 +72,17 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
     for (int index = 0; index < arrayStrings.length; index++) {
       var text = arrayStrings[index];
       TextSpan span = const TextSpan();
-
       // first is the word highlight recommended by admin [example] and ending with , or .
       if (text.contains('[') && text.contains(']')) {
         text = text.trim().substring(1, text.length - 1);
-        if (text.length > 4 &&
-            !text.contains("tes") &&
-            text.substring(text.length - 2).contains("es")) {
-          span = TextSpan(
-            text: '$text ',
-            style: style,
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                _onDictionarySearch(
-                    text.substring(1, text.length - 4).toLowerCase());
-              },
-          );
-        } else if (text.length > 4 &&
-            !text.contains("ous") &&
-            !text.contains("ines") &&
-            text.substring(text.length - 1).contains('s')) {
-          span = TextSpan(
-            text: '$text ',
-            style: style,
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                _onDictionarySearch(
-                    text.substring(0, text.length - 1).toLowerCase());
-              },
-          );
-        } else if (text.length > 4 &&
-            text.substring(text.length - 2).contains('ed')) {
-          span = TextSpan(
-            text: '$text ',
-            style: style,
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                _onDictionarySearch(
-                    text.substring(0, text.length - 2).toLowerCase());
-              },
-          );
-        } else {
-          span = TextSpan(
-            text: '$text ',
-            style: style,
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                _onDictionarySearch(text.toLowerCase());
-              },
-          );
-        }
+        span = TextSpan(
+          text: '$text ',
+          style: style,
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              _onDictionarySearch(text.toLowerCase());
+            },
+        );
       } else {
         // the normalword
         span = TextSpan(
@@ -150,16 +111,17 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
         enableCaption: false,
       ),
     );
-
     context.read<VideoCubit>().getSubVideo(widget.video.videoId);
   }
 
   void _goToSpan(int spanIndex) {
-    Scrollable.ensureVisible(
-      _keys[spanIndex].currentContext!,
-      alignment: 0.2,
-      duration: const Duration(milliseconds: 300),
-    );
+    if (_keys[spanIndex].currentContext != null) {
+      Scrollable.ensureVisible(
+        _keys[spanIndex].currentContext!,
+        alignment: 0.2,
+        duration: const Duration(milliseconds: 300),
+      );
+    }
   }
 
   void _resetCurrentIndex(PointerEvent details) {
@@ -180,7 +142,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    // final topPadding = MediaQuery.of(context).padding.top;
     final orientation = MediaQuery.of(context).orientation;
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -234,43 +195,43 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
               },
             ),
           ),
-          orientation == Orientation.portrait
-              ? Expanded(
-                  child: BlocConsumer<VideoCubit, VideoState>(
-                    listener: (context, state) {
-                      if (state.status == VideoStatus.done) {
-                        _subVideo = state.subVideo;
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state.status == VideoStatus.fail) {
-                        return const HolderWidget(
-                          asset: 'assets/images/error.png',
-                          message: 'Fail to load video script!',
-                        );
-                      } else if (state.status == VideoStatus.done) {
-                        return _subVideo?.subs == null
-                            ? _buildLoadingSkeleton()
-                            : ValueListenableBuilder(
-                                valueListenable: _controller,
-                                builder:
-                                    (context, YoutubePlayerValue value, child) {
-                                  _currentDuration =
-                                      value.position.inMilliseconds;
-                                  return _buildSub();
-                                },
-                              );
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColor.primary,
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                )
-              : Container()
+          Visibility(
+            visible: orientation == Orientation.portrait,
+            child: Expanded(
+              child: BlocConsumer<VideoCubit, VideoState>(
+                listener: (context, state) {
+                  if (state.status == VideoStatus.done) {
+                    _subVideo = state.subVideo;
+                  }
+                },
+                builder: (context, state) {
+                  if (state.status == VideoStatus.fail) {
+                    return const HolderWidget(
+                      asset: 'assets/images/error.png',
+                      message: 'Fail to load video script!',
+                    );
+                  } else if (state.status == VideoStatus.done) {
+                    return _subVideo?.subs == null
+                        ? _buildLoadingSkeleton()
+                        : ValueListenableBuilder(
+                            valueListenable: _controller,
+                            builder:
+                                (context, YoutubePlayerValue value, child) {
+                              _currentDuration = value.position.inMilliseconds;
+                              return _buildSub();
+                            },
+                          );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColor.primary,
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+          )
         ],
       ),
     );

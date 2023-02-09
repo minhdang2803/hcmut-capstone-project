@@ -1,7 +1,9 @@
 import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
+import 'package:bke/presentation/pages/video/see_more/video_see_more_page.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/widgets/custom_app_bar.dart';
 import 'package:bke/utils/enum.dart';
+import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,7 +98,6 @@ class _VideoPageState extends State<VideoPage>
             },
           );
         }
-
         if (state.status == CategoryVideoStatus.loading) {
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.75,
@@ -113,20 +114,25 @@ class _VideoPageState extends State<VideoPage>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (state.data!['category1'] != null)
-                VideoYoutubeHorizontalList(
-                  title: 'Category 1',
-                  data: state.data!['category1']!,
+            children: state.data!.values.map((e) {
+              return VideoYoutubeHorizontalList(
+                  title: e.first.category.toCapitalizeEachWord(),
+                  data: e,
                   onSeeMore: () {
-                    const action = SeeMoreVideoAction.category1;
+                    var action = e.first.category.contains("talk")
+                        ? SeeMoreVideoAction.category1
+                        : e.first.category.contains("ed")
+                            ? SeeMoreVideoAction.category2
+                            : SeeMoreVideoAction.category3;
                     Navigator.of(context).pushNamed(
                       RouteName.videoSeeMore,
-                      arguments: action,
+                      arguments: VideoSeeMorePageModel(
+                        category: e.first.category,
+                        action: action,
+                      ),
                     );
-                  },
-                ),
-            ],
+                  });
+            }).toList(),
           ),
         );
       },

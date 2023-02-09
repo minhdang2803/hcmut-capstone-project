@@ -13,9 +13,17 @@ import '../../../theme/app_color.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../widgets/video_youtube_item.dart';
 
-class VideoSeeMorePage extends StatefulWidget {
-  const VideoSeeMorePage({Key? key, required this.action}) : super(key: key);
+class VideoSeeMorePageModel {
+  final String category;
+  final SeeMoreVideoAction? action;
+  VideoSeeMorePageModel({required this.category, this.action});
+}
 
+class VideoSeeMorePage extends StatefulWidget {
+  const VideoSeeMorePage(
+      {Key? key, required this.action, required this.category})
+      : super(key: key);
+  final String category;
   final SeeMoreVideoAction? action;
 
   @override
@@ -48,17 +56,7 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
     super.initState();
     _pagingController.addPageRequestListener((pageKey) {
       _currentPageKey = pageKey;
-      switch (widget.action) {
-        case SeeMoreVideoAction.category1:
-          _getCategory1();
-          break;
-        // case SeeMoreVideoAction.category2:
-        //   _getCategory2();
-        //   break;
-
-        default:
-          break;
-      }
+      _getCategory(widget.category);
     });
   }
 
@@ -68,10 +66,10 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
     _pagingController.dispose();
   }
 
-  Future<void> _getCategory1() async {
+  Future<void> _getCategory(String category) async {
     try {
       final newItems = await context.read<CategoryVideoCubit>().getVideo(
-            category: "english ted-talk",
+            category: category,
             pageKey: _currentPageKey,
             pageSize: Constants.defaultPageSize,
           );
@@ -90,10 +88,11 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
   String _getAppBarLabel() {
     switch (widget.action) {
       case SeeMoreVideoAction.category1:
-        return 'Video ted-ed';
+        return 'Video Ted Talk';
       case SeeMoreVideoAction.category2:
-        return 'Video ted...';
-
+        return 'Video Ted Ed';
+      case SeeMoreVideoAction.category3:
+        return 'Video Ted In A Nutshell';
       default:
         return '';
     }

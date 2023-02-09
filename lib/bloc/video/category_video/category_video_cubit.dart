@@ -23,8 +23,8 @@ class CategoryVideoCubit extends Cubit<CategoryVideoState> {
       Map<String, List<VideoYoutubeInfo>> data = {};
       final results = await Future.wait([
         getVideo(pageKey: 1, pageSize: 5, category: "english ted-talk"),
-        getVideo(pageKey: 1, pageSize: 5, category: "english ted-talk"),
-        getVideo(pageKey: 1, pageSize: 5, category: "english ted-talk")
+        getVideo(pageKey: 1, pageSize: 5, category: "english ted-ed"),
+        getVideo(pageKey: 1, pageSize: 5, category: "english in-a-nutshell")
       ]);
 
       if (results[0].isNotEmpty) {
@@ -33,6 +33,9 @@ class CategoryVideoCubit extends Cubit<CategoryVideoState> {
 
       if (results[1].isNotEmpty) {
         data['category2'] = results[1];
+      }
+      if (results[2].isNotEmpty) {
+        data['category3'] = results[2];
       }
 
       emit(state.copyWith(data: data, status: CategoryVideoStatus.done));

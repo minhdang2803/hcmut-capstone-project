@@ -6,6 +6,7 @@ import 'package:bke/presentation/pages/flashcard/components/flashcard_collection
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -38,6 +39,10 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
         _selectedIndex = _tabController.index;
       });
     });
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     // context.read<FlashcardCollectionCubit>().getFlashcardCollections();
   }
 
@@ -45,6 +50,12 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
   void dispose() {
     _editTitle.dispose();
     _addFlashcardCollection.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.dispose();
   }
 

@@ -15,4 +15,4 @@ enum RecentAction {
   playQuiz
 }
 
-enum SeeMoreVideoAction { category1, category2 }
+enum SeeMoreVideoAction { category1, category2, category3 }

@@ -62,7 +62,7 @@ class VideoYoutubeHorizontalList extends StatelessWidget {
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemCount: data.length,
-              separatorBuilder: (ctx, index) => SizedBox(width: 16.r),
+              separatorBuilder: (ctx, index) => 20.horizontalSpace,
               itemBuilder: (ctx, index) => VideoItem(
                 item: data[index],
                 onItemClick: () => onItemClick(context, data[index]),

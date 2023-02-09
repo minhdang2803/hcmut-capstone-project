@@ -22,12 +22,12 @@ class VideoItem extends StatelessWidget {
       onTap: onItemClick,
       behavior: HitTestBehavior.translucent,
       child: SizedBox(
-        width: 160.r,
+        width: 170.r,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 FadeInImage.assetNetwork(
                   placeholder: 'assets/images/default_logo.png',
@@ -45,6 +45,7 @@ class VideoItem extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
+                5.verticalSpace,
                 Text(
                   item?.title ?? '',
                   style: AppTypography.bodySmall
@@ -53,10 +54,11 @@ class VideoItem extends StatelessWidget {
                 ),
                 10.verticalSpace,
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(078),
+                          borderRadius: BorderRadius.circular(10.r),
                           color: AppColor.primary),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
@@ -68,7 +70,7 @@ class VideoItem extends StatelessWidget {
                         ),
                       ),
                     ),
-                    5.horizontalSpace,
+                    // 5.horizontalSpace,
                     Text('${item?.viewCount ?? '100'} views',
                         style: AppTypography.bodySmall),
                   ],
