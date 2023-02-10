@@ -1,3 +1,4 @@
+import 'package:bke/bloc/video/last_watch_video/last_watch_video_cubit.dart';
 import 'package:bke/bloc/video/video_cubit.dart';
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/video/video_youtube_info_model.dart';
@@ -76,8 +77,11 @@ class RouteGenerator {
 
       case RouteName.videoPlayer:
         final videoId = settings.arguments as VideoYoutubeInfo;
-        page = BlocProvider(
-          create: (context) => VideoCubit(),
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => VideoCubit()),
+            BlocProvider(create: (context) => LastWatchVideoCubit()),
+          ],
           child: VideoPlayerPage(video: videoId),
         );
         break;

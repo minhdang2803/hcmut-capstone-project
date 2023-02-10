@@ -12,7 +12,6 @@ import '../../../services/api_service.dart';
 
 abstract class VideoSource {
   Future<BaseResponse<SubVideo>> getSubVideo(String videoId);
-
   Future<BaseResponse<VideoYoutubeInfos>> getAllVideos({
     required int pageKey,
     required int pageSize,
@@ -20,6 +19,7 @@ abstract class VideoSource {
     int? level,
     String? title,
   });
+  Future<BaseResponse<VideoYoutubeInfo>> getVideo(String videoId);
 }
 
 class VideoSourceImpl extends VideoSource {
@@ -61,7 +61,7 @@ class VideoSourceImpl extends VideoSource {
       'page': pageKey,
       'category': category,
       'level': level,
-      'title':title
+      'title': title
     };
 
     final request = APIServiceRequest(
@@ -72,6 +72,25 @@ class VideoSourceImpl extends VideoSource {
         dataBuilder: VideoYoutubeInfos.fromJson,
       ),
       header: header,
+    );
+    return _api.get(request);
+  }
+
+  @override
+  Future<BaseResponse<VideoYoutubeInfo>> getVideo(String videoId) async {
+    const path = EndPoint.getYoutubeVideoInfo;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+    final Map<String, dynamic> params = {'videoId': videoId};
+    final request = APIServiceRequest(
+      path,
+      header: header,
+      queryParams: params,
+      (response) => BaseResponse<VideoYoutubeInfo>.fromJson(
+        json: response,
+        dataBuilder: VideoYoutubeInfo.fromJson,
+      ),
     );
     return _api.get(request);
   }

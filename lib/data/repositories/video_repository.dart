@@ -20,12 +20,34 @@ class VideoRepository {
     _videoLocalSource.saveLastWatchVideo(videoId, second);
   }
 
+  Future<List<VideoYoutubeInfo>> getRecentlyWatchList() async {
+    final fromLocal = _videoLocalSource.getListRecentlyWatchVideo();
+    final List<VideoYoutubeInfo> fromServer = [];
+    if (fromLocal.isEmpty) {
+      final listInfo =
+          _videoLocalSource.getListRecentlyWatchInfo().entries.toList();
+      for (final element in listInfo) {
+        final value = await _videoSource.getVideo(element.key);
+        fromServer.add(value.data!);
+      }
+      return fromServer;
+    } else {
+      return fromLocal;
+    }
+  }
+
   int getProcess(String videoId) {
     return _videoLocalSource.getLastWatchAt(videoId);
   }
 
   Future<BaseResponse<SubVideo>> getSubVideo(String videoId) async {
     return _videoSource.getSubVideo(videoId);
+  }
+
+  Future<VideoYoutubeInfo?> getVideoById(String videoId) async {
+    final response = await _videoSource.getVideo(videoId);
+    final data = response.data;
+    return data;
   }
 
   Future<BaseResponse<VideoYoutubeInfos>> getAllVideos({

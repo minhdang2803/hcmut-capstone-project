@@ -1,3 +1,4 @@
+import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/video/video_youtube_info_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,7 +57,11 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
     super.initState();
     _pagingController.addPageRequestListener((pageKey) {
       _currentPageKey = pageKey;
-      _getCategory(widget.category);
+      if (widget.action != SeeMoreVideoAction.recently) {
+        _getCategory(widget.category);
+      } else {
+        _getRecently();
+      }
     });
   }
 
@@ -64,6 +69,13 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
   void dispose() {
     super.dispose();
     _pagingController.dispose();
+  }
+
+  void _getRecently() {
+    try {
+      final newItems = context.read<CategoryVideoCubit>().state.videos;
+      _pagingController.appendLastPage(newItems!);
+    } on RemoteException catch (error) {}
   }
 
   Future<void> _getCategory(String category) async {
@@ -94,7 +106,7 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
       case SeeMoreVideoAction.category3:
         return 'Video Ted In A Nutshell';
       default:
-        return '';
+        return "Recently videos";
     }
   }
 
@@ -155,8 +167,10 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
                   child: VideoYoutubeItem(
                     videoYoutubeInfo: item,
                     onItemClick: () {
-                      Navigator.of(context)
-                          .pushNamed(RouteName.videoPlayer, arguments: item);
+                      Navigator.of(context).pushNamed(
+                        RouteName.videoPlayer,
+                        arguments: item,
+                      );
                     },
                   ),
                 ),

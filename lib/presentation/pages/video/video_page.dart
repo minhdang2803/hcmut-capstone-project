@@ -114,25 +114,44 @@ class _VideoPageState extends State<VideoPage>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: state.data!.values.map((e) {
-              return VideoYoutubeHorizontalList(
-                  title: e.first.category.toCapitalizeEachWord(),
-                  data: e,
+            children: [
+              Visibility(
+                visible: state.videos!.isNotEmpty,
+                child: VideoYoutubeHorizontalList(
+                  data: state.videos!,
+                  title: "Recently videos",
                   onSeeMore: () {
-                    var action = e.first.category.contains("talk")
-                        ? SeeMoreVideoAction.category1
-                        : e.first.category.contains("ed")
-                            ? SeeMoreVideoAction.category2
-                            : SeeMoreVideoAction.category3;
+                    var action = SeeMoreVideoAction.recently;
                     Navigator.of(context).pushNamed(
                       RouteName.videoSeeMore,
                       arguments: VideoSeeMorePageModel(
-                        category: e.first.category,
+                        category: "Recently videos",
                         action: action,
                       ),
                     );
-                  });
-            }).toList(),
+                  },
+                ),
+              ),
+              ...state.data!.values.map((e) {
+                return VideoYoutubeHorizontalList(
+                    title: e.first.category.toCapitalizeEachWord(),
+                    data: e,
+                    onSeeMore: () {
+                      var action = e.first.category.contains("talk")
+                          ? SeeMoreVideoAction.category1
+                          : e.first.category.contains("ed")
+                              ? SeeMoreVideoAction.category2
+                              : SeeMoreVideoAction.category3;
+                      Navigator.of(context).pushNamed(
+                        RouteName.videoSeeMore,
+                        arguments: VideoSeeMorePageModel(
+                          category: e.first.category,
+                          action: action,
+                        ),
+                      );
+                    });
+              }).toList()
+            ],
           ),
         );
       },

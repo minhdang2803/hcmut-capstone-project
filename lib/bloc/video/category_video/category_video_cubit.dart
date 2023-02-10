@@ -37,16 +37,35 @@ class CategoryVideoCubit extends Cubit<CategoryVideoState> {
       if (results[2].isNotEmpty) {
         data['category3'] = results[2];
       }
-
-      emit(state.copyWith(data: data, status: CategoryVideoStatus.done));
-      LogUtil.debug('get main video activities OK');
-    } catch (e, s) {
+      final lastWatch = await _videoRepository.getRecentlyWatchList();
       emit(
         state.copyWith(
-            errorMessage: 'Đã xảy ra lỗi, vui lòng thử lại sau',
-            status: CategoryVideoStatus.fail),
+            data: data, status: CategoryVideoStatus.done, videos: lastWatch),
+      );
+      LogUtil.debug('get main video activities OK');
+    } on RemoteException catch (e, s) {
+      emit(
+        state.copyWith(
+          errorMessage: e.errorMessage,
+          status: CategoryVideoStatus.fail,
+        ),
       );
       LogUtil.error('Get video error', error: e, stackTrace: s);
+    }
+  }
+
+  Future<void> getRecentlyWatch() async {
+    try {
+      emit(state.copyWith(status: CategoryVideoStatus.loading));
+      final lastWatch = await _videoRepository.getRecentlyWatchList();
+      emit(state.copyWith(status: CategoryVideoStatus.done, videos: lastWatch));
+    } on RemoteException catch (error) {
+      emit(
+        state.copyWith(
+          errorMessage: error.errorMessage,
+          status: CategoryVideoStatus.fail,
+        ),
+      );
     }
   }
 

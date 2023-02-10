@@ -12,7 +12,6 @@ import 'bloc/authentication/auth_cubit.dart';
 import 'bloc/flashcard/flashcard_collection_random/flashcard_collection_random_cubit.dart';
 import 'bloc/game/game_cubit.dart';
 import 'bloc/video/category_video/category_video_cubit.dart';
-import 'bloc/video/video_cubit.dart';
 import 'bloc/toeic/toeic_cubit.dart';
 import 'bloc/vocab/vocab_cubit.dart';
 import 'data/configs/hive_config.dart';
@@ -32,7 +31,7 @@ void main() async {
     statusBarIconBrightness: Brightness.dark,
     systemNavigationBarIconBrightness: Brightness.dark,
   ));
-  
+
   runApp(MyApp(
     initialRoute: await _getInitialRoute(),
   ));

@@ -14,6 +14,7 @@ class HiveConfig {
   static const myDictionary = 'MY_DICTIONARY';
   static const fcByUser = "FlashcardByUser";
   static const videoLastWatchByUser = "videoLastWatchByUser";
+  static const recentlyList = "recentlyList";
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(UserAdapter());
@@ -24,11 +25,13 @@ class HiveConfig {
     Hive.registerAdapter(FCCollectionByUserAdapter());
     Hive.registerAdapter(LocalVocabInfoListAdapter());
     Hive.registerAdapter(VideoLastWatchListsAdapter());
+    Hive.registerAdapter(VideoLastWatchInfoListsAdapter());
 
     await Hive.openBox(userBox);
     await Hive.openBox(localVocabs);
     await Hive.openBox(myDictionary);
     await Hive.openBox(fcByUser);
     await Hive.openBox(videoLastWatchByUser);
+    await Hive.openBox(recentlyList);
   }
 }

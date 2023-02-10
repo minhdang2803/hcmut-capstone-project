@@ -1,3 +1,5 @@
+import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
+import 'package:bke/bloc/video/last_watch_video/last_watch_video_cubit.dart';
 import 'package:bke/data/models/video/video_youtube_info_model.dart';
 
 import 'package:flutter/gestures.dart';
@@ -104,13 +106,18 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   void initState() {
     super.initState();
     // print(widget.video.videoId);
+    int lastWatch =
+        context.read<LastWatchVideoCubit>().getProcess(widget.video.videoId);
+    lastWatch = lastWatch != -1 ? lastWatch : 0;
     _controller = YoutubePlayerController(
       initialVideoId: widget.video.videoId,
-      flags: const YoutubePlayerFlags(
-        autoPlay: false,
+      flags: YoutubePlayerFlags(
+        startAt: lastWatch,
+        autoPlay: true,
         enableCaption: false,
       ),
     );
+
     context.read<VideoCubit>().getSubVideo(widget.video.videoId);
   }
 
@@ -135,7 +142,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
@@ -150,6 +156,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
               leading: BackButton(
                 onPressed: () {
                   context.read<VideoCubit>().exit();
+                  context.read<LastWatchVideoCubit>().saveProcess(
+                      widget.video.videoId, _currentDuration ~/ 1000);
+                  context.read<CategoryVideoCubit>().getRecentlyWatch();
                   Navigator.pop(context);
                 },
               ),
