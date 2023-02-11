@@ -47,7 +47,7 @@ class _RegisterComponentState extends State<RegisterComponent> {
           children: [
             _buildRegisterForms(context),
             _buildRegisterButton(),
-            Expanded(child: Option())
+            const Expanded(child: Option())
           ],
         ),
       ),

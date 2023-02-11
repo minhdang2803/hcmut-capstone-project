@@ -1,4 +1,3 @@
-import 'package:bke/bloc/flashcard/flashcard_collection_random/flashcard_collection_random_cubit.dart';
 import 'package:bke/bloc/flashcard/flashcard_collection_thumb/flashcard_collection_thumb_cubit.dart';
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
 import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_random.dart';

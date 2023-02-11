@@ -62,8 +62,18 @@ class FlashcardRandomComponent extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Image.network(
-            "$imgUrl.png",
+          FadeInImage.assetNetwork(
+            placeholder: 'assets/images/default_logo.png',
+            image: "$imgUrl.png",
+            fadeInDuration: const Duration(milliseconds: 350),
+            fit: BoxFit.contain,
+            placeholderFit: BoxFit.contain,
+            imageErrorBuilder: (context, error, stackTrace) => Image.asset(
+              width: 160.r,
+              height: 70.r,
+              'assets/images/default_logo.png',
+              fit: BoxFit.contain,
+            ),
           ),
           10.verticalSpace,
           AutoSizeText(

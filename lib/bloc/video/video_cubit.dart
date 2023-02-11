@@ -1,15 +1,12 @@
-import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../data/models/network/base_response.dart';
 import '../../data/models/network/cvn_exception.dart';
 import '../../data/models/video/sub_video_model.dart';
 import '../../data/models/video/video_youtube_info_model.dart';
 import '../../data/repositories/video_repository.dart';
-import '../../utils/connection_util.dart';
 import '../../utils/log_util.dart';
 
 part 'video_state.dart';

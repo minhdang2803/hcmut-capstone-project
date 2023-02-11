@@ -222,7 +222,6 @@ class FlashcardCollectionRandomModel {
       final List<LocalVocabInfo?> localVocabList =
           localInstance.getVocabsByListId(list);
       if (localVocabList.isEmpty) {
-        print("goto case1");
         //Not found anything from local
         Stream.fromIterable([1]).asyncMap((event) async {
           final response = await remoteInstance.getVocabsByIdList(list);
@@ -247,7 +246,6 @@ class FlashcardCollectionRandomModel {
           }
         });
       } else if (localVocabList.length != list.length) {
-        print("goto case2");
         //Found some from local
         Stream.fromIterable(json["flashCards"]).asyncMap(
           (event) async {
@@ -279,7 +277,6 @@ class FlashcardCollectionRandomModel {
           flashCards.add(event);
         });
       } else {
-        print("goto case3");
         //Found everythings from local
         for (final element in localVocabList) {
           if (element != null) {

@@ -2,7 +2,6 @@ import 'package:bke/presentation/pages/authentication/widgets/3rdservices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../bloc/authentication/auth_cubit.dart';
 import '../../../../utils/enum.dart';
@@ -10,7 +9,6 @@ import '../../../../utils/validation_util.dart';
 import '../../../routes/route_name.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_typography.dart';
-import '../../../widgets/circular_border_icon.dart';
 import '../../../widgets/rounded_elevated_button.dart';
 import '../widgets/auth_input_field.dart';
 
@@ -103,9 +101,9 @@ class _LoginComponentState extends State<LoginComponent> {
                   ),
                 ],
               ),
-            ), 
+            ),
             _buildLoginButton(),
-            Expanded(
+            const Expanded(
               child: Option(),
             ),
           ],
@@ -113,7 +111,6 @@ class _LoginComponentState extends State<LoginComponent> {
       ),
     );
   }
-
 
   Widget _buildLoginButton() {
     return BlocConsumer<AuthCubit, AuthState>(
