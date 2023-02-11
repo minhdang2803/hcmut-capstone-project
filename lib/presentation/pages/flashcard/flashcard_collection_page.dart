@@ -125,15 +125,10 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
-            "Thay đổi hình ảnh",
-            style: AppTypography.title.copyWith(fontWeight: FontWeight.w700),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              20.r,
-            ),
-          ),
+          title: Text("Thay đổi hình ảnh",
+              style: AppTypography.title.copyWith(fontWeight: FontWeight.w700)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
           content: SizedBox(
             width: MediaQuery.of(context).size.width * 0.7,
             height: MediaQuery.of(context).size.height * 0.2,
