@@ -9,7 +9,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../bloc/video/video_cubit.dart';
 import '../../../data/models/video/sub_video_model.dart';
@@ -41,7 +40,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
     // pause video
     _controller.pause();
 
-    showMaterialModalBottomSheet(
+    showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => BottomVocab(text: text),

@@ -36,7 +36,6 @@ dependencies:
   like_button: ^2.0.4
   lottie: ^2.2.0
   logger: ^1.1.0
-  modal_bottom_sheet: ^2.1.0
   pinput: ^2.2.11
   scroll_to_index: ^3.0.1
   string_validator: ^0.3.0
