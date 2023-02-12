@@ -1,15 +1,53 @@
 import 'package:bke/data/models/vocab/vocab.dart';
+import 'package:bke/data/services/audio_service.dart';
 import 'package:bke/presentation/theme/app_color.dart';
-import 'package:bke/presentation/widgets/custom_app_bar.dart';
+import 'package:bke/presentation/widgets/widgets.dart';
 import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../theme/app_typography.dart';
 
-class FlashcardInfoScreen extends StatelessWidget {
+class FlashcardInfoScreen extends StatefulWidget {
   const FlashcardInfoScreen({super.key, required this.vocab});
   final LocalVocabInfo vocab;
+
+  @override
+  State<FlashcardInfoScreen> createState() => _FlashcardInfoScreenState();
+}
+
+class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
+    with TickerProviderStateMixin {
+  late final AnimationController _animationController;
+  late final AnimationController _animationController2;
+  late final AudioService _voiceUK;
+  late final AudioService _voiceUS;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _animationController2 = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _voiceUK = AudioService();
+    _voiceUK.player.isPlaying.listen((isPlaying) {
+      isPlaying
+          ? _animationController.forward()
+          : _animationController.reverse();
+    });
+    _voiceUS = AudioService();
+    _voiceUS.player.isPlaying.listen((isPlaying) {
+      isPlaying
+          ? _animationController2.forward()
+          : _animationController2.reverse();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +57,7 @@ class FlashcardInfoScreen extends StatelessWidget {
         child: Column(
           children: [
             BkEAppBar(
-              label: vocab.vocab.toCapitalize(),
+              label: widget.vocab.vocab.toCapitalize(),
               onBackButtonPress: () => Navigator.pop(context),
             ),
             _buildVocabInfoComponent(context)
@@ -65,32 +103,57 @@ class FlashcardInfoScreen extends StatelessWidget {
         ),
         child: ListView(
           children: [
-            Text.rich(
-              TextSpan(children: [
-                TextSpan(
-                    text: "- UK: ",
-                    style: AppTypography.title.copyWith(
-                        color: AppColor.primary, fontWeight: FontWeight.bold)),
-                TextSpan(
-                  text: vocab.pronounce.uk.toCapitalize(),
-                  style: AppTypography.title,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text.rich(
+                  TextSpan(children: [
+                    TextSpan(
+                        text: "- UK: ",
+                        style: AppTypography.title.copyWith(
+                            color: AppColor.primary,
+                            fontWeight: FontWeight.bold)),
+                    TextSpan(
+                      text: widget.vocab.pronounce.uk.toCapitalize(),
+                      style: AppTypography.title,
+                    ),
+                  ]),
                 ),
-              ]),
+                _buildAudioController(
+                  _voiceUK,
+                  widget.vocab.pronounce.ukmp3,
+                  _animationController,
+                  context,
+                )
+              ],
             ),
-            Text.rich(
-              TextSpan(children: [
-                TextSpan(
-                    text: "- US: ",
-                    style: AppTypography.title.copyWith(
-                        color: AppColor.primary, fontWeight: FontWeight.bold)),
-                TextSpan(
-                  text: vocab.pronounce.us.toCapitalize(),
-                  style: AppTypography.title,
+            5.verticalSpace,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text.rich(
+                  TextSpan(children: [
+                    TextSpan(
+                        text: "- US: ",
+                        style: AppTypography.title.copyWith(
+                            color: AppColor.primary,
+                            fontWeight: FontWeight.bold)),
+                    TextSpan(
+                      text: widget.vocab.pronounce.us.toCapitalize(),
+                      style: AppTypography.title,
+                    ),
+                  ]),
                 ),
-              ]),
+                _buildAudioController(
+                  _voiceUS,
+                  widget.vocab.pronounce.usmp3,
+                  _animationController2,
+                  context,
+                )
+              ],
             ),
             10.verticalSpace,
-            ...vocab.translate.map((e) {
+            ...widget.vocab.translate.map((e) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -155,12 +218,12 @@ class FlashcardInfoScreen extends StatelessWidget {
         Row(
           children: [
             Text(
-              vocab.vocab.toCapitalize(),
+              widget.vocab.vocab.toCapitalize(),
               style: AppTypography.headline,
             ),
             10.horizontalSpace,
             Text(
-              "(${vocab.vocabType})",
+              "(${widget.vocab.vocabType})",
               style: AppTypography.headline.copyWith(color: AppColor.primary),
             ),
           ],
@@ -177,4 +240,26 @@ class FlashcardInfoScreen extends StatelessWidget {
       ],
     );
   }
+
+  Widget _buildAudioController(
+    AudioService audio,
+    String audioUrl,
+    AnimationController controller,
+    BuildContext context,
+  ) {
+    audio.setAudio(audioUrl);
+
+    return PlayPauseButton(
+      controller: controller,
+      onItemClick: () {
+        if (!audio.player.isPlaying.value) {
+          audio.play();
+        } else {
+          audio.stop();
+        }
+      },
+    );
+  }
+
+  bool get wantKeepAlive => false;
 }

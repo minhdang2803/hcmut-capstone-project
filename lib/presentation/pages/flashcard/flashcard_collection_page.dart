@@ -390,32 +390,29 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const BackButton(),
+            BackButton(
+              onPressed: () {
+                final flashcardCollections = context
+                    .read<FlashcardCollectionCubit>()
+                    .state
+                    .listOfFlashcardColection!
+                    .map((e) => e.toJson())
+                    .toList();
+                context
+                    .read<FlashcardCollectionCubit>()
+                    .updateToServer(flashcardCollections);
+                Navigator.pop(context);
+              },
+            ),
             Align(
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.center,
               child: Text(
                 "Bộ sưu tập Flashcard",
                 style: AppTypography.subHeadline
                     .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
-            IconButton(
-                onPressed: () async {
-                  final flashcardCollections = context
-                      .read<FlashcardCollectionCubit>()
-                      .state
-                      .listOfFlashcardColection!
-                      .map((e) => e.toJson())
-                      .toList();
-                  await context
-                      .read<FlashcardCollectionCubit>()
-                      .updateToServer(flashcardCollections);
-                },
-                icon: Icon(
-                  Icons.sync,
-                  color: Colors.white,
-                  size: 25.r,
-                )),
+            SizedBox(width: 35.r)
           ],
         ),
       ),
