@@ -21,19 +21,19 @@ class VideoRepository {
   }
 
   Future<List<VideoYoutubeInfo>> getRecentlyWatchList() async {
-    final fromLocal = _videoLocalSource.getListRecentlyWatchVideo();
+    // final fromLocal = _videoLocalSource.getListRecentlyWatchVideo();
     final List<VideoYoutubeInfo> fromServer = [];
-    if (fromLocal.isEmpty) {
-      final listInfo =
-          _videoLocalSource.getListRecentlyWatchInfo().entries.toList();
-      for (final element in listInfo) {
-        final value = await _videoSource.getVideo(element.key);
-        fromServer.add(value.data!);
-      }
-      return fromServer;
-    } else {
-      return fromLocal;
+    // if (fromLocal.isEmpty) {
+    final listInfo =
+        _videoLocalSource.getListRecentlyWatchInfo().entries.toList();
+    for (final element in listInfo) {
+      final value = await _videoSource.getVideo(element.key);
+      fromServer.insert(0, value.data!);
     }
+    return fromServer;
+    // } else {
+    //   return fromLocal;
+    // }
   }
 
   int getProcess(String videoId) {
