@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'image_view_port.dart';
 import 'map_object.dart';
@@ -14,9 +15,9 @@ class MapContainer extends StatefulWidget {
     this.backgroundColor,
     this.onMapDoubleTap,
     this.onItemClick,
-    this.doubleTapToZoomOut = true,
-    this.maxZoomLevel = 4,
-    this.minZoomLevel = 1,
+    this.doubleTapToZoomIn = true,
+    this.maxZoomLevel = 6,
+    this.minZoomLevel = 3,
     this.zoomScaleLevel = 2,
   }) : super(key: key);
 
@@ -28,7 +29,7 @@ class MapContainer extends StatefulWidget {
   final Color? backgroundColor;
   final VoidCallback? onMapDoubleTap;
   final Function(MapObject)? onItemClick;
-  final bool doubleTapToZoomOut;
+  final bool doubleTapToZoomIn;
   final double maxZoomLevel;
   final double minZoomLevel;
   final double zoomScaleLevel;
@@ -59,7 +60,7 @@ class _MapContainerState extends State<MapContainer> {
   }
 
   void onMapDoubleTap() {
-    if (widget.doubleTapToZoomOut) {
+    if (widget.doubleTapToZoomIn) {
       if (_zoomLevel >= widget.maxZoomLevel) return;
       setState(() {
         _zoomLevel = _zoomLevel * widget.zoomScaleLevel;
@@ -92,8 +93,8 @@ class _MapContainerState extends State<MapContainer> {
             },
           ),
         ),
-        const SizedBox(width: 5),
-        _buildZoomButtons(),
+        // 5.verticalSpace,
+        // _buildZoomButtons(),
       ],
     );
   }
@@ -133,7 +134,7 @@ class _MapContainerState extends State<MapContainer> {
         IconButton(
           icon: Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.all(4),
+            padding: EdgeInsets.all(5.r),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
               color: Colors.green,

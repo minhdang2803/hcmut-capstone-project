@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../theme/app_color.dart';
 
-class PlayPauseButton extends StatefulWidget {
+class PlayPauseButton extends StatelessWidget {
   const PlayPauseButton({
     Key? key,
     this.enabled = true,
@@ -18,39 +18,23 @@ class PlayPauseButton extends StatefulWidget {
   final VoidCallback onItemClick;
 
   @override
-  State<PlayPauseButton> createState() => _PlayPauseButtonState();
-}
-
-class _PlayPauseButtonState extends State<PlayPauseButton>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _animatedContainer;
-  @override
-  void initState() {
-    super.initState();
-    _animatedContainer = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onItemClick,
+      onTap: onItemClick,
       child: Container(
         alignment: Alignment.center,
-        width: widget.size,
-        height: widget.size,
+        width: size,
+        height: size,
         decoration: BoxDecoration(
-          color: widget.enabled ? AppColor.primary : Colors.grey,
+          color: enabled ? AppColor.primary : Colors.grey,
           borderRadius: BorderRadius.circular(14.r),
         ),
         child: Center(
           child: AnimatedIcon(
             icon: AnimatedIcons.play_pause,
-            progress: widget.controller,
+            progress: controller,
             color: Colors.white,
-            size: widget.size,
+            size: size,
           ),
         ),
       ),

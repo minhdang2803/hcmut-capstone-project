@@ -106,8 +106,9 @@ class _ImageViewPortState extends State<ImageViewPort> {
 
   /////////////////////
   void _handlePanUpdate(DragUpdateDetails updateDetails) {
-    Offset newOffset = _centerOffset.translate(
-        -updateDetails.delta.dx, -updateDetails.delta.dy);
+    //Translate (0, -updateDetails.delta.dy) để không drag ngang được
+    ///Translate (-updateDetails.delta.dx, -updateDetails.delta.dy) để drag ngang dọc
+    Offset newOffset = _centerOffset.translate(0, -updateDetails.delta.dy);
     if (_abs(newOffset.dx) <= _maxHorizontalDelta &&
         _abs(newOffset.dy) <= _maxVerticalDelta) {
       setState(() {
