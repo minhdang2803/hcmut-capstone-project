@@ -3,10 +3,8 @@ import 'package:bke/data/data_source/local/auth_local_source.dart';
 import 'package:bke/presentation/pages/book/books_screen.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
 import 'package:bke/presentation/pages/flashcard/flashcard_collection_page.dart';
-import 'package:bke/presentation/pages/game_quiz/main/gamequiz_page.dart';
 import 'package:bke/presentation/pages/home/components/continue_card.dart';
 import 'package:bke/presentation/pages/home/components/join_quiz_card.dart';
-import 'package:bke/presentation/pages/my_dictionary/my_dictionary.dart';
 import 'package:bke/presentation/pages/toeic_test/main/toeictest_page.dart';
 import 'package:bke/presentation/pages/uitest/uitest_page.dart';
 import 'package:bke/presentation/pages/video/video_page.dart';
@@ -18,7 +16,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../theme/app_color.dart';
-import '../../widgets/custom_app_bar.dart';
 import '../main/components/monastery_search_delegate.dart';
 
 class NavigationPage extends StatefulWidget {

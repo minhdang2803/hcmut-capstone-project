@@ -1,13 +1,23 @@
+import 'package:bke/bloc/quiz/cubit/quiz_map_cubit_cubit.dart';
+import 'package:bke/presentation/pages/uitest/component/map_object.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletons/skeletons.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key});
-
+  const QuizScreen({
+    super.key,
+    this.level,
+    this.numberOfQuestions,
+    this.gameType,
+  });
+  final int? level;
+  final int? numberOfQuestions;
+  final GameType? gameType;
   @override
   State<QuizScreen> createState() => _QuizScreenState();
 }
@@ -17,10 +27,12 @@ class _QuizScreenState extends State<QuizScreen>
   late final AnimationController _controller;
   late final Animation<double> _animationEaseIn;
   late final Animation<double> _animationEaseOut;
+  int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    print(context.read<QuizMapCubit>().state);
     _controller = AnimationController(
       duration: const Duration(milliseconds: 1000),
       vsync: this,
@@ -44,12 +56,14 @@ class _QuizScreenState extends State<QuizScreen>
       appBar: _buildAppbar(),
       body: SafeArea(
         bottom: false,
-        child: SizedBox(
+        child: BlocSelector<QuizMapCubit, QuizMapState, bool>(
+          selector: (state) => state.status == QuizStatus.done,
+          builder: (context, isDone) => SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            child: _buildMainUI(context)
-            // child: _buildLoadingSkeleton(),
-            ),
+            child: isDone ? _buildMainUI(context) : _buildLoadingSkeleton(),
+          ),
+        ),
       ),
     );
   }
@@ -86,11 +100,14 @@ class _QuizScreenState extends State<QuizScreen>
   }
 
   Widget _buildPicture() {
-    return QuizPicture(
-      imageUrl:
-          "https://media.baamboozle.com/uploads/images/87835/1635248726_1531152_gif-url.gif",
-      width: 350.r,
-      height: 200.h,
+    return BlocBuilder<QuizMapCubit, QuizMapState>(
+      builder: (context, state) {
+        return QuizPicture(
+          imageUrl: state.quizMC![_currentIndex].imgUrl!,
+          width: 350.r,
+          height: 200.h,
+        );
+      },
     );
   }
 
@@ -142,14 +159,30 @@ class _QuizScreenState extends State<QuizScreen>
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
       padding: EdgeInsets.all(10.r),
-      child: Text(
-        "This is a question ____ ?",
-        textAlign: TextAlign.center,
-        style: AppTypography.title.copyWith(
-          fontWeight: FontWeight.w700,
-          color: Colors.black54,
-          fontSize: 20,
-        ),
+      child: BlocBuilder<QuizMapCubit, QuizMapState>(
+        builder: (context, state) {
+          if (state.status == QuizStatus.done) {
+            return Text(
+              state.quizMC![_currentIndex].sentence!,
+              textAlign: TextAlign.center,
+              style: AppTypography.title.copyWith(
+                fontWeight: FontWeight.w700,
+                color: Colors.black54,
+                fontSize: 20,
+              ),
+            );
+          } else {
+            return Text(
+              "This is a question",
+              textAlign: TextAlign.center,
+              style: AppTypography.title.copyWith(
+                fontWeight: FontWeight.w700,
+                color: Colors.black54,
+                fontSize: 20,
+              ),
+            );
+          }
+        },
       ),
     );
   }

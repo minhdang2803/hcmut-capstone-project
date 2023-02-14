@@ -1,4 +1,5 @@
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
+import 'package:bke/data/models/quiz/quiz_model.dart';
 import 'package:bke/data/models/video/video_last_watch_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -15,6 +16,8 @@ class HiveConfig {
   static const fcByUser = "FlashcardByUser";
   static const videoLastWatchByUser = "videoLastWatchByUser";
   static const recentlyList = "recentlyList";
+  static const quizMCAnswer = "quizMCAnswers";
+  static const quizMCtests = "quizMCTests";
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(UserAdapter());
@@ -26,6 +29,9 @@ class HiveConfig {
     Hive.registerAdapter(LocalVocabInfoListAdapter());
     Hive.registerAdapter(VideoLastWatchListsAdapter());
     Hive.registerAdapter(VideoLastWatchInfoListsAdapter());
+    Hive.registerAdapter(QuizMultipleChoiceModelAdapter());
+    Hive.registerAdapter(QuizMCAnswerModelAdapter());
+    Hive.registerAdapter(QuizMCTestsAdapter());
 
     await Hive.openBox(userBox);
     await Hive.openBox(localVocabs);
@@ -33,5 +39,7 @@ class HiveConfig {
     await Hive.openBox(fcByUser);
     await Hive.openBox(videoLastWatchByUser);
     await Hive.openBox(recentlyList);
+    await Hive.openBox(quizMCtests);
+    await Hive.openBox(quizMCAnswer);
   }
 }

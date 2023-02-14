@@ -30,4 +30,6 @@ class RouteName {
   static const flashCardCollectionScreen = "flashcard_collection_screen";
   static const flashCardInfoScreen = "flashcard_info_screen";
   static const flashCardRandomScreen = "flashcard_random_info_screen";
+
+  static const quizScreen = "/quizScreen";
 }

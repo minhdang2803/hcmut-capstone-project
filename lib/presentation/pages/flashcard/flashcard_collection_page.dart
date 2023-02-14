@@ -67,7 +67,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
 
   void _showContextMenu(BuildContext context, int index) async {
     final RenderObject? overlay =
-        Overlay.of(context)?.context.findRenderObject();
+        Overlay.of(context).context.findRenderObject();
     final result = await showMenu(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(15.0.r))),

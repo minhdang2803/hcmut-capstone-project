@@ -7,6 +7,7 @@ import 'package:bke/presentation/pages/book/books_screen.dart';
 import 'package:bke/presentation/pages/flashcard/flashcard_info_page.dart';
 import 'package:bke/presentation/pages/flashcard/flashcard_page.dart';
 import 'package:bke/presentation/pages/flashcard/flashcard_random_page.dart';
+import 'package:bke/presentation/pages/uitest/quiz_screen.dart';
 import 'package:bke/utils/enum.dart';
 
 import 'package:flutter/material.dart';
@@ -121,6 +122,10 @@ class RouteGenerator {
       case RouteName.flashCardInfoScreen:
         final vocab = settings.arguments as LocalVocabInfo;
         page = FlashcardInfoScreen(vocab: vocab);
+        break;
+
+      case RouteName.quizScreen:
+        page = QuizScreen();
         break;
 
       case RouteName.bookPage:

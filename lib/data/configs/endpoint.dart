@@ -25,4 +25,7 @@ class EndPoint {
   static const flashcardRandomGetAllThumbnail =
       "$_baseUrl/templateFlashCard/listCategory";
   static const flashcardRandomGetAll = "$_baseUrl/templateFlashCard/random";
+
+  // Quiz
+  static const getMultipleChoiceQuiz = "$_baseUrl/quizVocab/level";
 }

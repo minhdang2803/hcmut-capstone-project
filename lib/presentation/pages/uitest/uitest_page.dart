@@ -1,8 +1,11 @@
+import 'package:bke/bloc/quiz/cubit/quiz_map_cubit_cubit.dart';
 import 'package:bke/presentation/pages/uitest/quiz_screen.dart';
+import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'component/map_container.dart';
@@ -56,7 +59,7 @@ class _UITestPageState extends State<UITestPage> {
         size: Size(25.r, 25.r),
       ),
       MapObject(
-        id: '1',
+        id: '2',
         offset: const Offset(-0.12, 0.53),
         size: Size(25.r, 25.r),
         isDone: false,
@@ -112,10 +115,8 @@ class _UITestPageState extends State<UITestPage> {
                 objects: _originObjects,
                 onItemClick: (mapObj) {
                   if (mapObj.isDone) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => QuizScreen()),
-                    );
+                    context.read<QuizMapCubit>().getLevel(int.parse(mapObj.id));
+                    Navigator.pushNamed(context, RouteName.quizScreen);
                   } else if (!mapObj.isDone) {
                     showDialog(
                       context: context,
