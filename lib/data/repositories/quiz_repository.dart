@@ -13,10 +13,15 @@ class QuizRepository {
   factory QuizRepository.instance() => _instance;
 
   //Remote
-  Future<QuizMultipleChoiceResponse> getMultipleChoicesQuizBylevel(
-      int id) async {
-    final response = await _remote.getMultipleChoicesByLevel(id);
-    return response.data!;
+  Future<QuizMCTests> getMultipleChoicesQuizBylevel(int id) async {
+    final fromLocal = _local.getMCTestsFromLocal(id);
+    if (fromLocal == null) {
+      final fromServer = await _remote.getMultipleChoicesByLevel(id);
+      final data = fromServer.data;
+      await _local.saveMCTestsToLocal(data!, id);
+      return _local.getMCTestsFromLocal(id)!;
+    }
+    return fromLocal;
   }
 
   //Local

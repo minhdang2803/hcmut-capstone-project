@@ -11,14 +11,16 @@ class QuizMapState extends Equatable {
     // this.quizWord,
     this.status,
     this.errorMessage,
+    this.currentIndex,
   });
 
   late final QuizStatus? status;
   late final int? time;
   late final int? total;
   late final GameType? type;
-  late final List<QuizMultipleChoiceModel>? quizMC;
+  late final List<QuizMultipleChoiceLocalModel>? quizMC;
   // late final List<QuizChoseWordModel>? quizWord;
+  late final int? currentIndex;
   late final String? errorMessage;
 
   QuizMapState.initial() {
@@ -28,6 +30,7 @@ class QuizMapState extends Equatable {
     type = null;
     quizMC = [];
     errorMessage = '';
+    currentIndex = 0;
     // quizWord = [];
   }
 
@@ -36,8 +39,9 @@ class QuizMapState extends Equatable {
     int? time,
     int? total,
     GameType? type,
-    List<QuizMultipleChoiceModel>? quizMC,
+    List<QuizMultipleChoiceLocalModel>? quizMC,
     // List<QuizChoseWordModel>? quizWord,
+    int? currentIndex,
     String? errorMessage,
   }) {
     return QuizMapState(
@@ -47,6 +51,7 @@ class QuizMapState extends Equatable {
       total: total ?? this.total,
       type: type ?? this.type,
       status: status ?? this.status,
+      currentIndex: currentIndex ?? this.currentIndex,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
@@ -58,6 +63,7 @@ class QuizMapState extends Equatable {
         type,
         total,
         quizMC,
+        currentIndex
         // quizWord
       ];
 }

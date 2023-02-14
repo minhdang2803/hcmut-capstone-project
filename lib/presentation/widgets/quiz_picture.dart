@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_pixels/image_pixels.dart';
@@ -5,15 +7,18 @@ import 'package:image_pixels/image_pixels.dart';
 class QuizPicture extends StatelessWidget {
   const QuizPicture({
     super.key,
-    required this.imageUrl,
+    // this.imageUrl,
+    required this.imgData,
     this.borderRadius = 20,
     this.height = 200,
     this.width = 350,
   });
-  final String imageUrl;
+  // final String? imageUrl;
+  final Uint8List imgData;
   final double? borderRadius;
   final double? width;
   final double? height;
+  // final bool? picturesFromLocal;
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +30,12 @@ class QuizPicture extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(borderRadius!),
         child: ImagePixels.container(
-          imageProvider: NetworkImage(imageUrl),
+          imageProvider: MemoryImage(imgData),
           colorAlignment: Alignment.center,
           child: SizedBox(
             width: width,
             height: height,
-            child: Image.network(imageUrl, fit: BoxFit.fill),
+            child: Image.memory(imgData, fit: BoxFit.cover),
           ),
         ),
       ),

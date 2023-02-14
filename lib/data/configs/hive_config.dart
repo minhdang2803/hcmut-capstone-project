@@ -29,7 +29,8 @@ class HiveConfig {
     Hive.registerAdapter(LocalVocabInfoListAdapter());
     Hive.registerAdapter(VideoLastWatchListsAdapter());
     Hive.registerAdapter(VideoLastWatchInfoListsAdapter());
-    Hive.registerAdapter(QuizMultipleChoiceModelAdapter());
+    Hive.registerAdapter(QuizMultipleChoiceLocalModelAdapter());
+    Hive.registerAdapter(GameTypeAdapter());
     Hive.registerAdapter(QuizMCAnswerModelAdapter());
     Hive.registerAdapter(QuizMCTestsAdapter());
 

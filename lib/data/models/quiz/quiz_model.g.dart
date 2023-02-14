@@ -53,16 +53,25 @@ class QuizMCTestsAdapter extends TypeAdapter<QuizMCTests> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return QuizMCTests(
-      tests: (fields[0] as List).cast<QuizMultipleChoiceModel>(),
+      id: fields[3] as int,
+      typeOfQuestion: fields[1] as GameType,
+      numOfQuestions: fields[2] as int,
+      tests: (fields[0] as List).cast<QuizMultipleChoiceLocalModel>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, QuizMCTests obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.tests);
+      ..write(obj.tests)
+      ..writeByte(1)
+      ..write(obj.typeOfQuestion)
+      ..writeByte(2)
+      ..write(obj.numOfQuestions)
+      ..writeByte(3)
+      ..write(obj.id);
   }
 
   @override
@@ -129,29 +138,30 @@ class QuizMultipleChoiceModelAdapter
           typeId == other.typeId;
 }
 
-class QuizChoseWordModelAdapter extends TypeAdapter<QuizChoseWordModel> {
+class QuizMultipleChoiceLocalModelAdapter
+    extends TypeAdapter<QuizMultipleChoiceLocalModel> {
   @override
-  final int typeId = 14;
+  final int typeId = 15;
 
   @override
-  QuizChoseWordModel read(BinaryReader reader) {
+  QuizMultipleChoiceLocalModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return QuizChoseWordModel(
+    return QuizMultipleChoiceLocalModel(
       id: fields[0] as String?,
       topic: fields[1] as String?,
       level: fields[2] as String?,
-      imgUrl: fields[3] as String?,
+      imgUrl: fields[3] as Uint8List?,
       sentence: fields[4] as String?,
       vocabAns: (fields[5] as List?)?.cast<String>(),
-      answer: (fields[6] as List?)?.cast<String>(),
+      answer: fields[6] as String?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, QuizChoseWordModel obj) {
+  void write(BinaryWriter writer, QuizMultipleChoiceLocalModel obj) {
     writer
       ..writeByte(7)
       ..writeByte(0)
@@ -176,7 +186,46 @@ class QuizChoseWordModelAdapter extends TypeAdapter<QuizChoseWordModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is QuizChoseWordModelAdapter &&
+      other is QuizMultipleChoiceLocalModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class GameTypeAdapter extends TypeAdapter<GameType> {
+  @override
+  final int typeId = 14;
+
+  @override
+  GameType read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return GameType.type1;
+      case 1:
+        return GameType.type2;
+      default:
+        return GameType.type1;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, GameType obj) {
+    switch (obj) {
+      case GameType.type1:
+        writer.writeByte(0);
+        break;
+      case GameType.type2:
+        writer.writeByte(1);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is GameTypeAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -1,6 +1,7 @@
+import 'package:bke/data/models/quiz/quiz_model.dart';
 import 'package:flutter/material.dart';
 
-enum GameType { type1, type2 }
+
 
 class MapObject {
   final Offset offset;

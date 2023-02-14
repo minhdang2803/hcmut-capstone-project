@@ -47,10 +47,10 @@ class QuizButton extends StatelessWidget {
               child: Text(
                 text,
                 textAlign: TextAlign.center,
-                style: AppTypography.subHeadline.copyWith(
-                  color: textColor,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: AppTypography.title.copyWith(
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 23),
               ),
             ),
           ),

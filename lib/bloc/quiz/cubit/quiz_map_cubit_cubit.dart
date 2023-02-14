@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
 import 'package:bke/data/repositories/quiz_repository.dart';
@@ -21,7 +23,7 @@ class QuizMapCubit extends Cubit<QuizMapState> {
           status: QuizStatus.done,
           type: response.typeOfQuestion,
           total: response.numOfQuestions,
-          quizMC: response.dataQuiz,
+          quizMC: response.tests,
         ),
       );
     } on RemoteException catch (error) {
@@ -31,6 +33,20 @@ class QuizMapCubit extends Cubit<QuizMapState> {
           status: QuizStatus.fail,
           errorMessage: error.errorMessage,
         ),
+      );
+    }
+  }
+
+  void exit() {
+    emit(QuizMapState.initial());
+  }
+
+  void onSubmit() {
+    emit(state.copyWith(status: QuizStatus.loading));
+    if (state.currentIndex! <= state.total! - 1) {
+      emit(
+        state.copyWith(
+            currentIndex: state.currentIndex! + 1, status: QuizStatus.done),
       );
     }
   }
