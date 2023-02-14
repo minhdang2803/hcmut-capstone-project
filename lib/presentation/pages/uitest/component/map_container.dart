@@ -85,7 +85,7 @@ class _MapContainerState extends State<MapContainer> {
             zoomLevel: _zoomLevel,
             assetImage: _assetImage,
             objects: _objects,
-            onMapDoubleTap: onMapDoubleTap,
+            // onMapDoubleTap: onMapDoubleTap,
             onItemClick: (mapObj) {
               if (widget.onItemClick != null) {
                 widget.onItemClick!(mapObj);

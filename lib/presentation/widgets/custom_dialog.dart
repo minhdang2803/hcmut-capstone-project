@@ -6,8 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../theme/app_color.dart';
 import '../theme/app_typography.dart';
 
-class CVNDialog extends StatelessWidget {
-  const CVNDialog({
+class BKEDialog extends StatelessWidget {
+  const BKEDialog({
     Key? key,
     required this.title,
     required this.message,
@@ -87,7 +87,7 @@ class CVNDialog extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            'Cancel',
+                            'Huỷ',
                             style: AppTypography.body.copyWith(
                               color: AppColor.onSecondary,
                             ),
@@ -108,7 +108,7 @@ class CVNDialog extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            'Accept',
+                            'Đồng ý',
                             style: AppTypography.body
                                 .copyWith(color: AppColor.onPrimary),
                           ),

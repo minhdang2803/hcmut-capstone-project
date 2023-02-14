@@ -16,3 +16,5 @@ export 'text_field_custom.dart';
 export 'custom_button.dart';
 export 'empty_screen_component.dart';
 export 'flipped_card.dart';
+export 'quiz_button.dart';
+export 'quiz_picture.dart';

@@ -131,15 +131,22 @@ class _ImageViewPortState extends State<ImageViewPort> {
             }
           },
           child: Container(
-              width:
-                  object.size == null ? null : object.size!.width * _zoomLevel,
-              height:
-                  object.size == null ? null : object.size!.height * _zoomLevel,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.r),
-                  color: object.isDone ? Colors.white : Colors.red),
-              child: Text(object.id)),
+            width: object.size == null ? null : object.size!.width * _zoomLevel,
+            height:
+                object.size == null ? null : object.size!.height * _zoomLevel,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30.r),
+              image: DecorationImage(
+                image: object.isDone
+                    ? const AssetImage(
+                        "assets/images/game1.png",
+                      )
+                    : const AssetImage("assets/images/game_lock.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
         ),
       );
     }).toList();

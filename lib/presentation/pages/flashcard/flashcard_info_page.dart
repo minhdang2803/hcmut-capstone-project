@@ -49,6 +49,13 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
   }
 
   @override
+  void dispose() {
+    _animationController.dispose();
+    _animationController2.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.primary,
