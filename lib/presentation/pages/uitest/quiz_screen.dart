@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:bke/bloc/quiz/cubit/quiz_map_cubit_cubit.dart';
+import 'package:bke/bloc/quiz/cubit/quiz_map_cubit.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
@@ -219,6 +219,7 @@ class _QuizScreenState extends State<QuizScreen>
     double width = 130.h;
     double height = 50.w;
     Color backgroundColor = AppColor.accentBlue;
+    final cubit = context.read<QuizMapCubit>();
     return SizedBox(
       width: 341.w,
       height: 100.h,
@@ -231,12 +232,16 @@ class _QuizScreenState extends State<QuizScreen>
                 top: 0,
                 child: QuizButton(
                   borderRadius: 20.r,
-                  backgroundColor: backgroundColor,
+                  backgroundColor:
+                      state.isChosen![0] ? AppColor.secondary : backgroundColor,
                   height: height,
                   width: width,
                   text: state.quizMC![state.currentIndex!].vocabAns![0]
                       .toCapitalize(),
-                  onTap: () => print("object"),
+                  onTap: () => cubit.onChosen(
+                    0,
+                    state.quizMC![state.currentIndex!].vocabAns![0],
+                  ),
                 ),
               ),
               Positioned(
@@ -244,12 +249,16 @@ class _QuizScreenState extends State<QuizScreen>
                 right: 0,
                 child: QuizButton(
                   borderRadius: 20.r,
-                  backgroundColor: backgroundColor,
+                  backgroundColor:
+                      state.isChosen![1] ? AppColor.secondary : backgroundColor,
                   height: height,
                   width: width,
                   text: state.quizMC![state.currentIndex!].vocabAns![1]
                       .toCapitalize(),
-                  onTap: () => print("object"),
+                  onTap: () => cubit.onChosen(
+                    1,
+                    state.quizMC![state.currentIndex!].vocabAns![1],
+                  ),
                 ),
               ),
               Positioned(
@@ -261,8 +270,12 @@ class _QuizScreenState extends State<QuizScreen>
                   text: state.quizMC![state.currentIndex!].vocabAns![2]
                       .toCapitalize(),
                   borderRadius: 20.r,
-                  backgroundColor: backgroundColor,
-                  onTap: () => print("object"),
+                  backgroundColor:
+                      state.isChosen![2] ? AppColor.secondary : backgroundColor,
+                  onTap: () => cubit.onChosen(
+                    2,
+                    state.quizMC![state.currentIndex!].vocabAns![2],
+                  ),
                 ),
               ),
               Positioned(
@@ -274,8 +287,12 @@ class _QuizScreenState extends State<QuizScreen>
                   text: state.quizMC![state.currentIndex!].vocabAns![3]
                       .toCapitalize(),
                   borderRadius: 20.r,
-                  backgroundColor: backgroundColor,
-                  onTap: () => print("object"),
+                  backgroundColor:
+                      state.isChosen![3] ? AppColor.secondary : backgroundColor,
+                  onTap: () => cubit.onChosen(
+                    3,
+                    state.quizMC![state.currentIndex!].vocabAns![3],
+                  ),
                 ),
               ),
             ],

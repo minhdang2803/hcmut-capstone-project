@@ -25,12 +25,12 @@ class QuizRepository {
   }
 
   //Local
-  void saveAnswerToLocal(int level, int quizId, String answer) {
-    _local.saveAnswerToLocal(level, quizId, answer);
+  void saveResultToLocal(int level, int result) {
+    _local.saveResultToLocal(level, result);
   }
 
-  Set<Map<String, dynamic>> getAnswersFromLocal() {
-    return _local.getAnswersFromLocal();
+  List<Map<String, dynamic>> getResultsFromLocal() {
+    return _local.getResultsFromLocal();
   }
 
   Map<String, dynamic> getAnAnswerFromLocal(int level, int quizId) {

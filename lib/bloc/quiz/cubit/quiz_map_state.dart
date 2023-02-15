@@ -1,29 +1,34 @@
-part of 'quiz_map_cubit_cubit.dart';
+part of 'quiz_map_cubit.dart';
 
-enum QuizStatus { loading, initial, done, fail }
+enum QuizStatus { loading, initial, done, fail, finished }
 
 class QuizMapState extends Equatable {
   QuizMapState({
+    this.quizId,
     this.time,
     this.total,
     this.type,
     this.quizMC,
-    // this.quizWord,
+    this.totalCorrect,
     this.status,
     this.errorMessage,
     this.currentIndex,
+    this.isChosen,
   });
 
+  late final int? quizId;
   late final QuizStatus? status;
   late final int? time;
   late final int? total;
   late final GameType? type;
   late final List<QuizMultipleChoiceLocalModel>? quizMC;
-  // late final List<QuizChoseWordModel>? quizWord;
+  late final int? totalCorrect;
   late final int? currentIndex;
   late final String? errorMessage;
+  late final List<bool>? isChosen;
 
   QuizMapState.initial() {
+    quizId = -1;
     status = QuizStatus.initial;
     time = 30;
     total = 10;
@@ -31,22 +36,27 @@ class QuizMapState extends Equatable {
     quizMC = [];
     errorMessage = '';
     currentIndex = 0;
-    // quizWord = [];
+    totalCorrect = 0;
+    isChosen = [false, false, false, false];
   }
 
   QuizMapState copyWith({
+    int? quizId,
     QuizStatus? status,
     int? time,
     int? total,
     GameType? type,
     List<QuizMultipleChoiceLocalModel>? quizMC,
-    // List<QuizChoseWordModel>? quizWord,
+    int? totalCorrect,
     int? currentIndex,
     String? errorMessage,
+    List<bool>? isChosen,
   }) {
     return QuizMapState(
+      quizId: quizId ?? this.quizId,
+      isChosen: isChosen ?? this.isChosen,
       quizMC: quizMC ?? this.quizMC,
-      // quizWord: quizWord ?? this.quizWord,
+      totalCorrect: totalCorrect ?? this.totalCorrect,
       time: time ?? this.time,
       total: total ?? this.total,
       type: type ?? this.type,
@@ -63,7 +73,8 @@ class QuizMapState extends Equatable {
         type,
         total,
         quizMC,
-        currentIndex
-        // quizWord
+        currentIndex,
+        totalCorrect,
+        errorMessage
       ];
 }

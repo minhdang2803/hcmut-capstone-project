@@ -8,8 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 abstract class QuizLocalSource {
-  void saveAnswerToLocal(int level, int quizId, String answer);
-  Set<Map<String, dynamic>> getAnswersFromLocal();
+  void saveResultToLocal(int level, int result);
+  List<Map<String, dynamic>> getResultsFromLocal();
   Map<String, dynamic> getAnAnswerFromLocal(int level, int quizId);
   Future<void> saveMCTestsToLocal(QuizMultipleChoiceResponse quiz, int id);
   QuizMCTests? getMCTestsFromLocal(int id);
@@ -25,33 +25,26 @@ class QuizLocalSourceImpl implements QuizLocalSource {
   }
 
   @override
-  void saveAnswerToLocal(int level, int quizId, String answer) {
+  void saveResultToLocal(int level, int result) {
     Set<Map<String, dynamic>> answers = {};
     final box = getAnswerBox();
     String userId = getUserId();
-    final response = box.get(userId, defaultValue: []);
-    for (final element in response) {
-      answers.add(element);
-    }
-    Map<String, dynamic> data = {
-      "level": level,
-      "id": quizId,
-      "answer": answer
-    };
+    final response =
+        box.get(userId, defaultValue: {} as Set<Map<String, dynamic>>);
+    answers.addAll(response.cast<Map<String, dynamic>>());
+    Map<String, dynamic> data = {"level": level, "result": result};
     answers.add(data);
     box.put(userId, answers);
   }
 
   @override
-  Set<Map<String, dynamic>> getAnswersFromLocal() {
+  List<Map<String, dynamic>> getResultsFromLocal() {
     Set<Map<String, dynamic>> answers = {};
     final box = getAnswerBox();
     String userId = getUserId();
     final response = box.get(userId, defaultValue: []);
-    for (final element in response) {
-      answers.add(element);
-    }
-    return answers;
+    answers.addAll(response.cast<Map<String, dynamic>>());
+    return answers.map((e) => e).toList();
   }
 
   @override
@@ -100,7 +93,6 @@ class QuizLocalSourceImpl implements QuizLocalSource {
           tests: localMC),
     );
     LogUtil.debug("sucessfully add quizzes to local");
-    // print(local);
     box.put(userId, local);
   }
 

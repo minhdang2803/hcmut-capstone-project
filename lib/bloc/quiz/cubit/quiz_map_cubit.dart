@@ -7,7 +7,7 @@ import 'package:bke/presentation/pages/uitest/component/map_object.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-part 'quiz_map_cubit_state.dart';
+part 'quiz_map_state.dart';
 
 class QuizMapCubit extends Cubit<QuizMapState> {
   QuizMapCubit() : super(QuizMapState.initial());
@@ -20,6 +20,7 @@ class QuizMapCubit extends Cubit<QuizMapState> {
       final response = await instance.getMultipleChoicesQuizBylevel(level);
       emit(
         state.copyWith(
+          quizId: response.id,
           status: QuizStatus.done,
           type: response.typeOfQuestion,
           total: response.numOfQuestions,
@@ -41,13 +42,42 @@ class QuizMapCubit extends Cubit<QuizMapState> {
     emit(QuizMapState.initial());
   }
 
+  void onChosen(int index, String answer) {
+    emit(state.copyWith(status: QuizStatus.loading));
+    final isChosen = [false, false, false, false];
+    emit(state.copyWith(isChosen: isChosen));
+    isChosen[index] = true;
+    emit(state.copyWith(isChosen: isChosen, status: QuizStatus.done));
+    if (answer == state.quizMC![index].vocabAns![index]) {
+      emit(state.copyWith(
+        totalCorrect: state.totalCorrect! + 1,
+        // status: QuizStatus.done,
+      ));
+    } else if (state.totalCorrect! > 0) {
+      emit(state.copyWith(
+        totalCorrect: state.totalCorrect! - 1,
+        // status: QuizStatus.done,
+      ));
+    }
+  }
+
   void onSubmit() {
     emit(state.copyWith(status: QuizStatus.loading));
-    if (state.currentIndex! <= state.total! - 1) {
+    if (state.currentIndex! < state.total! - 1) {
       emit(
         state.copyWith(
-            currentIndex: state.currentIndex! + 1, status: QuizStatus.done),
+            currentIndex: state.currentIndex! + 1,
+            status: QuizStatus.done,
+            isChosen: [
+              false,
+              false,
+              false,
+              false,
+            ]),
       );
+    } else {
+      instance.saveResultToLocal(state.quizId!, state.totalCorrect!);
+      emit(state.copyWith(status: QuizStatus.finished));
     }
   }
 }

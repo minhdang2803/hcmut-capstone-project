@@ -1,4 +1,4 @@
-import 'package:bke/bloc/quiz/cubit/quiz_map_cubit_cubit.dart';
+import 'package:bke/bloc/quiz/cubit/quiz_map_cubit.dart';
 import 'package:bke/presentation/pages/uitest/quiz_screen.dart';
 import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_color.dart';
