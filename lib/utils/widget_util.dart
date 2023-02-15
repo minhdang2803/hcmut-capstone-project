@@ -59,7 +59,7 @@ class WidgetUtil {
       barrierColor: Colors.black.withOpacity(0.5),
       transitionDuration: const Duration(milliseconds: 250),
       pageBuilder: (ctx, _, __) {
-        return CVNDialog(
+        return BKEDialog(
           title: title,
           message: message,
           onAccepted: () {

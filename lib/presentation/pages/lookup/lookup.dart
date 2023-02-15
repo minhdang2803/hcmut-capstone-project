@@ -28,7 +28,7 @@ class LookUpPage extends StatelessWidget {
         ),
         Column(
           children: [
-            BkEAppBar(
+            const BkEAppBar(
               label: 'Tra từ',
             ),
             _buildBody(context),
@@ -68,7 +68,6 @@ class LookUpPage extends StatelessWidget {
       itemCount: vocabList.length,
       itemBuilder: (context, index) => GestureDetector(
         onTap: () {
-          print(vocabList[index].id);
           Navigator.pushNamed(
             context,
             RouteName.vocabFullInfo,

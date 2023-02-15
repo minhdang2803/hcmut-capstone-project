@@ -1,33 +1,38 @@
-part of 'flashcard_cubit.dart';
+part of 'flashcard_collection_cubit.dart';
 
-enum FlashcardStatus { initial, loading, success, fail }
+enum FlashcardCollectionStatus { initial, loading, success, fail }
 
 class FlashcardCollectionState extends Equatable {
   late final List<FlashcardCollectionModel>? listOfFlashcardColection;
   late final String? errorMessage;
-  late final FlashcardStatus? status;
+  late final FlashcardCollectionStatus? status;
+  late final List<LocalVocabInfo>? flashcards;
 
   FlashcardCollectionState({
     this.listOfFlashcardColection,
     this.status,
     this.errorMessage,
+    this.flashcards,
   });
 
   FlashcardCollectionState.initial() {
     listOfFlashcardColection = [];
+    flashcards = [];
     errorMessage = "";
-    status = FlashcardStatus.initial;
+    status = FlashcardCollectionStatus.initial;
   }
   FlashcardCollectionState copyWith({
     List<FlashcardCollectionModel>? listOfFlashcardColection,
     String? errorMessage,
-    FlashcardStatus? status,
+    FlashcardCollectionStatus? status,
+    List<LocalVocabInfo>? flashcards,
   }) {
     return FlashcardCollectionState(
       listOfFlashcardColection:
           listOfFlashcardColection ?? this.listOfFlashcardColection,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
+      flashcards: flashcards ?? this.flashcards,
     );
   }
 

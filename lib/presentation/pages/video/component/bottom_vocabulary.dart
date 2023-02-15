@@ -53,7 +53,8 @@ class _BottomVocabState extends State<BottomVocab>
     super.initState();
 
     // context.read<VocabCubit>().getVocab('can');
-    context.read<VocabCubit>().getVocab(widget.text);
+   final vocal = context.read<VocabCubit>().getVocab(widget.text);
+    
   }
 
   @override

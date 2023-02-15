@@ -1,26 +1,40 @@
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
+import 'package:bke/data/models/network/base_response.dart';
 import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/data/repositories/flashcard_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-part 'flashcard_state.dart';
+part 'flashcard_collection_state.dart';
 
-class FlashcardCubit extends Cubit<FlashcardCollectionState> {
-  FlashcardCubit() : super(FlashcardCollectionState.initial());
+class FlashcardCollectionCubit extends Cubit<FlashcardCollectionState> {
+  FlashcardCollectionCubit() : super(FlashcardCollectionState.initial());
 
   final instance = FlashcardRepository.instance();
-  void getFlashcardCollections() {
+
+  void getFlashcardCollections({int? currentCollection}) async {
     try {
-      emit(state.copyWith(status: FlashcardStatus.loading));
-      final result = instance.getFCCollection();
+      late List<FlashcardCollectionModel> result;
+      emit(state.copyWith(status: FlashcardCollectionStatus.loading));
+      result = instance.getFCCollection();
+      if (result.isEmpty) {
+        final request = await instance.getFlashcardFromServer();
+        final response = request.data;
+        result = response!.flashcardsData;
+        instance.saveCollectionToLocal(result);
+      }
       emit(state.copyWith(
-          listOfFlashcardColection: result, status: FlashcardStatus.success));
+        flashcards: currentCollection != null
+            ? result[currentCollection].flashCards
+            : [],
+        listOfFlashcardColection: result,
+        status: FlashcardCollectionStatus.success,
+      ));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],
-        status: FlashcardStatus.fail,
+        status: FlashcardCollectionStatus.fail,
         errorMessage: error.errorMessage,
       ));
     }
@@ -31,11 +45,12 @@ class FlashcardCubit extends Cubit<FlashcardCollectionState> {
       instance.addToCollection(flashcardCollection);
       final result = instance.getFCCollection();
       emit(state.copyWith(
-          listOfFlashcardColection: result, status: FlashcardStatus.success));
+          listOfFlashcardColection: result,
+          status: FlashcardCollectionStatus.success));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],
-        status: FlashcardStatus.fail,
+        status: FlashcardCollectionStatus.fail,
         errorMessage: error.errorMessage,
       ));
     }
@@ -46,11 +61,12 @@ class FlashcardCubit extends Cubit<FlashcardCollectionState> {
       instance.deleteCollection(index);
       final result = instance.getFCCollection();
       emit(state.copyWith(
-          listOfFlashcardColection: result, status: FlashcardStatus.success));
+          listOfFlashcardColection: result,
+          status: FlashcardCollectionStatus.success));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],
-        status: FlashcardStatus.fail,
+        status: FlashcardCollectionStatus.fail,
         errorMessage: error.errorMessage,
       ));
     }
@@ -61,11 +77,12 @@ class FlashcardCubit extends Cubit<FlashcardCollectionState> {
       instance.updateCollectionImg(imgUrl, index);
       final result = instance.getFCCollection();
       emit(state.copyWith(
-          listOfFlashcardColection: result, status: FlashcardStatus.success));
+          listOfFlashcardColection: result,
+          status: FlashcardCollectionStatus.success));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],
-        status: FlashcardStatus.fail,
+        status: FlashcardCollectionStatus.fail,
         errorMessage: error.errorMessage,
       ));
     }
@@ -76,26 +93,51 @@ class FlashcardCubit extends Cubit<FlashcardCollectionState> {
       instance.updateCollectionTitle(title, index);
       final result = instance.getFCCollection();
       emit(state.copyWith(
-          listOfFlashcardColection: result, status: FlashcardStatus.success));
+          listOfFlashcardColection: result,
+          status: FlashcardCollectionStatus.success));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],
-        status: FlashcardStatus.fail,
+        status: FlashcardCollectionStatus.fail,
         errorMessage: error.errorMessage,
       ));
     }
   }
 
-   void addFlashcard(LocalVocabInfo vocabInfo, int index) {
+  void addFlashcard(
+    LocalVocabInfo vocabInfo,
+    int index,
+  ) {
     try {
       instance.addFlashcard(vocabInfo, index);
       final result = instance.getFCCollection();
       emit(state.copyWith(
-          listOfFlashcardColection: result, status: FlashcardStatus.success));
+        flashcards: result[index].flashCards,
+        listOfFlashcardColection: result,
+        status: FlashcardCollectionStatus.success,
+      ));
     } on RemoteException catch (error) {
       emit(state.copyWith(
         listOfFlashcardColection: [],
-        status: FlashcardStatus.fail,
+        status: FlashcardCollectionStatus.fail,
+        errorMessage: error.errorMessage,
+      ));
+    }
+  }
+
+  void deleteFlashcard(int currentCollection, int currentcard) {
+    try {
+      instance.deleteFlashcard(currentCollection, currentcard);
+      final result = instance.getFCCollection();
+      emit(state.copyWith(
+        flashcards: result[currentCollection].flashCards,
+        listOfFlashcardColection: result,
+        status: FlashcardCollectionStatus.success,
+      ));
+    } on RemoteException catch (error) {
+      emit(state.copyWith(
+        listOfFlashcardColection: [],
+        status: FlashcardCollectionStatus.fail,
         errorMessage: error.errorMessage,
       ));
     }
@@ -117,4 +159,8 @@ class FlashcardCubit extends Cubit<FlashcardCollectionState> {
     "assets/images/relaxed.png",
     "assets/images/no.png",
   ];
+
+  Future<BaseResponse> updateToServer(List<Map<String, dynamic>> data) async {
+    return await instance.updateFlashcardToServer(data);
+  }
 }

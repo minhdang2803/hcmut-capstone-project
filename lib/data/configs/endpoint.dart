@@ -16,6 +16,7 @@ class EndPoint {
 
   static const getSubVideo = '$_baseUrl/subVideo';
   static const getYoutubeVideoInfos = '$_baseUrl/videoYoutubeInfo';
+  static const getYoutubeVideoInfo = '$_baseUrl/videoYoutubeInfo/getOne';
 
   static const getVocabInfos = '$_baseUrl/vocab';
 
@@ -36,4 +37,12 @@ class EndPoint {
 
   static const addFavorite = '$_baseUrl/bookFavorites/add';
   static const removeFavorite = '$_baseUrl/bookFavorites/delete';
+  static const findVocabsByListId = "$_baseUrl/vocab/getListVocab";
+  static const getAllFlashcard = '$_baseUrl/flashCard/getAll';
+  static const updateFlashcard = '$_baseUrl/flashCard/upsert';
+  // {{baseURL}}/api/vocab/getById?vocabId=7154
+  static const findVocabById = "$_baseUrl/vocab/getById";
+  static const flashcardRandomGetAllThumbnail =
+      "$_baseUrl/templateFlashCard/listCategory";
+  static const flashcardRandomGetAll = "$_baseUrl/templateFlashCard/random";
 }

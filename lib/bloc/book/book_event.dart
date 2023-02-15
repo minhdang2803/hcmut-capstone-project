@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import '../../data/models/book/book_info.dart';
 
 abstract class BookListEvent extends Equatable{
   const BookListEvent();

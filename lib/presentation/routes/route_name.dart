@@ -1,5 +1,3 @@
-import 'package:bke/presentation/pages/book/books_screen.dart';
-
 class RouteName {
   static const splash = '/';
   static const main = '/main';
@@ -18,6 +16,7 @@ class RouteName {
   static const resultToeic = '/result_toeic';
 
   static const videoPlayer = '/video_player';
+  static const videoSeeMore = '/video_see_more';
   static const myDictionary = '/my_dictionary';
 
   static const bookPage = '/book_page';
@@ -27,6 +26,8 @@ class RouteName {
 
   static const vocabFullInfo = '/vocab_full_info_page';
 
-  static const flashCard = '/flashcard_screen';
-  static const flashCardCollection = "flashcard_collection_screen";
+  static const flashCardScreen = '/flashcard_screen';
+  static const flashCardCollectionScreen = "flashcard_collection_screen";
+  static const flashCardInfoScreen = "flashcard_info_screen";
+  static const flashCardRandomScreen = "flashcard_random_info_screen";
 }

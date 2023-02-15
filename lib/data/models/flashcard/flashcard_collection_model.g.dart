@@ -20,7 +20,7 @@ class FlashcardCollectionModelAdapter
     return FlashcardCollectionModel(
       imgUrl: fields[0] as String,
       title: fields[1] as String,
-      flashcards: (fields[2] as List).cast<LocalVocabInfo>(),
+      flashCards: (fields[2] as List).cast<LocalVocabInfo>(),
     );
   }
 
@@ -33,7 +33,7 @@ class FlashcardCollectionModelAdapter
       ..writeByte(1)
       ..write(obj.title)
       ..writeByte(2)
-      ..write(obj.flashcards);
+      ..write(obj.flashCards);
   }
 
   @override

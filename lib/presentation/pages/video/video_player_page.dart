@@ -1,4 +1,6 @@
-import 'package:bke/data/models/video/video_youtube_info.dart';
+import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
+import 'package:bke/bloc/video/last_watch_video/last_watch_video_cubit.dart';
+import 'package:bke/data/models/video/video_youtube_info_model.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,10 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../bloc/video/video_cubit.dart';
-import '../../../data/models/video/sub_video.dart';
+import '../../../data/models/video/sub_video_model.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_typography.dart';
 import '../../widgets/holder_widget.dart';
@@ -24,7 +25,7 @@ class VideoPlayerPage extends StatefulWidget {
 }
 
 class _VideoPlayerPageState extends State<VideoPlayerPage>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin<VideoPlayerPage> {
   late YoutubePlayerController _controller;
 
   final itemController = ItemScrollController();
@@ -39,55 +40,59 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
     // pause video
     _controller.pause();
 
-    showMaterialModalBottomSheet(
+    showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => BottomVocab(text: text),
     );
   }
 
+  List<String> splitWord(String subText) {
+    final eachCharList = subText.split(" ");
+    List<String> result = [];
+    String tempWord = '';
+    for (final element in eachCharList) {
+      if (element.contains("[") && element.contains("]")) {
+        result.add(element);
+      } else if (element.contains('[') && !element.contains(']')) {
+        tempWord = "$tempWord$element ";
+      } else if (!element.contains('[') && element.contains(']')) {
+        tempWord = tempWord + element;
+        result.add(tempWord);
+        tempWord = "";
+      } else if (!element.contains('[') && !element.contains(']')) {
+        result.add(element);
+      }
+    }
+    return result;
+  }
+
   List<TextSpan> createTextSpans(String subText, TextStyle style) {
-    final arrayStrings = subText.split(" ");
+    final arrayStrings = splitWord(subText);
     List<TextSpan> arrayOfTextSpan = [];
     for (int index = 0; index < arrayStrings.length; index++) {
-      final text = "${arrayStrings[index]} ";
+      var text = arrayStrings[index];
       TextSpan span = const TextSpan();
-
       // first is the word highlight recommended by admin [example] and ending with , or .
-      if ((text[0] == '[') && (text.contains('.') || text.contains(','))) {
+      if (text.contains('[') && text.contains(']')) {
+        text = text.trim().substring(1, text.length - 1);
         span = TextSpan(
-          text: '${text.substring(1, text.length - 2)} ',
-          style: style.copyWith(color: AppColor.secondary),
-          recognizer: TapGestureRecognizer()
-            ..onTap =
-                () => _onDictionarySearch(text.substring(1, text.length - 3)),
-        );
-      } else if (text[0] == '[') {
-        // is the word highlight recommended by admin [example]
-        span = TextSpan(
-          text: '${text.substring(1, text.length - 2)} ',
-          style: style.copyWith(color: AppColor.secondary),
-          recognizer: TapGestureRecognizer()
-            ..onTap =
-                () => _onDictionarySearch(text.substring(1, text.length - 2)),
-        );
-      } else if (text.contains('.') || text.contains(',')) {
-        // the word ending with , or .
-        span = TextSpan(
-          text: text,
+          text: '$text ',
           style: style,
           recognizer: TapGestureRecognizer()
-            ..onTap =
-                () => _onDictionarySearch(text.substring(0, text.length - 2)),
+            ..onTap = () {
+              _onDictionarySearch(text.toLowerCase());
+            },
         );
       } else {
         // the normalword
         span = TextSpan(
-          text: text,
+          text: "$text ",
           style: style,
           recognizer: TapGestureRecognizer()
-            ..onTap =
-                () => _onDictionarySearch(text.substring(0, text.length - 1)),
+            ..onTap = () {
+              _onDictionarySearch(text.toLowerCase());
+            },
         );
       }
 
@@ -99,11 +104,15 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   @override
   void initState() {
     super.initState();
-
+    // print(widget.video.videoId);
+    int lastWatch =
+        context.read<LastWatchVideoCubit>().getProcess(widget.video.videoId);
+    lastWatch = lastWatch != -1 ? lastWatch : 0;
     _controller = YoutubePlayerController(
       initialVideoId: widget.video.videoId,
-      flags: const YoutubePlayerFlags(
-        autoPlay: false,
+      flags: YoutubePlayerFlags(
+        startAt: lastWatch,
+        autoPlay: true,
         enableCaption: false,
       ),
     );
@@ -112,11 +121,13 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   }
 
   void _goToSpan(int spanIndex) {
-    Scrollable.ensureVisible(
-      _keys[spanIndex].currentContext!,
-      alignment: 0.2,
-      duration: const Duration(milliseconds: 300),
-    );
+    if (_keys[spanIndex].currentContext != null) {
+      Scrollable.ensureVisible(
+        _keys[spanIndex].currentContext!,
+        alignment: 0.2,
+        duration: const Duration(milliseconds: 300),
+      );
+    }
   }
 
   void _resetCurrentIndex(PointerEvent details) {
@@ -130,19 +141,26 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    // final topPadding = MediaQuery.of(context).padding.top;
     final orientation = MediaQuery.of(context).orientation;
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: orientation == Orientation.portrait
           ? AppBar(
+              leading: BackButton(
+                onPressed: () {
+                  context.read<VideoCubit>().exit();
+                  context.read<LastWatchVideoCubit>().saveProcess(
+                      widget.video.videoId, _currentDuration ~/ 1000);
+                  context.read<CategoryVideoCubit>().getRecentlyWatch();
+                  Navigator.pop(context);
+                },
+              ),
               title: Text(
                 widget.video.title,
                 style: AppTypography.title.copyWith(color: Colors.white),
@@ -185,38 +203,43 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
               },
             ),
           ),
-          orientation == Orientation.portrait
-              ? Expanded(
-                  child: BlocConsumer<VideoCubit, VideoState>(
-                    listener: (context, state) {
-                      if (state is SubVideoSuccess) {
-                        setState(() {
-                          _subVideo = state.subVideo;
-                        });
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is SubVideoFailure) {
-                        return const HolderWidget(
-                          asset: 'assets/images/error.png',
-                          message: 'Fail to load video script!',
-                        );
-                      }
-                      return _subVideo?.subs == null
-                          ? _buildLoadingSkeleton()
-                          : ValueListenableBuilder(
-                              valueListenable: _controller,
-                              builder:
-                                  (context, YoutubePlayerValue value, child) {
-                                _currentDuration =
-                                    value.position.inMilliseconds;
-                                return _buildSub();
-                              },
-                            );
-                    },
-                  ),
-                )
-              : Container()
+          Visibility(
+            visible: orientation == Orientation.portrait,
+            child: Expanded(
+              child: BlocConsumer<VideoCubit, VideoState>(
+                listener: (context, state) {
+                  if (state.status == VideoStatus.done) {
+                    _subVideo = state.subVideo;
+                  }
+                },
+                builder: (context, state) {
+                  if (state.status == VideoStatus.fail) {
+                    return const HolderWidget(
+                      asset: 'assets/images/error.png',
+                      message: 'Fail to load video script!',
+                    );
+                  } else if (state.status == VideoStatus.done) {
+                    return _subVideo?.subs == null
+                        ? _buildLoadingSkeleton()
+                        : ValueListenableBuilder(
+                            valueListenable: _controller,
+                            builder:
+                                (context, YoutubePlayerValue value, child) {
+                              _currentDuration = value.position.inMilliseconds;
+                              return _buildSub();
+                            },
+                          );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColor.primary,
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+          )
         ],
       ),
     );

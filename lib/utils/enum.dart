@@ -6,7 +6,7 @@ enum AuthAction {
   authentication
 }
 
-enum RecentAction{
+enum RecentAction {
   watchVideo,
   readBook,
   listenBook,
@@ -14,3 +14,5 @@ enum RecentAction{
   doTest,
   playQuiz
 }
+
+enum SeeMoreVideoAction { category1, category2, category3, recently }

@@ -8,6 +8,7 @@ import 'package:bke/presentation/pages/home/components/continue_card.dart';
 import 'package:bke/presentation/pages/home/components/join_quiz_card.dart';
 import 'package:bke/presentation/pages/my_dictionary/my_dictionary.dart';
 import 'package:bke/presentation/pages/toeic_test/main/toeictest_page.dart';
+import 'package:bke/presentation/pages/uitest/uitest_page.dart';
 import 'package:bke/presentation/pages/video/video_page.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/utils/enum.dart';
@@ -39,7 +40,8 @@ class _NavigationPageState extends State<NavigationPage> {
       const BookPage(),
       const FlashcardCollectionScreen(),
       const ToeicPage(),
-      const GameQuizPage(),
+      // const GameQuizPage(),
+      const UITestPage(),
       const ChatPage(),
     ];
   }

@@ -1,11 +1,11 @@
-import 'package:bke/bloc/flashcard/cubit/flashcard_cubit.dart';
+import 'package:bke/bloc/flashcard/flashcard_card/flashcard_cubit.dart';
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
 
+import '../../../../bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
 import '../../../../bloc/vocab/vocab_cubit.dart';
 import '../../../../data/models/vocab/vocab.dart';
 import '../../../theme/app_color.dart';
@@ -105,15 +105,15 @@ class _VocabularyTabState extends State<VocabularyTab> {
           context.read<VocabCubit>().deleteFromMyDictionary(vocabInfo.id);
           return false;
         } else {
-          context.read<VocabCubit>().saveToMyDictionary(
-                LocalVocabInfo(
-                  vocab: vocabInfo.vocab,
-                  vocabType: vocabInfo.vocabType,
-                  id: vocabInfo.id,
-                  pronounce: vocabInfo.pronounce,
-                  translate: vocabInfo.translate,
-                ),
-              );
+          final localVocab = LocalVocabInfo(
+            vocab: vocabInfo.vocab,
+            vocabType: vocabInfo.vocabType,
+            id: vocabInfo.id,
+            pronounce: vocabInfo.pronounce,
+            translate: vocabInfo.translate,
+          );
+
+          context.read<VocabCubit>().saveToMyDictionary(localVocab);
           return true;
         }
       },
@@ -132,7 +132,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
   }
 
   void showFlashcardCollectionList(VocabInfo vocabInfo) {
-    final flashcardCubit = context.read<FlashcardCubit>();
+    final flashcardCubit = context.read<FlashcardCollectionCubit>();
     showDialog(
         context: context,
         builder: (context) {
@@ -156,8 +156,8 @@ class _VocabularyTabState extends State<VocabularyTab> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.3,
                 height: MediaQuery.of(context).size.height * 0.1,
-                child: BlocSelector<FlashcardCubit, FlashcardCollectionState,
-                    List<FlashcardCollectionModel>?>(
+                child: BlocSelector<FlashcardCollectionCubit,
+                    FlashcardCollectionState, List<FlashcardCollectionModel>?>(
                   selector: (state) {
                     return state.listOfFlashcardColection;
                   },
@@ -175,15 +175,20 @@ class _VocabularyTabState extends State<VocabularyTab> {
                             ),
                           ),
                           trailing: IconButton(
-                            onPressed: () => flashcardCubit.addFlashcard(
-                                LocalVocabInfo(
-                                  vocab: vocabInfo.vocab,
-                                  vocabType: vocabInfo.vocabType,
-                                  id: vocabInfo.id,
-                                  pronounce: vocabInfo.pronounce,
-                                  translate: vocabInfo.translate,
-                                ),
-                                index),
+                            splashColor: AppColor.secondary,
+                            splashRadius: 20.r,
+                            padding: EdgeInsets.zero,
+                            onPressed: () =>
+                                context.read<FlashcardCubit>().addFlashcard(
+                                      LocalVocabInfo(
+                                        vocab: vocabInfo.vocab,
+                                        vocabType: vocabInfo.vocabType,
+                                        id: vocabInfo.id,
+                                        pronounce: vocabInfo.pronounce,
+                                        translate: vocabInfo.translate,
+                                      ),
+                                      index,
+                                    ),
                             icon: Icon(
                               Icons.add,
                               color: Colors.black38,
@@ -204,9 +209,9 @@ class _VocabularyTabState extends State<VocabularyTab> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.r)),
                 ),
-                onPressed: () {},
+                onPressed: () => _addCollection(context),
                 child: Text(
-                  "Thay đổi",
+                  "Bộ sưu tập mới",
                   style: AppTypography.body.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
@@ -232,5 +237,138 @@ class _VocabularyTabState extends State<VocabularyTab> {
             ],
           );
         });
+  }
+
+  void _addCollection(BuildContext context) {
+    final TextEditingController _addFlashcardCollection =
+        TextEditingController();
+    ValueNotifier<int> selected = ValueNotifier<int>(-1);
+    String name = "";
+    String imgUrl = "";
+    final cubit = context.read<FlashcardCollectionCubit>();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "Thêm mới bộ sưu tập",
+            style: AppTypography.title.copyWith(fontWeight: FontWeight.w700),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+              20.r,
+            ),
+          ),
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.6,
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Tên bộ sưu tập: ", style: AppTypography.title),
+                5.verticalSpace,
+                CustomTextField(
+                  controller: _addFlashcardCollection,
+                  borderRadius: 30.r,
+                  onChanged: (value) => name = value,
+                ),
+                10.verticalSpace,
+                Text("Chọn ảnh bìa", style: AppTypography.title),
+                5.verticalSpace,
+                Expanded(
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3),
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          selected.value = index;
+                          imgUrl = cubit.pictures[index];
+                        },
+                        child: ValueListenableBuilder(
+                          valueListenable: selected,
+                          builder: (context, value, child) {
+                            return _buildHoverIcon(value, index, cubit);
+                          },
+                        ),
+                      );
+                    },
+                    itemCount: cubit.pictures.length,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ValueListenableBuilder<TextEditingValue>(
+              valueListenable: _addFlashcardCollection,
+              builder: (context, value, child) {
+                return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.r)),
+                  ),
+                  onPressed: value.text.isEmpty
+                      ? null
+                      : () {
+                          context
+                              .read<FlashcardCollectionCubit>()
+                              .addFlashcardCollection(
+                                FlashcardCollectionModel(
+                                  imgUrl: imgUrl,
+                                  title: name,
+                                  flashCards: [],
+                                ),
+                              );
+
+                          _addFlashcardCollection.clear();
+                          Navigator.pop(context);
+                        },
+                  child: Text(
+                    "Thêm",
+                    style: AppTypography.body.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                );
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.r)),
+              ),
+              onPressed: () {
+                _addFlashcardCollection.clear();
+                Navigator.pop(context);
+              },
+              child: Text(
+                "Huỷ",
+                style: AppTypography.body.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildHoverIcon(int value, int index, FlashcardCollectionCubit cubit) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(
+            color: value == index ? AppColor.primary : Colors.transparent,
+            width: 2.0),
+      ),
+      child: Image(
+        image: AssetImage(cubit.pictures[index]),
+      ),
+    );
   }
 }

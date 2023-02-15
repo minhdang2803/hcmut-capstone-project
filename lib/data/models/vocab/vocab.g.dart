@@ -6,6 +6,40 @@ part of 'vocab.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
+class LocalVocabInfoListAdapter extends TypeAdapter<LocalVocabInfoList> {
+  @override
+  final int typeId = 7;
+
+  @override
+  LocalVocabInfoList read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return LocalVocabInfoList(
+      (fields[0] as List).cast<LocalVocabInfo>(),
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, LocalVocabInfoList obj) {
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(obj.vocabList);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LocalVocabInfoListAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 class LocalVocabInfoAdapter extends TypeAdapter<LocalVocabInfo> {
   @override
   final int typeId = 3;

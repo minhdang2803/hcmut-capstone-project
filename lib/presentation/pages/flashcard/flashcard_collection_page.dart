@@ -1,13 +1,16 @@
-import 'package:bke/bloc/flashcard/cubit/flashcard_cubit.dart';
+import 'package:bke/bloc/flashcard/flashcard_collection_thumb/flashcard_collection_thumb_cubit.dart';
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
-import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_component.dart';
-import 'package:bke/presentation/pages/flashcard/flashcard_page.dart';
+import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_random.dart';
+import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_user_component.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../routes/route_name.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../../bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
+
 import '../../widgets/widgets.dart';
 
 class FlashcardCollectionScreen extends StatefulWidget {
@@ -18,23 +21,43 @@ class FlashcardCollectionScreen extends StatefulWidget {
       _FlashcardCollectionScreenState();
 }
 
-class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
+class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
+    with TickerProviderStateMixin {
+  final _editTitle = TextEditingController();
+  final _addFlashcardCollection = TextEditingController();
+  int _selectedIndex = 0;
+  late TabController _tabController;
+  Offset _position = Offset.zero;
+
   @override
   void initState() {
     super.initState();
-    context.read<FlashcardCubit>().getFlashcardCollections();
+    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    _tabController.addListener(() {
+      setState(() {
+        _selectedIndex = _tabController.index;
+      });
+    });
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    // context.read<FlashcardCollectionCubit>().getFlashcardCollections();
   }
 
   @override
   void dispose() {
     _editTitle.dispose();
     _addFlashcardCollection.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.dispose();
   }
 
-  final _editTitle = TextEditingController();
-  final _addFlashcardCollection = TextEditingController();
-  Offset _position = Offset.zero;
   void _getTapPosition(TapDownDetails tapPosition) {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     setState(() {
@@ -93,24 +116,19 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
   }
 
   void _deleteCollection(BuildContext context, int current) {
-    context.read<FlashcardCubit>().deleteFlashCardCollection(current);
+    context.read<FlashcardCollectionCubit>().deleteFlashCardCollection(current);
   }
 
   void _changePicture(BuildContext context, int current) {
-    final cubit = context.read<FlashcardCubit>();
+    final cubit = context.read<FlashcardCollectionCubit>();
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
-            "Thay đổi hình ảnh",
-            style: AppTypography.title.copyWith(fontWeight: FontWeight.w700),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              20.r,
-            ),
-          ),
+          title: Text("Thay đổi hình ảnh",
+              style: AppTypography.title.copyWith(fontWeight: FontWeight.w700)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
           content: SizedBox(
             width: MediaQuery.of(context).size.width * 0.7,
             height: MediaQuery.of(context).size.height * 0.2,
@@ -151,7 +169,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
   }
 
   void _changeTitle(BuildContext context, int current) {
-    final cubit = context.read<FlashcardCubit>();
+    final cubit = context.read<FlashcardCollectionCubit>();
     showDialog(
       context: context,
       builder: (context) {
@@ -222,7 +240,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
     ValueNotifier<int> selected = ValueNotifier<int>(-1);
     String name = "";
     String imgUrl = "";
-    final cubit = context.read<FlashcardCubit>();
+    final cubit = context.read<FlashcardCollectionCubit>();
     showDialog(
       context: context,
       builder: (context) {
@@ -289,11 +307,13 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
                   onPressed: value.text.isEmpty
                       ? null
                       : () {
-                          context.read<FlashcardCubit>().addFlashcardCollection(
+                          context
+                              .read<FlashcardCollectionCubit>()
+                              .addFlashcardCollection(
                                 FlashcardCollectionModel(
                                   imgUrl: imgUrl,
                                   title: name,
-                                  flashcards: [],
+                                  flashCards: [],
                                 ),
                               );
 
@@ -333,7 +353,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
     );
   }
 
-  Widget _buildHoverIcon(int value, int index, FlashcardCubit cubit) {
+  Widget _buildHoverIcon(int value, int index, FlashcardCollectionCubit cubit) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
@@ -350,122 +370,81 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            BkEAppBar(
-              label: "Bộ sưu tập Flashcard",
-              onBackButtonPress: () => Navigator.pop(context),
+      appBar: AppBar(
+        backgroundColor: AppColor.primary,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        bottom: TabBar(
+          indicatorColor: Colors.transparent,
+          tabs: const [
+            Tab(
+              icon: FaIcon(FontAwesomeIcons.userLarge),
             ),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColor.greyBackground,
-                  borderRadius:
-                      BorderRadius.only(topLeft: Radius.circular(30.r)),
-                ),
-                child: _buildCollection(context),
-              ),
+            Tab(
+              icon: FaIcon(FontAwesomeIcons.layerGroup),
             )
+          ],
+          controller: _tabController,
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            BackButton(
+              onPressed: () {
+                final flashcardCollections = context
+                    .read<FlashcardCollectionCubit>()
+                    .state
+                    .listOfFlashcardColection!
+                    .map((e) => e.toJson())
+                    .toList();
+                context
+                    .read<FlashcardCollectionCubit>()
+                    .updateToServer(flashcardCollections);
+                Navigator.pop(context);
+              },
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Bộ sưu tập Flashcard",
+                style: AppTypography.subHeadline
+                    .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(width: 35.r)
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _addCollection(context),
-        backgroundColor: AppColor.primary,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
+      backgroundColor: AppColor.primary,
+      body: SafeArea(
+        bottom: false,
+        child: TabBarView(
+          controller: _tabController,
+          children: [
+            UserComponent(
+              getTapPosition: _getTapPosition,
+              showContextMenu: _showContextMenu,
+            ),
+            MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (ctx) => FlashcardCollectionThumbCubit()),
+              ],
+              child: const RandomComponent(),
+            ),
+          ],
         ),
       ),
-    );
-  }
-
-  Widget _buildCollection(BuildContext context) {
-    return BlocSelector<FlashcardCubit, FlashcardCollectionState, bool>(
-      selector: (state) {
-        return state.listOfFlashcardColection!.isEmpty;
-      },
-      builder: (context, isEmpty) {
-        return Padding(
-          padding: EdgeInsets.all(20.r),
-          child: isEmpty ? _buildEmptyScreen() : _buildFlashcardScreen(),
-        );
-      },
-    );
-  }
-
-  Widget _buildFlashcardScreen() {
-    return BlocBuilder<FlashcardCubit, FlashcardCollectionState>(
-      builder: (context, state) {
-        if (state.status == FlashcardStatus.loading) {
-          return const Center(
-            child: CircularProgressIndicator(color: AppColor.primary),
-          );
-        }
-        return GridView.builder(
-          itemCount: state.listOfFlashcardColection!.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 10.r,
-            crossAxisSpacing: 10.r,
-            childAspectRatio: 0.75,
-          ),
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onLongPress: () {
-                _showContextMenu(context, index);
-              },
-              onTapDown: (details) {
-                _getTapPosition(details);
-              },
-              child: GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  RouteName.flashCard,
-                  arguments: FlashcardPageModel(
-                    collectionTitle:
-                        state.listOfFlashcardColection![index].title,
-                    vocabInfo:
-                        state.listOfFlashcardColection![index].flashcards,
-                    currentCollection: index,
-                  ),
-                ),
-                child: FlashcardComponent(
-                  imgUrl: state.listOfFlashcardColection![index].imgUrl,
-                  title: state.listOfFlashcardColection![index].title,
-                ),
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton(
+              onPressed: () => _addCollection(context),
+              backgroundColor: AppColor.primary,
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
               ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildEmptyScreen() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        150.verticalSpace,
-        Image(
-          image: const AssetImage("assets/images/no.png"),
-          height: 200.r,
-          width: 200.r,
-        ),
-        SizedBox(
-          width: 200.w,
-          child: Text(
-            "Bộ sưu tập flashcard trống!",
-            style:
-                AppTypography.subHeadline.copyWith(fontWeight: FontWeight.w700),
-            textAlign: TextAlign.center,
-          ),
-        )
-      ],
+            )
+          : null,
     );
   }
 }

@@ -53,7 +53,7 @@ class AuthRepository {
       String token, String email, String password) async {
     return _authRemoteSource.resetPass(token, email, password);
   }
-
+  
   void saveCurrentUser(User user, String token) async {
     _authLocalSource.saveCurrentUser(user, token);
   }

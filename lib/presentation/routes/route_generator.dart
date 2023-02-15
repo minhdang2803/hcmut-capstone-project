@@ -1,10 +1,16 @@
+import 'package:bke/bloc/video/last_watch_video/last_watch_video_cubit.dart';
+import 'package:bke/bloc/video/video_cubit.dart';
 import 'package:bke/data/models/book/book_listener.dart';
-import 'package:bke/data/models/video/video_youtube_info.dart';
+import 'package:bke/data/models/video/video_youtube_info_model.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/pages/book/books_screen.dart';
+import 'package:bke/presentation/pages/flashcard/flashcard_info_page.dart';
 import 'package:bke/presentation/pages/flashcard/flashcard_page.dart';
+import 'package:bke/presentation/pages/flashcard/flashcard_random_page.dart';
+import 'package:bke/utils/enum.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../pages/about_us/about_us.dart';
 import '../pages/authentication/authentication_page.dart';
@@ -16,6 +22,7 @@ import '../pages/notification/notifications_page.dart';
 import '../pages/toeic_test/components/result_component.dart';
 import '../pages/toeic_test/test/start_toeic_page.dart';
 import '../pages/toeic_test/test/test_toeic_page.dart';
+import '../pages/video/see_more/video_see_more_page.dart';
 import '../pages/video/video_player_page.dart';
 import '../pages/welcome/welcome.dart';
 import '../pages/main/home_page.dart';
@@ -59,15 +66,32 @@ class RouteGenerator {
       case RouteName.startToeic:
         page = const StartToeic();
         break;
+
       case RouteName.testToeic:
         page = const TestToeicPage();
         break;
+
       case RouteName.resultToeic:
         page = const ResultToeicPage();
         break;
+
       case RouteName.videoPlayer:
         final videoId = settings.arguments as VideoYoutubeInfo;
-        page = VideoPlayerPage(video: videoId);
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => VideoCubit()),
+            BlocProvider(create: (context) => LastWatchVideoCubit()),
+          ],
+          child: VideoPlayerPage(video: videoId),
+        );
+        break;
+
+      case RouteName.videoSeeMore:
+        final argeuments = settings.arguments as VideoSeeMorePageModel?;
+        page = VideoSeeMorePage(
+          action: argeuments!.action,
+          category: argeuments.category,
+        );
         break;
 
       case RouteName.myDictionary:
@@ -80,13 +104,25 @@ class RouteGenerator {
           vocabInfo: vocab,
         );
         break;
-      case RouteName.flashCard:
+      case RouteName.flashCardScreen:
         final flashcard = settings.arguments as FlashcardPageModel;
         page = FlashCardScreen(
-            vocabInfo: flashcard.vocabInfo,
             currentCollection: flashcard.currentCollection,
             collectionTitle: flashcard.collectionTitle);
         break;
+
+      case RouteName.flashCardRandomScreen:
+        final flashcard = settings.arguments as FlashcardPageModel;
+        page = FlashcardRandomScreen(
+            currentCollection: flashcard.currentCollection,
+            collectionTitle: flashcard.collectionTitle);
+        break;
+
+      case RouteName.flashCardInfoScreen:
+        final vocab = settings.arguments as LocalVocabInfo;
+        page = FlashcardInfoScreen(vocab: vocab);
+        break;
+
       case RouteName.bookPage:
         page = const BookPage();
         break;

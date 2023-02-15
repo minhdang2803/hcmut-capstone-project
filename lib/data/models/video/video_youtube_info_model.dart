@@ -43,17 +43,35 @@ class VideoYoutubeInfo {
   late final bool isVerify;
   late final String adminVerify;
 
-  VideoYoutubeInfo.fromJson(Map<String, dynamic> json) {
-    videoId = json["videoId"];
-    title = json["title"];
-    description = json["description"];
-    thumbUrl = json["thumbUrl"];
-    playlistId = json["playlistId"];
-    length = json["length"];
-    viewCount = json["viewCount"];
-    level = json["level"];
-    category = json["category"];
-    isVerify = json["isVerify"];
-    adminVerify = json["adminVerify"];
+  factory VideoYoutubeInfo.fromJson(Map<String, dynamic> json) {
+    if (json["videoYoutubeInfo"] != null) {
+      final Map<String, dynamic> data = json["videoYoutubeInfo"]!;
+      return VideoYoutubeInfo(
+        videoId: data['videoId'],
+        title: data['title'],
+        description: data['description'],
+        thumbUrl: data['thumbUrl'],
+        playlistId: data['playlistId'],
+        length: data['length'],
+        viewCount: data['viewCount'],
+        level: data['level'],
+        category: data['category'],
+        isVerify: data['isVerify'],
+        adminVerify: data['adminVerify'],
+      );
+    } else {
+      return VideoYoutubeInfo(
+          videoId: json['videoId'],
+          title: json['title'],
+          description: json['description'],
+          thumbUrl: json['thumbUrl'],
+          playlistId: json['playlistId'],
+          length: json['length'],
+          viewCount: json['viewCount'],
+          level: json['level'],
+          category: json['category'],
+          isVerify: json['isVerify'],
+          adminVerify: json['adminVerify']);
+    }
   }
 }

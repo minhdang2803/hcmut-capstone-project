@@ -6,15 +6,20 @@ import '../../../configs/endpoint.dart';
 import '../../../configs/hive_config.dart';
 import '../../../models/network/api_service_request.dart';
 import '../../../models/network/base_response.dart';
-import '../../../models/video/sub_video.dart';
-import '../../../models/video/video_youtube_info.dart';
+import '../../../models/video/sub_video_model.dart';
+import '../../../models/video/video_youtube_info_model.dart';
 import '../../../services/api_service.dart';
 
 abstract class VideoSource {
   Future<BaseResponse<SubVideo>> getSubVideo(String videoId);
-  Future<BaseResponse<VideoYoutubeInfos>> getYoutubeVideoList({
+  Future<BaseResponse<VideoYoutubeInfos>> getAllVideos({
     required int pageKey,
+    required int pageSize,
+    required String category,
+    int? level,
+    String? title,
   });
+  Future<BaseResponse<VideoYoutubeInfo>> getVideo(String videoId);
 }
 
 class VideoSourceImpl extends VideoSource {
@@ -40,8 +45,12 @@ class VideoSourceImpl extends VideoSource {
   }
 
   @override
-  Future<BaseResponse<VideoYoutubeInfos>> getYoutubeVideoList({
+  Future<BaseResponse<VideoYoutubeInfos>> getAllVideos({
     required int pageKey,
+    required int pageSize,
+    required String category,
+    int? level,
+    String? title,
   }) async {
     const path = EndPoint.getYoutubeVideoInfos;
     final token = await const FlutterSecureStorage()
@@ -50,6 +59,9 @@ class VideoSourceImpl extends VideoSource {
     final Map<String, dynamic> params = {
       'limit': Constants.defaultPageSize,
       'page': pageKey,
+      'category': category,
+      'level': level,
+      'title': title
     };
 
     final request = APIServiceRequest(
@@ -60,6 +72,25 @@ class VideoSourceImpl extends VideoSource {
         dataBuilder: VideoYoutubeInfos.fromJson,
       ),
       header: header,
+    );
+    return _api.get(request);
+  }
+
+  @override
+  Future<BaseResponse<VideoYoutubeInfo>> getVideo(String videoId) async {
+    const path = EndPoint.getYoutubeVideoInfo;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+    final Map<String, dynamic> params = {'videoId': videoId};
+    final request = APIServiceRequest(
+      path,
+      header: header,
+      queryParams: params,
+      (response) => BaseResponse<VideoYoutubeInfo>.fromJson(
+        json: response,
+        dataBuilder: VideoYoutubeInfo.fromJson,
+      ),
     );
     return _api.get(request);
   }

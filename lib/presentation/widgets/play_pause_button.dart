@@ -9,10 +9,12 @@ class PlayPauseButton extends StatelessWidget {
     this.enabled = true,
     required this.controller,
     required this.onItemClick,
+    this.size = 24,
   }) : super(key: key);
 
   final bool enabled;
   final AnimationController controller;
+  final double? size;
   final VoidCallback onItemClick;
 
   @override
@@ -21,17 +23,19 @@ class PlayPauseButton extends StatelessWidget {
       onTap: onItemClick,
       child: Container(
         alignment: Alignment.center,
-        width: 28.r,
-        height: 28.r,
+        width: size,
+        height: size,
         decoration: BoxDecoration(
           color: enabled ? AppColor.primary : Colors.grey,
           borderRadius: BorderRadius.circular(14.r),
         ),
-        child: AnimatedIcon(
-          icon: AnimatedIcons.play_pause,
-          progress: controller,
-          color: Colors.white,
-          size: 24.r,
+        child: Center(
+          child: AnimatedIcon(
+            icon: AnimatedIcons.play_pause,
+            progress: controller,
+            color: Colors.white,
+            size: size,
+          ),
         ),
       ),
     );

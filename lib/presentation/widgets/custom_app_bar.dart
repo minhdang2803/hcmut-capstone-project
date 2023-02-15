@@ -15,6 +15,7 @@ class BkEAppBar extends StatelessWidget {
     this.onSearchButtonPress,
     this.showNotificationAction = false,
     this.leading,
+    this.trailing,
     this.color = AppColor.primary,
   }) : super(key: key);
 
@@ -23,6 +24,7 @@ class BkEAppBar extends StatelessWidget {
   final VoidCallback? onSearchButtonPress;
   final bool showNotificationAction;
   final Widget? leading;
+  final Widget? trailing;
   final Color? color;
 
   @override
@@ -51,19 +53,25 @@ class BkEAppBar extends StatelessWidget {
             _buildNotificationIcon(context),
             if (onSearchButtonPress != null) 12.horizontalSpace,
             _buildSearchIcon(context),
-            // 10.horizontalSpace,
-            // _buildUserProfileIcon(context),
+            10.horizontalSpace,
+            _buildOptions(context)
           ],
         ),
       ),
     );
   }
 
+  Widget _buildOptions(BuildContext context) {
+    return trailing != null
+        ? Visibility(visible: trailing != null, child: trailing!)
+        : Container();
+  }
+
   Widget _buildLabel() {
     return Expanded(
       child: AutoSizeText(
         label ?? '',
-        style: AppTypography.superHeadline.copyWith(
+        style: AppTypography.headline.copyWith(
           fontWeight: FontWeight.w900,
           color: Colors.white,
         ),
@@ -77,7 +85,10 @@ class BkEAppBar extends StatelessWidget {
         ? leading!
         : Visibility(
             visible: onBackButtonPress != null,
-            child: const BackButton(color: Colors.white),
+            child: BackButton(
+              color: Colors.white,
+              onPressed: onBackButtonPress,
+            ),
           );
   }
 
