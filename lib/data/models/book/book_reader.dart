@@ -6,13 +6,13 @@ class BookReader {
   
   late final EbookModel ebook;
   late final MetaDataBook metadata;
-  // late final int ckpt; //checkpoint page
+  late final int ckpt; //checkpoint page
 
   BookReader.fromJson(Map<String, dynamic> json) {
     ebook = EbookModel.fromJson(json['bookDetail']);
    
     // metadata = MetaDataBook.fromJson(json['metaData']);
-    // ckpt = json["ckpt"];
+    ckpt = json["checkpoint"];
   }
 
   toList() {}

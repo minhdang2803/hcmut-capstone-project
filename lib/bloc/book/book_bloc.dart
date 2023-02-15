@@ -1,4 +1,5 @@
 import 'package:bke/data/models/book/book_info.dart';
+import 'package:bke/data/models/network/base_response.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 
@@ -26,17 +27,18 @@ class BookListBloc extends Bloc<BookListEvent, BookListState>{
       emit(BookListLoadingState('Home'));
       try{
   
-        var _response = await _bookRepos.getAll();
-        var _data = _response.data!.list ;
+        var response = await _bookRepos.getAll();
+        var homeData = response.data!.list ;
         // print(_data);
         _books = [];
        
-        for (var category in _data) {
+        for (var category in homeData) {
           _books = _books + category.list;
         }
+        
         // print(_books);
         
-        emit(BookListLoadedState(_data, 'Home'));
+        emit(BookListLoadedState(homeData, 'Home'));
       }
       catch(e){
         emit(BookListErrorState(e.toString()));
@@ -48,14 +50,26 @@ class BookListBloc extends Bloc<BookListEvent, BookListState>{
     emit(BookListLoadingState(event.category));
     
     try{
-        final response = await _bookRepos.getByCategory(event.category);
+        // ignore: prefer_typing_uninitialized_variables
+        late final response;
+        if (event.category == "Continue reading"){
+          response = await _bookRepos.getContinueReading();          
+        }
+        else if (event.category == "Continue listening"){
+          response = await _bookRepos.getContinueListening();
+        }
+        else if(event.category == "Favorite"){
+          response = await _bookRepos.getFavorites();
+        }
+        else{
+          response = await _bookRepos.getByCategory(event.category);
+        }
         _books = response.data?.list ?? [];
         emit(BookListLoadedState(_books,  event.category));
       }
       catch(e){
         emit(BookListErrorState(e.toString()));
       }
-
   }
 }
 
@@ -69,7 +83,9 @@ class BookBloc extends Bloc<BookEvent, BookState>{
     on<LoadDetailsEvent>(_onLoadDetails);
     on<LoadEbookEvent>(_onLoadEbook);
     on<LoadAudioBookEvent>(_onLoadAudioBook);
-    // on<UpdateCkptEvent>(_onUpdateCkpt);
+    on<UpdateCkptEvent>(_onUpdateCkpt);
+    on<AddFavoriteEvent>(_onAddFavorite);
+    on<RemoveFavoriteEvent>(_onRemoveFavorite);
   }
 
   void _onLoadDetails(LoadDetailsEvent event, Emitter<BookState> emit) async{
@@ -110,20 +126,24 @@ class BookBloc extends Bloc<BookEvent, BookState>{
   void _onLoadAudioBook(LoadAudioBookEvent event, Emitter<BookState> emit) async{
     emit(BookLoadingState());
       try{
-        final book = await _bookRepos.getAudioBook(event.bookId);
-        emit(AudioBookLoadedState(book));
+        final response = await _bookRepos.getAudioBook(event.bookId);
+        emit(AudioBookLoadedState(response.data!));
       }
       catch(e){
         emit(BookErrorState(e.toString()));
       }
   }
 
-  // void _onUpdateCkpt(UpdateCkptEvent event, Emitter<BookState> emit) async{
-  //     try{
-  //       await _bookRepos.updateCkptEvent(event.bookId);
-  //     }
-  //     catch(e){
-  //       emit(BookErrorState(e.toString()));
-  //     }
-  // }
+  void _onUpdateCkpt(UpdateCkptEvent event, Emitter<BookState> emit) async{
+      await _bookRepos.updateCkpt(event.bookId, event.ckpt, event.isEbook);
+  }
+
+  void _onAddFavorite(AddFavoriteEvent event, Emitter<BookState> emit) async{
+      await _bookRepos.addFavorite(event.bookId);
+  }
+
+  void _onRemoveFavorite(RemoveFavoriteEvent event, Emitter<BookState> emit) async{
+      await _bookRepos.removeFavorite(event.bookId);
+  }
+
 }

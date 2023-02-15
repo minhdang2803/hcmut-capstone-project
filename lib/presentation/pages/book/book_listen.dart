@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 import 'package:bke/presentation/theme/app_color.dart';
+import 'package:bke/utils/log_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -53,6 +54,9 @@ class _BookListen extends State<BookListen> {
       if (mounted){
         setState(() {
         _position = newPosition;
+        if (_position.inSeconds%30==0){
+        _bookBloc.add(UpdateCkptEvent(bookId: widget.bookInfo.id, ckpt: _position.inSeconds.toInt(), isEbook: false));
+        }
         });
       }
     });  
@@ -71,7 +75,6 @@ class _BookListen extends State<BookListen> {
   @override
   void dispose(){
     audioPlayer.dispose();
-    // _bookBloc.add(updateCkptEvent(bookId: _audioBook.bookId, newCkpt: _position.inSeconds.toInt()));
     _bookBloc.close();
     super.dispose();
   }  
@@ -86,8 +89,9 @@ class _BookListen extends State<BookListen> {
               child:
                 BlocBuilder<BookBloc, BookState>(
                   builder: (context, state) {
-                    print(state);
+                    LogUtil.debug('$state');
                     if (state is AudioBookLoadedState){ 
+                      
                       if (_isLoaded == false){
                         setAudioBook(state);
                       }

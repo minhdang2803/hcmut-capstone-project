@@ -28,6 +28,7 @@ class BookDetails extends StatefulWidget {
 
 class _BookDetails extends State<BookDetails> {
   late final BookBloc _bookBloc;
+  late final BookInfo _bookInfo;
   @override
   void initState() {
     super.initState();
@@ -48,14 +49,14 @@ class _BookDetails extends State<BookDetails> {
         create: (context) => _bookBloc,
         child: BlocBuilder<BookBloc, BookState>(builder: (context, state) {
           if (state is BookLoadedState) {
-            BookInfo book = state.book;
+            _bookInfo = state.book;
             return Scaffold(
                 body: Container(
                     height: size.height,
                     width: size.width,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: NetworkImage(book.coverUrl),
+                          image: NetworkImage(_bookInfo.coverUrl),
                           fit: BoxFit.cover),
                     ),
                     child: BackdropFilter(
@@ -70,7 +71,7 @@ class _BookDetails extends State<BookDetails> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  appBar(context),
+                                  _appBar(),
                                   Container(
                                     margin: const EdgeInsets.only(
                                       bottom: 20,
@@ -85,7 +86,7 @@ class _BookDetails extends State<BookDetails> {
                                             borderRadius:
                                                 BorderRadius.circular(20),
                                             child: Image.network(
-                                              book.coverUrl,
+                                              _bookInfo.coverUrl,
                                               fit: BoxFit.fill,
                                             ),
                                           ),
@@ -115,7 +116,7 @@ class _BookDetails extends State<BookDetails> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          book.author,
+                                          _bookInfo.author,
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline6!
@@ -129,7 +130,7 @@ class _BookDetails extends State<BookDetails> {
                                           height: 8,
                                         ),
                                         Text(
-                                          book.title,
+                                          _bookInfo.title,
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline5,
@@ -137,7 +138,7 @@ class _BookDetails extends State<BookDetails> {
                                         const SizedBox(height: 10),
                                         Row(
                                           mainAxisAlignment:
-                                              book.mp3Url != '' 
+                                              _bookInfo.mp3Url != '' 
                                               ?
                                               MainAxisAlignment.spaceAround 
                                               : MainAxisAlignment.start,
@@ -156,7 +157,7 @@ class _BookDetails extends State<BookDetails> {
                                                       .pushNamed(
                                                           RouteName.bookRead,
                                                           arguments:
-                                                              book.bookId);
+                                                              _bookInfo.bookId);
                                                 },
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -185,7 +186,7 @@ class _BookDetails extends State<BookDetails> {
                                               width: 10,
                                             ),
                                             Visibility(
-                                              visible: book.mp3Url != '',
+                                              visible: _bookInfo.mp3Url != '',
                                               child: Container(
                                                 width: size.width * 0.4,
                                                 height: 50,
@@ -198,10 +199,11 @@ class _BookDetails extends State<BookDetails> {
                                                   onPressed: () {
                                                     final argument =
                                                         BookListenArguments(
-                                                            book.bookId,
-                                                            book.title,
-                                                            book.coverUrl,
-                                                            book.mp3Url);
+                                                            _bookInfo.bookId,
+                                                            _bookInfo.id,
+                                                            _bookInfo.title,
+                                                            _bookInfo.coverUrl,
+                                                            _bookInfo.mp3Url);
                                                     Navigator.of(context)
                                                         .pushNamed(
                                                             RouteName.bookListen,
@@ -244,31 +246,34 @@ class _BookDetails extends State<BookDetails> {
               child: CircularProgressIndicator(color: AppColor.primary));
         }));
   }
+
+  Widget _appBar() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: AppColor.appBackground,
+              size: 24,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+          IconButton(
+            icon: Icon(
+              _bookInfo.isLiked! ? Icons.favorite : Icons.favorite_border,
+              color: AppColor.appBackground,
+              size: 24,
+            ),
+            onPressed: () => !_bookInfo.isLiked! ? _bookBloc.add(AddFavoriteEvent(bookId: _bookInfo.id))
+                                                : _bookBloc.add(RemoveFavoriteEvent(bookId: _bookInfo.id))
+          )
+        ],
+      ),
+    );
+  }
 }
 
-Widget appBar(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: AppColor.appBackground,
-            size: 24,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        IconButton(
-          icon: Icon(
-            Icons.more_horiz,
-            color: AppColor.appBackground,
-            size: 24,
-          ),
-          onPressed: () {},
-        )
-      ],
-    ),
-  );
-}
+

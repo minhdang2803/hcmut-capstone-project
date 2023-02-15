@@ -1,3 +1,5 @@
+import 'package:bke/bloc/book/book_event.dart';
+
 class EndPoint {
   static const _baseUrl = 'https://bkenglish-9ec8e.et.r.appspot.com/api';
   static const loginPath = '$_baseUrl/user/login';
@@ -19,7 +21,19 @@ class EndPoint {
 
   static const getAllBooks = '$_baseUrl/BookInfo';
   static const getHomepageList = '$_baseUrl/BookInfo/listCategory';
+
+  static const getContinueReading = '$_baseUrl/bookCheckpoint/getAllEBook';
+  static const getContinueListening = '$_baseUrl/bookCheckpoint/getAllAudiobook';
+  static const getFavorites = '$_baseUrl/bookFavorites/getAll';
+
   static const getBookInfo = '$_baseUrl/bookInfo/getOne';
 
   static const getEbook = '$_baseUrl/bookDetail';
+  static const getAudiobook = '$_baseUrl/bookDetail/audio';
+
+
+  static const updateCkpt = '$_baseUrl/bookCheckpoint/add';
+
+  static const addFavorite = '$_baseUrl/bookFavorites/add';
+  static const removeFavorite = '$_baseUrl/bookFavorites/delete';
 }

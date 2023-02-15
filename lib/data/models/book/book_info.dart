@@ -10,7 +10,8 @@ class BookInfos {
   List<BookInfo> list = [];
   // late final MetaDataModel metadata;
 
-  BookInfos.fromJson(Map<String, dynamic> json) {
+  BookInfos.fromJson(json) {
+
     if (json['data'] != null) {
       for (var e in (json['data'] as List)) {
         list.add(BookInfo.fromJson(e));
@@ -36,9 +37,11 @@ class BookInfosV2 {
   }
 }
 
+
 class BookInfo {
   BookInfo({
     required this.bookId,
+    required this.id,
     required this.title,
     required this.author,
     required this.coverUrl,
@@ -48,11 +51,12 @@ class BookInfo {
     required this.totalWords,
     required this.length,
     required this.mp3Url,
+    this.checkpoint,
     this.isLiked,
-    this.mode
   });
 
   late final String bookId;
+  late final String id;
   late final String title;
   late final String author;
   late final String coverUrl;
@@ -62,12 +66,12 @@ class BookInfo {
   late final String totalWords;
   late final String length;
   late final String mp3Url;
-
+  late final int? checkpoint;
   late final bool? isLiked;
-  late final int? mode; //to go to Info page, Read page or Listen page?
 
   BookInfo.fromJson(Map<String, dynamic> json) {
     bookId = json["bookId"];
+    id = json["_id"];
     title = json["title"];
     author = json["author"];
     coverUrl = json["coverUrl"];
@@ -77,8 +81,9 @@ class BookInfo {
     totalWords = json["totalWords"];
     length = json["length"];
     mp3Url = json["mp3Url"];
+    checkpoint = json["checkpoint"];
     isLiked = json["isLiked"];
-    mode = json["mode"];
+    // mode = json["mode"];
   }
 }
 
@@ -98,3 +103,7 @@ class BookInfoV2 {
     // metadata = MetaDataModel.fromJson(json['meta_data']);
   }
 }
+
+
+
+
