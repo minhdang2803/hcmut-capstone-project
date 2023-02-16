@@ -1,6 +1,8 @@
+import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
 import 'package:bke/presentation/pages/home/navigation_page.dart';
 import 'package:bke/presentation/pages/uitest/uitest_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -21,7 +23,9 @@ class _MainPageState extends State<MainPage> {
   final List<Widget> _pages = [
     const NavigationPage(),
     const LookUpPage(),
-    const UITestPage(),
+    Container(
+      color: Colors.blue,
+    ),
     const ProfilePage(),
   ];
 

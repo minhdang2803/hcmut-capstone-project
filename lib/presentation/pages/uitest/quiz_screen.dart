@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:bke/bloc/quiz/cubit/quiz_map_cubit.dart';
+
+import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
+import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
@@ -50,22 +52,22 @@ class _QuizScreenState extends State<QuizScreen>
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.primary,
       appBar: _buildAppbar(),
       body: SafeArea(
         bottom: false,
-        child: BlocBuilder<QuizMapCubit, QuizMapState>(
-          // selector: (state) => state.status == QuizStatus.done,
+        child: BlocConsumer<QuizCubit, QuizState>(
+          listener: (context, state) {
+            if (state.status == QuizStatus.finished) {
+              Navigator.pushReplacementNamed(context, RouteName.quizDoneScreen,
+                  arguments: context);
+            }
+          },
           builder: (context, state) {
             if (state.status == QuizStatus.loading ||
-                state.status == QuizStatus.initial) {
+                state.status == QuizStatus.finished) {
               return SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
@@ -117,7 +119,7 @@ class _QuizScreenState extends State<QuizScreen>
   }
 
   Widget _buildPicture() {
-    return BlocBuilder<QuizMapCubit, QuizMapState>(
+    return BlocBuilder<QuizCubit, QuizState>(
       builder: (context, state) {
         return QuizPicture(
           imgData: state.quizMC![state.currentIndex!].imgUrl!,
@@ -133,7 +135,7 @@ class _QuizScreenState extends State<QuizScreen>
       children: [
         SizedBox(
           height: 10.h,
-          child: BlocBuilder<QuizMapCubit, QuizMapState>(
+          child: BlocBuilder<QuizCubit, QuizState>(
             builder: (context, state) {
               return LinearProgressIndicator(
                 value: (state.currentIndex! + 1) / state.total!,
@@ -148,7 +150,7 @@ class _QuizScreenState extends State<QuizScreen>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              BlocBuilder<QuizMapCubit, QuizMapState>(
+              BlocBuilder<QuizCubit, QuizState>(
                 builder: (context, state) {
                   return Text(
                     "Question: ${state.currentIndex! + 1}/${state.total}",
@@ -178,7 +180,7 @@ class _QuizScreenState extends State<QuizScreen>
       backgroundColor: AppColor.primary,
       onTap: () {
         print("hello");
-        context.read<QuizMapCubit>().onSubmit();
+        context.read<QuizCubit>().onSubmit();
       },
     );
   }
@@ -187,7 +189,7 @@ class _QuizScreenState extends State<QuizScreen>
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
       padding: EdgeInsets.all(10.r),
-      child: BlocBuilder<QuizMapCubit, QuizMapState>(
+      child: BlocBuilder<QuizCubit, QuizState>(
         builder: (context, state) {
           if (state.status == QuizStatus.done) {
             return AutoSizeText(
@@ -219,11 +221,11 @@ class _QuizScreenState extends State<QuizScreen>
     double width = 130.h;
     double height = 50.w;
     Color backgroundColor = AppColor.accentBlue;
-    final cubit = context.read<QuizMapCubit>();
+    final cubit = context.read<QuizCubit>();
     return SizedBox(
       width: 341.w,
       height: 100.h,
-      child: BlocBuilder<QuizMapCubit, QuizMapState>(
+      child: BlocBuilder<QuizCubit, QuizState>(
         builder: (context, state) {
           return Stack(
             children: [
@@ -313,9 +315,7 @@ class _QuizScreenState extends State<QuizScreen>
           BackButton(
             color: Colors.white,
             onPressed: () {
-              print(context.read<QuizMapCubit>().state);
               Navigator.pop(context);
-              context.read<QuizMapCubit>().exit();
             },
           ),
           Align(

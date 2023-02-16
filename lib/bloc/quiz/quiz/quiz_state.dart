@@ -1,9 +1,9 @@
-part of 'quiz_map_cubit.dart';
+part of 'quiz_cubit.dart';
 
 enum QuizStatus { loading, initial, done, fail, finished }
 
-class QuizMapState extends Equatable {
-  QuizMapState({
+class QuizState extends Equatable {
+  QuizState({
     this.quizId,
     this.time,
     this.total,
@@ -27,7 +27,7 @@ class QuizMapState extends Equatable {
   late final String? errorMessage;
   late final List<bool>? isChosen;
 
-  QuizMapState.initial() {
+  QuizState.initial() {
     quizId = -1;
     status = QuizStatus.initial;
     time = 30;
@@ -40,7 +40,7 @@ class QuizMapState extends Equatable {
     isChosen = [false, false, false, false];
   }
 
-  QuizMapState copyWith({
+  QuizState copyWith({
     int? quizId,
     QuizStatus? status,
     int? time,
@@ -52,7 +52,7 @@ class QuizMapState extends Equatable {
     String? errorMessage,
     List<bool>? isChosen,
   }) {
-    return QuizMapState(
+    return QuizState(
       quizId: quizId ?? this.quizId,
       isChosen: isChosen ?? this.isChosen,
       quizMC: quizMC ?? this.quizMC,

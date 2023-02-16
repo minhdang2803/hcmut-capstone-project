@@ -17,6 +17,12 @@ import '../../theme/app_typography.dart';
 import '../../widgets/holder_widget.dart';
 import 'component/bottom_vocabulary.dart';
 
+class VideoPlayerPageModel {
+  final BuildContext context;
+  final VideoYoutubeInfo video;
+  VideoPlayerPageModel({required this.context, required this.video});
+}
+
 class VideoPlayerPage extends StatefulWidget {
   const VideoPlayerPage({super.key, required this.video});
   final VideoYoutubeInfo video;

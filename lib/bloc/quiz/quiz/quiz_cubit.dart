@@ -1,16 +1,13 @@
-import 'dart:math';
-
 import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
 import 'package:bke/data/repositories/quiz_repository.dart';
-import 'package:bke/presentation/pages/uitest/component/map_object.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-part 'quiz_map_state.dart';
+part 'quiz_state.dart';
 
-class QuizMapCubit extends Cubit<QuizMapState> {
-  QuizMapCubit() : super(QuizMapState.initial());
+class QuizCubit extends Cubit<QuizState> {
+  QuizCubit() : super(QuizState.initial());
 
   final instance = QuizRepository.instance();
 
@@ -28,7 +25,7 @@ class QuizMapCubit extends Cubit<QuizMapState> {
         ),
       );
     } on RemoteException catch (error) {
-      emit(QuizMapState.initial());
+      emit(QuizState.initial());
       emit(
         state.copyWith(
           status: QuizStatus.fail,
@@ -39,16 +36,17 @@ class QuizMapCubit extends Cubit<QuizMapState> {
   }
 
   void exit() {
-    emit(QuizMapState.initial());
+    emit(QuizState.initial());
   }
 
-  void onChosen(int index, String answer) {
+  void onChosen(int index, String userAnswer) {
     emit(state.copyWith(status: QuizStatus.loading));
     final isChosen = [false, false, false, false];
     emit(state.copyWith(isChosen: isChosen));
     isChosen[index] = true;
     emit(state.copyWith(isChosen: isChosen, status: QuizStatus.done));
-    if (answer == state.quizMC![index].vocabAns![index]) {
+    final answer = state.quizMC![state.currentIndex!].answer;
+    if (userAnswer == answer) {
       emit(state.copyWith(
         totalCorrect: state.totalCorrect! + 1,
         // status: QuizStatus.done,

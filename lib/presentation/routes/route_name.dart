@@ -1,3 +1,5 @@
+import 'package:bke/presentation/pages/video/video_page.dart';
+
 class RouteName {
   static const splash = '/';
   static const main = '/main';
@@ -15,6 +17,7 @@ class RouteName {
   static const testToeic = '/test_toeic';
   static const resultToeic = '/result_toeic';
 
+  static const videoPage = "/videoPage";
   static const videoPlayer = '/video_player';
   static const videoSeeMore = '/video_see_more';
   static const myDictionary = '/my_dictionary';
@@ -32,4 +35,8 @@ class RouteName {
   static const flashCardRandomScreen = "flashcard_random_info_screen";
 
   static const quizScreen = "/quizScreen";
+  static const quizDoneScreen = "quizDoneScreen";
+  static const quizMapScreen = "/quizMapScreen";
+
+  static const chatPage = "/chatPage";
 }

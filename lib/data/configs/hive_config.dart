@@ -1,6 +1,7 @@
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
 import 'package:bke/data/models/video/video_last_watch_model.dart';
+import 'package:bke/presentation/pages/uitest/component/map_object.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../models/authentication/user.dart';
@@ -16,23 +17,35 @@ class HiveConfig {
   static const fcByUser = "FlashcardByUser";
   static const videoLastWatchByUser = "videoLastWatchByUser";
   static const recentlyList = "recentlyList";
-  static const quizMCAnswer = "quizMCAnswers";
+  static const quizMCAnswers = "quizMCAnswers";
   static const quizMCtests = "quizMCTests";
+  static const mapObject = "mapObject";
+
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(UserAdapter());
+
     Hive.registerAdapter(LocalVocabInfoAdapter());
     Hive.registerAdapter(PronounceAdapter());
     Hive.registerAdapter(TranslateInfoAdapter());
+
     Hive.registerAdapter(FlashcardCollectionModelAdapter());
     Hive.registerAdapter(FCCollectionByUserAdapter());
+
     Hive.registerAdapter(LocalVocabInfoListAdapter());
+
     Hive.registerAdapter(VideoLastWatchListsAdapter());
+
     Hive.registerAdapter(VideoLastWatchInfoListsAdapter());
+
     Hive.registerAdapter(QuizMultipleChoiceLocalModelAdapter());
     Hive.registerAdapter(GameTypeAdapter());
-    Hive.registerAdapter(QuizMCAnswerModelAdapter());
     Hive.registerAdapter(QuizMCTestsAdapter());
+
+    Hive.registerAdapter(QuizMCAnswerAdapter());
+
+    Hive.registerAdapter(MapObjectAdapter());
+    Hive.registerAdapter(ListMapObjectAdapter());
 
     await Hive.openBox(userBox);
     await Hive.openBox(localVocabs);
@@ -41,6 +54,7 @@ class HiveConfig {
     await Hive.openBox(videoLastWatchByUser);
     await Hive.openBox(recentlyList);
     await Hive.openBox(quizMCtests);
-    await Hive.openBox(quizMCAnswer);
+    await Hive.openBox(quizMCAnswers);
+    await Hive.openBox(mapObject);
   }
 }

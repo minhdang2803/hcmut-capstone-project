@@ -125,6 +125,7 @@ class _VideoPageState extends State<VideoPage>
                     Navigator.of(context).pushNamed(
                       RouteName.videoSeeMore,
                       arguments: VideoSeeMorePageModel(
+                        context: context,
                         category: "Recently videos",
                         action: action,
                       ),
@@ -145,6 +146,7 @@ class _VideoPageState extends State<VideoPage>
                       Navigator.of(context).pushNamed(
                         RouteName.videoSeeMore,
                         arguments: VideoSeeMorePageModel(
+                          context: context,
                           category: e.first.category,
                           action: action,
                         ),

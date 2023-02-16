@@ -1,3 +1,6 @@
+import 'dart:collection';
+
+import 'package:bke/data/models/quiz/quiz.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 part "quiz_model.g.dart";
@@ -11,10 +14,13 @@ enum GameType {
 }
 
 @HiveType(typeId: 12)
-class QuizMCAnswerModel extends HiveObject {
+class QuizMCAnswer extends HiveObject {
   @HiveField(0)
-  final Set<Map<String, dynamic>> answers;
-  QuizMCAnswerModel({required this.answers});
+  final List<Map<String, dynamic>> answer;
+
+  QuizMCAnswer({
+    required this.answer,
+  });
 }
 
 @HiveType(typeId: 13)

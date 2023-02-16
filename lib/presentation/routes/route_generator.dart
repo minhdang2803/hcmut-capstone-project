@@ -1,13 +1,21 @@
+import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
+import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
+import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
 import 'package:bke/bloc/video/last_watch_video/last_watch_video_cubit.dart';
 import 'package:bke/bloc/video/video_cubit.dart';
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/video/video_youtube_info_model.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/pages/book/books_screen.dart';
+import 'package:bke/presentation/pages/chat/chat.dart';
+import 'package:bke/presentation/pages/flashcard/flashcard_collection_page.dart';
 import 'package:bke/presentation/pages/flashcard/flashcard_info_page.dart';
 import 'package:bke/presentation/pages/flashcard/flashcard_page.dart';
 import 'package:bke/presentation/pages/flashcard/flashcard_random_page.dart';
+import 'package:bke/presentation/pages/uitest/done_screen.dart';
 import 'package:bke/presentation/pages/uitest/quiz_screen.dart';
+import 'package:bke/presentation/pages/uitest/uitest_page.dart';
+import 'package:bke/presentation/pages/video/video_page.dart';
 import 'package:bke/utils/enum.dart';
 
 import 'package:flutter/material.dart';
@@ -57,12 +65,12 @@ class RouteGenerator {
         page = const NotificationsPage();
         break;
 
-      case RouteName.startQuiz:
-        page = const StartGame02();
-        break;
-      case RouteName.game:
-        page = const GamePage();
-        break;
+      // case RouteName.startQuiz:
+      //   page = const StartGame02();
+      //   break;
+      // case RouteName.game:
+      //   page = const GamePage();
+      //   break;
 
       case RouteName.startToeic:
         page = const StartToeic();
@@ -75,23 +83,51 @@ class RouteGenerator {
       case RouteName.resultToeic:
         page = const ResultToeicPage();
         break;
+      case RouteName.quizMapScreen:
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => MapCubit()),
+            BlocProvider(create: (context) => QuizCubit()),
+          ],
+          child: const UITestPage(),
+        );
+        break;
+
+      case RouteName.chatPage:
+        page = const ChatPage();
+        break;
+
+      case RouteName.videoPage:
+        page = BlocProvider(
+          create: (context) => CategoryVideoCubit(),
+          child: const VideoPage(),
+        );
+        break;
 
       case RouteName.videoPlayer:
-        final videoId = settings.arguments as VideoYoutubeInfo;
+        final videoId = settings.arguments as VideoPlayerPageModel;
         page = MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => VideoCubit()),
             BlocProvider(create: (context) => LastWatchVideoCubit()),
           ],
-          child: VideoPlayerPage(video: videoId),
+          child: BlocProvider.value(
+            value: BlocProvider.of<CategoryVideoCubit>(videoId.context,
+                listen: false),
+            child: VideoPlayerPage(video: videoId.video),
+          ),
         );
         break;
 
       case RouteName.videoSeeMore:
         final argeuments = settings.arguments as VideoSeeMorePageModel?;
-        page = VideoSeeMorePage(
-          action: argeuments!.action,
-          category: argeuments.category,
+        page = BlocProvider.value(
+          value: BlocProvider.of<CategoryVideoCubit>(argeuments!.context,
+              listen: false),
+          child: VideoSeeMorePage(
+            action: argeuments.action,
+            category: argeuments.category,
+          ),
         );
         break;
 
@@ -101,22 +137,27 @@ class RouteGenerator {
 
       case RouteName.vocabFullInfo:
         final vocab = settings.arguments as LocalVocabInfo;
-        page = VocabFullInfoPage(
-          vocabInfo: vocab,
-        );
+        page = VocabFullInfoPage(vocabInfo: vocab);
         break;
+
+      case RouteName.flashCardCollectionScreen:
+        page = const FlashcardCollectionScreen();
+        break;
+
       case RouteName.flashCardScreen:
         final flashcard = settings.arguments as FlashcardPageModel;
         page = FlashCardScreen(
-            currentCollection: flashcard.currentCollection,
-            collectionTitle: flashcard.collectionTitle);
+          currentCollection: flashcard.currentCollection,
+          collectionTitle: flashcard.collectionTitle,
+        );
         break;
 
       case RouteName.flashCardRandomScreen:
         final flashcard = settings.arguments as FlashcardPageModel;
         page = FlashcardRandomScreen(
-            currentCollection: flashcard.currentCollection,
-            collectionTitle: flashcard.collectionTitle);
+          currentCollection: flashcard.currentCollection,
+          collectionTitle: flashcard.collectionTitle,
+        );
         break;
 
       case RouteName.flashCardInfoScreen:
@@ -125,7 +166,18 @@ class RouteGenerator {
         break;
 
       case RouteName.quizScreen:
-        page = QuizScreen();
+        final context = settings.arguments as BuildContext;
+        page = BlocProvider.value(
+          value: BlocProvider.of<QuizCubit>(context, listen: false),
+          child: const QuizScreen(),
+        );
+        break;
+
+      case RouteName.quizDoneScreen:
+        final context = settings.arguments as BuildContext;
+        page = BlocProvider.value(
+            value: BlocProvider.of<QuizCubit>(context, listen: false),
+            child: const QuizDoneScreen());
         break;
 
       case RouteName.bookPage:

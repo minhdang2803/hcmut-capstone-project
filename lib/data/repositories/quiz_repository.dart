@@ -1,6 +1,7 @@
 import 'package:bke/data/data_source/local/local_sources.dart';
 import 'package:bke/data/data_source/remote/quiz/quiz_remote_source.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
+import 'package:bke/presentation/pages/uitest/component/map_object.dart';
 
 class QuizRepository {
   late final QuizRemoteSource _remote;
@@ -29,11 +30,15 @@ class QuizRepository {
     _local.saveResultToLocal(level, result);
   }
 
-  List<Map<String, dynamic>> getResultsFromLocal() {
-    return _local.getResultsFromLocal();
+  Map<String, dynamic> getResultsFromLocal(int level) {
+    return _local.getResultFromLocalByLevel(level);
   }
 
-  Map<String, dynamic> getAnAnswerFromLocal(int level, int quizId) {
-    return _local.getAnAnswerFromLocal(level, quizId);
+  Map<String, dynamic> getAnAnswerFromLocal(int level) {
+    return _local.getResultFromLocalByLevel(level);
+  }
+
+  List<MapObject> getListMapObject() {
+    return _local.getListMapObject();
   }
 }

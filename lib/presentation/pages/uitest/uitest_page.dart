@@ -1,5 +1,5 @@
-import 'package:bke/bloc/quiz/cubit/quiz_map_cubit.dart';
-import 'package:bke/presentation/pages/uitest/quiz_screen.dart';
+import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
+import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
 import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
@@ -7,6 +7,7 @@ import 'package:bke/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletons/skeletons.dart';
 
 import 'component/map_container.dart';
 import 'component/map_object.dart';
@@ -19,8 +20,6 @@ class UITestPage extends StatefulWidget {
 }
 
 class _UITestPageState extends State<UITestPage> {
-  late final List<MapObject> _originObjects;
-
   double getScreenSize() {
     String getDoubleRoundedToTwo(double size) {
       return size.toStringAsFixed(2);
@@ -51,20 +50,33 @@ class _UITestPageState extends State<UITestPage> {
   @override
   void initState() {
     super.initState();
-    _originObjects = [
-      // line 2
-      MapObject(
-        id: '1',
-        offset: const Offset(0.36, 0.68),
-        size: Size(25.r, 25.r),
-      ),
-      MapObject(
-        id: '2',
-        offset: const Offset(-0.12, 0.53),
-        size: Size(25.r, 25.r),
-        isDone: false,
-      ),
-    ];
+    context.read<MapCubit>().getMapObject();
+    // _originObjects = [
+    //   // line 2
+    //   MapObject(
+    //     id: '1',
+    //     offset: const Offset(-0.12, 0.97),
+    //     size: Size(25.r, 25.r),
+    //   ),
+    //   MapObject(
+    //     id: '2',
+    //     offset: const Offset(0.5, 0.93),
+    //     size: Size(25.r, 25.r),
+    //     isDone: false,
+    //   ),
+    //   MapObject(
+    //     id: '3',
+    //     offset: const Offset(0.13, 0.86),
+    //     size: Size(25.r, 25.r),
+    //     isDone: false,
+    //   ),
+    //   MapObject(
+    //     id: '4',
+    //     offset: const Offset(0.25, 0.78),
+    //     size: Size(25.r, 25.r),
+    //     isDone: false,
+    //   ),
+    // ];
   }
 
   @override
@@ -106,29 +118,46 @@ class _UITestPageState extends State<UITestPage> {
           // ),
           child: LayoutBuilder(
             builder: (ctx, constraints) {
-              return MapContainer(
-                initZoomLevel: getScreenSize(),
-                assetImage: 'assets/images/mapQuiz.jpg',
-                width: constraints.maxWidth,
-                height: constraints.maxHeight,
-                backgroundColor: const Color(0xFFC0C0C0),
-                objects: _originObjects,
-                onItemClick: (mapObj) {
-                  if (mapObj.isDone) {
-                    context.read<QuizMapCubit>().getLevel(int.parse(mapObj.id));
-                    Navigator.pushNamed(context, RouteName.quizScreen);
-                  } else if (!mapObj.isDone) {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return BKEDialog(
-                          title: "Cảnh báo",
-                          message: "Bạn phải hoàn thành màn chơi trước",
-                          onDismissed: () => Navigator.pop(context),
-                        );
-                      },
+              return BlocBuilder<MapCubit, MapState>(
+                builder: (context, state) {
+                  if (state.status == MapStatus.loading) {
+                    return SizedBox(
+                      width: constraints.maxWidth,
+                      height: constraints.maxHeight,
+                      child: SkeletonLine(
+                        style: SkeletonLineStyle(
+                            borderRadius: BorderRadius.circular(20.r)),
+                      ),
                     );
                   }
+                  return MapContainer(
+                    initZoomLevel: getScreenSize(),
+                    assetImage: 'assets/images/mapQuiz.jpg',
+                    width: constraints.maxWidth,
+                    height: constraints.maxHeight,
+                    backgroundColor: const Color(0xFFC0C0C0),
+                    objects: state.listMapObject!,
+                    onItemClick: (mapObj) {
+                      if (mapObj.isDone) {
+                        context
+                            .read<QuizCubit>()
+                            .getLevel(int.parse(mapObj.id));
+                        Navigator.pushNamed(context, RouteName.quizScreen,
+                            arguments: context);
+                      } else if (!mapObj.isDone) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return BKEDialog(
+                              title: "Cảnh báo",
+                              message: "Bạn phải hoàn thành màn chơi trước",
+                              onDismissed: () => Navigator.pop(context),
+                            );
+                          },
+                        );
+                      }
+                    },
+                  );
                 },
               );
             },

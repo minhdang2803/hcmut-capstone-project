@@ -1,4 +1,5 @@
 import 'package:bke/data/models/video/video_youtube_info_model.dart';
+import 'package:bke/presentation/pages/video/video_player_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,7 +23,7 @@ class VideoYoutubeHorizontalList extends StatelessWidget {
   void onItemClick(BuildContext context, VideoYoutubeInfo item) {
     Navigator.of(context).pushNamed(
       RouteName.videoPlayer,
-      arguments: item,
+      arguments: VideoPlayerPageModel(context: context, video: item),
     );
   }
 

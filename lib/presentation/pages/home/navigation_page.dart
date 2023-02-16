@@ -8,13 +8,16 @@ import 'package:bke/presentation/pages/home/components/join_quiz_card.dart';
 import 'package:bke/presentation/pages/toeic_test/main/toeictest_page.dart';
 import 'package:bke/presentation/pages/uitest/uitest_page.dart';
 import 'package:bke/presentation/pages/video/video_page.dart';
+import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/utils/enum.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../../bloc/quiz/quiz_map/map_cubit.dart';
 import '../../theme/app_color.dart';
 import '../main/components/monastery_search_delegate.dart';
 
@@ -26,20 +29,19 @@ class NavigationPage extends StatefulWidget {
 }
 
 class _NavigationPageState extends State<NavigationPage> {
-  late final List<Widget> _pages;
+  late final List<String> _pages;
   late int _pageIndex;
   @override
   void initState() {
     super.initState();
     _pageIndex = 0;
     _pages = [
-      const VideoPage(),
-      const BookPage(),
-      const FlashcardCollectionScreen(),
-      const ToeicPage(),
-      // const GameQuizPage(),
-      const UITestPage(),
-      const ChatPage(),
+      RouteName.videoPage,
+      RouteName.bookPage,
+      RouteName.flashCardCollectionScreen,
+      RouteName.startToeic,
+      RouteName.quizMapScreen,
+      RouteName.chatPage
     ];
   }
 
@@ -122,12 +124,7 @@ class _NavigationPageState extends State<NavigationPage> {
               setState(() {
                 _pageIndex = index;
               });
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) {
-                  return _pages[index];
-                }),
-              );
+              Navigator.pushNamed(context, _pages[index]);
             },
             child: Container(
               margin: const EdgeInsets.only(

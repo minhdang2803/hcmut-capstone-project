@@ -1,5 +1,6 @@
 import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/video/video_youtube_info_model.dart';
+import 'package:bke/presentation/pages/video/video_player_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,9 +16,14 @@ import '../../../widgets/custom_app_bar.dart';
 import '../widgets/video_youtube_item.dart';
 
 class VideoSeeMorePageModel {
+  final BuildContext context;
   final String category;
   final SeeMoreVideoAction? action;
-  VideoSeeMorePageModel({required this.category, this.action});
+  VideoSeeMorePageModel({
+    required this.category,
+    this.action,
+    required this.context,
+  });
 }
 
 class VideoSeeMorePage extends StatefulWidget {
@@ -161,7 +167,8 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
                   onTap: () {
                     Navigator.of(context).pushNamed(
                       RouteName.videoPlayer,
-                      arguments: item,
+                      arguments:
+                          VideoPlayerPageModel(context: context, video: item),
                     );
                   },
                   child: VideoYoutubeItem(
@@ -169,7 +176,8 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
                     onItemClick: () {
                       Navigator.of(context).pushNamed(
                         RouteName.videoPlayer,
-                        arguments: item,
+                        arguments:
+                            VideoPlayerPageModel(context: context, video: item),
                       );
                     },
                   ),

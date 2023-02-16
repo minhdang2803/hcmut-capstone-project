@@ -6,29 +6,29 @@ part of 'quiz_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class QuizMCAnswerModelAdapter extends TypeAdapter<QuizMCAnswerModel> {
+class QuizMCAnswerAdapter extends TypeAdapter<QuizMCAnswer> {
   @override
   final int typeId = 12;
 
   @override
-  QuizMCAnswerModel read(BinaryReader reader) {
+  QuizMCAnswer read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return QuizMCAnswerModel(
-      answers: (fields[0] as List)
+    return QuizMCAnswer(
+      answer: (fields[0] as List)
           .map((dynamic e) => (e as Map).cast<String, dynamic>())
-          .toSet(),
+          .toList(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, QuizMCAnswerModel obj) {
+  void write(BinaryWriter writer, QuizMCAnswer obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.answers.toList());
+      ..write(obj.answer);
   }
 
   @override
@@ -37,7 +37,7 @@ class QuizMCAnswerModelAdapter extends TypeAdapter<QuizMCAnswerModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is QuizMCAnswerModelAdapter &&
+      other is QuizMCAnswerAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
