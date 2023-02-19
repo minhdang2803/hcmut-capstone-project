@@ -1,18 +1,14 @@
-import 'package:bke/bloc/book/book_event.dart';
 import 'package:bke/data/models/book/book_info.dart';
 import 'package:bke/data/models/book/book_reader.dart';
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/utils/log_util.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../../../utils/constants.dart';
-import 'example_data.dart';
 
 import '../../../configs/endpoint.dart';
 import '../../../configs/hive_config.dart';
 import '../../../models/network/api_service_request.dart';
 import '../../../models/network/base_response.dart';
-import '../../../models/video/sub_video.dart';
-import '../../../models/video/video_youtube_info.dart';
 import '../../../services/api_service.dart';
 
 abstract class BookSource {
@@ -168,8 +164,7 @@ class BookSourceImpl extends BookSource {
       'bookId': bookId,
       'limit': Constants.defaultReadingPageSize,
       'page': pageKey
-    }; //1 page returns 200 sentences
-
+    }; 
     final request = APIServiceRequest(
       path,
       queryParams: params,

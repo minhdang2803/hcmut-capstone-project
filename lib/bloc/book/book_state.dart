@@ -58,6 +58,14 @@ class EbookLoadedState extends BookState{
   List<Object?> get props => [book];
 }
 
+class EbookLoadedAnotherState extends BookState{
+  EbookLoadedAnotherState(this.book);
+  final BookReader? book;
+
+  @override
+  List<Object?> get props => [book];
+}
+
 class AudioBookLoadedState extends BookState{
   AudioBookLoadedState(this.book);
   final BookListener book;

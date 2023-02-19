@@ -16,7 +16,7 @@ import '../../../bloc/book/book_event.dart';
 
 class BookListen extends StatefulWidget {
   const BookListen({super.key, required this.bookInfo});
-  final BookListenArguments bookInfo; 
+  final BookArguments bookInfo; 
 
   @override
   State<BookListen> createState() => _BookListen();
@@ -64,10 +64,15 @@ class _BookListen extends State<BookListen> {
   }
 
   void setAudioBook(state) async{
-    _audioBook = state.book;      
+    _audioBook = state.book;   
+    print(_audioBook.bookId);  
+    print(_audioBook.ckpt);  
     _position = Duration(seconds: _audioBook.ckpt);
-    await audioPlayer.play(UrlSource(widget.bookInfo.mp3Url), position: _position);
+    await audioPlayer.play(UrlSource(widget.bookInfo.mp3Url!), position: _position);
+    await audioPlayer.seek(_position);
+    
     _isLoaded = true;
+    
   }
     
 
@@ -89,7 +94,7 @@ class _BookListen extends State<BookListen> {
               child:
                 BlocBuilder<BookBloc, BookState>(
                   builder: (context, state) {
-                    LogUtil.debug('$state');
+                    
                     if (state is AudioBookLoadedState){ 
                       
                       if (_isLoaded == false){
@@ -100,7 +105,7 @@ class _BookListen extends State<BookListen> {
                               height: size.height,
                               width: size.width,
                               decoration: BoxDecoration(
-                                image: DecorationImage(image: NetworkImage(widget.bookInfo.coverUrl), fit: BoxFit.cover),
+                                image: DecorationImage(image: NetworkImage(widget.bookInfo.coverUrl!), fit: BoxFit.cover),
                               ),
                               child: BackdropFilter(
                                 filter: ImageFilter.blur(
@@ -128,7 +133,7 @@ class _BookListen extends State<BookListen> {
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.circular(20),
                                                   child: Image.network(
-                                                    widget.bookInfo.coverUrl,
+                                                    widget.bookInfo.coverUrl!,
                                                     fit: BoxFit.fill,
                                                   ),
                                                 ),
@@ -158,7 +163,7 @@ class _BookListen extends State<BookListen> {
                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Text(
-                                                  widget.bookInfo.title,
+                                                  widget.bookInfo.title!,
                                                   style: TextStyle(
                                                     fontSize: 25,
                                                     color:  AppColor.textPrimary,

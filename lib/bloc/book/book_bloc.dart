@@ -31,6 +31,9 @@ class BookListBloc extends Bloc<BookListEvent, BookListState>{
         var homeData = response.data!.list ;
         // print(_data);
         _books = [];
+        // homeData[0].list = homeData[0].list.reversed as List<BookInfo>;
+        // homeData[1].list = homeData[1].list.reversed as List<BookInfo>;
+        // homeData[2].list = homeData[2].list.reversed as List<BookInfo>;
        
         for (var category in homeData) {
           _books = _books + category.list;
@@ -82,6 +85,7 @@ class BookBloc extends Bloc<BookEvent, BookState>{
   BookBloc() : super(BookLoadingState()){
     on<LoadDetailsEvent>(_onLoadDetails);
     on<LoadEbookEvent>(_onLoadEbook);
+    on<LoadEbookAnotherEvent>(_onLoadEbookAnother);
     on<LoadAudioBookEvent>(_onLoadAudioBook);
     on<UpdateCkptEvent>(_onUpdateCkpt);
     on<AddFavoriteEvent>(_onAddFavorite);
@@ -91,13 +95,10 @@ class BookBloc extends Bloc<BookEvent, BookState>{
   void _onLoadDetails(LoadDetailsEvent event, Emitter<BookState> emit) async{
     emit(BookLoadingState());
       try{
-        BookInfo _matchBook = _books.firstWhere((e) => (e.bookId == event.bookId));
-        if (_matchBook == null){
-          final response = await _bookRepos.getBookInfo(event.bookId);
-          _matchBook = response.data!;
-        }
         
-
+        final response = await _bookRepos.getBookInfo(event.bookId);
+        final _matchBook = response.data!;
+        
         emit(BookLoadedState(_matchBook));
       }
       catch(e){
@@ -109,12 +110,33 @@ class BookBloc extends Bloc<BookEvent, BookState>{
   void _onLoadEbook(LoadEbookEvent event, Emitter<BookState> emit) async{
     emit(BookLoadingState());
       try{
+  
         final response = await _bookRepos.getEbook(event.bookId, event.pageKey);
-        print(response.message);
+        
         final bookReader = response.data;
         
         emit(EbookLoadedState(bookReader));
-      } on RemoteException catch (e, s) {
+      } 
+      on RemoteException catch (e, s) {
+      LogUtil.error('Get Ebook error ${e.message}',
+            error: e, stackTrace: s);
+      }
+      catch(e){
+        emit(BookErrorState(e.toString()));
+      }
+  }
+
+  void _onLoadEbookAnother(LoadEbookAnotherEvent event, Emitter<BookState> emit) async{
+    emit(BookLoadingState());
+      try{
+  
+        final response = await _bookRepos.getEbook(event.bookId, event.pageKey);
+        
+        final bookReader = response.data;
+        
+        emit(EbookLoadedAnotherState(bookReader));
+      } 
+      on RemoteException catch (e, s) {
       LogUtil.error('Get Ebook error ${e.message}',
             error: e, stackTrace: s);
       }

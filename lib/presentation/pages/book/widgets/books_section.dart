@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../data/models/book/book_listener.dart';
 import '../../../routes/route_name.dart';
 
 class BookSectionDisplayAll extends StatelessWidget {
@@ -25,9 +26,25 @@ class BookSectionDisplayAll extends StatelessWidget {
           child: GridView.builder(
             itemBuilder: (ctx, i) => GestureDetector(
               onTap: () {
-                final argument = bookList.elementAt(i).bookId;
-                Navigator.of(context)
-                    .pushNamed(RouteName.bookDetails, arguments: argument);
+                final book = bookList.elementAt(i);
+                if (book.checkpoint != null && heading == "Tiếp tục đọc") {
+                  final argument = BookArguments(bookId: book.bookId, id: book.id);
+                  Navigator.of(context).pushNamed(RouteName.bookRead, arguments: argument);
+                }
+                else if (book.checkpoint != null && heading == "Tiếp tục nghe") {
+                  final argument = BookArguments(
+                                                  bookId: book.bookId,
+                                                  id: book.id,
+                                                  title: book.title,
+                                                  coverUrl: book.coverUrl,
+                                                  mp3Url: book.mp3Url
+                                    );
+                    Navigator.of(context).pushNamed(RouteName.bookListen, arguments: argument);
+                }
+                else{
+                  Navigator.of(context)
+                      .pushNamed(RouteName.bookDetails, arguments: book.bookId);
+                }
               },
               child: Row(
                 children: [

@@ -6,13 +6,13 @@ class BookReader {
   
   late final EbookModel ebook;
   late final MetaDataBook metadata;
-  late final int ckpt; //checkpoint page
+   //checkpoint page
 
   BookReader.fromJson(Map<String, dynamic> json) {
     ebook = EbookModel.fromJson(json['bookDetail']);
    
-    // metadata = MetaDataBook.fromJson(json['metaData']);
-    ckpt = json["checkpoint"];
+    metadata = MetaDataBook.fromJson(json['metaData']);
+  
   }
 
   toList() {}
@@ -22,12 +22,13 @@ class EbookModel{
   late final String bookId; 
   late List<Sentence> sentences = [];
   late final ChapterModel chapter;
+  late final int ckpt;
  
   EbookModel({required this.bookId, required this.sentences});
 
   EbookModel.fromJson(Map<String, dynamic> json) {
     bookId = json["bookId"];
-
+    ckpt = json["checkpoint"];
     if (json['sentences'] != null) {
       final jsonSentences = (json["sentences"] as List).map((s) => Sentence.fromJson(s)).toList();
   
@@ -36,6 +37,7 @@ class EbookModel{
       }
     }
 
+    
     // chapter = ChapterModel.fromJson(json['chapter']);
   }
 }

@@ -9,11 +9,11 @@ class BookListener {
   }
 }
 
-class BookListenArguments{
-  BookListenArguments(this.bookId, this.id, this.title, this.coverUrl, this.mp3Url);
+class BookArguments{
+  BookArguments({required this.bookId, required this.id, this.title, this.coverUrl, this.mp3Url});
   final String bookId;
   final String id;
-  final String title;
-  final String coverUrl;
-  final String mp3Url;
+  final String? title;
+  final String? coverUrl;
+  final String? mp3Url;
 }

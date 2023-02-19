@@ -19,6 +19,7 @@ class RouteName {
   static const videoSeeMore = '/video_see_more';
   static const myDictionary = '/my_dictionary';
 
+  
   static const bookPage = '/book_page';
   static const bookDetails = '/book_details';
   static const bookRead = '/ebook';

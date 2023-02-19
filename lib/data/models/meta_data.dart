@@ -36,7 +36,7 @@ class MetaDataBook {
     chapter = json["chapter"];
     page = json["page"];
     limit = json["limit"];
-    totalPage = json["total_page"];
+    totalPage = json["totalPage"];
   }
 }
 

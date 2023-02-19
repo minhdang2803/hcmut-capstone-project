@@ -39,6 +39,15 @@ class LoadEbookEvent extends BookEvent{
   List<Object?> get props => [bookId, pageKey];
 }
 
+class LoadEbookAnotherEvent extends BookEvent{
+  final String bookId;
+  final int pageKey;
+  const LoadEbookAnotherEvent({required this.bookId, required this.pageKey});
+
+  @override
+  List<Object?> get props => [bookId, pageKey];
+}
+
 class LoadAudioBookEvent extends BookEvent{
   final String bookId;
   const LoadAudioBookEvent({required this.bookId});
