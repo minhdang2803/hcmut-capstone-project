@@ -7,6 +7,8 @@ class QuizButton extends StatelessWidget {
   const QuizButton({
     super.key,
     required this.text,
+    this.iconData,
+    this.isBorder = false,
     this.backgroundColor = AppColor.pastelPink,
     this.textColor = Colors.black54,
     this.borderRadius = 20,
@@ -16,6 +18,8 @@ class QuizButton extends StatelessWidget {
     this.hightlightColor = AppColor.secondary,
     required this.onTap,
   });
+  final bool? isBorder;
+  final IconData? iconData;
   final String text;
   final Color? backgroundColor;
   final Color? textColor;
@@ -41,18 +45,27 @@ class QuizButton extends StatelessWidget {
             height: height,
             padding: EdgeInsets.all(10.r),
             decoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.circular(borderRadius!)),
+              color: backgroundColor,
+              border: isBorder == true
+                  ? Border.all(style: BorderStyle.solid, width: 0.5)
+                  : null,
+              borderRadius: BorderRadius.circular(borderRadius!),
+            ),
             child: Center(
-              child: Text(
-                text,
-                textAlign: TextAlign.center,
-                style: AppTypography.title.copyWith(
-                  color: textColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 23,
-                ),
-              ),
+              child: iconData != null
+                  ? Icon(
+                      iconData,
+                      color: textColor,
+                    )
+                  : Text(
+                      text,
+                      textAlign: TextAlign.center,
+                      style: AppTypography.title.copyWith(
+                        color: textColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 23,
+                      ),
+                    ),
             ),
           ),
         ),

@@ -1,23 +1,16 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bke/data/data_source/local/auth_local_source.dart';
-import 'package:bke/presentation/pages/book/books_screen.dart';
-import 'package:bke/presentation/pages/chat/chat.dart';
-import 'package:bke/presentation/pages/flashcard/flashcard_collection_page.dart';
 import 'package:bke/presentation/pages/home/components/continue_card.dart';
 import 'package:bke/presentation/pages/home/components/join_quiz_card.dart';
-import 'package:bke/presentation/pages/toeic_test/main/toeictest_page.dart';
-import 'package:bke/presentation/pages/uitest/uitest_page.dart';
-import 'package:bke/presentation/pages/video/video_page.dart';
 import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/utils/enum.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../../bloc/quiz/quiz_map/map_cubit.dart';
+
 import '../../theme/app_color.dart';
 import '../main/components/monastery_search_delegate.dart';
 

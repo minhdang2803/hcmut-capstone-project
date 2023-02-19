@@ -1,0 +1,231 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
+import 'package:bke/presentation/theme/app_color.dart';
+import 'package:bke/presentation/theme/app_typography.dart';
+import 'package:bke/presentation/widgets/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class QuizGame02 extends StatefulWidget {
+  const QuizGame02({super.key});
+
+  @override
+  State<QuizGame02> createState() => _QuizGame02State();
+}
+
+class _QuizGame02State extends State<QuizGame02> {
+  @override
+  Widget build(BuildContext context) {
+    return _buildMainUI();
+  }
+
+  Widget _buildMainUI() {
+    return Column(
+      children: [
+        _buildProcessBarAndTime(),
+        10.verticalSpace,
+        _buildQuestionArea(context)
+      ],
+    );
+  }
+
+  Widget _buildQuestionArea(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.95,
+      height: MediaQuery.of(context).size.height * 0.75,
+      padding: EdgeInsets.all(15.r),
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(20.r)),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildPicture(),
+            20.verticalSpace,
+            _buildQuestion(),
+            20.verticalSpace,
+            _buildAnswer(),
+            10.verticalSpace,
+            _buildChoices(),
+            10.verticalSpace,
+            _buildSubmitButton(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAnswer() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.75,
+      height: 50.r,
+      child: ListView.builder(
+        padding: EdgeInsets.zero,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return BlocBuilder<QuizCubit, QuizState>(
+            builder: (context, state) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.r),
+                child: QuizButton(
+                  width: 50.r,
+                  text: state.answerChoosen![index],
+                  onTap: () =>
+                      context.read<QuizCubit>().onAnswerGame2Clear(index),
+                ),
+              );
+            },
+          );
+        },
+        // separatorBuilder: (context, index) => 10.horizontalSpace,
+        itemCount: 4,
+      ),
+    );
+  }
+
+  Widget _buildChoices() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.75,
+      height: MediaQuery.of(context).size.height * 0.25,
+      child: GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 12,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            mainAxisSpacing: 10.r,
+            crossAxisSpacing: 20.r,
+            childAspectRatio: 1,
+          ),
+          itemBuilder: (context, index) {
+            return BlocBuilder<QuizCubit, QuizState>(
+              builder: (context, state) {
+                final text =
+                    state.quizMC![state.currentIndex!].vocabAns![index];
+                return QuizButton(
+                  isBorder: true,
+                  hightlightColor: AppColor.primary,
+                  backgroundColor: AppColor.accentBlue,
+                  splashColor: AppColor.secondary,
+                  text: text,
+                  onTap: () {
+                    context.read<QuizCubit>().onChosenGame2(index, text);
+                  },
+                );
+              },
+            );
+          }),
+    );
+  }
+
+  Widget _buildSubmitButton() {
+    return Row(
+      children: [
+        Expanded(
+          child: QuizButton(
+            height: 40.h,
+            text: "Submit",
+            textColor: Colors.white,
+            backgroundColor: AppColor.primary,
+            onTap: () {
+              context.read<QuizCubit>().onSubmitGame2();
+            },
+          ),
+        ),
+        10.horizontalSpace,
+        QuizButton(
+          width: 50.r,
+          text: "Clear",
+          onTap: () => context.read<QuizCubit>().onGame2Erase(),
+          iconData: Icons.backspace,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildQuestion() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.9,
+      padding: EdgeInsets.all(10.r),
+      child: BlocBuilder<QuizCubit, QuizState>(
+        builder: (context, state) {
+          if (state.status == QuizStatus.done) {
+            final question = state.quizMC![state.currentIndex!].sentence!;
+            return AutoSizeText(
+              "$question ?",
+              textAlign: TextAlign.center,
+              style: AppTypography.title.copyWith(
+                fontWeight: FontWeight.w700,
+                color: Colors.black54,
+                fontSize: 22,
+              ),
+            );
+          } else {
+            return Text(
+              "This is a question",
+              textAlign: TextAlign.center,
+              style: AppTypography.title.copyWith(
+                fontWeight: FontWeight.w700,
+                color: Colors.black54,
+                fontSize: 20,
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildPicture() {
+    return BlocBuilder<QuizCubit, QuizState>(
+      builder: (context, state) {
+        return QuizPicture(
+          imgData: state.quizMC![state.currentIndex!].imgUrl!,
+          width: 350.r,
+          height: 200.h,
+        );
+      },
+    );
+  }
+
+  Widget _buildProcessBarAndTime() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 10.h,
+          child: BlocBuilder<QuizCubit, QuizState>(
+            builder: (context, state) {
+              return LinearProgressIndicator(
+                value: (state.currentIndex! + 1) / state.total!,
+                backgroundColor: AppColor.pastelPink,
+                color: AppColor.mainPink,
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(10.r),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              BlocBuilder<QuizCubit, QuizState>(
+                builder: (context, state) {
+                  return Text(
+                    "Question: ${state.currentIndex! + 1}/${state.total}",
+                    style: AppTypography.title.copyWith(
+                        color: Colors.white, fontWeight: FontWeight.w700),
+                  );
+                },
+              ),
+              Text(
+                "Time left ⏱️: 10s",
+                style: AppTypography.title
+                    .copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}

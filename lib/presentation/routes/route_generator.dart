@@ -3,36 +3,27 @@ import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
 import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
 import 'package:bke/bloc/video/last_watch_video/last_watch_video_cubit.dart';
 import 'package:bke/bloc/video/video_cubit.dart';
+
 import 'package:bke/data/models/book/book_listener.dart';
-import 'package:bke/data/models/video/video_youtube_info_model.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/pages/book/books_screen.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
-import 'package:bke/presentation/pages/flashcard/flashcard_collection_page.dart';
-import 'package:bke/presentation/pages/flashcard/flashcard_info_page.dart';
-import 'package:bke/presentation/pages/flashcard/flashcard_page.dart';
-import 'package:bke/presentation/pages/flashcard/flashcard_random_page.dart';
-import 'package:bke/presentation/pages/uitest/done_screen.dart';
-import 'package:bke/presentation/pages/uitest/quiz_screen.dart';
-import 'package:bke/presentation/pages/uitest/uitest_page.dart';
-import 'package:bke/presentation/pages/video/video_page.dart';
-import 'package:bke/utils/enum.dart';
+import 'package:bke/presentation/pages/flashcard/flashcards.dart';
+import 'package:bke/presentation/pages/video/videos.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../pages/about_us/about_us.dart';
 import '../pages/authentication/authentication_page.dart';
-import '../pages/game_quiz/game/start_game02_page.dart';
-import '../pages/game_quiz/game/game02_page.dart';
 import '../pages/my_dictionary/my_dictionary.dart';
 import '../pages/my_dictionary/vocab_full_info_page.dart';
 import '../pages/notification/notifications_page.dart';
 import '../pages/toeic_test/components/result_component.dart';
 import '../pages/toeic_test/test/start_toeic_page.dart';
 import '../pages/toeic_test/test/test_toeic_page.dart';
-import '../pages/video/see_more/video_see_more_page.dart';
-import '../pages/video/video_player_page.dart';
+import '../pages/uitest/quizzes.dart';
+
 import '../pages/welcome/welcome.dart';
 import '../pages/main/home_page.dart';
 import '../pages/profile/main/profile_page.dart';
@@ -65,13 +56,6 @@ class RouteGenerator {
         page = const NotificationsPage();
         break;
 
-      // case RouteName.startQuiz:
-      //   page = const StartGame02();
-      //   break;
-      // case RouteName.game:
-      //   page = const GamePage();
-      //   break;
-
       case RouteName.startToeic:
         page = const StartToeic();
         break;
@@ -89,7 +73,7 @@ class RouteGenerator {
             BlocProvider(create: (context) => MapCubit()),
             BlocProvider(create: (context) => QuizCubit()),
           ],
-          child: const UITestPage(),
+          child: const QuizMapScreen(),
         );
         break;
 
@@ -168,16 +152,22 @@ class RouteGenerator {
       case RouteName.quizScreen:
         final context = settings.arguments as BuildContext;
         page = BlocProvider.value(
-          value: BlocProvider.of<QuizCubit>(context, listen: false),
-          child: const QuizScreen(),
+          value: BlocProvider.of<MapCubit>(context, listen: false),
+          child: BlocProvider.value(
+            value: BlocProvider.of<QuizCubit>(context, listen: false),
+            child: QuizScreen(),
+          ),
         );
         break;
 
       case RouteName.quizDoneScreen:
         final context = settings.arguments as BuildContext;
         page = BlocProvider.value(
-            value: BlocProvider.of<QuizCubit>(context, listen: false),
-            child: const QuizDoneScreen());
+            value: BlocProvider.of<MapCubit>(context, listen: false),
+            child: BlocProvider.value(
+              value: BlocProvider.of<QuizCubit>(context, listen: false),
+              child: const QuizDoneScreen(),
+            ));
         break;
 
       case RouteName.bookPage:

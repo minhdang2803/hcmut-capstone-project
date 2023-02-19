@@ -14,8 +14,11 @@ class QuizState extends Equatable {
     this.errorMessage,
     this.currentIndex,
     this.isChosen,
+    this.answerChoosen,
+    this.wordIndex,
   });
 
+  late final int? wordIndex;
   late final int? quizId;
   late final QuizStatus? status;
   late final int? time;
@@ -26,6 +29,7 @@ class QuizState extends Equatable {
   late final int? currentIndex;
   late final String? errorMessage;
   late final List<bool>? isChosen;
+  late final List<String>? answerChoosen;
 
   QuizState.initial() {
     quizId = -1;
@@ -38,6 +42,8 @@ class QuizState extends Equatable {
     currentIndex = 0;
     totalCorrect = 0;
     isChosen = [false, false, false, false];
+    wordIndex = 0;
+    answerChoosen = ["", "", "", ""];
   }
 
   QuizState copyWith({
@@ -51,8 +57,12 @@ class QuizState extends Equatable {
     int? currentIndex,
     String? errorMessage,
     List<bool>? isChosen,
+    List<String>? answerChoosen,
+    int? wordIndex,
   }) {
     return QuizState(
+      wordIndex: wordIndex ?? this.wordIndex,
+      answerChoosen: answerChoosen ?? this.answerChoosen,
       quizId: quizId ?? this.quizId,
       isChosen: isChosen ?? this.isChosen,
       quizMC: quizMC ?? this.quizMC,
@@ -75,6 +85,8 @@ class QuizState extends Equatable {
         quizMC,
         currentIndex,
         totalCorrect,
-        errorMessage
+        errorMessage,
+        answerChoosen,
+        wordIndex,
       ];
 }

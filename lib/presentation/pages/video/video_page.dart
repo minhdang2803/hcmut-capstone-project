@@ -1,5 +1,5 @@
 import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
-import 'package:bke/presentation/pages/video/see_more/video_see_more_page.dart';
+import 'package:bke/presentation/pages/video/video_see_more_page.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/widgets/custom_app_bar.dart';
 import 'package:bke/utils/enum.dart';

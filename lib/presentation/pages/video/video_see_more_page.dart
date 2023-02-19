@@ -7,13 +7,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:skeletons/skeletons.dart';
 
-import '../../../../bloc/video/category_video/category_video_cubit.dart';
-import '../../../../utils/constants.dart';
-import '../../../../utils/enum.dart';
-import '../../../routes/route_name.dart';
-import '../../../theme/app_color.dart';
-import '../../../widgets/custom_app_bar.dart';
-import '../widgets/video_youtube_item.dart';
+import '../../../bloc/video/category_video/category_video_cubit.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/enum.dart';
+import '../../routes/route_name.dart';
+import '../../theme/app_color.dart';
+import '../../widgets/custom_app_bar.dart';
+import 'widgets/video_youtube_item.dart';
 
 class VideoSeeMorePageModel {
   final BuildContext context;

@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_pixels/image_pixels.dart';
 
 class QuizPicture extends StatelessWidget {
@@ -35,7 +34,7 @@ class QuizPicture extends StatelessWidget {
           child: SizedBox(
             width: width,
             height: height,
-            child: Image.memory(imgData, fit: BoxFit.cover),
+            child: Image.memory(imgData, fit: BoxFit.fill),
           ),
         ),
       ),

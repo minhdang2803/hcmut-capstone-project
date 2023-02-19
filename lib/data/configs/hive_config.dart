@@ -44,7 +44,7 @@ class HiveConfig {
 
     Hive.registerAdapter(QuizMCAnswerAdapter());
 
-    Hive.registerAdapter(MapObjectAdapter());
+    Hive.registerAdapter(MapObjectLocalAdapter());
     Hive.registerAdapter(ListMapObjectAdapter());
 
     await Hive.openBox(userBox);

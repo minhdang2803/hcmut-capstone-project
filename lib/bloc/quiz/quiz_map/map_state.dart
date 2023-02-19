@@ -4,7 +4,7 @@ enum MapStatus { inital, loading, done, fail }
 
 class MapState extends Equatable {
   MapState({this.listMapObject, this.status, this.errorMessage});
-  late final List<MapObject>? listMapObject;
+  late final List<MapObjectLocal>? listMapObject;
   late final MapStatus? status;
   late final String? errorMessage;
 
@@ -15,7 +15,7 @@ class MapState extends Equatable {
   }
 
   MapState copyWith({
-    List<MapObject>? listMapObject,
+    List<MapObjectLocal>? listMapObject,
     MapStatus? status,
     String? errorMessage,
   }) {

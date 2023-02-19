@@ -38,7 +38,10 @@ class QuizRepository {
     return _local.getResultFromLocalByLevel(level);
   }
 
-  List<MapObject> getListMapObject() {
-    return _local.getListMapObject();
+  List<MapObjectLocal> getListMapObject() {
+    return _local.getListMapObjectLocal();
   }
+
+  void upSertListMapObject(MapObjectLocal obj) => _local.upsertMapObjectLocal(obj);
+  MapObjectLocal? getMapObjectById(int id) => _local.getMapObjectLocalById(id);
 }

@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'map_object.dart';
 import 'map_painter.dart';
@@ -120,9 +118,9 @@ class _ImageViewPortState extends State<ImageViewPort> {
   List<Widget> _buildObjects() {
     return _objects.map((object) {
       return Positioned(
-        left: _globalToLocalOffset(object.offset).dx -
+        left: _globalToLocalOffset(object.offset!).dx -
             (object.size == null ? 0 : (object.size!.width * _zoomLevel) / 2),
-        top: _globalToLocalOffset(object.offset).dy -
+        top: _globalToLocalOffset(object.offset!).dy -
             (object.size == null ? 0 : (object.size!.height * _zoomLevel) / 2),
         child: GestureDetector(
           onTap: () {
@@ -131,25 +129,69 @@ class _ImageViewPortState extends State<ImageViewPort> {
             }
           },
           child: Container(
+            padding: EdgeInsets.zero,
             width: object.size == null ? null : object.size!.width * _zoomLevel,
             height:
                 object.size == null ? null : object.size!.height * _zoomLevel,
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30.r),
-              image: DecorationImage(
-                image: object.isDone
-                    ? const AssetImage(
-                        "assets/images/game1.png",
-                      )
-                    : const AssetImage("assets/images/game_lock.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
+            child: object.isDone
+                ? _buildIcon(object.total ?? 0, "assets/images/game1.png",
+                    "assets/images/game_star.png")
+                : _buildLockIcon("assets/images/game_lock.png"),
           ),
         ),
       );
     }).toList();
+  }
+
+  Widget _buildLockIcon(String image) {
+    return Image.asset(
+      image,
+      filterQuality: FilterQuality.high,
+      fit: BoxFit.contain,
+      height: 40.r,
+      width: 40.r,
+    );
+  }
+
+//"assets/images/game1.png"
+  Widget _buildIcon(int total, String image, String star) {
+    final starIcon = Image(
+      image: AssetImage(star),
+      fit: BoxFit.contain,
+      filterQuality: FilterQuality.high,
+      height: 30.r,
+      width: 20.r,
+    );
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        if (total >= 1 && total <= 2)
+          Expanded(child: starIcon)
+        else if (total <= 4 && total > 2)
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [starIcon, starIcon],
+            ),
+          )
+        else if (total > 4)
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [starIcon, starIcon, starIcon],
+            ),
+          ),
+        Image(
+          image: AssetImage(image),
+          fit: BoxFit.contain,
+          filterQuality: FilterQuality.high,
+          height: 40.r,
+          width: 40.r,
+        ),
+      ],
+    );
   }
 
   @override

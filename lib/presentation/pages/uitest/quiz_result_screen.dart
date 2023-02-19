@@ -1,5 +1,5 @@
-
 import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
+import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
@@ -8,24 +8,48 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-class QuizDoneScreen extends StatelessWidget {
+class QuizDoneScreen extends StatefulWidget {
   const QuizDoneScreen({super.key});
 
+  @override
+  State<QuizDoneScreen> createState() => _QuizDoneScreenState();
+}
+
+class _QuizDoneScreenState extends State<QuizDoneScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         bottom: false,
         child: Column(
+          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            10.verticalSpace,
             _buildTopBar(context),
             30.verticalSpace,
             _buildPicture(context),
             30.verticalSpace,
-            _buildStatistics(context)
+            _buildStatistics(context),
+            50.verticalSpace,
+            _buildDoneButton(context)
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildDoneButton(BuildContext context) {
+    return QuizButton(
+      width: 327.r,
+      height: 56.r,
+      text: "Hoàn thành",
+      onTap: () {
+        Navigator.pop(context);
+        context.read<QuizCubit>().updateData();
+        context.read<MapCubit>().getMapObject();
+      },
+      textColor: Colors.white,
+      backgroundColor: AppColor.primary,
     );
   }
 
@@ -45,8 +69,9 @@ class QuizDoneScreen extends StatelessWidget {
           const Spacer(flex: 1),
           IconButton(
             onPressed: () {
+              context.read<QuizCubit>().updateData();
+              context.read<MapCubit>().getMapObject();
               Navigator.pop(context);
-              context.read<QuizCubit>().exit();
             },
             icon: Icon(
               Icons.clear,
@@ -101,7 +126,7 @@ class QuizDoneScreen extends StatelessWidget {
   }
 
   Widget _buildStatistics(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 327.r,
       height: 121.r,
       child: Stack(
@@ -169,7 +194,7 @@ class QuizDoneScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "Hoàn thành",
+                  "Đáp án sai",
                   style: AppTypography.title.copyWith(
                     fontSize: 25,
                     fontWeight: FontWeight.w700,
@@ -178,8 +203,9 @@ class QuizDoneScreen extends StatelessWidget {
                 ),
                 BlocBuilder<QuizCubit, QuizState>(
                   builder: (context, state) {
+                    final result = state.total! - state.totalCorrect!;
                     return Text(
-                      "${((state.totalCorrect! / state.total!) * 100).toStringAsFixed(0)} %",
+                      "$result đáp án",
                       style: AppTypography.title.copyWith(
                         fontSize: 25,
                         fontWeight: FontWeight.w700,

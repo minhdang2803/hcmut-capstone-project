@@ -17,7 +17,7 @@ class ListMapObjectAdapter extends TypeAdapter<ListMapObject> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ListMapObject(
-      (fields[0] as List).cast<MapObject>(),
+      (fields[0] as List).cast<MapObjectLocal>(),
     );
   }
 
@@ -40,39 +40,48 @@ class ListMapObjectAdapter extends TypeAdapter<ListMapObject> {
           typeId == other.typeId;
 }
 
-class MapObjectAdapter extends TypeAdapter<MapObject> {
+class MapObjectLocalAdapter extends TypeAdapter<MapObjectLocal> {
   @override
   final int typeId = 16;
 
   @override
-  MapObject read(BinaryReader reader) {
+  MapObjectLocal read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return MapObject(
+    return MapObjectLocal(
       id: fields[2] as String,
-      offset: fields[0] as Offset,
-      size: fields[1] as Size?,
+      dx: fields[0] as double?,
+      dy: fields[6] as double?,
+      sizeDx: fields[1] as double?,
+      sizeDy: fields[7] as double?,
+      isDone: fields[5] as bool,
       total: fields[3] as int?,
       type: fields[4] as GameType?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, MapObject obj) {
+  void write(BinaryWriter writer, MapObjectLocal obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(8)
       ..writeByte(0)
-      ..write(obj.offset)
+      ..write(obj.dx)
       ..writeByte(1)
-      ..write(obj.size)
+      ..write(obj.sizeDx)
       ..writeByte(2)
       ..write(obj.id)
       ..writeByte(3)
       ..write(obj.total)
       ..writeByte(4)
-      ..write(obj.type);
+      ..write(obj.type)
+      ..writeByte(5)
+      ..write(obj.isDone)
+      ..writeByte(6)
+      ..write(obj.dy)
+      ..writeByte(7)
+      ..write(obj.sizeDy);
   }
 
   @override
@@ -81,7 +90,7 @@ class MapObjectAdapter extends TypeAdapter<MapObject> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MapObjectAdapter &&
+      other is MapObjectLocalAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

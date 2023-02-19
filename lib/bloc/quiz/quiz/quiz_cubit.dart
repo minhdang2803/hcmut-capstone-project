@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
 import 'package:bke/data/repositories/quiz_repository.dart';
+import 'package:bke/presentation/pages/uitest/component/map_object.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -35,8 +38,75 @@ class QuizCubit extends Cubit<QuizState> {
     }
   }
 
-  void exit() {
-    emit(QuizState.initial());
+  void updateData() {
+    final MapObjectLocal currentObject =
+        instance.getMapObjectById(state.quizId!)!;
+    instance.upSertListMapObject(
+      currentObject.copyWith(total: state.totalCorrect, type: state.type),
+    );
+    final MapObjectLocal nextObject =
+        instance.getMapObjectById(state.quizId! + 1)!;
+    instance.upSertListMapObject(
+      nextObject.copyWith(isDone: true),
+    );
+  }
+
+  void setInitial() => emit(QuizState.initial());
+
+  void onGame2Erase() {
+    int wordIndex = state.wordIndex!;
+    List<String> answerChosenList = state.answerChoosen!;
+    if (wordIndex >= 0) {
+      emit(state.copyWith(status: QuizStatus.loading));
+      answerChosenList.removeAt(wordIndex);
+      answerChosenList.add("");
+      if (wordIndex > 0) {
+        wordIndex = wordIndex - 1;
+      }
+      emit(state.copyWith(
+        status: QuizStatus.done,
+        answerChoosen: answerChosenList,
+        wordIndex: wordIndex,
+      ));
+    }
+  }
+
+  void onAnswerGame2Clear(int index) {
+    int wordIndex = state.wordIndex!;
+    List<String> answerChosenList = state.answerChoosen!;
+    if (wordIndex >= 0) {
+      emit(state.copyWith(status: QuizStatus.loading));
+      answerChosenList.removeAt(index);
+      answerChosenList.add("");
+      if (wordIndex > 0) {
+        wordIndex = wordIndex - 1;
+      }
+      emit(state.copyWith(
+        status: QuizStatus.done,
+        answerChoosen: answerChosenList,
+        wordIndex: wordIndex,
+      ));
+    }
+  }
+
+  void onChosenGame2(int index, String userAnswer) {
+    int wordIndex = state.wordIndex!;
+    List<String> answerChosenList = state.answerChoosen!;
+    if (wordIndex >= 0 && wordIndex <= 3) {
+      if (answerChosenList[wordIndex] == "") {
+        emit(state.copyWith(status: QuizStatus.loading));
+        answerChosenList[wordIndex] = userAnswer;
+        emit(state.copyWith(
+          status: QuizStatus.done,
+          answerChoosen: answerChosenList,
+          wordIndex: wordIndex < 3 ? wordIndex + 1 : wordIndex,
+        ));
+      }
+    }
+    print(state.wordIndex!);
+    if (wordIndex > 4) {
+      return;
+    }
   }
 
   void onChosen(int index, String userAnswer) {
@@ -59,7 +129,7 @@ class QuizCubit extends Cubit<QuizState> {
     }
   }
 
-  void onSubmit() {
+  void onSubmitGame1() {
     emit(state.copyWith(status: QuizStatus.loading));
     if (state.currentIndex! < state.total! - 1) {
       emit(
@@ -72,6 +142,28 @@ class QuizCubit extends Cubit<QuizState> {
               false,
               false,
             ]),
+      );
+    } else {
+      instance.saveResultToLocal(state.quizId!, state.totalCorrect!);
+      emit(state.copyWith(status: QuizStatus.finished));
+    }
+  }
+
+  void onSubmitGame2() {
+    emit(state.copyWith(status: QuizStatus.loading));
+    if (state.currentIndex! < state.total! - 1) {
+      final String userAnswer = state.answerChoosen!.join("");
+      final String questionAnswer =
+          state.quizMC![state.currentIndex!].answer!.split(",").join("");
+      final isTrue = userAnswer == questionAnswer;
+      emit(
+        state.copyWith(
+          currentIndex: state.currentIndex! + 1,
+          status: QuizStatus.done,
+          answerChoosen: ["", "", "", ""],
+          wordIndex: 0,
+          totalCorrect: isTrue ? state.totalCorrect! + 1 : state.totalCorrect!,
+        ),
       );
     } else {
       instance.saveResultToLocal(state.quizId!, state.totalCorrect!);

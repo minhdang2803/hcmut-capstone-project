@@ -239,7 +239,7 @@ class QuizMultipleChoiceResponse {
   });
 
   factory QuizMultipleChoiceResponse.fromJson(Map<String, dynamic> json) {
-    final typeFromServer = json['metaData']["typeOfQuestion"];
+    final typeFromServer = json['metaData']["typeQuestion"];
     final GameType type =
         typeFromServer == "Game01" ? GameType.type1 : GameType.type2;
 

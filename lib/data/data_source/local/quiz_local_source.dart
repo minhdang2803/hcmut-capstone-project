@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:bke/data/configs/hive_config.dart';
 import 'package:bke/data/models/authentication/user.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
@@ -14,14 +12,15 @@ abstract class QuizLocalSource {
   Map<String, dynamic> getResultFromLocalByLevel(int level);
   Future<void> saveMCTestsToLocal(QuizMultipleChoiceResponse quiz, int id);
   QuizMCTests? getMCTestsFromLocal(int id);
-  List<MapObject> getListMapObject();
-  void upsertMapObject(MapObject mapObject);
+  List<MapObjectLocal> getListMapObjectLocal();
+  MapObjectLocal? getMapObjectLocalById(int id);
+  void upsertMapObjectLocal(MapObjectLocal mapObject);
 }
 
 class QuizLocalSourceImpl implements QuizLocalSource {
   Box getAnswerBox() => Hive.box(HiveConfig.quizMCAnswers);
   Box getTestsBox() => Hive.box(HiveConfig.quizMCtests);
-  Box getMapObjectBox() => Hive.box(HiveConfig.mapObject);
+  Box getMapObjectLocalBox() => Hive.box(HiveConfig.mapObject);
   String getUserId() {
     final userBox = Hive.box(HiveConfig.userBox);
     final User user = userBox.get(HiveConfig.currentUserKey);
@@ -121,71 +120,23 @@ class QuizLocalSourceImpl implements QuizLocalSource {
   }
 
   @override
-  List<MapObject> getListMapObject() {
-    List<MapObject> result = [];
-    final box = getMapObjectBox();
+  List<MapObjectLocal> getListMapObjectLocal() {
+    List<MapObjectLocal> result = [];
+    final box = getMapObjectLocalBox();
     final String userId = getUserId();
-    final response = box.get(userId, defaultValue: [
-      MapObject(
-        id: '1',
-        offset: const Offset(-0.12, 0.97),
-        size: Size(25.r, 25.r),
-      ),
-      MapObject(
-        id: '2',
-        offset: const Offset(0.5, 0.93),
-        size: Size(25.r, 25.r),
-        isDone: false,
-      ),
-      MapObject(
-        id: '3',
-        offset: const Offset(0.13, 0.86),
-        size: Size(25.r, 25.r),
-        isDone: false,
-      ),
-      MapObject(
-        id: '4',
-        offset: const Offset(0.25, 0.78),
-        size: Size(25.r, 25.r),
-        isDone: false,
-      ),
-    ]);
-    result.addAll(response.cast<MapObject>());
+    final response = box.get(userId, defaultValue: clm);
+    result.addAll(response.cast<MapObjectLocal>());
     return result;
   }
 
   @override
-  void upsertMapObject(MapObject mapObject) {
-    List<MapObject> result = [];
+  void upsertMapObjectLocal(MapObjectLocal mapObject) {
+    List<MapObjectLocal> result = [];
     bool isLastElement = false;
-    final box = getMapObjectBox();
+    final box = getMapObjectLocalBox();
     final String userId = getUserId();
-    final response = box.get(userId, defaultValue: [
-      MapObject(
-        id: '1',
-        offset: const Offset(-0.12, 0.97),
-        size: Size(25.r, 25.r),
-      ),
-      MapObject(
-        id: '2',
-        offset: const Offset(0.5, 0.93),
-        size: Size(25.r, 25.r),
-        isDone: false,
-      ),
-      MapObject(
-        id: '3',
-        offset: const Offset(0.13, 0.86),
-        size: Size(25.r, 25.r),
-        isDone: false,
-      ),
-      MapObject(
-        id: '4',
-        offset: const Offset(0.25, 0.78),
-        size: Size(25.r, 25.r),
-        isDone: false,
-      ),
-    ]);
-    result.addAll(response.cast<MapObject>());
+    final response = box.get(userId, defaultValue: clm);
+    result.addAll(response.cast<MapObjectLocal>());
     for (final element in result) {
       if (element.id == mapObject.id) {
         final index = response.indexOf(element);
@@ -199,6 +150,96 @@ class QuizLocalSourceImpl implements QuizLocalSource {
       result.add(mapObject);
     }
     box.put(userId, result);
-    LogUtil.debug("Succesfully save MapObject of quiz level $mapObject");
+    LogUtil.debug("Succesfully save MapObjectLocal of quiz level $mapObject");
   }
+
+  @override
+  MapObjectLocal? getMapObjectLocalById(int id) {
+    List<MapObjectLocal> result = [];
+
+    final box = getMapObjectLocalBox();
+    final String userId = getUserId();
+    final response = box.get(userId, defaultValue: clm);
+    result.addAll(response.cast<MapObjectLocal>());
+    for (final element in result) {
+      if (int.parse(element.id) == id) {
+        return element;
+      }
+    }
+    return null;
+  }
+
+  List<MapObjectLocal> clm = [
+    MapObjectLocal(
+      id: '1',
+      dx: 0.5,
+      dy: 0.93,
+      sizeDx: 25.r,
+      sizeDy: 25.r,
+    ),
+    MapObjectLocal(
+      id: '2',
+      dx: 0.13,
+      dy: 0.86,
+      sizeDx: 25.r,
+      sizeDy: 25.r,
+      isDone: false,
+    ),
+    MapObjectLocal(
+      id: '3',
+      dx: 0.25,
+      dy: 0.78,
+      sizeDx: 25.r,
+      sizeDy: 25.r,
+      isDone: false,
+    ),
+    MapObjectLocal(
+      id: '4',
+      dx: -0.1,
+      dy: 0.78,
+      sizeDx: 25.r,
+      sizeDy: 25.r,
+      isDone: false,
+    ),
+    MapObjectLocal(
+      id: '5',
+      dx: -0.4,
+      dy: 0.79,
+      sizeDx: 25.r,
+      sizeDy: 25.r,
+      isDone: false,
+    ),
+    MapObjectLocal(
+      id: '6',
+      dx: -0.5,
+      dy: 0.73,
+      sizeDx: 25.r,
+      sizeDy: 25.r,
+      isDone: false,
+    ),
+    MapObjectLocal(
+      id: '7',
+      dx: -0.2,
+      dy: 0.70,
+      sizeDx: 25.r,
+      sizeDy: 25.r,
+      isDone: false,
+    ),
+    MapObjectLocal(
+      id: '8',
+      dx: 0.1,
+      dy: 0.69,
+      sizeDx: 25.r,
+      sizeDy: 25.r,
+      isDone: false,
+    ),
+    MapObjectLocal(
+      id: '9',
+      dx: 0.5,
+      dy: 0.62,
+      sizeDx: 25.r,
+      sizeDy: 25.r,
+      isDone: false,
+    ),
+  ];
 }
