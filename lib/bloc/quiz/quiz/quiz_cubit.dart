@@ -24,7 +24,9 @@ class QuizCubit extends Cubit<QuizState> {
             total: response.numOfQuestions,
             quizMC: response.tests,
             answerChoosen: List.generate(
-                response.tests[0].answer!.split("").length, (index) => "")),
+              response.tests[0].answer!.split("").length,
+              (index) => "",
+            )),
       );
     } on RemoteException catch (error) {
       emit(QuizState.initial());
@@ -43,11 +45,14 @@ class QuizCubit extends Cubit<QuizState> {
     instance.upSertListMapObject(
       currentObject.copyWith(total: state.totalCorrect, type: state.type),
     );
-    final MapObjectLocal nextObject =
-        instance.getMapObjectById(state.quizId! + 1)!;
-    instance.upSertListMapObject(
-      nextObject.copyWith(isDone: true),
-    );
+
+    if (state.totalCorrect == state.total) {
+      final MapObjectLocal nextObject =
+          instance.getMapObjectById(state.quizId! + 1)!;
+      instance.upSertListMapObject(
+        nextObject.copyWith(isDone: true),
+      );
+    }
   }
 
   void setInitial() => emit(QuizState.initial());
@@ -110,7 +115,7 @@ class QuizCubit extends Cubit<QuizState> {
     }
   }
 
-  void onChosen(int index, String userAnswer) {
+  void onChosenGame1(int index, String userAnswer) {
     emit(state.copyWith(status: QuizStatus.loading));
     final serverAnswer = state.quizMC![state.currentIndex!].answer;
     if (userAnswer == serverAnswer) {
@@ -159,8 +164,9 @@ class QuizCubit extends Cubit<QuizState> {
           currentIndex: state.currentIndex! + 1,
           status: QuizStatus.done,
           answerChoosen: List.generate(
-              state.quizMC![state.currentIndex!].answer!.split("").length,
-              (index) => ""),
+            state.quizMC![state.currentIndex! + 1].answer!.split("").length,
+            (index) => "",
+          ),
           wordIndex: 0,
           totalCorrect: isTrue ? state.totalCorrect! + 1 : state.totalCorrect!,
         ),

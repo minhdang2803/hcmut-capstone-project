@@ -155,7 +155,7 @@ class RouteGenerator {
         final context = settings.arguments as BuildContext;
         page = MultiBlocProvider(
           providers: [
-            BlocProvider(create: (context) => TimerCubit(20)),
+            BlocProvider(create: (context) => TimerCubit(30)),
             BlocProvider.value(
               value: BlocProvider.of<MapCubit>(context, listen: false),
             ),

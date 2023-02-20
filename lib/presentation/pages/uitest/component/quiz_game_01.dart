@@ -34,6 +34,9 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
       curve: Curves.easeInOut,
     ));
     _controller.forward();
+
+    context.read<TimerCubit>().startCountdown();
+    context.read<TimerCubit>().resetCountdown(10);
     context.read<TimerCubit>().startCountdown();
   }
 
@@ -126,14 +129,14 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
               ),
               BlocConsumer<TimerCubit, TimerState>(
                 listener: (context, state) {
-                  if (state.durationInSecond == 0 && state.totalLoop! < 8) {
+                  if (state.durationInSecond == 0 && state.totalLoop! < 9) {
                     _controller.reset();
                     _controller.forward();
                     context.read<QuizCubit>().onSubmitGame1();
                     context.read<TimerCubit>().resetCountdown(10);
                     context.read<TimerCubit>().startCountdown();
                   } else if (state.durationInSecond == 0 &&
-                      state.totalLoop! == 8) {
+                      state.totalLoop! == 9) {
                     context.read<QuizCubit>().onSubmitGame1();
                   }
                 },
@@ -165,7 +168,7 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
           backgroundColor: AppColor.primary,
           onTap: () {
             {
-              if (state.totalLoop! < 8) {
+              if (state.totalLoop! < 9) {
                 _controller.reset();
                 _controller.forward();
                 context.read<QuizCubit>().onSubmitGame1();
@@ -244,7 +247,7 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
                       .toCapitalize(),
                   onTap: () {
                     if (state.allowReChoose!) {
-                      cubit.onChosen(
+                      cubit.onChosenGame1(
                         index,
                         state.quizMC![state.currentIndex!].vocabAns![index],
                       );

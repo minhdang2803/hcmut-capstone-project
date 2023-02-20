@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 
 import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
+import 'package:bke/bloc/quiz/quiz_timer/quiz_timer_cubit.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
 import 'package:bke/presentation/pages/uitest/component/quiz_game_01.dart';
 import 'package:bke/presentation/pages/uitest/component/quiz_game_02.dart';
@@ -82,8 +83,9 @@ class _QuizScreenState extends State<QuizScreen>
               return SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
-                child:
-                    state.type == GameType.type1 ? QuizGame01() : QuizGame02(),
+                child: state.type == GameType.type1
+                    ? const QuizGame01()
+                    : const QuizGame02(),
               );
             }
           },
@@ -104,6 +106,7 @@ class _QuizScreenState extends State<QuizScreen>
             color: Colors.white,
             onPressed: () {
               Navigator.pop(context);
+              context.read<TimerCubit>().pauseCountdown();
             },
           ),
           Align(

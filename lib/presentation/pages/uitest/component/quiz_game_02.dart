@@ -39,7 +39,7 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
       curve: Curves.easeInOut,
     ));
     _controller.forward();
-    // context.read<TimerCubit>().startCountdown();
+    context.read<TimerCubit>().startCountdown();
   }
 
   @override
@@ -76,7 +76,7 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
               _buildQuestion(),
               20.verticalSpace,
               _buildAnswer(),
-              10.verticalSpace,
+              5.verticalSpace,
               _buildChoices(),
               10.verticalSpace,
               _buildSubmitButton(),
@@ -90,7 +90,7 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
   Widget _buildAnswer() {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.75,
-      height: MediaQuery.of(context).size.height * 0.15,
+      height: MediaQuery.of(context).size.height * 0.20,
       child: BlocBuilder<QuizCubit, QuizState>(
         builder: (context, state) {
           return GridView.builder(
@@ -170,7 +170,7 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
                     _controller.reset();
                     _controller.forward();
                     context.read<QuizCubit>().onSubmitGame2();
-                    context.read<TimerCubit>().resetCountdown(10);
+                    context.read<TimerCubit>().resetCountdown(30);
                     context.read<TimerCubit>().startCountdown();
                   } else {
                     context.read<TimerCubit>().pauseCountdown();
@@ -272,7 +272,7 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
                     _controller.reset();
                     _controller.forward();
                     context.read<QuizCubit>().onSubmitGame2();
-                    context.read<TimerCubit>().resetCountdown(10);
+                    context.read<TimerCubit>().resetCountdown(30);
                     context.read<TimerCubit>().startCountdown();
                   } else if (state.durationInSecond == 0 &&
                       state.totalLoop! == 8) {
