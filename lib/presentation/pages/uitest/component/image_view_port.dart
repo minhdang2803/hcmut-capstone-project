@@ -167,16 +167,16 @@ class _ImageViewPortState extends State<ImageViewPort> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if (total >= 1 && total <= 2)
+        if (total > 0 && total < 5)
           Expanded(child: starIcon)
-        else if (total <= 4 && total > 2)
+        else if (total > 4 && total < 8)
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [starIcon, starIcon],
             ),
           )
-        else if (total > 4)
+        else if (total == 8)
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

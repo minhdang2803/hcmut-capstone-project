@@ -1,5 +1,6 @@
 import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
+import 'package:bke/bloc/quiz/quiz_timer/quiz_timer_cubit.dart';
 import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
 import 'package:bke/bloc/video/last_watch_video/last_watch_video_cubit.dart';
 import 'package:bke/bloc/video/video_cubit.dart';
@@ -151,12 +152,17 @@ class RouteGenerator {
 
       case RouteName.quizScreen:
         final context = settings.arguments as BuildContext;
-        page = BlocProvider.value(
-          value: BlocProvider.of<MapCubit>(context, listen: false),
-          child: BlocProvider.value(
-            value: BlocProvider.of<QuizCubit>(context, listen: false),
-            child: QuizScreen(),
-          ),
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => TimerCubit(10)),
+            BlocProvider.value(
+              value: BlocProvider.of<MapCubit>(context, listen: false),
+            ),
+            BlocProvider.value(
+              value: BlocProvider.of<QuizCubit>(context, listen: false),
+            )
+          ],
+          child: QuizScreen(),
         );
         break;
 

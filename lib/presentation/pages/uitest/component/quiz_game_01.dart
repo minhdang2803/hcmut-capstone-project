@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
+import 'package:bke/bloc/quiz/quiz_timer/quiz_timer_cubit.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
@@ -15,7 +16,33 @@ class QuizGame01 extends StatefulWidget {
   State<QuizGame01> createState() => _QuizGame01State();
 }
 
-class _QuizGame01State extends State<QuizGame01> {
+class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _offsetAnimation = Tween<Offset>(
+      begin: const Offset(1, 0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+    _controller.forward();
+    context.read<TimerCubit>().startCountdown();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return _buildMainUI(context);
@@ -32,23 +59,26 @@ class _QuizGame01State extends State<QuizGame01> {
   }
 
   Widget _buildQuestionArea(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.95,
-      height: MediaQuery.of(context).size.height * 0.71,
-      padding: EdgeInsets.all(15.r),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(20.r)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildPicture(),
-          // 20.verticalSpace,
-          _buildQuestion(),
-          // 20.verticalSpace,
-          _buildChoices(),
-          // 20.verticalSpace,
-          _buildSubmitButton(),
-        ],
+    return SlideTransition(
+      position: _offsetAnimation,
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.95,
+        height: MediaQuery.of(context).size.height * 0.71,
+        padding: EdgeInsets.all(15.r),
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(20.r)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildPicture(),
+            // 20.verticalSpace,
+            _buildQuestion(),
+            // 20.verticalSpace,
+            _buildChoices(),
+            // 20.verticalSpace,
+            _buildSubmitButton(),
+          ],
+        ),
       ),
     );
   }
@@ -94,10 +124,28 @@ class _QuizGame01State extends State<QuizGame01> {
                   );
                 },
               ),
-              Text(
-                "Time left ⏱️: 10s",
-                style: AppTypography.title
-                    .copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+              BlocConsumer<TimerCubit, TimerState>(
+                listener: (context, state) {
+                  if (state.durationInSecond == 0 && state.totalLoop! < 8) {
+                    _controller.reset();
+                    _controller.forward();
+                    context.read<QuizCubit>().onSubmitGame1();
+                    context.read<TimerCubit>().resetCountdown(10);
+                    context.read<TimerCubit>().startCountdown();
+                  } else if (state.durationInSecond == 0 &&
+                      state.totalLoop! == 8) {
+                    context.read<QuizCubit>().onSubmitGame1();
+                  }
+                },
+                builder: (context, state) {
+                  return Text(
+                    "Time left ⏱️: ${state.durationInSecond}s",
+                    style: AppTypography.title.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  );
+                },
               )
             ],
           ),
@@ -107,14 +155,27 @@ class _QuizGame01State extends State<QuizGame01> {
   }
 
   Widget _buildSubmitButton() {
-    return QuizButton(
-      width: MediaQuery.of(context).size.width * 0.95,
-      height: 40.h,
-      text: "Submit",
-      textColor: Colors.white,
-      backgroundColor: AppColor.primary,
-      onTap: () {
-        context.read<QuizCubit>().onSubmitGame1();
+    return BlocBuilder<TimerCubit, TimerState>(
+      builder: (context, state) {
+        return QuizButton(
+          width: MediaQuery.of(context).size.width * 0.95,
+          height: 40.h,
+          text: "Submit",
+          textColor: Colors.white,
+          backgroundColor: AppColor.primary,
+          onTap: () {
+            if (state.totalLoop! < 8) {
+              _controller.reset();
+              _controller.forward();
+              context.read<QuizCubit>().onSubmitGame1();
+              context.read<TimerCubit>().resetCountdown(10);
+              context.read<TimerCubit>().startCountdown();
+            } else {
+              context.read<TimerCubit>().pauseCountdown();
+              context.read<QuizCubit>().onSubmitGame1();
+            }
+          },
+        );
       },
     );
   }
@@ -161,7 +222,37 @@ class _QuizGame01State extends State<QuizGame01> {
       height: 100.h,
       child: BlocBuilder<QuizCubit, QuizState>(
         builder: (context, state) {
-          return Stack(
+          return GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10.r,
+                  mainAxisSpacing: 10.r,
+                  childAspectRatio: 3),
+              itemCount: state.quizMC![state.currentIndex!].vocabAns!.length,
+              itemBuilder: (context, index) {
+                return QuizButton(
+                  borderRadius: 20.r,
+                  backgroundColor: state.isChosen![index]
+                      ? AppColor.secondary
+                      : backgroundColor,
+                  height: height,
+                  width: width,
+                  text: state.quizMC![state.currentIndex!].vocabAns![index]
+                      .toCapitalize(),
+                  onTap: () => cubit.onChosen(
+                    index,
+                    state.quizMC![state.currentIndex!].vocabAns![index],
+                  ),
+                );
+              });
+        },
+      ),
+    );
+  }
+}
+/*
+return Stack(
             children: [
               Positioned(
                 left: 0,
@@ -233,8 +324,4 @@ class _QuizGame01State extends State<QuizGame01> {
               ),
             ],
           );
-        },
-      ),
-    );
-  }
-}
+*/
