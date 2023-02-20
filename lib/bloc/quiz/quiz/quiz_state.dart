@@ -13,9 +13,11 @@ class QuizState extends Equatable {
     this.status,
     this.errorMessage,
     this.currentIndex,
-    this.isChosen,
+    this.allowReChoose,
     this.answerChoosen,
     this.wordIndex,
+    this.answerCorrectColor,
+    this.userAnswer,
   });
 
   late final int? wordIndex;
@@ -28,8 +30,10 @@ class QuizState extends Equatable {
   late final int? totalCorrect;
   late final int? currentIndex;
   late final String? errorMessage;
-  late final List<bool>? isChosen;
+  late final bool? allowReChoose;
   late final List<String>? answerChoosen;
+  late final String? userAnswer;
+  late final List<bool>? answerCorrectColor;
 
   QuizState.initial() {
     quizId = -1;
@@ -40,10 +44,12 @@ class QuizState extends Equatable {
     quizMC = [];
     errorMessage = '';
     currentIndex = 0;
+    allowReChoose = true;
     totalCorrect = 0;
-    isChosen = [false, false, false, false];
     wordIndex = 0;
+    answerCorrectColor = [false, false, false, false];
     answerChoosen = ["", "", "", ""];
+    userAnswer = "";
   }
 
   QuizState copyWith({
@@ -56,15 +62,19 @@ class QuizState extends Equatable {
     int? totalCorrect,
     int? currentIndex,
     String? errorMessage,
-    List<bool>? isChosen,
+    bool? allowReChoose,
     List<String>? answerChoosen,
     int? wordIndex,
+    String? userAnswer,
+    List<bool>? answerCorrectColor,
   }) {
     return QuizState(
+      userAnswer: userAnswer ?? this.userAnswer,
+      answerCorrectColor: answerCorrectColor ?? this.answerCorrectColor,
       wordIndex: wordIndex ?? this.wordIndex,
       answerChoosen: answerChoosen ?? this.answerChoosen,
       quizId: quizId ?? this.quizId,
-      isChosen: isChosen ?? this.isChosen,
+      allowReChoose: allowReChoose ?? this.allowReChoose,
       quizMC: quizMC ?? this.quizMC,
       totalCorrect: totalCorrect ?? this.totalCorrect,
       time: time ?? this.time,
@@ -83,10 +93,13 @@ class QuizState extends Equatable {
         type,
         total,
         quizMC,
+        allowReChoose,
         currentIndex,
         totalCorrect,
         errorMessage,
         answerChoosen,
         wordIndex,
+        userAnswer,
+        answerCorrectColor
       ];
 }

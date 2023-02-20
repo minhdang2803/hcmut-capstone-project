@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
 import 'package:bke/data/repositories/quiz_repository.dart';
@@ -103,7 +101,7 @@ class QuizCubit extends Cubit<QuizState> {
         ));
       }
     }
-    print(state.wordIndex!);
+
     if (wordIndex > 4) {
       return;
     }
@@ -111,22 +109,22 @@ class QuizCubit extends Cubit<QuizState> {
 
   void onChosen(int index, String userAnswer) {
     emit(state.copyWith(status: QuizStatus.loading));
-    final isChosen = [false, false, false, false];
-    emit(state.copyWith(isChosen: isChosen));
-    isChosen[index] = true;
-    emit(state.copyWith(isChosen: isChosen, status: QuizStatus.done));
-    final answer = state.quizMC![state.currentIndex!].answer;
-    if (userAnswer == answer) {
+    final serverAnswer = state.quizMC![state.currentIndex!].answer;
+    if (userAnswer == serverAnswer) {
+      final answerList = state.answerCorrectColor;
+      answerList![index] = true;
       emit(state.copyWith(
         totalCorrect: state.totalCorrect! + 1,
-        // status: QuizStatus.done,
+        answerCorrectColor: answerList,
       ));
-    } else if (state.totalCorrect! > 0) {
-      emit(state.copyWith(
-        totalCorrect: state.totalCorrect! - 1,
-        // status: QuizStatus.done,
-      ));
+    } else if (state.totalCorrect! >= 0) {
+      final answerList = state.answerCorrectColor;
+      final trueAnsIndex =
+          state.quizMC![state.currentIndex!].vocabAns!.indexOf(serverAnswer!);
+      answerList![trueAnsIndex] = true;
+      emit(state.copyWith(answerCorrectColor: answerList));
     }
+    emit(state.copyWith(status: QuizStatus.done, allowReChoose: false));
   }
 
   void onSubmitGame1() {
@@ -134,14 +132,11 @@ class QuizCubit extends Cubit<QuizState> {
     if (state.currentIndex! < state.total! - 1) {
       emit(
         state.copyWith(
-            currentIndex: state.currentIndex! + 1,
-            status: QuizStatus.done,
-            isChosen: [
-              false,
-              false,
-              false,
-              false,
-            ]),
+          currentIndex: state.currentIndex! + 1,
+          status: QuizStatus.done,
+          answerCorrectColor: [false, false, false, false],
+          allowReChoose: true,
+        ),
       );
     } else {
       instance.saveResultToLocal(state.quizId!, state.totalCorrect!);

@@ -160,19 +160,21 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
         return QuizButton(
           width: MediaQuery.of(context).size.width * 0.95,
           height: 40.h,
-          text: "Submit",
+          text: "Next",
           textColor: Colors.white,
           backgroundColor: AppColor.primary,
           onTap: () {
-            if (state.totalLoop! < 8) {
-              _controller.reset();
-              _controller.forward();
-              context.read<QuizCubit>().onSubmitGame1();
-              context.read<TimerCubit>().resetCountdown(10);
-              context.read<TimerCubit>().startCountdown();
-            } else {
-              context.read<TimerCubit>().pauseCountdown();
-              context.read<QuizCubit>().onSubmitGame1();
+            {
+              if (state.totalLoop! < 8) {
+                _controller.reset();
+                _controller.forward();
+                context.read<QuizCubit>().onSubmitGame1();
+                context.read<TimerCubit>().resetCountdown(10);
+                context.read<TimerCubit>().startCountdown();
+              } else {
+                context.read<TimerCubit>().pauseCountdown();
+                context.read<QuizCubit>().onSubmitGame1();
+              }
             }
           },
         );
@@ -233,17 +235,21 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
               itemBuilder: (context, index) {
                 return QuizButton(
                   borderRadius: 20.r,
-                  backgroundColor: state.isChosen![index]
+                  backgroundColor: state.answerCorrectColor![index]
                       ? AppColor.secondary
                       : backgroundColor,
                   height: height,
                   width: width,
                   text: state.quizMC![state.currentIndex!].vocabAns![index]
                       .toCapitalize(),
-                  onTap: () => cubit.onChosen(
-                    index,
-                    state.quizMC![state.currentIndex!].vocabAns![index],
-                  ),
+                  onTap: () {
+                    if (state.allowReChoose!) {
+                      cubit.onChosen(
+                        index,
+                        state.quizMC![state.currentIndex!].vocabAns![index],
+                      );
+                    }
+                  },
                 );
               });
         },
@@ -251,77 +257,3 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
     );
   }
 }
-/*
-return Stack(
-            children: [
-              Positioned(
-                left: 0,
-                top: 0,
-                child: QuizButton(
-                  borderRadius: 20.r,
-                  backgroundColor:
-                      state.isChosen![0] ? AppColor.secondary : backgroundColor,
-                  height: height,
-                  width: width,
-                  text: state.quizMC![state.currentIndex!].vocabAns![0]
-                      .toCapitalize(),
-                  onTap: () => cubit.onChosen(
-                    0,
-                    state.quizMC![state.currentIndex!].vocabAns![0],
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: QuizButton(
-                  borderRadius: 20.r,
-                  backgroundColor:
-                      state.isChosen![1] ? AppColor.secondary : backgroundColor,
-                  height: height,
-                  width: width,
-                  text: state.quizMC![state.currentIndex!].vocabAns![1]
-                      .toCapitalize(),
-                  onTap: () => cubit.onChosen(
-                    1,
-                    state.quizMC![state.currentIndex!].vocabAns![1],
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                child: QuizButton(
-                  height: height,
-                  width: width,
-                  text: state.quizMC![state.currentIndex!].vocabAns![2]
-                      .toCapitalize(),
-                  borderRadius: 20.r,
-                  backgroundColor:
-                      state.isChosen![2] ? AppColor.secondary : backgroundColor,
-                  onTap: () => cubit.onChosen(
-                    2,
-                    state.quizMC![state.currentIndex!].vocabAns![2],
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: QuizButton(
-                  height: height,
-                  width: width,
-                  text: state.quizMC![state.currentIndex!].vocabAns![3]
-                      .toCapitalize(),
-                  borderRadius: 20.r,
-                  backgroundColor:
-                      state.isChosen![3] ? AppColor.secondary : backgroundColor,
-                  onTap: () => cubit.onChosen(
-                    3,
-                    state.quizMC![state.currentIndex!].vocabAns![3],
-                  ),
-                ),
-              ),
-            ],
-          );
-*/
