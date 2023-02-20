@@ -39,7 +39,7 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
       curve: Curves.easeInOut,
     ));
     _controller.forward();
-    context.read<TimerCubit>().startCountdown();
+    // context.read<TimerCubit>().startCountdown();
   }
 
   @override
@@ -90,28 +90,32 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
   Widget _buildAnswer() {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.75,
-      height: 50.r,
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return BlocBuilder<QuizCubit, QuizState>(
-            builder: (context, state) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.r),
-                child: QuizButton(
-                  width: 50.r,
-                  text: state.answerChoosen![index],
-                  onTap: () {
-                    context.read<QuizCubit>().onAnswerGame2Clear(index);
-                  },
-                ),
+      height: MediaQuery.of(context).size.height * 0.15,
+      child: BlocBuilder<QuizCubit, QuizState>(
+        builder: (context, state) {
+          return GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.zero,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 5,
+              mainAxisSpacing: 5.r,
+              crossAxisSpacing: 15.r,
+              childAspectRatio: 1,
+            ),
+            itemBuilder: (context, index) {
+              return QuizButton(
+                width: 50.r,
+                text: state.answerChoosen![index],
+                onTap: () {
+                  context.read<QuizCubit>().onAnswerGame2Clear(index);
+                },
               );
             },
+            // separatorBuilder: (context, index) => 10.horizontalSpace,
+            itemCount:
+                state.quizMC![state.currentIndex!].answer!.split("").length,
           );
         },
-        // separatorBuilder: (context, index) => 10.horizontalSpace,
-        itemCount: 4,
       ),
     );
   }

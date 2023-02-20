@@ -6,6 +6,7 @@ import 'package:bke/bloc/video/last_watch_video/last_watch_video_cubit.dart';
 import 'package:bke/bloc/video/video_cubit.dart';
 
 import 'package:bke/data/models/book/book_listener.dart';
+import 'package:bke/data/models/quiz/quiz.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/pages/book/books_screen.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
@@ -154,7 +155,7 @@ class RouteGenerator {
         final context = settings.arguments as BuildContext;
         page = MultiBlocProvider(
           providers: [
-            BlocProvider(create: (context) => TimerCubit(10)),
+            BlocProvider(create: (context) => TimerCubit(20)),
             BlocProvider.value(
               value: BlocProvider.of<MapCubit>(context, listen: false),
             ),
@@ -162,18 +163,20 @@ class RouteGenerator {
               value: BlocProvider.of<QuizCubit>(context, listen: false),
             )
           ],
-          child: QuizScreen(),
+          child: const QuizScreen(),
         );
         break;
 
       case RouteName.quizDoneScreen:
         final context = settings.arguments as BuildContext;
-        page = BlocProvider.value(
+        page = MultiBlocProvider(providers: [
+          BlocProvider.value(
             value: BlocProvider.of<MapCubit>(context, listen: false),
-            child: BlocProvider.value(
-              value: BlocProvider.of<QuizCubit>(context, listen: false),
-              child: const QuizDoneScreen(),
-            ));
+          ),
+          BlocProvider.value(
+            value: BlocProvider.of<QuizCubit>(context, listen: false),
+          )
+        ], child: const QuizDoneScreen());
         break;
 
       case RouteName.bookPage:

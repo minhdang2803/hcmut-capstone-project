@@ -48,7 +48,7 @@ class QuizState extends Equatable {
     totalCorrect = 0;
     wordIndex = 0;
     answerCorrectColor = [false, false, false, false];
-    answerChoosen = ["", "", "", ""];
+    answerChoosen = [];
     userAnswer = "";
   }
 

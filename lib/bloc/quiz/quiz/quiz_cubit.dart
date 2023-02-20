@@ -18,12 +18,13 @@ class QuizCubit extends Cubit<QuizState> {
       final response = await instance.getMultipleChoicesQuizBylevel(level);
       emit(
         state.copyWith(
-          quizId: response.id,
-          status: QuizStatus.done,
-          type: response.typeOfQuestion,
-          total: response.numOfQuestions,
-          quizMC: response.tests,
-        ),
+            quizId: response.id,
+            status: QuizStatus.done,
+            type: response.typeOfQuestion,
+            total: response.numOfQuestions,
+            quizMC: response.tests,
+            answerChoosen: List.generate(
+                response.tests[0].answer!.split("").length, (index) => "")),
       );
     } on RemoteException catch (error) {
       emit(QuizState.initial());
@@ -90,19 +91,21 @@ class QuizCubit extends Cubit<QuizState> {
   void onChosenGame2(int index, String userAnswer) {
     int wordIndex = state.wordIndex!;
     List<String> answerChosenList = state.answerChoosen!;
-    if (wordIndex >= 0 && wordIndex <= 3) {
+    if (wordIndex >= 0 && wordIndex <= answerChosenList.length - 1) {
       if (answerChosenList[wordIndex] == "") {
         emit(state.copyWith(status: QuizStatus.loading));
         answerChosenList[wordIndex] = userAnswer;
         emit(state.copyWith(
           status: QuizStatus.done,
           answerChoosen: answerChosenList,
-          wordIndex: wordIndex < 3 ? wordIndex + 1 : wordIndex,
+          wordIndex: wordIndex < answerChosenList.length - 1
+              ? wordIndex + 1
+              : wordIndex,
         ));
       }
     }
 
-    if (wordIndex > 4) {
+    if (wordIndex > answerChosenList.length - 1) {
       return;
     }
   }
@@ -155,7 +158,9 @@ class QuizCubit extends Cubit<QuizState> {
         state.copyWith(
           currentIndex: state.currentIndex! + 1,
           status: QuizStatus.done,
-          answerChoosen: ["", "", "", ""],
+          answerChoosen: List.generate(
+              state.quizMC![state.currentIndex!].answer!.split("").length,
+              (index) => ""),
           wordIndex: 0,
           totalCorrect: isTrue ? state.totalCorrect! + 1 : state.totalCorrect!,
         ),
