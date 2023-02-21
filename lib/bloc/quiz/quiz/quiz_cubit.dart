@@ -172,8 +172,10 @@ class QuizCubit extends Cubit<QuizState> {
       await Future.delayed(
         const Duration(seconds: 1),
       );
-      controller.reset();
-      controller.forward();
+      if (controller != null) {
+        controller.reset();
+        controller.forward();
+      }
       emit(state.copyWith(status: QuizStatus.loading));
       emit(
         state.copyWith(

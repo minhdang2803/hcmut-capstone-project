@@ -182,13 +182,11 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
                 onTap: () async {
                   if (state.totalLoop! < 8) {
                     await context.read<QuizCubit>().onSubmitGame2(_controller);
-                    // _controller.reset();
-                    // _controller.forward();
                     context.read<TimerCubit>().resetCountdown(30);
                     context.read<TimerCubit>().startCountdown();
                   } else {
                     context.read<TimerCubit>().pauseCountdown();
-                    await context.read<QuizCubit>().onSubmitGame2(_controller);
+                    await context.read<QuizCubit>().onSubmitGame2(null);
                   }
                 },
               );
@@ -283,14 +281,12 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
               BlocConsumer<TimerCubit, TimerState>(
                 listener: (context, state) {
                   if (state.durationInSecond == 0 && state.totalLoop! < 8) {
-                    // _controller.reset();
-                    // _controller.forward();
                     context.read<QuizCubit>().onSubmitGame2(_controller);
                     context.read<TimerCubit>().resetCountdown(30);
                     context.read<TimerCubit>().startCountdown();
                   } else if (state.durationInSecond == 0 &&
                       state.totalLoop! == 8) {
-                    context.read<QuizCubit>().onSubmitGame2(_controller);
+                    context.read<QuizCubit>().onSubmitGame2(null);
                   }
                 },
                 builder: (context, state) {
