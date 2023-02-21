@@ -3,6 +3,7 @@ import 'package:bke/bloc/book/book_event.dart';
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/book/book_reader.dart';
 import 'package:bke/data/models/network/cvn_exception.dart';
+import 'package:bke/utils/extension.dart';
 import 'package:bke/utils/log_util.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,7 @@ class _BookReadState extends State<BookRead>{
   late final int _totalPage;
   double _position = 0;
   bool _ckptReached = false;
+  late int _oldPage = 1;
   late double _oldCkpt = 0.0;
   late double _maxExtent = 0.0; 
   late double _rowHeight = 0.0;
@@ -56,9 +58,6 @@ class _BookReadState extends State<BookRead>{
     _scrollController.addListener(_scrollListener);
 
     _bookBloc.add(LoadEbookEvent(bookId: widget.book.bookId, pageKey : _pageNumber));
-
-   
-    
   }
 
   @override
@@ -70,9 +69,9 @@ class _BookReadState extends State<BookRead>{
 
   void _scrollListener() async {
 
-    
+    // add an extra scroller in case user scroll back to previous page
     if (_maxExtent == 0.0){
-        _maxExtent = _scrollController.position.maxScrollExtent - 100.0;
+        _maxExtent = _scrollController.position.maxScrollExtent - 220.0;
         _scrollControllerBottomUp = ScrollController(initialScrollOffset: _maxExtent); //init a new scroll controller that set initial offset to end
         _scrollControllerBottomUp.addListener(_scrollListenerBottomUp);      
       }
@@ -84,9 +83,7 @@ class _BookReadState extends State<BookRead>{
       setState(() {
         _isLoading = true; 
       });
-      
       await _loadNextPage();
-      
     }
 
     //scroll up
@@ -97,16 +94,15 @@ class _BookReadState extends State<BookRead>{
       setState(() {
         _isLoading = true; 
       });
-      
       await _loadPrevPage();
-
     }
    
-    if ((_scrollController.offset - _oldCkpt).abs() > 500){
+    if ((_scrollController.offset - _oldCkpt).abs() > 1000 || _pageNumber != _oldPage){
       _oldCkpt = _scrollController.offset;
+      _oldPage = _pageNumber;
     
       final int savedIdx = (_scrollController.offset/_rowHeight + Constants.defaultReadingPageSize*(_pageNumber-1)).toInt();
-      LogUtil.debug('$_oldCkpt and $savedIdx');
+      // LogUtil.debug('$_oldCkpt and $savedIdx');
       _bookBloc.add(UpdateCkptEvent(bookId: widget.book.id, ckpt: savedIdx, isEbook: true));
     }
   }
@@ -134,10 +130,7 @@ class _BookReadState extends State<BookRead>{
         return;
       }
       _bookBloc.add(LoadEbookAnotherEvent(bookId: widget.book.bookId, pageKey : _pageNumber));
-    });
-    
-
-    
+    });  
   }
 
   void _scrollListenerBottomUp() async {
@@ -149,9 +142,7 @@ class _BookReadState extends State<BookRead>{
       setState(() {
         _isLoading = true; 
       });
-      
       await _loadNextPage();
-      
     }
 
     //scroll up
@@ -162,30 +153,40 @@ class _BookReadState extends State<BookRead>{
         _isLoading = true; 
       });
       await _loadPrevPage();
- 
-      // await _getMoreSentences(addHead: true)
+
     }
 
-    if ((_scrollControllerBottomUp.offset - _oldCkpt).abs() > 500){
+    if ((_scrollControllerBottomUp.offset - _oldCkpt).abs() > 1000 || _pageNumber != _oldPage){
       _oldCkpt = _scrollControllerBottomUp.offset;
+      _oldPage = _pageNumber;
       final int savedIdx = (_scrollControllerBottomUp.offset/_rowHeight + Constants.defaultReadingPageSize*(_pageNumber-1)).toInt();
-      LogUtil.debug('$_oldCkpt and $savedIdx');
+      // LogUtil.debug('$_oldCkpt and $savedIdx');
       _bookBloc.add(UpdateCkptEvent(bookId: widget.book.id, ckpt: savedIdx, isEbook: true));
     }
   }
 
   void setInitialCkpt(index) async{
     _pageNumber = (index/Constants.defaultReadingPageSize).floor() + 1;
+    
     if (_pageNumber > 1){
       _bookBloc.add(LoadEbookEvent(bookId: widget.book.bookId, pageKey : _pageNumber));
     }
     
     _position = (index%Constants.defaultReadingPageSize)*_rowHeight;
     _oldCkpt = _position;
-    LogUtil.debug('position: $_position page: $_pageNumber');
-    
+    // LogUtil.debug('position: $_position page: $_pageNumber');
     _ckptReached = true;
+  }
 
+  void setCkpt(index) async{
+    final int pageNumber = (index/Constants.defaultReadingPageSize).floor() + 1;
+    if (pageNumber != _pageNumber){
+      _bookBloc.add(LoadEbookEvent(bookId: widget.book.bookId, pageKey : pageNumber));
+      _pageNumber = pageNumber;
+    }
+    _position = (index%Constants.defaultReadingPageSize)*_rowHeight;
+    _oldCkpt = _position;
+    // LogUtil.debug('position: $_position page: $_pageNumber');
   }
 
   List<String> splitWord(String subText) {
@@ -256,71 +257,187 @@ class _BookReadState extends State<BookRead>{
     if (_rowHeight == 0.0){
     _rowHeight = size.height*0.11;
     }
-    return BlocProvider(
-              create: (context) => _bookBloc,
-              child:
-                BlocBuilder<BookBloc, BookState>(
-                  builder: (context, state) {
-                    if (state is BookLoadingState) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 30.r),
-                        child: const Center(
-                                              child: CircularProgressIndicator(color: AppColor.primary)
-                                            )
-                      );
-                    } 
-                    else if (state is EbookLoadedState) {
-                    
-                      _ebook = state.book!.ebook;
-                    
-                      if (!_ckptReached){
-                        //move to saved checkpoint
-                        
-                        _totalPage = state.book!.metadata.totalPage;
-                        setInitialCkpt(_ebook.ckpt);
-                        Future.delayed(const Duration(seconds: 2), () {
-                          _scrollController.animateTo(_position-300.0, duration: const Duration(microseconds: 3000), curve: Curves.easeInOut);});
-                      // Perform the action here
+    return Scaffold(
+      backgroundColor: AppColor.secondary,
+      body: SafeArea(
+            top: true,
+            bottom: false,
+            child: Column(
+              children: [
+                _appBar(),
+                Expanded(
+                  child:  BlocProvider(
+                    create: (context) => _bookBloc,
+                    child:
+                      BlocBuilder<BookBloc, BookState>(
+                        builder: (context, state) {
+                          if (state is BookLoadingState) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 30.r),
+                              child: const Center(
+                                                    child: CircularProgressIndicator(color: AppColor.appBackground)
+                                                  )
+                            );
+                          } 
+                          else if (state is EbookLoadedState) {
                           
-                       
-                      }
-                      
-                      return _buildListView(_scrollController);
-                      
-                    } else if (state is EbookLoadedAnotherState){
-                      
-                        _ebook = state.book!.ebook;
-                        return _buildListView(_scrollControllerBottomUp);
+                            _ebook = state.book!.ebook;
+                          
+                            if (!_ckptReached){
+                              //move to saved checkpoint
+                              
+                              _totalPage = state.book!.metadata.totalPage;
+                              setInitialCkpt(_ebook.ckpt);
+                              Future.delayed(const Duration(seconds: 2), () {
+                                _scrollController.animateTo(_position-100.0, duration: const Duration(seconds: 3), curve: Curves.easeInOut);});
+                            // Perform the action here
+                            }
+                            
+                            return _buildListView(_scrollController);
+                            
+                          } else if (state is EbookLoadedAnotherState){
+                            
+                              _ebook = state.book!.ebook;
+                              return _buildListView(_scrollControllerBottomUp);
 
-                    }else {
-                      // Display an error message or empty state
-                      return const Text('An error occurred.');
-                    }
-                  }
-                )
+                          }else {
+                            // Display an error message or empty state
+                            return const Text('An error occurred.');
+                          }
+                        }
+                      )
+                    ),
+                )    
+             ],
+            )
+      )
     );
   }
 
   Widget _buildListView(ScrollController controller){
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
+    return 
+      Padding(
+      padding: EdgeInsets.symmetric(vertical: _rowHeight*0.05),
       child: ListView.builder( //rebuild everytime a request to a new page is called, the response is added up to old _sentences
-                          controller: controller,
-                          itemCount: _ebook.sentences.length,
-                          itemBuilder: (context, index) {
-                            // Build your list item
-                            return SizedBox(
-                                  height: _rowHeight,
-                                  child: RichText(
-                                    text: TextSpan(
-                                      children: createTextSpans(_ebook.sentences[index].text, 
-                                                                AppTypography.title),
-                                    ),
-                                  )
-                            );
-                          }, 
+              controller: controller,
+              itemCount: _ebook.sentences.length,
+              itemBuilder: (context, index) {
+                // Build your list item
+                return Container(
+                      padding: EdgeInsets.symmetric(vertical: _rowHeight*0.05),
+                      height: _rowHeight,
+                      child: RichText(
+                        text: TextSpan(
+                          children: createTextSpans(_ebook.sentences[index].text, 
+                                                    AppTypography.title),
                         ),
+                      )
+                );
+              }, 
+            ),
+        );
+  }
+
+  Widget _appBar() {
+    return Container(
+              height: _rowHeight,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color:  AppColor.appBackground,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(40),
+                  bottomRight: Radius.circular(40),
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                      size: 24,
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.menu,
+                      color: Colors.black,
+                      size: 24.r,
+                    ),
+                    onPressed: () => showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (_) => _chapterSheet(),
+                    
+                    )
+                  )
+                ],
+      ),
     );
+  }
+
+Widget _chapterSheet()
+  { 
+    bool picked = false;
+    int at = -1;
+    List<String> chapterList;
+    final state = _bookBloc.state;
+    if (state is BookLoadingState) {
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30.r),
+        child: const Center(
+                              child: CircularProgressIndicator(color: AppColor.primary)
+                            )
+      );
+    } 
+    else if (state is EbookLoadedState) {
+      final chapters = state.book!.ebook.chapter;
+      chapterList =  chapters.keys.cast<String>().toList();
+      if (chapterList.isNotEmpty){
+        return Container(
+          color: AppColor.appBackground,
+          child: ListView.builder(
+                    itemBuilder: (ctx, i) => GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            picked = true;
+                            at = i;
+                          });
+                          var chapter= chapterList[i];
+                          setCkpt(chapters[chapter]);
+                          Future.delayed(const Duration(seconds: 2), () {
+                          _scrollController.animateTo(_position, duration: const Duration(seconds: 3), curve: Curves.easeInOut);});
+                          Navigator.pop(context);
+                          
+                        },
+                        child: SizedBox(
+                          height: _rowHeight ,
+                          child: Text(
+                            chapterList[i] == 'prologue' ? 'Chương mở đầu' : 'Chương ${chapterList[i]}',
+                            style: picked && i == at
+                                ? Theme.of(context).textTheme.headline4!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColor.primary,
+                                    )
+                                : Theme.of(context).textTheme.headline5!.copyWith(
+                                      fontWeight: FontWeight.w200,
+                                      color: Theme.of(context).hintColor,
+                                    ),
+                            textAlign: TextAlign.center,
+                          ),
+                        )),
+                    itemCount: chapterList.length,
+                  ),
+        );
+      }else{
+        return Text("No table found.");
+      }
+    }
+    return Text("No table found.");
+           
   }
 }
 

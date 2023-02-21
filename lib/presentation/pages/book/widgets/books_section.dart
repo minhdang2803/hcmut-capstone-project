@@ -1,3 +1,4 @@
+import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../data/models/book/book_listener.dart';
@@ -17,7 +18,7 @@ class BookSectionDisplayAll extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          heading,
+          heading.toCapitalize(),
           style: Theme.of(context).textTheme.headline5,
         ),
         Container(

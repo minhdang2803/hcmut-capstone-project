@@ -55,13 +55,18 @@ class BookListBloc extends Bloc<BookListEvent, BookListState>{
     try{
         // ignore: prefer_typing_uninitialized_variables
         late final response;
-        if (event.category == "Continue reading"){
+        if (event.category == 'Home'){
+          response = await _bookRepos.getAll();
+          emit(BookListLoadedState(response.data!.list,  event.category));
+          return;
+        }
+        else if (event.category == "Tiếp tục đọc"){
           response = await _bookRepos.getContinueReading();          
         }
-        else if (event.category == "Continue listening"){
+        else if (event.category == "Tiếp tục nghe"){
           response = await _bookRepos.getContinueListening();
         }
-        else if(event.category == "Favorite"){
+        else if(event.category == "Danh sách yêu thích"){
           response = await _bookRepos.getFavorites();
         }
         else{

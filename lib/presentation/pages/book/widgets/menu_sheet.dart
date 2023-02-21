@@ -1,3 +1,4 @@
+import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +17,7 @@ class _MenuSheetState extends State<MenuSheet> {
   bool picked = false;
   int at = 0;
   final String category = 'Home';
-  final List<String> menuList = <String>['adventure', 'detective', 'non-fiction', 'short-story', 'biography', 'fantasy', 'Classics', 'thriller', 'fairytale', 'fiction', 'Technology & Science', 'human interest', 'documentary', 'science', 'Biography', 'crime', 'science fiction', 'mystery', 'Human interest', 'classics', 'horror', 'novella', 'business', 'novel', 'love story', 'Romance', 'drama', 'gothic horror', 'Horror', 'satire', 'romance', 'historical', 'Historical', 'Culture', 'Historical fiction', 'folk tale', 'Young life/adventure', 'Movies', 'Thriller', 'comedy', 'Adventure', 'movies', 'tale', 'Short stories', 'Science fiction'];
+  final List<String> menuList = <String>['Home','Tiếp tục đọc','Tiếp tục nghe','Danh sách yêu thích','adventure', 'detective', 'non-fiction', 'short-story', 'biography', 'fantasy', 'Classics', 'thriller', 'fairytale', 'fiction', 'Technology & Science', 'human interest', 'documentary', 'science', 'Biography', 'crime', 'science fiction', 'mystery', 'Human interest', 'classics', 'horror', 'novella', 'business', 'novel', 'love story', 'Romance', 'drama', 'gothic horror', 'Horror', 'satire', 'romance', 'historical', 'Historical', 'Culture', 'Historical fiction', 'folk tale', 'Young life/adventure', 'Movies', 'Thriller', 'comedy', 'Adventure', 'movies', 'tale', 'Short stories', 'Science fiction'];
   
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class _MenuSheetState extends State<MenuSheet> {
             child: SizedBox(
               height: size.height * 0.1,
               child: Text(
-                menuList[i],
+                menuList[i].toCapitalize(),
                 style: picked && i == at
                     ? Theme.of(context).textTheme.headline4!.copyWith(
                           fontWeight: FontWeight.w500,

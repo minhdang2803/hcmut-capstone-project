@@ -21,7 +21,7 @@ class BookReader {
 class EbookModel{
   late final String bookId; 
   late List<Sentence> sentences = [];
-  late final ChapterModel chapter;
+  Map<String, int> chapter = {};
   late final int ckpt;
  
   EbookModel({required this.bookId, required this.sentences});
@@ -36,9 +36,10 @@ class EbookModel{
         sentences.add(s);
       }
     }
-
-    
-    // chapter = ChapterModel.fromJson(json['chapter']);
+    if (json['chapter'] != null){
+      json['chapter'].forEach((key, value) {
+        chapter[key] = value; });
+    }
   }
 }
 
@@ -59,10 +60,11 @@ class ChapterModel{
   ChapterModel({required this.chapter});
 
   ChapterModel.fromJson(Map<String, dynamic> json) {
-    if (json["chapter"] != null) {
+    if (json != null){
       json.forEach((key, value) {
         chapter[key] = value; });
     }
+    
   }
   
 }

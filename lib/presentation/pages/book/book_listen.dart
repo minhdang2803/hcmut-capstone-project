@@ -65,8 +65,7 @@ class _BookListen extends State<BookListen> {
 
   void setAudioBook(state) async{
     _audioBook = state.book;   
-    print(_audioBook.bookId);  
-    print(_audioBook.ckpt);  
+    
     _position = Duration(seconds: _audioBook.ckpt);
     await audioPlayer.play(UrlSource(widget.bookInfo.mp3Url!), position: _position);
     await audioPlayer.seek(_position);

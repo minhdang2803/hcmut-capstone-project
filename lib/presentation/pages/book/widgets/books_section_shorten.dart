@@ -1,3 +1,4 @@
+import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../data/models/book/book_info.dart';
@@ -15,12 +16,12 @@ class BookSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    print(bookList);
+  
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          heading,
+          heading.toCapitalize(),
           style: Theme.of(context).textTheme.headline5,
         ),
         Container(

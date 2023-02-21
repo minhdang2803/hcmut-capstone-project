@@ -21,7 +21,6 @@ class BookRepository{
   
   Future<BaseResponse<BookInfosV2>> getAll() async{
     final res = await _bookSource.getAll();
-    print('sdfsfa');
     return res;
   }
 
