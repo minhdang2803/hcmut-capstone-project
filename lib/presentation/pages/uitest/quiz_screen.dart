@@ -1,5 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
-
 import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_timer/quiz_timer_cubit.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
@@ -8,8 +6,6 @@ import 'package:bke/presentation/pages/uitest/component/quiz_game_02.dart';
 import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
-import 'package:bke/presentation/widgets/widgets.dart';
-import 'package:bke/utils/extension.dart';
 import 'package:bke/utils/widget_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -120,10 +116,14 @@ class _QuizScreenState extends State<QuizScreen>
           ),
           Align(
             alignment: Alignment.center,
-            child: Text(
-              "Câu đố cấp độ 1",
-              style: AppTypography.subHeadline
-                  .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+            child: BlocBuilder<QuizCubit, QuizState>(
+              builder: (context, state) {
+                return Text(
+                  "Câu đố cấp độ ${state.quizId}",
+                  style: AppTypography.subHeadline.copyWith(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                );
+              },
             ),
           ),
           SizedBox(width: 40.r)
