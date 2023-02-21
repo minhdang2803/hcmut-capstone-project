@@ -66,7 +66,7 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
       position: _offsetAnimation,
       child: Container(
         width: MediaQuery.of(context).size.width * 0.95,
-        height: MediaQuery.of(context).size.height * 0.71,
+        height: 510.h,
         padding: EdgeInsets.all(15.r),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(20.r)),
@@ -74,11 +74,8 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _buildPicture(),
-            // 20.verticalSpace,
             _buildQuestion(),
-            // 20.verticalSpace,
             _buildChoices(),
-            // 20.verticalSpace,
             _buildSubmitButton(),
           ],
         ),
@@ -162,7 +159,7 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
       builder: (context, state) {
         return QuizButton(
           width: MediaQuery.of(context).size.width * 0.95,
-          height: 40.h,
+          height: 50.h,
           text: "Next",
           textColor: Colors.white,
           backgroundColor: AppColor.primary,
@@ -187,8 +184,8 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
 
   Widget _buildQuestion() {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.r),
       width: MediaQuery.of(context).size.width * 0.9,
-      padding: EdgeInsets.all(10.r),
       child: BlocBuilder<QuizCubit, QuizState>(
         builder: (context, state) {
           if (state.status == QuizStatus.done) {
@@ -218,13 +215,13 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
   }
 
   Widget _buildChoices() {
-    double width = 130.h;
-    double height = 50.w;
+    double width = 130.w;
+    double height = 50.h;
     Color backgroundColor = AppColor.accentBlue;
     final cubit = context.read<QuizCubit>();
     return SizedBox(
       width: 341.w,
-      height: 100.h,
+      height: 110.h,
       child: BlocBuilder<QuizCubit, QuizState>(
         builder: (context, state) {
           return GridView.builder(

@@ -135,7 +135,7 @@ class _QuizScreenState extends State<QuizScreen>
 
   Widget _buildLoadingSkeleton() {
     double width = 130.h;
-    double height = 50.w;
+    double height = 55.w;
     return FadeTransition(
       opacity: _animationEaseOut,
       child: SizedBox(

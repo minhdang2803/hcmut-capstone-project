@@ -27,12 +27,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initServices();
   await HiveConfig().init();
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarBrightness: Brightness.light,
-    statusBarIconBrightness: Brightness.dark,
-    systemNavigationBarIconBrightness: Brightness.dark,
-  ));
+  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  //   statusBarColor: Colors.transparent,
+  //   statusBarBrightness: Brightness.light,
+  //   statusBarIconBrightness: Brightness.dark,
+  //   systemNavigationBarIconBrightness: Brightness.dark,
+  // ));
 
   runApp(MyApp(
     initialRoute: await _getInitialRoute(),

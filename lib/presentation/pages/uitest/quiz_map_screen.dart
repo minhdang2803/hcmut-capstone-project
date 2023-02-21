@@ -130,7 +130,7 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
                       });
 
                       return MapContainer(
-                        initZoomLevel: getScreenSize(),
+                        initZoomLevel: 2,
                         assetImage: 'assets/images/mapQuiz.jpg',
                         width: constraints.maxWidth,
                         height: constraints.maxHeight,

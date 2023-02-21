@@ -16,8 +16,8 @@ class MapContainer extends StatefulWidget {
     this.onMapDoubleTap,
     this.onItemClick,
     this.doubleTapToZoomIn = true,
-    this.maxZoomLevel = 6,
-    this.minZoomLevel = 3,
+    this.maxZoomLevel = 4,
+    this.minZoomLevel = 1,
     this.zoomScaleLevel = 2,
   }) : super(key: key);
 
