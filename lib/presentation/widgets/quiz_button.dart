@@ -16,6 +16,7 @@ class QuizButton extends StatelessWidget {
     this.height = 57,
     this.splashColor = AppColor.primary,
     this.hightlightColor = AppColor.secondary,
+    this.borderColor = Colors.green,
     required this.onTap,
   });
   final bool? isBorder;
@@ -26,7 +27,7 @@ class QuizButton extends StatelessWidget {
   final double? borderRadius;
   final Color? splashColor;
   final Color? hightlightColor;
-
+  final Color? borderColor;
   final double? width;
   final double? height;
   final void Function() onTap;
@@ -47,7 +48,8 @@ class QuizButton extends StatelessWidget {
             decoration: BoxDecoration(
               color: backgroundColor,
               border: isBorder == true
-                  ? Border.all(style: BorderStyle.solid, width: 0.5)
+                  ? Border.all(
+                      style: BorderStyle.solid, width: 2, color: borderColor!)
                   : null,
               borderRadius: BorderRadius.circular(borderRadius!),
             ),

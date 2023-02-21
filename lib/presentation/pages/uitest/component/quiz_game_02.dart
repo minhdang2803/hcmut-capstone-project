@@ -4,6 +4,7 @@ import 'package:bke/bloc/quiz/quiz_timer/quiz_timer_cubit.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
+import 'package:bke/utils/widget_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -49,12 +50,20 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
   }
 
   Widget _buildMainUI() {
-    return Column(
-      children: [
-        _buildProcessBarAndTime(),
-        10.verticalSpace,
-        _buildQuestionArea(context)
-      ],
+    return BlocListener<QuizCubit, QuizState>(
+      listener: (context, state) {
+        if (state.isCorrectGame2 == false) {
+          WidgetUtil.showSnackBar(context,
+              "Đáp án đúng là ${state.quizMC![state.currentIndex!].answer}");
+        }
+      },
+      child: Column(
+        children: [
+          _buildProcessBarAndTime(),
+          10.verticalSpace,
+          _buildQuestionArea(context)
+        ],
+      ),
     );
   }
 
@@ -104,6 +113,12 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
             ),
             itemBuilder: (context, index) {
               return QuizButton(
+                isBorder: true,
+                borderColor: state.isCorrectGame2 == null
+                    ? Colors.transparent
+                    : state.isCorrectGame2!
+                        ? Colors.green
+                        : Colors.red,
                 width: 50.r,
                 text: state.answerChoosen![index],
                 onTap: () {
@@ -139,7 +154,6 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
                 final text =
                     state.quizMC![state.currentIndex!].vocabAns![index];
                 return QuizButton(
-                  isBorder: true,
                   hightlightColor: AppColor.primary,
                   backgroundColor: AppColor.accentBlue,
                   splashColor: AppColor.secondary,
@@ -165,16 +179,16 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
                 text: "Submit",
                 textColor: Colors.white,
                 backgroundColor: AppColor.primary,
-                onTap: () {
+                onTap: () async {
                   if (state.totalLoop! < 8) {
-                    _controller.reset();
-                    _controller.forward();
-                    context.read<QuizCubit>().onSubmitGame2();
+                    await context.read<QuizCubit>().onSubmitGame2(_controller);
+                    // _controller.reset();
+                    // _controller.forward();
                     context.read<TimerCubit>().resetCountdown(30);
                     context.read<TimerCubit>().startCountdown();
                   } else {
                     context.read<TimerCubit>().pauseCountdown();
-                    context.read<QuizCubit>().onSubmitGame2();
+                    await context.read<QuizCubit>().onSubmitGame2(_controller);
                   }
                 },
               );
@@ -269,14 +283,14 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
               BlocConsumer<TimerCubit, TimerState>(
                 listener: (context, state) {
                   if (state.durationInSecond == 0 && state.totalLoop! < 8) {
-                    _controller.reset();
-                    _controller.forward();
-                    context.read<QuizCubit>().onSubmitGame2();
+                    // _controller.reset();
+                    // _controller.forward();
+                    context.read<QuizCubit>().onSubmitGame2(_controller);
                     context.read<TimerCubit>().resetCountdown(30);
                     context.read<TimerCubit>().startCountdown();
                   } else if (state.durationInSecond == 0 &&
                       state.totalLoop! == 8) {
-                    context.read<QuizCubit>().onSubmitGame2();
+                    context.read<QuizCubit>().onSubmitGame2(_controller);
                   }
                 },
                 builder: (context, state) {

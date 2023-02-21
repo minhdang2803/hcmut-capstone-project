@@ -43,7 +43,7 @@ class BKEDialog extends StatelessWidget {
                     children: [
                       Center(
                         child: Image.asset(
-                          'assets/images/proud.png',
+                          'assets/images/sad.png',
                           width: 65.r,
                           height: 65.r,
                           fit: BoxFit.contain,
@@ -51,15 +51,16 @@ class BKEDialog extends StatelessWidget {
                       ),
                       AutoSizeText(
                         title,
+                        textAlign: TextAlign.center,
                         style: AppTypography.title.copyWith(
                           color: AppColor.primary,
                           fontWeight: FontWeight.bold,
                         ),
                         maxLines: 1,
-                        textAlign: TextAlign.center,
                       ),
                       AutoSizeText(
                         message,
+                        textAlign: TextAlign.center,
                         style: AppTypography.body,
                         maxLines: 2,
                       ),

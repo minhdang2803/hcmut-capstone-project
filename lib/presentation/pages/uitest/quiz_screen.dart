@@ -10,6 +10,7 @@ import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
 import 'package:bke/utils/extension.dart';
+import 'package:bke/utils/widget_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -95,6 +96,8 @@ class _QuizScreenState extends State<QuizScreen>
   }
 
   AppBar _buildAppbar() {
+    void _showConfirmDialog(BuildContext context) async {}
+
     return AppBar(
       backgroundColor: AppColor.primary,
       automaticallyImplyLeading: false,
@@ -105,8 +108,14 @@ class _QuizScreenState extends State<QuizScreen>
           BackButton(
             color: Colors.white,
             onPressed: () {
-              Navigator.pop(context);
               context.read<TimerCubit>().pauseCountdown();
+              WidgetUtil.showDialog(
+                context: context,
+                title: 'Thoát khỏi màn chơi',
+                message: 'Quá trình sẽ bị huỷ bỏ!',
+                onAccepted: () => Navigator.pop(context),
+                onDismissed: () => context.read<TimerCubit>().resumeCountdown(),
+              );
             },
           ),
           Align(

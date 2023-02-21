@@ -2,6 +2,7 @@ import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
 import 'package:bke/data/repositories/quiz_repository.dart';
 import 'package:bke/presentation/pages/uitest/component/map_object.dart';
+import 'package:bke/utils/widget_util.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -62,8 +63,13 @@ class QuizCubit extends Cubit<QuizState> {
     List<String> answerChosenList = state.answerChoosen!;
     if (wordIndex >= 0) {
       emit(state.copyWith(status: QuizStatus.loading));
-      answerChosenList.removeAt(wordIndex);
-      answerChosenList.add("");
+      if (answerChosenList[wordIndex] == "" && wordIndex > 0) {
+        answerChosenList.removeAt(wordIndex - 1);
+        answerChosenList.add("");
+      } else {
+        answerChosenList.removeAt(wordIndex);
+        answerChosenList.add("");
+      }
       if (wordIndex > 0) {
         wordIndex = wordIndex - 1;
       }
@@ -152,13 +158,23 @@ class QuizCubit extends Cubit<QuizState> {
     }
   }
 
-  void onSubmitGame2() {
+  Future<void> onSubmitGame2(controller) async {
     emit(state.copyWith(status: QuizStatus.loading));
     if (state.currentIndex! < state.total! - 1) {
       final String userAnswer = state.answerChoosen!.join("");
       final String questionAnswer =
           state.quizMC![state.currentIndex!].answer!.split(",").join("");
       final isTrue = userAnswer == questionAnswer;
+      emit(state.copyWith(
+        isCorrectGame2: isTrue,
+        status: QuizStatus.done,
+      ));
+      await Future.delayed(
+        const Duration(seconds: 1),
+      );
+      controller.reset();
+      controller.forward();
+      emit(state.copyWith(status: QuizStatus.loading));
       emit(
         state.copyWith(
           currentIndex: state.currentIndex! + 1,
@@ -167,6 +183,7 @@ class QuizCubit extends Cubit<QuizState> {
             state.quizMC![state.currentIndex! + 1].answer!.split("").length,
             (index) => "",
           ),
+          isCorrectGame2: null,
           wordIndex: 0,
           totalCorrect: isTrue ? state.totalCorrect! + 1 : state.totalCorrect!,
         ),

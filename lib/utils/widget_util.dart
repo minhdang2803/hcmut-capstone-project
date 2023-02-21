@@ -7,6 +7,7 @@ class WidgetUtil {
   static void showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        duration: const Duration(milliseconds: 500),
         content: Text(
           message,
           style: AppTypography.body.copyWith(
