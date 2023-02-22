@@ -119,7 +119,7 @@ class _VideoPageState extends State<VideoPage>
                 visible: state.videos!.isNotEmpty,
                 child: VideoYoutubeHorizontalList(
                   data: state.videos!,
-                  title: "Recently videos",
+                  title: "Tiếp tục xem",
                   onSeeMore: () {
                     var action = SeeMoreVideoAction.recently;
                     Navigator.of(context).pushNamed(

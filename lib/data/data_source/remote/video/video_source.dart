@@ -20,6 +20,8 @@ abstract class VideoSource {
     String? title,
   });
   Future<BaseResponse<VideoYoutubeInfo>> getVideo(String videoId);
+  Future<BaseResponse<VideoYoutubeInfos>> getContinueWatching();
+  Future<BaseResponse> updateCkpt(String videoId, int ckpt);
 }
 
 class VideoSourceImpl extends VideoSource {
@@ -94,4 +96,41 @@ class VideoSourceImpl extends VideoSource {
     );
     return _api.get(request);
   }
+
+  @override
+  Future<BaseResponse<VideoYoutubeInfos>> getContinueWatching() async{
+   
+    const path = EndPoint.getContinueWatching;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+
+    final request = APIServiceRequest(
+      path,
+      (response) => BaseResponse<VideoYoutubeInfos>.fromJson(
+        json: response,
+        dataBuilder: VideoYoutubeInfos.fromJson,
+      ),
+      header: header,
+    );
+    return _api.get(request);
+  }
+
+  @override
+  Future<BaseResponse> updateCkpt(String videoId, int ckpt) async{
+    const path = EndPoint.updateVideoCkpt;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+    final bodyRequest = {'videoId': videoId, 'checkpoint': ckpt};
+    final request = APIServiceRequest(
+      path,
+      header: header,
+      dataBody: bodyRequest,
+      (response) => BaseResponse.fromJson(json: response, dataBuilder: null),
+    );
+    LogUtil.debug('$bodyRequest');
+    return _api.post(request);
+  }
+
 }

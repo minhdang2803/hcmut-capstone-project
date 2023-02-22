@@ -1,10 +1,10 @@
 import '../meta_data.dart';
 
 class VideoYoutubeInfos {
-  VideoYoutubeInfos({required this.list, required this.metadata});
+  VideoYoutubeInfos({required this.list, this.metadata});
 
   List<VideoYoutubeInfo> list = [];
-  late final MetaDataModel metadata;
+  late final MetaDataModel? metadata;
 
   VideoYoutubeInfos.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
@@ -12,12 +12,15 @@ class VideoYoutubeInfos {
         list.add(VideoYoutubeInfo.fromJson(e));
       }
     }
-    metadata = MetaDataModel.fromJson(json['meta_data']);
+    if (json['meta_data'] != null){
+      metadata = MetaDataModel.fromJson(json['meta_data']);
+    }
   }
 }
 
 class VideoYoutubeInfo {
   VideoYoutubeInfo({
+    required this.id,
     required this.videoId,
     required this.title,
     required this.description,
@@ -29,8 +32,10 @@ class VideoYoutubeInfo {
     required this.category,
     required this.isVerify,
     required this.adminVerify,
+    this.checkpoint
   });
 
+  late final String id;
   late final String videoId;
   late final String title;
   late final String description;
@@ -42,11 +47,13 @@ class VideoYoutubeInfo {
   late final String category;
   late final bool isVerify;
   late final String adminVerify;
+  late final int? checkpoint;
 
   factory VideoYoutubeInfo.fromJson(Map<String, dynamic> json) {
     if (json["videoYoutubeInfo"] != null) {
       final Map<String, dynamic> data = json["videoYoutubeInfo"]!;
       return VideoYoutubeInfo(
+        id: data["_id"],
         videoId: data['videoId'],
         title: data['title'],
         description: data['description'],
@@ -58,9 +65,11 @@ class VideoYoutubeInfo {
         category: data['category'],
         isVerify: data['isVerify'],
         adminVerify: data['adminVerify'],
+        checkpoint: data['checkpoint']
       );
     } else {
       return VideoYoutubeInfo(
+          id: json["_id"],
           videoId: json['videoId'],
           title: json['title'],
           description: json['description'],
@@ -71,7 +80,9 @@ class VideoYoutubeInfo {
           level: json['level'],
           category: json['category'],
           isVerify: json['isVerify'],
-          adminVerify: json['adminVerify']);
+          adminVerify: json['adminVerify'],
+          checkpoint: json['checkpoint']
+      );
     }
   }
 }

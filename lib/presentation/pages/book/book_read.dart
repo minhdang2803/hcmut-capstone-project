@@ -340,7 +340,7 @@ class _BookReadState extends State<BookRead>{
 
   Widget _appBar() {
     return Container(
-              height: _rowHeight,
+              height: _rowHeight*0.6,
               width: double.infinity,
               decoration: const BoxDecoration(
                 color:  AppColor.appBackground,
@@ -361,6 +361,15 @@ class _BookReadState extends State<BookRead>{
                     ),
                     onPressed: () => Navigator.pop(context),
                   ),
+                  Text(
+                    widget.book.title!,
+                    style: const TextStyle(
+                      fontSize: 19,
+                      color:  AppColor.textPrimary,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center
+                  ),
                   IconButton(
                     icon: Icon(
                       Icons.menu,
@@ -377,10 +386,38 @@ class _BookReadState extends State<BookRead>{
                 ],
       ),
     );
-  }
+} 
 
-Widget _chapterSheet()
-  { 
+//  Widget _bottomBar() {
+//     return Container(
+//               height: _rowHeight*0.6,
+//               width: double.infinity,
+//               decoration: const BoxDecoration(
+//                 color:  AppColor.appBackground,
+//                 borderRadius: BorderRadius.only(
+//                   topLeft: Radius.circular(40),
+//                   topRight: Radius.circular(40),
+//                 ),
+//               ),
+//               padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+//               child: 
+//                 Slider(
+//                   min: 0,
+//                   max: _duration.inSeconds.toDouble(),
+//                   value:  _duration !=  Duration.zero ? _position.inSeconds.toDouble() : 0.0 ,
+//                   activeColor: AppColor.primary,
+//                   onChanged: (value) async{
+//                     if (_isLoaded){
+//                       final position = Duration(seconds: value.toInt());
+//                       await audioPlayer.seek(position);
+//                     }
+//                   },
+//                 ),
+      
+//     );
+//   }
+   
+  Widget _chapterSheet() { 
     bool picked = false;
     int at = -1;
     List<String> chapterList;

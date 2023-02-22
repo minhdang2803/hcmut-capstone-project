@@ -163,7 +163,7 @@ class _BookDetails extends State<BookDetails> {
                                                             Navigator.of(context)
                                                                 .pushNamed(
                                                                     RouteName.bookRead,
-                                                                    arguments: BookArguments(bookId: _bookInfo.bookId, id: _bookInfo.id)
+                                                                    arguments: BookArguments(bookId: _bookInfo.bookId, id: _bookInfo.id, title: _bookInfo.title)
                                                                         );
                                                           },
                                                           child: Row(

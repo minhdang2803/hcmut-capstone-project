@@ -32,8 +32,11 @@ class EndPoint {
   static const getEbook = '$_baseUrl/bookDetail';
   static const getAudiobook = '$_baseUrl/bookDetail/audio';
 
-
   static const updateCkpt = '$_baseUrl/bookCheckpoint/add';
+
+  static const getContinueWatching = '$_baseUrl/videoCheckpoint/getAll';
+
+  static const updateVideoCkpt = '$_baseUrl/videoCheckpoint/add';
 
   static const addFavorite = '$_baseUrl/bookFavorites/add';
   static const removeFavorite = '$_baseUrl/bookFavorites/delete';

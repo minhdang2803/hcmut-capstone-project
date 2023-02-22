@@ -29,7 +29,7 @@ class BookSectionDisplayAll extends StatelessWidget {
               onTap: () {
                 final book = bookList.elementAt(i);
                 if (book.checkpoint != null && heading == "Tiếp tục đọc") {
-                  final argument = BookArguments(bookId: book.bookId, id: book.id);
+                  final argument = BookArguments(bookId: book.bookId, id: book.id, title: book.title);
                   Navigator.of(context).pushNamed(RouteName.bookRead, arguments: argument);
                 }
                 else if (book.checkpoint != null && heading == "Tiếp tục nghe") {
@@ -70,27 +70,27 @@ class BookSectionDisplayAll extends StatelessWidget {
                           )
                         ),
                         const SizedBox(height: 10),
-                        Text(
-                          bookList[i].title,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(
-                                  fontWeight: FontWeight.w100, fontSize: 13),
-                        ),
-                        const SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          bookList[i].author,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(
-                                  fontWeight: FontWeight.w100,
-                                  color: Theme.of(context).hintColor,
-                                  fontSize: 10),
-                        ),
+                        // Text(
+                        //   bookList[i].title,
+                        //   style: Theme.of(context)
+                        //       .textTheme
+                        //       .headline6!
+                        //       .copyWith(
+                        //           fontWeight: FontWeight.w100, fontSize: 13),
+                        // ),
+                        // const SizedBox(
+                        //   height: 3,
+                        // ),
+                        // Text(
+                        //   bookList[i].author,
+                        //   style: Theme.of(context)
+                        //       .textTheme
+                        //       .headline6!
+                        //       .copyWith(
+                        //           fontWeight: FontWeight.w100,
+                        //           color: Theme.of(context).hintColor,
+                        //           fontSize: 10),
+                        // ),
                       ],
                     ),
                   ),

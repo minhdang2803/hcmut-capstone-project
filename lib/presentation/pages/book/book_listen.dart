@@ -100,6 +100,7 @@ class _BookListen extends State<BookListen> {
                         setAudioBook(state);
                       }
                         return Scaffold(
+                          
                           body: Container(
                               height: size.height,
                               width: size.width,
@@ -166,7 +167,7 @@ class _BookListen extends State<BookListen> {
                                                   style: TextStyle(
                                                     fontSize: 25,
                                                     color:  AppColor.textPrimary,
-                                                    fontWeight: FontWeight.w700,
+                                                    fontWeight: FontWeight.w600,
                                                   ),
                                                   textAlign: TextAlign.center
                                                 ),
@@ -206,28 +207,29 @@ class _BookListen extends State<BookListen> {
                                                 ),
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                  children: [
-                                                    IconButton(
-                                                      icon: Icon(
-                                                        Icons.menu,
-                                                        color: AppColor.primary,
-                                                        size: 32,
-                                                      ),
-                                                      onPressed: () {},
-                                                    ),
+                                                  children: [ 
                                                     IconButton(
                                                       icon: Icon(
                                                         Icons.skip_previous,
                                                         color:  AppColor.primary,
                                                         size: 38,
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () async{
+                                                          if (_isLoaded){
+                                                            int newSec = _position.inSeconds -15;
+                                                            if (newSec < 0){
+                                                              newSec = 0;
+                                                            }
+                                                            final position = Duration(seconds: newSec);
+                                                            
+                                                            await audioPlayer.seek(position);
+                                                        }
+                                                      }
                                                     ),
                                                     Container(
-                                                      padding: const EdgeInsets.only(
-                                                        bottom: 16,
-                                                        right: 15,
-                                                      ),
+                                                      height: size.height*0.06,
+                                                      width: size.height*0.06,
+                                  
                                                       decoration: BoxDecoration(
                                                         shape: BoxShape.circle,
                                                         color:  AppColor.primary,
@@ -236,7 +238,7 @@ class _BookListen extends State<BookListen> {
                                                         icon: Icon(
                                                           _isPlaying ? Icons.pause : Icons.play_arrow,
                                                           color:  AppColor.appBackground,
-                                                          size: 48,
+                                                          size: 38,
                                                         ),
                                                         onPressed: () async{
                                                           if (_isPlaying){
@@ -254,16 +256,19 @@ class _BookListen extends State<BookListen> {
                                                         color:  AppColor.primary,
                                                         size: 38,
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () async{
+                                                          if (_isLoaded){
+                                                            int newSec = _position.inSeconds + 15;
+                                                            if (newSec > _duration.inSeconds){
+                                                              newSec = _duration.inSeconds;
+                                                            }
+                                                            final position = Duration(seconds: newSec);
+                                                            
+                                                            await audioPlayer.seek(position);
+                                                        }
+                                                      }
                                                     ),
-                                                    IconButton(
-                                                      icon: Icon(
-                                                        Icons.more_horiz,
-                                                        color:  AppColor.primary,
-                                                        size: 32,
-                                                      ),
-                                                      onPressed: () {},
-                                                    ),
+                                                    
                                                   ],
                                                 ),
                                               ],

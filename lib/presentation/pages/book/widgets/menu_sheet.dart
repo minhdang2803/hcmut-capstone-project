@@ -25,7 +25,7 @@ class _MenuSheetState extends State<MenuSheet> {
 
     return Container(
       color: AppColor.appBackground,
-      padding: EdgeInsets.only(top: size.height * 0.1),
+      padding: EdgeInsets.only(top: size.height * 0.05),
       child: ListView.builder(
         itemBuilder: (ctx, i) => GestureDetector(
             onTap: () {

@@ -34,7 +34,7 @@ class BookSection extends StatelessWidget {
               onTap: () {
                 final book = bookList.elementAt(i);
                 if (book.checkpoint != null && heading == "Tiếp tục đọc") {
-                  final argument = BookArguments(bookId: book.bookId, id: book.id);
+                  final argument = BookArguments(bookId: book.bookId, id: book.id, title: book.title);
                   Navigator.of(context).pushNamed(RouteName.bookRead, arguments: argument);
                 }
                 else if (book.checkpoint != null && heading == "Tiếp tục nghe") {
@@ -66,8 +66,9 @@ class BookSection extends StatelessWidget {
                           color: AppColor.lightGray,
                           child: FadeInImage.assetNetwork(
                             placeholder: 'assets/images/default_logo.png',
+                            placeholderFit: BoxFit.contain,
                             image: bookList[i].coverUrl,
-                            fadeInDuration: const Duration(milliseconds: 350),
+                            fadeInDuration: const Duration(milliseconds: 400),
                             fit: BoxFit.fill,
                             // placeholderFit: BoxFit.fill,
                             imageErrorBuilder: (context, error, stackTrace) =>
