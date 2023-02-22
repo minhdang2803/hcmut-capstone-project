@@ -85,7 +85,7 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
               _buildQuestion(),
               20.verticalSpace,
               _buildAnswer(),
-              5.verticalSpace,
+              20.verticalSpace,
               _buildChoices(),
               10.verticalSpace,
               _buildSubmitButton(),
@@ -97,41 +97,58 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
   }
 
   Widget _buildAnswer() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.75,
-      height: MediaQuery.of(context).size.height * 0.20,
-      child: BlocBuilder<QuizCubit, QuizState>(
-        builder: (context, state) {
-          return GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.zero,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 5,
-              mainAxisSpacing: 5.r,
-              crossAxisSpacing: 15.r,
-              childAspectRatio: 1,
-            ),
-            itemBuilder: (context, index) {
-              return QuizButton(
-                isBorder: true,
-                borderColor: state.isCorrectGame2 == null
-                    ? Colors.transparent
-                    : state.isCorrectGame2!
-                        ? Colors.green
-                        : Colors.red,
-                width: 50.r,
-                text: state.answerChoosen![index],
-                onTap: () {
-                  context.read<QuizCubit>().onAnswerGame2Clear(index);
+    return BlocBuilder<QuizCubit, QuizState>(
+      builder: (context, state) {
+        double getHeight() {
+          int length =
+              state.quizMC![state.currentIndex!].answer!.split("").length;
+          if (length <= 5) {
+            return 50.r;
+          } else if (length <= 10) {
+            return 110.r;
+          } else if (length <= 15) {
+            return 160.r;
+          } else {
+            return 150.r;
+          }
+        }
+
+        return SizedBox(
+          width: MediaQuery.of(context).size.width * 0.75,
+          height: getHeight(),
+          child: BlocBuilder<QuizCubit, QuizState>(
+            builder: (context, state) {
+              return GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                  mainAxisSpacing: 10.r,
+                  crossAxisSpacing: 10.r,
+                  childAspectRatio: 1,
+                ),
+                itemBuilder: (context, index) {
+                  return QuizButton(
+                    isBorder: true,
+                    borderColor: state.isCorrectGame2 == null
+                        ? Colors.transparent
+                        : state.isCorrectGame2!
+                            ? Colors.green
+                            : Colors.red,
+                    text: state.answerChoosen![index],
+                    onTap: () {
+                      context.read<QuizCubit>().onAnswerGame2Clear(index);
+                    },
+                  );
                 },
+                // separatorBuilder: (context, index) => 10.horizontalSpace,
+                itemCount:
+                    state.quizMC![state.currentIndex!].answer!.split("").length,
               );
             },
-            // separatorBuilder: (context, index) => 10.horizontalSpace,
-            itemCount:
-                state.quizMC![state.currentIndex!].answer!.split("").length,
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 

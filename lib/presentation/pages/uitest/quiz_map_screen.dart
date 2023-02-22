@@ -1,6 +1,7 @@
 import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
 import 'package:bke/presentation/pages/uitest/component/map_object.dart';
+import 'package:bke/presentation/pages/uitest/quiz_screen.dart';
 import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
@@ -37,14 +38,8 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
 
     if (screenSize >= nineteenPerNine) {
       return 2.5;
-    } else if (screenSize >= eighteenPerNine) {
-      return 2.7;
-    } else if (screenSize >= seventeenPerNine) {
-      return 2.9;
-    } else if (screenSize >= sixteenPerNine) {
-      return 3.0;
     } else {
-      return 2.5;
+      return 2.0;
     }
   }
 
@@ -130,7 +125,7 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
                       });
 
                       return MapContainer(
-                        initZoomLevel: 2,
+                        initZoomLevel: getScreenSize(),
                         assetImage: 'assets/images/mapQuiz.jpg',
                         width: constraints.maxWidth,
                         height: constraints.maxHeight,
@@ -145,7 +140,8 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
                             Navigator.pushNamed(
                               context,
                               RouteName.quizScreen,
-                              arguments: context,
+                              arguments: QuizScreenParam(
+                                  context, int.parse(mapObj.id)),
                             );
                           } else if (!mapObj.isDone) {
                             showDialog(

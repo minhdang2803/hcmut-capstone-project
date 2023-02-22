@@ -152,18 +152,18 @@ class RouteGenerator {
         break;
 
       case RouteName.quizScreen:
-        final context = settings.arguments as BuildContext;
+        final args = settings.arguments as QuizScreenParam;
         page = MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => TimerCubit(30)),
             BlocProvider.value(
-              value: BlocProvider.of<MapCubit>(context, listen: false),
+              value: BlocProvider.of<MapCubit>(args.context, listen: false),
             ),
             BlocProvider.value(
-              value: BlocProvider.of<QuizCubit>(context, listen: false),
+              value: BlocProvider.of<QuizCubit>(args.context, listen: false),
             )
           ],
-          child: const QuizScreen(),
+          child: QuizScreen(level: args.level),
         );
         break;
 

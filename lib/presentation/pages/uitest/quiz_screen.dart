@@ -12,6 +12,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletons/skeletons.dart';
 
+class QuizScreenParam {
+  int level;
+  BuildContext context;
+  QuizScreenParam(this.context, this.level);
+}
+
 class QuizScreen extends StatefulWidget {
   const QuizScreen({
     super.key,
@@ -92,8 +98,6 @@ class _QuizScreenState extends State<QuizScreen>
   }
 
   AppBar _buildAppbar() {
-    void _showConfirmDialog(BuildContext context) async {}
-
     return AppBar(
       backgroundColor: AppColor.primary,
       automaticallyImplyLeading: false,
@@ -116,14 +120,10 @@ class _QuizScreenState extends State<QuizScreen>
           ),
           Align(
             alignment: Alignment.center,
-            child: BlocBuilder<QuizCubit, QuizState>(
-              builder: (context, state) {
-                return Text(
-                  "Câu đố cấp độ ${state.quizId}",
-                  style: AppTypography.subHeadline.copyWith(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                );
-              },
+            child: Text(
+              "Câu đố cấp độ ${widget.level}",
+              style: AppTypography.subHeadline
+                  .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ),
           SizedBox(width: 40.r)
