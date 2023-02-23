@@ -22,7 +22,7 @@ class BookSection extends StatelessWidget {
       children: [
         Text(
           heading.toCapitalize(),
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
         Container(
           margin: const EdgeInsets.symmetric(

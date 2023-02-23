@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../bloc/flashcard/flashcard_collection_random/flashcard_collection_random_cubit.dart';
 import '../../../routes/route_name.dart';
 import '../../../theme/app_color.dart';
 import '../flashcard_page.dart';

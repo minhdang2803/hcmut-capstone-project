@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:bke/bloc/flashcard/flashcard_collection_thumb/flashcard_collection_thumb_cubit.dart';
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
 import 'package:bke/presentation/pages/flashcard/components/flashcard_collection_random.dart';

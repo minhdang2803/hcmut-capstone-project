@@ -1,10 +1,7 @@
 import 'package:bke/bloc/flashcard/flashcard_card/flashcard_cubit.dart';
 import 'package:bke/bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
-import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
-import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
 import 'package:bke/data/dependency_injection/di.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +10,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'bloc/authentication/auth_cubit.dart';
 import 'bloc/flashcard/flashcard_collection_random/flashcard_collection_random_cubit.dart';
 import 'bloc/game/game_cubit.dart';
-import 'bloc/video/category_video/category_video_cubit.dart';
 import 'bloc/toeic/toeic_cubit.dart';
 import 'bloc/vocab/vocab_cubit.dart';
 import 'data/configs/hive_config.dart';

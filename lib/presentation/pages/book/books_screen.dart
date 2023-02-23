@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/presentation/pages/book/widgets/books_section.dart';
 import 'package:bke/presentation/pages/book/widgets/books_section_shorten.dart';
 import 'package:bke/presentation/pages/book/widgets/menu_sheet.dart';

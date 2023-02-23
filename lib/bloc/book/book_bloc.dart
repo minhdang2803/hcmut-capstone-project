@@ -1,9 +1,4 @@
 import 'package:bke/data/models/book/book_info.dart';
-import 'package:bke/data/models/network/base_response.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
-
-import '../../data/models/book/book_reader.dart';
 import '../../data/models/network/cvn_exception.dart';
 import '../../data/repositories/book_repository.dart';
 import '../../utils/log_util.dart';
@@ -102,9 +97,9 @@ class BookBloc extends Bloc<BookEvent, BookState>{
       try{
         
         final response = await _bookRepos.getBookInfo(event.bookId);
-        final _matchBook = response.data!;
+        final matchBook = response.data!;
         
-        emit(BookLoadedState(_matchBook));
+        emit(BookLoadedState(matchBook));
       }
       catch(e){
         emit(BookErrorState(e.toString()));

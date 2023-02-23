@@ -2,20 +2,14 @@ import 'package:bke/bloc/book/book_bloc.dart';
 import 'package:bke/bloc/book/book_event.dart';
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/book/book_reader.dart';
-import 'package:bke/data/models/network/cvn_exception.dart';
-import 'package:bke/utils/extension.dart';
-import 'package:bke/utils/log_util.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../bloc/book/book_state.dart';
 import '../../../utils/constants.dart';
 import '../../theme/app_typography.dart';
-import '../../widgets/holder_widget.dart';
 
 import 'package:bke/presentation/theme/app_color.dart';
 
@@ -326,7 +320,7 @@ class _BookReadState extends State<BookRead> {
         itemCount: _ebook.sentences.length,
         itemBuilder: (context, index) {
           // Build your list item
-          return Container(
+          return SizedBox(
               // padding: EdgeInsets.symmetric(vertical: _rowHeight * 0.05),
               height: _rowHeight,
               child: RichText(
@@ -456,11 +450,11 @@ class _BookReadState extends State<BookRead> {
                         ? 'Chương mở đầu'
                         : 'Chương ${chapterList[i]}',
                     style: picked && i == at
-                        ? Theme.of(context).textTheme.headline4!.copyWith(
+                        ? Theme.of(context).textTheme.headlineMedium!.copyWith(
                               fontWeight: FontWeight.w500,
                               color: AppColor.primary,
                             )
-                        : Theme.of(context).textTheme.headline5!.copyWith(
+                        : Theme.of(context).textTheme.headlineSmall!.copyWith(
                               fontWeight: FontWeight.w200,
                               color: Theme.of(context).hintColor,
                             ),
@@ -471,9 +465,9 @@ class _BookReadState extends State<BookRead> {
           ),
         );
       } else {
-        return Text("No table found.");
+        return const Text("No table found.");
       }
     }
-    return Text("No table found.");
+    return const Text("No table found.");
   }
 }

@@ -32,9 +32,6 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double screenSize = double.parse(getDoubleRoundedToTwo(height / width));
-    double sixteenPerNine = double.parse(getDoubleRoundedToTwo(16 / 9));
-    double seventeenPerNine = double.parse(getDoubleRoundedToTwo(17 / 9));
-    double eighteenPerNine = double.parse(getDoubleRoundedToTwo(18 / 9));
     double nineteenPerNine = double.parse(getDoubleRoundedToTwo(19 / 9));
 
     if (screenSize >= nineteenPerNine) {

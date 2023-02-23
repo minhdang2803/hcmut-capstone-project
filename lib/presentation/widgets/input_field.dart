@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../pages/main/components/monastery_search_delegate.dart';
-import '../theme/app_color.dart';
 
 class InputField extends StatelessWidget {
   const InputField({

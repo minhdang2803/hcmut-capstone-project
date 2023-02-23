@@ -239,7 +239,7 @@ class _FlashcardRandomScreenState extends State<FlashcardRandomScreen>
                     ],
                   );
                 } else {
-                  return SizedBox();
+                  return const SizedBox();
                 }
               },
             ),
@@ -277,7 +277,7 @@ class _FlashcardRandomScreenState extends State<FlashcardRandomScreen>
             ],
           );
         } else {
-          return SizedBox();
+          return const SizedBox();
         }
       },
     );

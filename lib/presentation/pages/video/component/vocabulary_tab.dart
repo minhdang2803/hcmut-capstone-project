@@ -240,7 +240,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
   }
 
   void _addCollection(BuildContext context) {
-    final TextEditingController _addFlashcardCollection =
+    final TextEditingController addFlashcardCollection =
         TextEditingController();
     ValueNotifier<int> selected = ValueNotifier<int>(-1);
     String name = "";
@@ -268,7 +268,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
                 Text("Tên bộ sưu tập: ", style: AppTypography.title),
                 5.verticalSpace,
                 CustomTextField(
-                  controller: _addFlashcardCollection,
+                  controller: addFlashcardCollection,
                   borderRadius: 30.r,
                   onChanged: (value) => name = value,
                 ),
@@ -302,7 +302,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
           ),
           actions: [
             ValueListenableBuilder<TextEditingValue>(
-              valueListenable: _addFlashcardCollection,
+              valueListenable: addFlashcardCollection,
               builder: (context, value, child) {
                 return ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -322,7 +322,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
                                 ),
                               );
 
-                          _addFlashcardCollection.clear();
+                          addFlashcardCollection.clear();
                           Navigator.pop(context);
                         },
                   child: Text(
@@ -341,7 +341,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
                     borderRadius: BorderRadius.circular(15.r)),
               ),
               onPressed: () {
-                _addFlashcardCollection.clear();
+                addFlashcardCollection.clear();
                 Navigator.pop(context);
               },
               child: Text(

@@ -3,7 +3,6 @@
 import 'dart:ui';
 
 import 'package:bke/presentation/pages/book/widgets/like.dart';
-import 'package:bke/presentation/theme/app_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
@@ -17,7 +16,6 @@ import '../../../data/models/book/book_listener.dart';
 import '../../routes/route_name.dart';
 
 import '../../theme/app_color.dart';
-import '../../theme/app_typography.dart';
 
 class BookDetails extends StatefulWidget {
   const BookDetails({super.key, required this.bookId});
@@ -124,7 +122,7 @@ class _BookDetails extends State<BookDetails> {
                                             _bookInfo.author,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .headline6!
+                                                .titleLarge!
                                                 .copyWith(
                                                   fontWeight: FontWeight.normal,
                                                   color: Theme.of(context)
@@ -138,7 +136,7 @@ class _BookDetails extends State<BookDetails> {
                                             _bookInfo.title,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .headline5,
+                                                .headlineSmall,
                                           ),
                                           const SizedBox(height: 10),
                                           Row(

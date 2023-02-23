@@ -285,7 +285,6 @@ class FlashcardCollectionRandomModel {
         }
       }
     }
-    print(flashCards);
     return FlashcardCollectionRandomModel(
       category: json["category"],
       imgUrl: json["imgUrl"] + ".png",

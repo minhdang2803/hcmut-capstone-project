@@ -1,10 +1,7 @@
-import 'package:bke/bloc/book/book_event.dart';
 import 'package:bke/data/data_source/remote/book/book_source.dart';
-import 'package:bke/data/data_source/remote/book/example_data.dart';
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/book/book_reader.dart';
 import 'package:bke/data/models/network/base_response.dart';
-import 'package:bke/utils/log_util.dart';
 import '../models/book/book_info.dart';
 
 class BookRepository{

@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-import '../../../../bloc/authentication/auth_cubit.dart';
 import '../../../../bloc/toeic/toeic_cubit.dart';
 import '../../../../data/models/toeic/toeic_part1/toeic_part1_qna.dart';
 import '../../../../data/services/audio_service.dart';
@@ -102,7 +101,6 @@ class _TestToeicPageState extends State<TestToeicPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final currentUser = BlocProvider.of<AuthCubit>(context).getCurrentUser();
     return Scaffold(
       body: Stack(
         children: [

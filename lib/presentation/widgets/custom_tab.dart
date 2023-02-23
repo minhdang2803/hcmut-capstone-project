@@ -67,8 +67,8 @@ class CVNTab extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            child: icon,
             margin: iconMargin,
+            child: icon,
           ),
           _buildLabelText(),
         ],
@@ -78,8 +78,8 @@ class CVNTab extends StatelessWidget {
     return SizedBox(
       height: height,
       child: Center(
-        child: label,
         widthFactor: 1.0,
+        child: label,
       ),
     );
   }

@@ -1,4 +1,3 @@
-import 'package:bke/presentation/pages/video/video_page.dart';
 
 class RouteName {
   static const splash = '/';
