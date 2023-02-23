@@ -29,10 +29,20 @@ class LoadDetailsEvent extends BookEvent{
   List<Object?> get props => [bookId];
 }
 
+
 class LoadEbookEvent extends BookEvent{
   final String bookId;
   final int pageKey;
   const LoadEbookEvent({required this.bookId, required this.pageKey});
+
+  @override
+  List<Object?> get props => [bookId, pageKey];
+}
+
+class LoadEbookAnotherEvent extends BookEvent{
+  final String bookId;
+  final int pageKey;
+  const LoadEbookAnotherEvent({required this.bookId, required this.pageKey});
 
   @override
   List<Object?> get props => [bookId, pageKey];
@@ -46,12 +56,29 @@ class LoadAudioBookEvent extends BookEvent{
   List<Object?> get props => [bookId];
 }
 
-// class UpdateCkptEvent extends BookEvent{
-//   final String bookId;
-//   final int ckpt;
-//   const UpdateCkptEvent({required this.bookId, required this.ckpt});
+class UpdateCkptEvent extends BookEvent{
+  final String bookId;
+  final int ckpt;
+  final bool isEbook;
+  const UpdateCkptEvent({required this.bookId, required this.ckpt, required this.isEbook});
 
-//   @override
-//   List<Object?> get props => [bookId, ckpt];
-// }
+  @override
+  List<Object?> get props => [bookId, ckpt, isEbook];
+}
+
+class AddFavoriteEvent extends BookEvent{
+  final String bookId;
+  const AddFavoriteEvent({required this.bookId});
+
+  @override
+  List<Object?> get props => [bookId];
+}
+
+class RemoveFavoriteEvent extends BookEvent{
+  final String bookId;
+  const RemoveFavoriteEvent({required this.bookId});
+
+  @override
+  List<Object?> get props => [bookId];
+}
 

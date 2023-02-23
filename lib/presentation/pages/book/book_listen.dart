@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 import 'package:bke/presentation/theme/app_color.dart';
+import 'package:bke/utils/log_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -15,7 +16,7 @@ import '../../../bloc/book/book_event.dart';
 
 class BookListen extends StatefulWidget {
   const BookListen({super.key, required this.bookInfo});
-  final BookListenArguments bookInfo; 
+  final BookArguments bookInfo; 
 
   @override
   State<BookListen> createState() => _BookListen();
@@ -53,6 +54,9 @@ class _BookListen extends State<BookListen> {
       if (mounted){
         setState(() {
         _position = newPosition;
+        if (_position.inSeconds%30==0){
+        _bookBloc.add(UpdateCkptEvent(bookId: widget.bookInfo.id, ckpt: _position.inSeconds.toInt(), isEbook: false));
+        }
         });
       }
     });  
@@ -60,10 +64,14 @@ class _BookListen extends State<BookListen> {
   }
 
   void setAudioBook(state) async{
-    _audioBook = state.book;      
+    _audioBook = state.book;   
+    
     _position = Duration(seconds: _audioBook.ckpt);
-    await audioPlayer.play(UrlSource(widget.bookInfo.mp3Url), position: _position);
+    await audioPlayer.play(UrlSource(widget.bookInfo.mp3Url!), position: _position);
+    await audioPlayer.seek(_position);
+    
     _isLoaded = true;
+    
   }
     
 
@@ -71,7 +79,6 @@ class _BookListen extends State<BookListen> {
   @override
   void dispose(){
     audioPlayer.dispose();
-    // _bookBloc.add(updateCkptEvent(bookId: _audioBook.bookId, newCkpt: _position.inSeconds.toInt()));
     _bookBloc.close();
     super.dispose();
   }  
@@ -86,17 +93,19 @@ class _BookListen extends State<BookListen> {
               child:
                 BlocBuilder<BookBloc, BookState>(
                   builder: (context, state) {
-                    print(state);
+                    
                     if (state is AudioBookLoadedState){ 
+                      
                       if (_isLoaded == false){
                         setAudioBook(state);
                       }
                         return Scaffold(
+                          
                           body: Container(
                               height: size.height,
                               width: size.width,
                               decoration: BoxDecoration(
-                                image: DecorationImage(image: NetworkImage(widget.bookInfo.coverUrl), fit: BoxFit.cover),
+                                image: DecorationImage(image: NetworkImage(widget.bookInfo.coverUrl!), fit: BoxFit.cover),
                               ),
                               child: BackdropFilter(
                                 filter: ImageFilter.blur(
@@ -124,7 +133,7 @@ class _BookListen extends State<BookListen> {
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.circular(20),
                                                   child: Image.network(
-                                                    widget.bookInfo.coverUrl,
+                                                    widget.bookInfo.coverUrl!,
                                                     fit: BoxFit.fill,
                                                   ),
                                                 ),
@@ -154,11 +163,11 @@ class _BookListen extends State<BookListen> {
                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Text(
-                                                  widget.bookInfo.title,
+                                                  widget.bookInfo.title!,
                                                   style: TextStyle(
                                                     fontSize: 25,
                                                     color:  AppColor.textPrimary,
-                                                    fontWeight: FontWeight.w700,
+                                                    fontWeight: FontWeight.w600,
                                                   ),
                                                   textAlign: TextAlign.center
                                                 ),
@@ -198,28 +207,29 @@ class _BookListen extends State<BookListen> {
                                                 ),
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                  children: [
-                                                    IconButton(
-                                                      icon: Icon(
-                                                        Icons.menu,
-                                                        color: AppColor.primary,
-                                                        size: 32,
-                                                      ),
-                                                      onPressed: () {},
-                                                    ),
+                                                  children: [ 
                                                     IconButton(
                                                       icon: Icon(
                                                         Icons.skip_previous,
                                                         color:  AppColor.primary,
                                                         size: 38,
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () async{
+                                                          if (_isLoaded){
+                                                            int newSec = _position.inSeconds -15;
+                                                            if (newSec < 0){
+                                                              newSec = 0;
+                                                            }
+                                                            final position = Duration(seconds: newSec);
+                                                            
+                                                            await audioPlayer.seek(position);
+                                                        }
+                                                      }
                                                     ),
                                                     Container(
-                                                      padding: const EdgeInsets.only(
-                                                        bottom: 16,
-                                                        right: 15,
-                                                      ),
+                                                      height: size.height*0.06,
+                                                      width: size.height*0.06,
+                                  
                                                       decoration: BoxDecoration(
                                                         shape: BoxShape.circle,
                                                         color:  AppColor.primary,
@@ -228,7 +238,7 @@ class _BookListen extends State<BookListen> {
                                                         icon: Icon(
                                                           _isPlaying ? Icons.pause : Icons.play_arrow,
                                                           color:  AppColor.appBackground,
-                                                          size: 48,
+                                                          size: 38,
                                                         ),
                                                         onPressed: () async{
                                                           if (_isPlaying){
@@ -246,16 +256,19 @@ class _BookListen extends State<BookListen> {
                                                         color:  AppColor.primary,
                                                         size: 38,
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () async{
+                                                          if (_isLoaded){
+                                                            int newSec = _position.inSeconds + 15;
+                                                            if (newSec > _duration.inSeconds){
+                                                              newSec = _duration.inSeconds;
+                                                            }
+                                                            final position = Duration(seconds: newSec);
+                                                            
+                                                            await audioPlayer.seek(position);
+                                                        }
+                                                      }
                                                     ),
-                                                    IconButton(
-                                                      icon: Icon(
-                                                        Icons.more_horiz,
-                                                        color:  AppColor.primary,
-                                                        size: 32,
-                                                      ),
-                                                      onPressed: () {},
-                                                    ),
+                                                    
                                                   ],
                                                 ),
                                               ],

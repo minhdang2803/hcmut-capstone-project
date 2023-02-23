@@ -189,12 +189,12 @@ class RouteGenerator {
         break;
 
       case RouteName.bookRead:
-        final bookId = settings.arguments as String;
-        page = BookRead(bookId: bookId);
+        final book = settings.arguments as BookArguments;
+        page = BookRead(book: book);
         break;
 
       case RouteName.bookListen:
-        final book = settings.arguments as BookListenArguments;
+        final book = settings.arguments as BookArguments;
         page = BookListen(bookInfo: book);
         break;
     }

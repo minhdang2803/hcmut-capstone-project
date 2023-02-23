@@ -17,7 +17,7 @@ class BookListLoadingState extends BookListState{
 
 class BookListLoadedState extends BookListState{
   BookListLoadedState(this.books, this.category);
-  final List<BookInfo> books;
+  final List<dynamic> books;
   final String category;
 
   @override
@@ -52,7 +52,15 @@ class BookLoadedState extends BookState{
 
 class EbookLoadedState extends BookState{
   EbookLoadedState(this.book);
-  final BookReader book;
+  final BookReader? book;
+
+  @override
+  List<Object?> get props => [book];
+}
+
+class EbookLoadedAnotherState extends BookState{
+  EbookLoadedAnotherState(this.book);
+  final BookReader? book;
 
   @override
   List<Object?> get props => [book];

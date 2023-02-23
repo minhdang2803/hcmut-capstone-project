@@ -65,7 +65,7 @@ class APIService {
   }
 
   /// HTTP POST
-  Future<T> post<T>(APIServiceRequest<T> request) async {
+  Future<T> post<T>(APIServiceRequest<T> request, {bool isDelete = false}) async {
     final hasInternet = await ConnectionUtil.hasInternetConnection();
     if (!hasInternet) {
       throw RemoteException(
@@ -73,12 +73,18 @@ class APIService {
     }
     try {
       final headerOption = Options(headers: request.header);
-      final response = await _dio.post(
-        request.path,
-        options: headerOption,
-        data: request.dataBody,
-        queryParameters: request.queryParams,
-      );
+      final response = !isDelete? await _dio.post(
+                                    request.path,
+                                    options: headerOption,
+                                    data: request.dataBody,
+                                    queryParameters: request.queryParams,
+                                  )
+                                : await _dio.delete(
+                                    request.path,
+                                    options: headerOption,
+                                    data: request.dataBody,
+                                    queryParameters: request.queryParams,
+                                  );
       return request.parseResponse(response.data);
     } on DioError catch (e) {
       switch (e.type) {
