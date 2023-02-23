@@ -16,26 +16,26 @@ class VideoRepository {
 
   factory VideoRepository.instance() => _instance;
 
-  Future<BaseResponse> saveProcess(String videoId, int second) async{
-    // _videoLocalSource.saveLastWatchVideo(videoId, second);
-    return await _videoSource.updateCkpt(videoId, second);
+  Future<void> saveProcess(String videoId, int second) async {
+    _videoLocalSource.saveLastWatchVideo(videoId, second);
+    // return await _videoSource.updateCkpt(videoId, second);
   }
 
-  Future<BaseResponse<VideoYoutubeInfos>> getRecentlyWatchList() async {
-    // final fromLocal = _videoLocalSource.getListRecentlyWatchVideo();
-    // final List<VideoYoutubeInfo> fromServer = [];
-    // // if (fromLocal.isEmpty) {
-    // final listInfo =
-    //     _videoLocalSource.getListRecentlyWatchInfo().entries.toList();
-    // for (final element in listInfo) {
-    //   final value = await _videoSource.getVideo(element.key);
-    //   fromServer.insert(0, value.data!);
-    // }
-    // return fromServer;
-    // } else {
-    //   return fromLocal;
-    // }
-    return await _videoSource.getContinueWatching();
+  Future<List<VideoYoutubeInfo>> getRecentlyWatchList() async {
+    final fromLocal = _videoLocalSource.getListRecentlyWatchVideo();
+    final List<VideoYoutubeInfo> fromServer = [];
+    if (fromLocal.isEmpty) {
+      final listInfo =
+          _videoLocalSource.getListRecentlyWatchInfo().entries.toList();
+      for (final element in listInfo) {
+        final value = await _videoSource.getVideo(element.key);
+        fromServer.insert(0, value.data!);
+      }
+      return fromServer;
+    } else {
+      return fromLocal;
+    }
+    // return await _videoSource.getContinueWatching();
   }
 
   int getProcess(String videoId) {

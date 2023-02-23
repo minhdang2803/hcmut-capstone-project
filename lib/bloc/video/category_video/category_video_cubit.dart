@@ -37,10 +37,10 @@ class CategoryVideoCubit extends Cubit<CategoryVideoState> {
       if (results[2].isNotEmpty) {
         data['category3'] = results[2];
       }
-      final lastWatch =  await _videoRepository.getRecentlyWatchList();
+      final lastWatch = await _videoRepository.getRecentlyWatchList();
       emit(
         state.copyWith(
-            data: data, status: CategoryVideoStatus.done, videos: lastWatch.data?.list ?? []),
+            data: data, status: CategoryVideoStatus.done, videos: lastWatch),
       );
       LogUtil.debug('get main video activities OK');
     } on RemoteException catch (e, s) {
@@ -58,7 +58,7 @@ class CategoryVideoCubit extends Cubit<CategoryVideoState> {
     try {
       emit(state.copyWith(status: CategoryVideoStatus.loading));
       final response = await _videoRepository.getRecentlyWatchList();
-      emit(state.copyWith(status: CategoryVideoStatus.done, videos: response.data?.list ?? []));
+      emit(state.copyWith(status: CategoryVideoStatus.done, videos: response));
     } on RemoteException catch (error) {
       emit(
         state.copyWith(

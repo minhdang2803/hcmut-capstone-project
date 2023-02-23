@@ -10,7 +10,7 @@ abstract class VideoLocalSource {
   void saveLastWatchVideo(String videoId, int second);
   Map<String, int> getListRecentlyWatchInfo();
   void saveRecentlyWatchVideos(VideoYoutubeInfo video);
-  // List<VideoYoutubeInfo> getListRecentlyWatchVideo();
+  List<VideoYoutubeInfo> getListRecentlyWatchVideo();
 }
 
 class VideoLocalSourceImpl implements VideoLocalSource {
@@ -75,15 +75,15 @@ class VideoLocalSourceImpl implements VideoLocalSource {
     box.put(user, list);
   }
 
-  // @override
-  // List<VideoYoutubeInfo> getListRecentlyWatchVideo() {
-  //   List<VideoYoutubeInfo> list = [];
-  //   final box = Hive.box(HiveConfig.recentlyList);
-  //   final user = getUserId();
-  //   final response = box.get(user, defaultValue: []);
-  //   for (final element in response) {
-  //     list.add(element);
-  //   }
-  //   return list;
-  // }
+  @override
+  List<VideoYoutubeInfo> getListRecentlyWatchVideo() {
+    List<VideoYoutubeInfo> list = [];
+    final box = Hive.box(HiveConfig.recentlyList);
+    final user = getUserId();
+    final response = box.get(user, defaultValue: []);
+    for (final element in response) {
+      list.add(element);
+    }
+    return list;
+  }
 }
