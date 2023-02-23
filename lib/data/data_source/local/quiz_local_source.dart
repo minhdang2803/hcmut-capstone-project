@@ -1,7 +1,7 @@
 import 'package:bke/data/configs/hive_config.dart';
 import 'package:bke/data/models/authentication/user.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
-import 'package:bke/presentation/pages/uitest/component/map_object.dart';
+import 'package:bke/presentation/pages/quiz/component/map_object.dart';
 import 'package:bke/utils/log_util.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

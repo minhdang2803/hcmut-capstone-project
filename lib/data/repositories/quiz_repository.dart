@@ -1,7 +1,8 @@
 import 'package:bke/data/data_source/local/local_sources.dart';
 import 'package:bke/data/data_source/remote/quiz/quiz_remote_source.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
-import 'package:bke/presentation/pages/uitest/component/map_object.dart';
+import 'package:bke/presentation/pages/quiz/component/map_object.dart';
+
 
 class QuizRepository {
   late final QuizRemoteSource _remote;

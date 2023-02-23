@@ -1,8 +1,10 @@
 import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_timer/quiz_timer_cubit.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
-import 'package:bke/presentation/pages/uitest/component/quiz_game_01.dart';
-import 'package:bke/presentation/pages/uitest/component/quiz_game_02.dart';
+import 'package:bke/presentation/pages/quiz/component/quiz_game_01.dart';
+import 'package:bke/presentation/pages/quiz/component/quiz_game_02.dart';
+// import 'package:bke/presentation/pages/uitest/component/quiz_game_01.dart';
+// import 'package:bke/presentation/pages/uitest/component/quiz_game_02.dart';
 import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';

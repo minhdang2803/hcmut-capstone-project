@@ -1,8 +1,7 @@
 import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
 import 'package:bke/data/repositories/quiz_repository.dart';
-import 'package:bke/presentation/pages/uitest/component/map_object.dart';
-import 'package:bke/utils/widget_util.dart';
+import 'package:bke/presentation/pages/quiz/component/map_object.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 

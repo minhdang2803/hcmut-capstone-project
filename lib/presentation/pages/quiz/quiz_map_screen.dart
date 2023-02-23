@@ -1,7 +1,8 @@
 import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
-import 'package:bke/presentation/pages/uitest/component/map_object.dart';
-import 'package:bke/presentation/pages/uitest/quiz_screen.dart';
+import 'package:bke/presentation/pages/quiz/component/map_object.dart';
+import 'package:bke/presentation/pages/quiz/quizzes.dart';
+
 import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';

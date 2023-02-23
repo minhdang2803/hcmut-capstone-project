@@ -6,11 +6,11 @@ import 'package:bke/bloc/video/last_watch_video/last_watch_video_cubit.dart';
 import 'package:bke/bloc/video/video_cubit.dart';
 
 import 'package:bke/data/models/book/book_listener.dart';
-import 'package:bke/data/models/quiz/quiz.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/pages/book/books_screen.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
 import 'package:bke/presentation/pages/flashcard/flashcards.dart';
+import 'package:bke/presentation/pages/quiz/quizzes.dart';
 import 'package:bke/presentation/pages/video/videos.dart';
 
 import 'package:flutter/material.dart';
@@ -24,7 +24,6 @@ import '../pages/notification/notifications_page.dart';
 import '../pages/toeic_test/components/result_component.dart';
 import '../pages/toeic_test/test/start_toeic_page.dart';
 import '../pages/toeic_test/test/test_toeic_page.dart';
-import '../pages/uitest/quizzes.dart';
 
 import '../pages/welcome/welcome.dart';
 import '../pages/main/home_page.dart';

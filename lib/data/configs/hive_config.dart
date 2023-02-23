@@ -1,7 +1,8 @@
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
 import 'package:bke/data/models/video/video_last_watch_model.dart';
-import 'package:bke/presentation/pages/uitest/component/map_object.dart';
+import 'package:bke/presentation/pages/quiz/component/map_object.dart';
+
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../models/authentication/user.dart';
