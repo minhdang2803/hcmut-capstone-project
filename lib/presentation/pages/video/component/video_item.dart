@@ -1,10 +1,13 @@
 import 'package:bke/data/models/video/video_youtube_info_model.dart';
 import 'package:bke/presentation/theme/app_color.dart';
+import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class VideoItem extends StatelessWidget {
+import '../../../theme/app_typography.dart';
+
+class VideoItem extends StatefulWidget {
   const VideoItem({
     Key? key,
     this.item,
@@ -17,6 +20,97 @@ class VideoItem extends StatelessWidget {
   final VoidCallback onItemClick;
 
   @override
+  State<VideoItem> createState() => _VideoItemState();
+}
+
+class _VideoItemState extends State<VideoItem> {
+  Offset _position = Offset.zero;
+
+  void _getTapPosition(TapDownDetails tapPosition) {
+    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+    setState(() {
+      _position = renderBox.globalToLocal(tapPosition.globalPosition);
+    });
+  }
+
+  void _showInfo(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Thông tin video",
+              style: AppTypography.title.copyWith(fontWeight: FontWeight.w700)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+          content: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text.rich(TextSpan(
+                      text: "Category: ",
+                      children: [
+                        TextSpan(
+                            text: widget.item!.category.toCapitalize(),
+                            style: AppTypography.bodySmall)
+                      ],
+                      style: AppTypography.bodySmall
+                          .copyWith(color: AppColor.primary),
+                    )),
+                    5.verticalSpace,
+                    Text.rich(TextSpan(
+                      text: "Title: ",
+                      children: [
+                        TextSpan(
+                            text: widget.item!.title.toCapitalize(),
+                            style: AppTypography.bodySmall)
+                      ],
+                      style: AppTypography.bodySmall
+                          .copyWith(color: AppColor.primary),
+                    )),
+                    5.verticalSpace,
+                    Text.rich(TextSpan(
+                      text: "Total views: ",
+                      children: [
+                        TextSpan(
+                            text: widget.item!.viewCount,
+                            style: AppTypography.bodySmall)
+                      ],
+                      style: AppTypography.bodySmall
+                          .copyWith(color: AppColor.primary),
+                    )),
+                    5.verticalSpace,
+                    Text(
+                      widget.item!.description.toCapitalize(),
+                      style: AppTypography.bodySmall,
+                    ),
+                  ],
+                ),
+              )),
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.r)),
+              ),
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                "Huỷ",
+                style: AppTypography.body.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     double getLength(String length) {
       final listLength = length.split(":");
@@ -24,7 +118,7 @@ class VideoItem extends StatelessWidget {
     }
 
     return GestureDetector(
-      onTap: onItemClick,
+      onTap: widget.onItemClick,
       behavior: HitTestBehavior.translucent,
       child: SizedBox(
         width: 150.r,
@@ -36,7 +130,7 @@ class VideoItem extends StatelessWidget {
               children: [
                 FadeInImage.assetNetwork(
                   placeholder: 'assets/images/default_logo.png',
-                  image: item?.thumbUrl ?? '',
+                  image: widget.item?.thumbUrl ?? '',
                   width: 150.r,
                   height: 125.r,
                   fadeInDuration: const Duration(milliseconds: 350),
@@ -50,12 +144,12 @@ class VideoItem extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
-                isLastSeen == true
+                widget.isLastSeen == true
                     ? SizedBox(
                         height: 5.r,
                         child: LinearProgressIndicator(
                           color: Colors.red,
-                          value: item!.checkpoint! / 960,
+                          value: widget.item!.checkpoint! / 960,
                         ),
                       )
                     : const SizedBox(),
@@ -65,7 +159,9 @@ class VideoItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _showInfo(context);
+                        },
                         icon: const FaIcon(FontAwesomeIcons.circleExclamation),
                       ),
                       IconButton(
@@ -75,36 +171,6 @@ class VideoItem extends StatelessWidget {
                     ],
                   ),
                 )
-                // 5.verticalSpace,
-                // Text(
-                //   item?.title ?? '',
-                //   style: AppTypography.bodySmall
-                //       .copyWith(fontWeight: FontWeight.bold),
-                //   textAlign: TextAlign.start,
-                // ),
-                // 10.verticalSpace,
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Container(
-                //       decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(10.r),
-                //           color: AppColor.primary),
-                //       child: Padding(
-                //         padding: EdgeInsets.symmetric(
-                //             horizontal: 12.r, vertical: 3.r),
-                //         child: Text(
-                //           'Basic',
-                //           style: AppTypography.bodySmall
-                //               .copyWith(color: Colors.white),
-                //         ),
-                //       ),
-                //     ),
-                //     // 5.horizontalSpace,
-                //     Text('${item?.viewCount ?? '100'} views',
-                //         style: AppTypography.bodySmall),
-                //   ],
-                // ),
               ],
             ),
           ],
