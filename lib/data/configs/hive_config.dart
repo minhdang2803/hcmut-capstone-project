@@ -17,7 +17,7 @@ class HiveConfig {
   static const myDictionary = 'MY_DICTIONARY';
   static const fcByUser = "FlashcardByUser";
   static const videoLastWatchByUser = "videoLastWatchByUser";
-  static const recentlyList = "recentlyList";
+  static const recentlyDictionary = "recentlyList";
   static const quizMCAnswers = "quizMCAnswers";
   static const quizMCtests = "quizMCTests";
   static const mapObject = "mapObject";
@@ -35,7 +35,7 @@ class HiveConfig {
 
     Hive.registerAdapter(LocalVocabInfoListAdapter());
 
-    Hive.registerAdapter(VideoLastWatchListsAdapter());
+    Hive.registerAdapter(VideoLastWatchDictionaryAdapter());
 
     Hive.registerAdapter(VideoLastWatchInfoListsAdapter());
 
@@ -53,7 +53,7 @@ class HiveConfig {
     await Hive.openBox(myDictionary);
     await Hive.openBox(fcByUser);
     await Hive.openBox(videoLastWatchByUser);
-    await Hive.openBox(recentlyList);
+    await Hive.openBox(recentlyDictionary);
     await Hive.openBox(quizMCtests);
     await Hive.openBox(quizMCAnswers);
     await Hive.openBox(mapObject);

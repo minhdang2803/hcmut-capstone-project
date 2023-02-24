@@ -6,27 +6,28 @@ part of 'video_last_watch_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class VideoLastWatchListsAdapter extends TypeAdapter<VideoLastWatchLists> {
+class VideoLastWatchDictionaryAdapter
+    extends TypeAdapter<VideoLastWatchDictionary> {
   @override
   final int typeId = 9;
 
   @override
-  VideoLastWatchLists read(BinaryReader reader) {
+  VideoLastWatchDictionary read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return VideoLastWatchLists(
-      (fields[0] as Map).cast<String, int>(),
+    return VideoLastWatchDictionary(
+      (fields[0] as Map).cast<String, dynamic>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, VideoLastWatchLists obj) {
+  void write(BinaryWriter writer, VideoLastWatchDictionary obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.lastWatchList);
+      ..write(obj.lastWatchVideos);
   }
 
   @override
@@ -35,7 +36,7 @@ class VideoLastWatchListsAdapter extends TypeAdapter<VideoLastWatchLists> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is VideoLastWatchListsAdapter &&
+      other is VideoLastWatchDictionaryAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

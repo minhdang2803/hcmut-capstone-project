@@ -13,7 +13,10 @@ class LastWatchVideoCubit extends Cubit<LastWatchVideoState> {
     return instance.getProcess(videoId);
   }
 
-  void saveProcess(String videoId, int second) {
-    instance.saveProcess(videoId, second);
+  void saveProcess({
+    required String mongoID,
+    required int second,
+  }) {
+    instance.saveProcess(mongoID, second);
   }
 }

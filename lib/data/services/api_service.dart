@@ -10,8 +10,8 @@ class APIService {
   APIService._internal() {
     final options = BaseOptions(
       receiveDataWhenStatusError: true,
-      connectTimeout: 15000,
-      receiveTimeout: 15000,
+      connectTimeout: const Duration(milliseconds: 15000),
+      receiveTimeout: const Duration(milliseconds: 15000),
     );
     _dio = Dio(options);
   }
@@ -37,7 +37,13 @@ class APIService {
       return request.parseResponse(response.data);
     } on DioError catch (e) {
       switch (e.type) {
-        case DioErrorType.connectTimeout:
+        case DioErrorType.connectionError:
+          throw RemoteException(
+              RemoteException.badCertification, "Connection error");
+        case DioErrorType.badCertificate:
+          throw RemoteException(
+              RemoteException.badCertification, "Bad Certification error");
+        case DioErrorType.connectionTimeout:
           throw RemoteException(
               RemoteException.connectTimeout, 'Connection timeout');
         case DioErrorType.sendTimeout:
@@ -45,7 +51,7 @@ class APIService {
         case DioErrorType.receiveTimeout:
           throw RemoteException(
               RemoteException.receiveTimeout, 'Receive timeout');
-        case DioErrorType.response:
+        case DioErrorType.badResponse:
           throw RemoteException(
             RemoteException.responseError,
             '${e.response?.data?['error'] ?? ''}',
@@ -54,7 +60,7 @@ class APIService {
         case DioErrorType.cancel:
           throw RemoteException(
               RemoteException.cancelRequest, 'Request cancel');
-        case DioErrorType.other:
+        case DioErrorType.unknown:
           throw RemoteException(
               RemoteException.other, 'Dio error unknown: ${e.error}');
       }
@@ -64,7 +70,10 @@ class APIService {
   }
 
   /// HTTP POST
-  Future<T> post<T>(APIServiceRequest<T> request, {bool isDelete = false}) async {
+  Future<T> post<T>(
+    APIServiceRequest<T> request, {
+    bool isDelete = false,
+  }) async {
     final hasInternet = await ConnectionUtil.hasInternetConnection();
     if (!hasInternet) {
       throw RemoteException(
@@ -72,22 +81,29 @@ class APIService {
     }
     try {
       final headerOption = Options(headers: request.header);
-      final response = !isDelete? await _dio.post(
-                                    request.path,
-                                    options: headerOption,
-                                    data: request.dataBody,
-                                    queryParameters: request.queryParams,
-                                  )
-                                : await _dio.delete(
-                                    request.path,
-                                    options: headerOption,
-                                    data: request.dataBody,
-                                    queryParameters: request.queryParams,
-                                  );
+      final response = !isDelete
+          ? await _dio.post(
+              request.path,
+              options: headerOption,
+              data: request.dataBody,
+              queryParameters: request.queryParams,
+            )
+          : await _dio.delete(
+              request.path,
+              options: headerOption,
+              data: request.dataBody,
+              queryParameters: request.queryParams,
+            );
       return request.parseResponse(response.data);
     } on DioError catch (e) {
       switch (e.type) {
-        case DioErrorType.connectTimeout:
+        case DioErrorType.connectionError:
+          throw RemoteException(
+              RemoteException.badCertification, "Connection error");
+        case DioErrorType.badCertificate:
+          throw RemoteException(
+              RemoteException.badCertification, "Bad Certification error");
+        case DioErrorType.connectionTimeout:
           throw RemoteException(
               RemoteException.connectTimeout, 'Connection timeout');
         case DioErrorType.sendTimeout:
@@ -95,7 +111,7 @@ class APIService {
         case DioErrorType.receiveTimeout:
           throw RemoteException(
               RemoteException.receiveTimeout, 'Receive timeout');
-        case DioErrorType.response:
+        case DioErrorType.badResponse:
           throw RemoteException(
             RemoteException.responseError,
             '${e.response?.data?['error'] ?? ''}',
@@ -104,7 +120,7 @@ class APIService {
         case DioErrorType.cancel:
           throw RemoteException(
               RemoteException.cancelRequest, 'Request cancel');
-        case DioErrorType.other:
+        case DioErrorType.unknown:
           throw RemoteException(
               RemoteException.other, 'Dio error unknown: ${e.error}');
       }

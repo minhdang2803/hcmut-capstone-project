@@ -12,7 +12,7 @@ class VideoYoutubeInfos {
         list.add(VideoYoutubeInfo.fromJson(e));
       }
     }
-    if (json['meta_data'] != null){
+    if (json['meta_data'] != null) {
       metadata = MetaDataModel.fromJson(json['meta_data']);
     }
   }
@@ -32,7 +32,7 @@ class VideoYoutubeInfo {
     required this.category,
     required this.isVerify,
     required this.adminVerify,
-    this.checkpoint
+    this.checkpoint,
   });
 
   late final String id;
@@ -65,24 +65,41 @@ class VideoYoutubeInfo {
         category: data['category'],
         isVerify: data['isVerify'],
         adminVerify: data['adminVerify'],
-        checkpoint: data['checkpoint']
+        checkpoint: data['checkpoint'],
       );
     } else {
       return VideoYoutubeInfo(
-          id: json["_id"],
-          videoId: json['videoId'],
-          title: json['title'],
-          description: json['description'],
-          thumbUrl: json['thumbUrl'],
-          playlistId: json['playlistId'],
-          length: json['length'],
-          viewCount: json['viewCount'],
-          level: json['level'],
-          category: json['category'],
-          isVerify: json['isVerify'],
-          adminVerify: json['adminVerify'],
-          checkpoint: json['checkpoint']
+        id: json["_id"],
+        videoId: json['videoId'],
+        title: json['title'],
+        description: json['description'],
+        thumbUrl: json['thumbUrl'],
+        playlistId: json['playlistId'],
+        length: json['length'],
+        viewCount: json['viewCount'],
+        level: json['level'],
+        category: json['category'],
+        isVerify: json['isVerify'],
+        adminVerify: json['adminVerify'],
+        checkpoint: json['checkpoint'],
       );
     }
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "videoId": videoId,
+      "title": title,
+      "description": description,
+      "thumbUrl": thumbUrl,
+      "playlistId": playlistId,
+      "length": length,
+      "viewCount": viewCount,
+      "level": level,
+      "category": category,
+      "isVerify": isVerify,
+      "adminVerify": adminVerify,
+    };
   }
 }

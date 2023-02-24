@@ -98,8 +98,7 @@ class VideoSourceImpl extends VideoSource {
   }
 
   @override
-  Future<BaseResponse<VideoYoutubeInfos>> getContinueWatching() async{
-   
+  Future<BaseResponse<VideoYoutubeInfos>> getContinueWatching() async {
     const path = EndPoint.getContinueWatching;
     final token = await const FlutterSecureStorage()
         .read(key: HiveConfig.currentUserTokenKey);
@@ -117,7 +116,7 @@ class VideoSourceImpl extends VideoSource {
   }
 
   @override
-  Future<BaseResponse> updateCkpt(String videoId, int ckpt) async{
+  Future<BaseResponse<void>> updateCkpt(String videoId, int ckpt) async {
     const path = EndPoint.updateVideoCkpt;
     final token = await const FlutterSecureStorage()
         .read(key: HiveConfig.currentUserTokenKey);
@@ -132,5 +131,4 @@ class VideoSourceImpl extends VideoSource {
     LogUtil.debug('$bodyRequest');
     return _api.post(request);
   }
-
 }

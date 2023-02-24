@@ -9,7 +9,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'bloc/authentication/auth_cubit.dart';
 import 'bloc/flashcard/flashcard_collection_random/flashcard_collection_random_cubit.dart';
-import 'bloc/game/game_cubit.dart';
+
 import 'bloc/toeic/toeic_cubit.dart';
 import 'bloc/vocab/vocab_cubit.dart';
 import 'data/configs/hive_config.dart';
@@ -59,7 +59,6 @@ class MyApp extends StatelessWidget {
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (ctx) => AuthCubit()),
-              BlocProvider(create: (ctx) => GameCubit()),
               BlocProvider(create: (ctx) => ToeicCubit()),
               BlocProvider(create: (ctx) => VocabCubit()),
               BlocProvider(create: (ctx) => FlashcardCollectionCubit()),

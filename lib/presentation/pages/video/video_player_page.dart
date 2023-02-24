@@ -110,10 +110,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   @override
   void initState() {
     super.initState();
-    print(widget.video.videoId);
-    int lastWatch =
-        context.read<LastWatchVideoCubit>().getProcess(widget.video.videoId);
-    // int lastWatch = widget.video.checkpoint ?? 0;
+    int lastWatch = widget.video.checkpoint ?? 0;
     _controller = YoutubePlayerController(
       initialVideoId: widget.video.videoId,
       flags: YoutubePlayerFlags(
@@ -162,9 +159,11 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
                 onPressed: () {
                   context.read<VideoCubit>().exit();
                   context.read<LastWatchVideoCubit>().saveProcess(
-                      widget.video.videoId, _currentDuration ~/ 1000);
-                  context.read<CategoryVideoCubit>().getRecentlyWatch();
-                  Navigator.pop(context);
+                        mongoID: widget.video.id,
+                        second: _currentDuration ~/ 1000,
+                      );
+
+                  Navigator.pop(context, true);
                 },
               ),
               title: Text(

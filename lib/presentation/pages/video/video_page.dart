@@ -1,5 +1,7 @@
 import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
+import 'package:bke/data/models/video/video_models.dart';
 import 'package:bke/presentation/pages/video/video_see_more_page.dart';
+import 'package:bke/presentation/pages/video/videos.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/widgets/custom_app_bar.dart';
 import 'package:bke/utils/enum.dart';
@@ -42,6 +44,14 @@ class _VideoPageState extends State<VideoPage>
     context.read<CategoryVideoCubit>().getMainActivities();
   }
 
+  Offset _position = Offset.zero;
+  void _getTapPosition(TapDownDetails tapPosition) {
+    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+    setState(() {
+      _position = renderBox.globalToLocal(tapPosition.globalPosition);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +87,7 @@ class _VideoPageState extends State<VideoPage>
           child: ListView(
             padding: EdgeInsets.only(bottom: 30.r),
             children: [
-              SizedBox(height: 20.r),
+              15.verticalSpace,
               _buildActivitiesSection(),
             ],
           ),
@@ -120,6 +130,7 @@ class _VideoPageState extends State<VideoPage>
                 child: VideoYoutubeHorizontalList(
                   data: state.videos!,
                   title: "Tiếp tục xem",
+                  isLastSeen: true,
                   onSeeMore: () {
                     var action = SeeMoreVideoAction.recently;
                     Navigator.of(context).pushNamed(
@@ -135,23 +146,24 @@ class _VideoPageState extends State<VideoPage>
               ),
               ...state.data!.values.map((e) {
                 return VideoYoutubeHorizontalList(
-                    title: e.first.category.toCapitalizeEachWord(),
-                    data: e,
-                    onSeeMore: () {
-                      var action = e.first.category.contains("talk")
-                          ? SeeMoreVideoAction.category1
-                          : e.first.category.contains("ed")
-                              ? SeeMoreVideoAction.category2
-                              : SeeMoreVideoAction.category3;
-                      Navigator.of(context).pushNamed(
-                        RouteName.videoSeeMore,
-                        arguments: VideoSeeMorePageModel(
-                          context: context,
-                          category: e.first.category,
-                          action: action,
-                        ),
-                      );
-                    });
+                  title: e.first.category.toCapitalizeEachWord(),
+                  data: e,
+                  onSeeMore: () {
+                    var action = e.first.category.contains("talk")
+                        ? SeeMoreVideoAction.category1
+                        : e.first.category.contains("ed")
+                            ? SeeMoreVideoAction.category2
+                            : SeeMoreVideoAction.category3;
+                    Navigator.of(context).pushNamed(
+                      RouteName.videoSeeMore,
+                      arguments: VideoSeeMorePageModel(
+                        context: context,
+                        category: e.first.category,
+                        action: action,
+                      ),
+                    );
+                  },
+                );
               }).toList()
             ],
           ),

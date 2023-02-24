@@ -15,6 +15,7 @@ class RemoteException extends CVNException {
   static const socketError = 5;
   static const noInternet = 6;
   static const downloadError = 7;
+  static const badCertification = 8;
 
   final int errorCode;
   final int? httpStatusCode;

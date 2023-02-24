@@ -1,5 +1,4 @@
 import 'package:bke/data/data_source/local/video_local_source.dart';
-
 import '../data_source/remote/video/video_source.dart';
 import '../models/network/base_response.dart';
 import '../models/video/sub_video_model.dart';
@@ -16,35 +15,38 @@ class VideoRepository {
 
   factory VideoRepository.instance() => _instance;
 
-  Future<void> saveProcess(String videoId, int second) async {
-    _videoLocalSource.saveLastWatchVideo(videoId, second);
-    // return await _videoSource.updateCkpt(videoId, second);
+  ///
+  void saveVideoInfoToLocal(VideoYoutubeInfo video) {
+    _videoLocalSource.saveRecentlyWatchVideos(video);
   }
 
   Future<List<VideoYoutubeInfo>> getRecentlyWatchList() async {
-    final fromLocal = _videoLocalSource.getListRecentlyWatchVideo();
-    final List<VideoYoutubeInfo> fromServer = [];
-    if (fromLocal.isEmpty) {
-      final listInfo =
-          _videoLocalSource.getListRecentlyWatchInfo().entries.toList();
-      for (final element in listInfo) {
-        final value = await _videoSource.getVideo(element.key);
-        fromServer.insert(0, value.data!);
-      }
-      return fromServer;
-    } else {
-      return fromLocal;
-    }
-    // return await _videoSource.getContinueWatching();
+    final response = await _videoSource.getContinueWatching();
+    final data = response.data!.list;
+    return data;
+  }
+
+  Future<BaseResponse<void>> saveProcess(
+    String mongoId,
+    int second,
+  ) async {
+    _videoLocalSource.saveLastWatchVideoCheckpoint(mongoId, second);
+    return await _videoSource.updateCkpt(mongoId, second);
   }
 
   int getProcess(String videoId) {
-    return _videoLocalSource.getLastWatchAt(videoId);
+    final fromLocal = _videoLocalSource.getLastWatchAt(videoId);
+    if (fromLocal == null) {
+      return 0;
+    }
+    return fromLocal;
   }
 
   Future<BaseResponse<SubVideo>> getSubVideo(String videoId) async {
     return _videoSource.getSubVideo(videoId);
   }
+
+  //
 
   Future<VideoYoutubeInfo?> getVideoById(String videoId) async {
     final response = await _videoSource.getVideo(videoId);

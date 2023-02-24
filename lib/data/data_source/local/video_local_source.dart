@@ -6,38 +6,15 @@ import '../../models/authentication/user.dart';
 
 abstract class VideoLocalSource {
   Box getVideoLastWatchBox();
-  int getLastWatchAt(String videoId);
-  void saveLastWatchVideo(String videoId, int second);
-  Map<String, int> getListRecentlyWatchInfo();
+  int? getLastWatchAt(String videoId);
+  void saveLastWatchVideoCheckpoint(String videoId, int second);
+  Map<String, dynamic> getDictRecentlyWatchCheckpoint();
   void saveRecentlyWatchVideos(VideoYoutubeInfo video);
-  List<VideoYoutubeInfo> getListRecentlyWatchVideo();
+  VideoYoutubeInfo? getVideoYoutubeInfoLocalByVideoId(String videoId);
+  List<VideoYoutubeInfo> getListRecentlyVideos();
 }
 
 class VideoLocalSourceImpl implements VideoLocalSource {
-  @override
-  int getLastWatchAt(String videoId) {
-    final box = getVideoLastWatchBox();
-    final userId = getUserId();
-    final map = box.get(userId, defaultValue: {});
-
-    final result = map[videoId];
-    if (result != null) return result;
-    return -1;
-  }
-
-  @override
-  void saveLastWatchVideo(String videoId, int second) {
-    Map<String, int> result = {};
-    final box = getVideoLastWatchBox();
-    final user = getUserId();
-    final response = box.get(user, defaultValue: {});
-    for (final element in response.entries.toList()) {
-      result.addAll({element.key: element.value});
-    }
-    result.addAll({videoId: second});
-    box.put(user, result);
-  }
-
   @override
   Box getVideoLastWatchBox() {
     final box = Hive.box(HiveConfig.videoLastWatchByUser);
@@ -51,7 +28,31 @@ class VideoLocalSourceImpl implements VideoLocalSource {
   }
 
   @override
-  Map<String, int> getListRecentlyWatchInfo() {
+  int? getLastWatchAt(String videoId) {
+    final box = getVideoLastWatchBox();
+    final userId = getUserId();
+    final Map<dynamic, dynamic>? map = box.get(userId);
+    if (map == null) return null;
+    final result = map[videoId];
+    if (result != null) return result;
+    return -1;
+  }
+
+  @override
+  void saveLastWatchVideoCheckpoint(String videoId, int second) {
+    Map<String, int> result = {};
+    final box = getVideoLastWatchBox();
+    final user = getUserId();
+    final response = box.get(user, defaultValue: {});
+    for (final element in response.entries.toList()) {
+      result.addAll({element.key: element.value});
+    }
+    result.addAll({videoId: second});
+    box.put(user, result);
+  }
+
+  @override
+  Map<String, dynamic> getDictRecentlyWatchCheckpoint() {
     Map<String, int> result = {};
     final box = getVideoLastWatchBox();
     final user = getUserId();
@@ -62,28 +63,40 @@ class VideoLocalSourceImpl implements VideoLocalSource {
     return result;
   }
 
+  //videos
   @override
   void saveRecentlyWatchVideos(VideoYoutubeInfo video) {
     List<VideoYoutubeInfo> list = [];
-    final box = Hive.box(HiveConfig.recentlyList);
+    final box = Hive.box(HiveConfig.recentlyDictionary);
     final user = getUserId();
-    final response = box.get(user, defaultValue: []);
-    for (final element in response) {
-      list.add(element);
-    }
+    final List<dynamic> response = box.get(user, defaultValue: []);
+    list.addAll(response.cast<VideoYoutubeInfo>());
     list.add(video);
     box.put(user, list);
   }
 
   @override
-  List<VideoYoutubeInfo> getListRecentlyWatchVideo() {
+  VideoYoutubeInfo? getVideoYoutubeInfoLocalByVideoId(String videoId) {
     List<VideoYoutubeInfo> list = [];
-    final box = Hive.box(HiveConfig.recentlyList);
+    final box = Hive.box(HiveConfig.recentlyDictionary);
     final user = getUserId();
-    final response = box.get(user, defaultValue: []);
-    for (final element in response) {
-      list.add(element);
+    final List<dynamic> response = box.get(user, defaultValue: []);
+    list.addAll(response.cast<VideoYoutubeInfo>());
+    for (final element in list) {
+      if (element.videoId == videoId) {
+        return element;
+      }
     }
+    return null;
+  }
+
+  @override
+  List<VideoYoutubeInfo> getListRecentlyVideos() {
+    List<VideoYoutubeInfo> list = [];
+    final box = Hive.box(HiveConfig.recentlyDictionary);
+    final user = getUserId();
+    final List<dynamic> response = box.get(user, defaultValue: []);
+    list.addAll(response.cast<VideoYoutubeInfo>());
     return list;
   }
 }

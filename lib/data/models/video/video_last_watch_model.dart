@@ -3,10 +3,10 @@ import 'package:hive/hive.dart';
 part 'video_last_watch_model.g.dart';
 
 @HiveType(typeId: 9)
-class VideoLastWatchLists extends HiveObject {
+class VideoLastWatchDictionary extends HiveObject {
   @HiveField(0)
-  final Map<String, int> lastWatchList;
-  VideoLastWatchLists(this.lastWatchList);
+  final Map<String, dynamic> lastWatchVideos;
+  VideoLastWatchDictionary(this.lastWatchVideos);
 }
 
 @HiveType(typeId: 10)
