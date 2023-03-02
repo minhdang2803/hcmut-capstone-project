@@ -6,7 +6,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.1 <3.0.0'
+  sdk: '>=2.19.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -51,6 +51,7 @@ dependencies:
   font_awesome_flutter: ^10.3.0
   image_pixels: ^3.0.0
   syncfusion_flutter_charts: ^20.4.50
+  shared_preferences: ^2.0.18
  
 
 dev_dependencies:

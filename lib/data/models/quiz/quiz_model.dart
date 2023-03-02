@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:bke/data/models/quiz/quiz.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -250,5 +248,41 @@ class QuizMultipleChoiceResponse {
           .map((e) => QuizMultipleChoiceModel.fromJson(e))
           .toList(),
     );
+  }
+}
+
+class QuizAnswerModel {
+  final int level;
+  final int score;
+  final bool isDone;
+  QuizAnswerModel({
+    required this.level,
+    required this.score,
+    required this.isDone,
+  });
+
+  factory QuizAnswerModel.fromJson(Map<String, dynamic> json) {
+    {
+      return QuizAnswerModel(
+        level: json['level'],
+        score: json['score'],
+        isDone: json['isFullScore'] as bool,
+      );
+    }
+  }
+}
+
+class QuizAnswerResponseModel {
+  final List<QuizAnswerModel> listAnswers;
+  QuizAnswerResponseModel({required this.listAnswers});
+  factory QuizAnswerResponseModel.fromJson(Map<String, dynamic> json) {
+    List<QuizAnswerModel> result = [];
+    final responseList = json['listQuizScore'];
+    if (responseList != null) {
+      for (final element in responseList) {
+        result.add(QuizAnswerModel.fromJson(element));
+      }
+    }
+    return QuizAnswerResponseModel(listAnswers: result);
   }
 }

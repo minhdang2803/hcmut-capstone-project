@@ -48,11 +48,6 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
   }
 
   @override
-  void didUpdateWidget(covariant QuizMapScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.primary,
@@ -65,6 +60,7 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
           children: [
             BackButton(
               onPressed: () {
+                context.read<QuizCubit>().upsertQuizResult();
                 Navigator.pop(context);
               },
             ),

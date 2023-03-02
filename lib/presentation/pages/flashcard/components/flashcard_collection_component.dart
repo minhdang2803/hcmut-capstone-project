@@ -77,7 +77,7 @@ class FlashcardRandomComponent extends StatelessWidget {
           ),
           10.verticalSpace,
           AutoSizeText(
-            title,
+            title, 
             textAlign: TextAlign.center,
             style: AppTypography.body.copyWith(fontWeight: FontWeight.w500),
           )

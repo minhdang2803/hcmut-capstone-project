@@ -20,7 +20,8 @@ class EndPoint {
   static const getHomepageList = '$_baseUrl/BookInfo/listCategory';
 
   static const getContinueReading = '$_baseUrl/bookCheckpoint/getAllEBook';
-  static const getContinueListening = '$_baseUrl/bookCheckpoint/getAllAudiobook';
+  static const getContinueListening =
+      '$_baseUrl/bookCheckpoint/getAllAudiobook';
   static const getFavorites = '$_baseUrl/bookFavorites/getAll';
 
   static const getBookInfo = '$_baseUrl/bookInfo/getOne';
@@ -47,4 +48,6 @@ class EndPoint {
 
   // Quiz
   static const getMultipleChoiceQuiz = "$_baseUrl/quizVocab/level";
+  static const upsertResultBylevel = "$_baseUrl/userQuizScore/upsert";
+  static const getUserQuizResult = "$_baseUrl/userQuizScore/getAll";
 }

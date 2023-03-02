@@ -2,6 +2,7 @@ import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
 import 'package:bke/data/repositories/quiz_repository.dart';
 import 'package:bke/presentation/pages/quiz/component/map_object.dart';
+import 'package:bke/utils/sharedpref.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,6 +12,19 @@ class QuizCubit extends Cubit<QuizState> {
   QuizCubit() : super(QuizState.initial());
 
   final instance = QuizRepository.instance();
+
+  void upsertQuizResult() async {
+    final isSecondTime =
+        await SharedPref.instance.getBool("isSecondTimeGetResult");
+    if (!isSecondTime) {
+      final response = await instance.getResultFromServer();
+      for (var element in response) {
+        instance.saveResultToLocal(element.level, element.score);
+      }
+      await SharedPref.instance.setBool("isSecondTimeGetResult", true);
+    }
+    instance.upsertQuizResultBylevel();
+  }
 
   void getLevel(int level) async {
     try {

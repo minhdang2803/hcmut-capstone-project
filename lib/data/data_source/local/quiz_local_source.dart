@@ -9,6 +9,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 abstract class QuizLocalSource {
   void saveResultToLocal(int level, int result);
+  List<Map<String, dynamic>> getResultFromLocal();
   Map<String, dynamic> getResultFromLocalByLevel(int level);
   Future<void> saveMCTestsToLocal(QuizMultipleChoiceResponse quiz, int id);
   QuizMCTests? getMCTestsFromLocal(int id);
@@ -28,29 +29,21 @@ class QuizLocalSourceImpl implements QuizLocalSource {
   }
 
   @override
-  void saveResultToLocal(int level, int result) {
-    List<Map<String, dynamic>> answers = [];
-    bool isLastElement = false; // check if last element
+  void saveResultToLocal(int id, int result) {
+    Set<Map<String, dynamic>> answers = {};
     final box = getAnswerBox();
     String userId = getUserId();
-    final response = box.get(userId, defaultValue: []);
-    answers.addAll(response.cast<Map<String, dynamic>>());
-    Map<String, dynamic> data = {"level": level, "result": result};
-    for (final element in answers) {
-      if (element["level"] == level && element["result"] == result) {
-        final index = answers.indexOf(element);
-        answers.removeAt(index);
-        answers.insert(index, data);
-      } else if (answers.indexOf(element) == answers.length - 1) {
-        isLastElement = true;
-      }
+    final List<dynamic> response = box.get(userId, defaultValue: []);
+    for (final element in response) {
+      answers.add({"id": element["id"], "score": element["score"]});
     }
-    if (isLastElement) {
-      answers.add(data);
-    }
+    Map<String, dynamic> data = {"id": id, "score": result};
+    answers.removeWhere((element) =>
+        element.containsKey("id") && element.containsValue(id));
+    answers.add(data);
     LogUtil.debug(
-        "Succesfully save the answer of quiz level $level, result: $result");
-    box.put(userId, answers);
+        "Succesfully save the answer of quiz level $id, score: $result");
+    box.put(userId, answers.toList());
   }
 
   @override
@@ -59,11 +52,23 @@ class QuizLocalSourceImpl implements QuizLocalSource {
     String userId = getUserId();
     final response = box.get(userId, defaultValue: []);
     for (final element in response) {
-      if (element['level'] == level) {
+      if (element['id'] == level) {
         return element;
       }
     }
     return {};
+  }
+
+  @override
+  List<Map<String, dynamic>> getResultFromLocal() {
+    List<Map<String, dynamic>> result = [];
+    final box = getAnswerBox();
+    final userId = getUserId();
+    final List<dynamic> fromLocal = box.get(userId, defaultValue: []);
+    for (final element in fromLocal) {
+      result.add({"id": element["id"], "score": element["score"]});
+    }
+    return result;
   }
 
   @override
