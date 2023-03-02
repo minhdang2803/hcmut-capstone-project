@@ -1,5 +1,6 @@
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
 import 'package:bke/data/models/quiz/quiz_model.dart';
+import 'package:bke/data/models/toeic/toeic_model_local.dart';
 import 'package:bke/data/models/video/video_last_watch_model.dart';
 import 'package:bke/presentation/pages/quiz/component/map_object.dart';
 
@@ -21,6 +22,7 @@ class HiveConfig {
   static const quizMCAnswers = "quizMCAnswers";
   static const quizMCtests = "quizMCTests";
   static const mapObject = "mapObject";
+  static const toeicPart = "toeicPart";
 
   Future<void> init() async {
     await Hive.initFlutter();
@@ -47,6 +49,11 @@ class HiveConfig {
 
     Hive.registerAdapter(MapObjectLocalAdapter());
     Hive.registerAdapter(ListMapObjectAdapter());
+
+    //Toeic
+    Hive.registerAdapter(ToeicQuestionLocalAdapter());
+    Hive.registerAdapter(ToeicGroupQuestionLocalAdapter());
+    Hive.registerAdapter(LocalToeicPartAdapter());
 
     await Hive.openBox(userBox);
     await Hive.openBox(localVocabs);

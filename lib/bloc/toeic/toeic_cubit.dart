@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import '../../data/models/network/base_response.dart';
 import '../../data/models/network/cvn_exception.dart';
 import '../../data/models/toeic/toeic_test.dart';
-import '../../data/repositories/toeicp1_repository.dart';
+import '../../data/repositories/toeic_repository.dart';
 import '../../utils/log_util.dart';
 
 part 'toeic_state.dart';
@@ -12,7 +12,7 @@ part 'toeic_state.dart';
 class ToeicCubit extends Cubit<ToeicState> {
   ToeicCubit() : super(ToeicInitial());
 
-  final _toeicRepository = ToeicP1Repository.instance();
+  final _toeicRepository = ToeicRepository.instance();
 
   void getToeicP1QandA() async {
     try {
