@@ -11,6 +11,8 @@ import 'package:bke/presentation/pages/book/books_screen.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
 import 'package:bke/presentation/pages/flashcard/flashcards.dart';
 import 'package:bke/presentation/pages/quiz/quizzes.dart';
+import 'package:bke/presentation/pages/toeic_test/components/toeic_page.dart';
+import 'package:bke/presentation/pages/toeic_test/toeic_instruction_page.dart';
 import 'package:bke/presentation/pages/video/videos.dart';
 
 import 'package:flutter/material.dart';
@@ -21,9 +23,6 @@ import '../pages/authentication/authentication_page.dart';
 import '../pages/my_dictionary/my_dictionary.dart';
 import '../pages/my_dictionary/vocab_full_info_page.dart';
 import '../pages/notification/notifications_page.dart';
-import '../pages/toeic_test/components/result_component.dart';
-import '../pages/toeic_test/test/start_toeic_page.dart';
-import '../pages/toeic_test/test/test_toeic_page.dart';
 
 import '../pages/welcome/welcome.dart';
 import '../pages/main/home_page.dart';
@@ -61,13 +60,21 @@ class RouteGenerator {
         page = const StartToeic();
         break;
 
-      case RouteName.testToeic:
-        page = const TestToeicPage();
+      case RouteName.toeicInstruction:
+        final args = settings.arguments as ToeicInstructionPage;
+        page = ToeicInstructionPage(
+          part: args.part,
+          title: args.title,
+        );
         break;
 
-      case RouteName.resultToeic:
-        page = const ResultToeicPage();
-        break;
+      // case RouteName.testToeic:
+      //   page = const TestToeicPage();
+      // break;
+
+      // case RouteName.resultToeic:
+      //   page = const ResultToeicPage();
+      //   break;
       case RouteName.quizMapScreen:
         page = MultiBlocProvider(
           providers: [

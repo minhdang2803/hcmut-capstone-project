@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (ctx) => AuthCubit()),
-              BlocProvider(create: (ctx) => ToeicCubit()),
+              // BlocProvider(create: (ctx) => ToeicCubit()),
               BlocProvider(create: (ctx) => VocabCubit()),
               BlocProvider(create: (ctx) => FlashcardCollectionCubit()),
               BlocProvider(create: (ctx) => FlashcardCubit()),

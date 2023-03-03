@@ -1,4 +1,3 @@
-
 class RouteName {
   static const splash = '/';
   static const main = '/main';
@@ -15,13 +14,13 @@ class RouteName {
   static const startToeic = '/start_toeic';
   static const testToeic = '/test_toeic';
   static const resultToeic = '/result_toeic';
+  static const toeicInstruction = '/toeic_instruction';
 
   static const videoPage = "/videoPage";
   static const videoPlayer = '/video_player';
   static const videoSeeMore = '/video_see_more';
   static const myDictionary = '/my_dictionary';
 
-  
   static const bookPage = '/book_page';
   static const bookDetails = '/book_details';
   static const bookRead = '/ebook';

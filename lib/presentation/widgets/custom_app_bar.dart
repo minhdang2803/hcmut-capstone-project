@@ -71,6 +71,7 @@ class BkEAppBar extends StatelessWidget {
     return Expanded(
       child: AutoSizeText(
         label ?? '',
+        textAlign: TextAlign.center,
         style: AppTypography.headline.copyWith(
           fontWeight: FontWeight.w900,
           color: Colors.white,

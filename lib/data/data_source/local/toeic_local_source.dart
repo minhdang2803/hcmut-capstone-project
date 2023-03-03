@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bke/data/configs/hive_config.dart';
 import 'package:bke/data/models/authentication/user.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -5,10 +7,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../models/toeic/toeic_models.dart';
 
 abstract class ToeicLocalSource {
-  void savePartToLocal(
-      {required int part,
-      List<ToeicQuestion>? part125,
-      List<ToeicGroupQuestion>? part3467});
+  Future<void> savePartToLocal({
+    required int part,
+    List<ToeicQuestion>? part125,
+    List<ToeicGroupQuestion>? part3467,
+  });
+  LocalToeicPart? getPartFromLocal(int part, {int limit = 10});
 }
 
 class ToeicLocalSourceImpl implements ToeicLocalSource {
@@ -20,32 +24,36 @@ class ToeicLocalSourceImpl implements ToeicLocalSource {
   }
 
   @override
-  void savePartToLocal({
+  Future<void> savePartToLocal({
     required int part,
     List<ToeicQuestion>? part125,
     List<ToeicGroupQuestion>? part3467,
   }) async {
+    final box = getToeicPartBox();
+    final userId = getUserId();
     List<ToeicQuestionLocal>? part125Local;
     List<ToeicGroupQuestionLocal>? part3467Local;
     List<LocalToeicPart> result = [];
     List<int> partOfTest = [];
     bool isInList = false;
 
+    //1 Parse String to Uint8List
     if (part125 != null) {
       part125Local = await ToeicQuestionLocal.fromInternet(part125);
     }
     if (part3467 != null) {
       part3467Local = await ToeicGroupQuestionLocal.fromInternet(part3467);
     }
-    final box = getToeicPartBox();
-    final userId = getUserId();
+    //2 Save the local response to return List;
     final List<dynamic> fromLocal = box.get(userId);
     for (final element in fromLocal) {
       result.add(element);
-      if (!partOfTest.contains(element.part)) {
-        partOfTest.add(element.part); //!need check
+
+      if (!partOfTest.contains(element.part as int)) {
+        partOfTest.add(element.part as int); //!need check
       }
     }
+    //3. Save data to the correct part
     isInList = partOfTest.contains(part);
     if (isInList) {
       final index = partOfTest.indexOf(part);
@@ -84,5 +92,45 @@ class ToeicLocalSourceImpl implements ToeicLocalSource {
     //       part: partOfTest, part125: part125Local, part3467: part3467Local));
     // }
     box.put(userId, result);
+  }
+
+  @override
+  LocalToeicPart? getPartFromLocal(int part, {int limit = 10}) {
+    late LocalToeicPart toeicPart;
+    final List<LocalToeicPart> parts = [];
+    final box = getToeicPartBox();
+    final userId = getUserId();
+
+    // 1. get Box of Toeic Part
+    final List<dynamic> response = box.get(userId);
+    // 2. addAll element from local to a parts
+    for (final element in response) {
+      parts.add(element);
+    }
+    // 3. select an approriate part
+    for (final element in parts) {
+      if (element.part == part) {
+        toeicPart = element;
+        break;
+      }
+    }
+    // 4. check if the part is Question or GroupQuestion
+    if ([1, 2, 5].contains(part)) {
+      if (toeicPart.part125!.length < limit) {
+        return null;
+      }
+      return LocalToeicPart(
+        part: toeicPart.part,
+        part125: (toeicPart.part125!..shuffle(Random())).take(limit).toList(),
+      );
+    } else {
+      if (toeicPart.part3467!.length < limit) {
+        return null;
+      }
+      return LocalToeicPart(
+        part: toeicPart.part,
+        part3467: (toeicPart.part3467!..shuffle(Random())).take(limit).toList(),
+      );
+    }
   }
 }
