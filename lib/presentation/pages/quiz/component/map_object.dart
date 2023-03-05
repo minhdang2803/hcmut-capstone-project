@@ -10,19 +10,12 @@ class ListMapObject extends HiveObject {
   ListMapObject(this.list);
 }
 
-// @HiveType(typeId: 16)
 class MapObject extends HiveObject {
-  // @HiveField(0)
   final Offset? offset;
-  // @HiveField(1)
   final Size? size;
-  // @HiveField(2)
   final String id;
-  // @HiveField(3)
   final int? total;
-  // @HiveField(4)
   final GameType? type;
-  // @HiveField(5)
   bool isDone;
 
   MapObject copyWith({

@@ -1,6 +1,7 @@
 import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_timer/quiz_timer_cubit.dart';
+import 'package:bke/bloc/toeic/toeic_cubit.dart';
 import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
 import 'package:bke/bloc/video/last_watch_video/last_watch_video_cubit.dart';
 import 'package:bke/bloc/video/video_cubit.dart';
@@ -11,7 +12,6 @@ import 'package:bke/presentation/pages/book/books_screen.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
 import 'package:bke/presentation/pages/flashcard/flashcards.dart';
 import 'package:bke/presentation/pages/quiz/quizzes.dart';
-import 'package:bke/presentation/pages/toeic_test/components/toeic_page.dart';
 import 'package:bke/presentation/pages/toeic_test/toeic_instruction_page.dart';
 import 'package:bke/presentation/pages/video/videos.dart';
 
@@ -24,6 +24,7 @@ import '../pages/my_dictionary/my_dictionary.dart';
 import '../pages/my_dictionary/vocab_full_info_page.dart';
 import '../pages/notification/notifications_page.dart';
 
+import '../pages/toeic_test/toeic_page.dart';
 import '../pages/welcome/welcome.dart';
 import '../pages/main/home_page.dart';
 import '../pages/profile/main/profile_page.dart';
@@ -57,14 +58,25 @@ class RouteGenerator {
         break;
 
       case RouteName.startToeic:
-        page = const StartToeic();
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => ToeicCubit()),
+          ],
+          child: const StartToeic(),
+        );
+
         break;
 
       case RouteName.toeicInstruction:
-        final args = settings.arguments as ToeicInstructionPage;
-        page = ToeicInstructionPage(
-          part: args.part,
-          title: args.title,
+        final args = settings.arguments as ToeicInstructionParam;
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: args.context.read<ToeicCubit>())
+          ],
+          child: ToeicInstructionPage(
+            part: args.part,
+            title: args.title,
+          ),
         );
         break;
 

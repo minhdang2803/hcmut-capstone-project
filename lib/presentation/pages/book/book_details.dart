@@ -48,7 +48,6 @@ class _BookDetails extends State<BookDetails> {
     return BlocProvider(
         create: (context) => _bookBloc,
         child: BlocBuilder<BookBloc, BookState>(builder: (context, state) {
-          print(state);
           if (state is BookLoadedState) {
             try {
               _bookInfo = state.book;

@@ -1,49 +1,57 @@
-// part of 'toeic_cubit.dart';
+part of 'toeic_cubit.dart';
 
-// abstract class ToeicState extends Equatable {
-//   const ToeicState();
-// }
+enum ToeicStatus { initial, loading, done, fail, downloadDone }
 
-// class ToeicInitial extends ToeicState {
-//   @override
-//   List<Object> get props => [];
-// }
+class ToeicState extends Equatable {
+  // ignore: prefer_const_constructors_in_immutables
+  ToeicState({
+    this.status,
+    this.part125,
+    this.part3467,
+    this.errorMessage,
+    this.totalCorrect,
+    this.totalQuestion,
+  });
+  ToeicState.initial() {
+    status = ToeicStatus.initial;
+    part125 = [];
+    part3467 = [];
+    errorMessage = "";
+    totalCorrect = 0;
+    totalQuestion = 0;
+  }
+  late final ToeicStatus? status;
+  late final List<ToeicQuestionLocal>? part125;
+  late final List<ToeicGroupQuestionLocal>? part3467;
+  late final String? errorMessage;
+  late final int? totalCorrect;
+  late final int? totalQuestion;
 
-// class ToeicLoading extends ToeicState {
-//   @override
-//   List<Object> get props => [];
-// }
+  ToeicState copyWith({
+    ToeicStatus? status,
+    List<ToeicQuestionLocal>? part125,
+    List<ToeicGroupQuestionLocal>? part3467,
+    String? errorMessage,
+    int? totalCorrect,
+    int? totalQuestion,
+  }) {
+    return ToeicState(
+      status: status ?? this.status,
+      part125: part125 ?? this.part125,
+      part3467: part3467 ?? this.part3467,
+      errorMessage: errorMessage ?? this.errorMessage,
+      totalCorrect: totalCorrect ?? this.totalCorrect,
+      totalQuestion: totalQuestion ?? this.totalQuestion,
+    );
+  }
 
-// class ToeicSuccess extends ToeicState {
-//   const ToeicSuccess(this.toeic);
-
-//   final ToeicTest? toeic;
-
-//   @override
-//   List<Object?> get props => [toeic];
-// }
-
-// class ToeicFailure extends ToeicState {
-//   const ToeicFailure(this.errorMessage, {this.errorCode});
-
-//   final int? errorCode;
-//   final String errorMessage;
-//   @override
-//   List<Object?> get props => [errorCode, errorMessage];
-// }
-
-// class SaveScoreToeicP1Success extends ToeicState {
-//   const SaveScoreToeicP1Success(this.message);
-//   final String message;
-//   @override
-//   List<Object?> get props => [message];
-// }
-
-// class SaveScoreToeicP1Failure extends ToeicState {
-//   const SaveScoreToeicP1Failure(this.errorMessage, {this.errorCode});
-
-//   final int? errorCode;
-//   final String errorMessage;
-//   @override
-//   List<Object?> get props => [errorCode, errorMessage];
-// }
+  @override
+  List<Object?> get props => [
+        status,
+        part125,
+        part3467,
+        totalCorrect,
+        totalQuestion,
+        errorMessage,
+      ];
+}

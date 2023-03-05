@@ -10,7 +10,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'bloc/authentication/auth_cubit.dart';
 import 'bloc/flashcard/flashcard_collection_random/flashcard_collection_random_cubit.dart';
 
-import 'bloc/toeic/toeic_cubit.dart';
 import 'bloc/vocab/vocab_cubit.dart';
 import 'data/configs/hive_config.dart';
 import 'presentation/routes/route_generator.dart';

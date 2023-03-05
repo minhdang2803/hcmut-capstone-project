@@ -52,6 +52,8 @@ dependencies:
   image_pixels: ^3.0.0
   syncfusion_flutter_charts: ^20.4.50
   shared_preferences: ^2.0.18
+  dropdown_button2: ^2.0.0
+  tuple: ^2.0.1
  
 
 dev_dependencies:

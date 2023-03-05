@@ -1,15 +1,17 @@
-import 'dart:math';
-import 'dart:typed_data';
-
-import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'toeic_models.dart';
 part 'toeic_model_local.g.dart';
 
+Future<Uint8List> saveImageToLocal(String url) async {
+  final ByteData imageData = await NetworkAssetBundle(Uri.parse(url)).load("");
+  return imageData.buffer.asUint8List();
+}
+
 @HiveType(typeId: 18)
-class ToeicQuestionLocal extends Equatable {
+class ToeicQuestionLocal extends HiveObject {
   @HiveField(0)
   final int? qid;
   @HiveField(1)
@@ -44,9 +46,7 @@ class ToeicQuestionLocal extends Equatable {
     for (final element in questions) {
       Uint8List? bytes;
       if (element.imgUrl != null) {
-        final ByteData imageData =
-            await NetworkAssetBundle(Uri.parse(element.imgUrl!)).load("");
-        bytes = imageData.buffer.asUint8List();
+        bytes = await compute(saveImageToLocal, element.imgUrl!);
       }
       result.add(ToeicQuestionLocal(
         qid: element.qid,
@@ -90,7 +90,7 @@ class ToeicQuestionLocal extends Equatable {
 }
 
 @HiveType(typeId: 19)
-class ToeicGroupQuestionLocal extends Equatable {
+class ToeicGroupQuestionLocal extends HiveObject {
   @HiveField(0)
   final int? gid;
   @HiveField(1)
@@ -136,9 +136,7 @@ class ToeicGroupQuestionLocal extends Equatable {
     for (final element in questions) {
       Uint8List? bytes;
       if (element.imgUrl != null) {
-        final ByteData imageData =
-            await NetworkAssetBundle(Uri.parse(element.imgUrl!)).load("");
-        bytes = imageData.buffer.asUint8List();
+        bytes = await compute(saveImageToLocal, element.imgUrl!);
       }
       final questions =
           await ToeicQuestionLocal.fromInternet(element.questions!);

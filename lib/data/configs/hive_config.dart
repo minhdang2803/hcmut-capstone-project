@@ -22,7 +22,7 @@ class HiveConfig {
   static const quizMCAnswers = "quizMCAnswers";
   static const quizMCtests = "quizMCTests";
   static const mapObject = "mapObject";
-  static const toeicPart = "toeicPart";
+  static const toeicPart = "TOEICPART";
 
   Future<void> init() async {
     await Hive.initFlutter();
@@ -49,7 +49,6 @@ class HiveConfig {
 
     Hive.registerAdapter(MapObjectLocalAdapter());
     Hive.registerAdapter(ListMapObjectAdapter());
-
     //Toeic
     Hive.registerAdapter(ToeicQuestionLocalAdapter());
     Hive.registerAdapter(ToeicGroupQuestionLocalAdapter());
@@ -64,5 +63,6 @@ class HiveConfig {
     await Hive.openBox(quizMCtests);
     await Hive.openBox(quizMCAnswers);
     await Hive.openBox(mapObject);
+    await Hive.openBox(toeicPart);
   }
 }

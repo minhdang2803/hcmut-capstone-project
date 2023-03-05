@@ -45,7 +45,7 @@ class ToeicLocalSourceImpl implements ToeicLocalSource {
       part3467Local = await ToeicGroupQuestionLocal.fromInternet(part3467);
     }
     //2 Save the local response to return List;
-    final List<dynamic> fromLocal = box.get(userId);
+    final List<dynamic> fromLocal = box.get(userId, defaultValue: []);
     for (final element in fromLocal) {
       result.add(element);
 
@@ -75,22 +75,6 @@ class ToeicLocalSourceImpl implements ToeicLocalSource {
         ),
       );
     }
-    // for (final element in result) {
-    //   if (element.part == partOfTest) {
-    //     if (element.part125 != null && part125 != null) {
-    //       element.part125!.addAll(part125Local!);
-    //     }
-    //     if (element.part3467 != null && part3467 != null) {
-    //       element.part3467!.addAll(part3467Local!);
-    //     }
-    //     isInList = true;
-    //     break;
-    //   }
-    // }
-    // if (isInList == false) {
-    //   result.add(LocalToeicPart(
-    //       part: partOfTest, part125: part125Local, part3467: part3467Local));
-    // }
     box.put(userId, result);
   }
 
@@ -98,15 +82,16 @@ class ToeicLocalSourceImpl implements ToeicLocalSource {
   LocalToeicPart? getPartFromLocal(int part, {int limit = 10}) {
     late LocalToeicPart toeicPart;
     final List<LocalToeicPart> parts = [];
-    final box = getToeicPartBox();
+    final box = Hive.box(HiveConfig.toeicPart);
     final userId = getUserId();
 
     // 1. get Box of Toeic Part
-    final List<dynamic> response = box.get(userId);
+    final List<dynamic> response = box.get(userId, defaultValue: []);
     // 2. addAll element from local to a parts
     for (final element in response) {
       parts.add(element);
     }
+    if (parts.isEmpty) return null;
     // 3. select an approriate part
     for (final element in parts) {
       if (element.part == part) {
@@ -114,6 +99,7 @@ class ToeicLocalSourceImpl implements ToeicLocalSource {
         break;
       }
     }
+
     // 4. check if the part is Question or GroupQuestion
     if ([1, 2, 5].contains(part)) {
       if (toeicPart.part125!.length < limit) {

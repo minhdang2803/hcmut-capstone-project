@@ -65,7 +65,8 @@ class _StartToeic extends State<StartToeic> {
       "Điền Vào Đoạn Văn",
       "Đọc Hiểu Đoạn Văn",
     ];
-    return Expanded(
+    return Padding(
+      padding: EdgeInsets.only(top: 20.r),
       child: GridView.builder(
         itemCount: imgUrls.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -75,7 +76,6 @@ class _StartToeic extends State<StartToeic> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              print("hello");
               Navigator.pushNamed(
                 context,
                 RouteName.toeicInstruction,
