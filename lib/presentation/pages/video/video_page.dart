@@ -44,14 +44,6 @@ class _VideoPageState extends State<VideoPage>
     context.read<CategoryVideoCubit>().getMainActivities();
   }
 
-  Offset _position = Offset.zero;
-  void _getTapPosition(TapDownDetails tapPosition) {
-    final RenderBox renderBox = context.findRenderObject() as RenderBox;
-    setState(() {
-      _position = renderBox.globalToLocal(tapPosition.globalPosition);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

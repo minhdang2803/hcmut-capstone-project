@@ -1,19 +1,25 @@
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
+import 'package:bke/bloc/toeic/toeic_part/toeic_part_cubit.dart';
 import 'package:bke/presentation/pages/toeic_test/components/instruction_component.dart';
+import 'package:bke/presentation/pages/toeic_test/toeic_do_test_page.dart';
+import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ToeicInstructionParam {
   final int part;
   final String title;
   final BuildContext context;
+  final String imgUrl;
   ToeicInstructionParam({
     required this.part,
     required this.title,
+    required this.imgUrl,
     required this.context,
   });
 }
@@ -23,9 +29,11 @@ class ToeicInstructionPage extends StatefulWidget {
     super.key,
     required this.part,
     required this.title,
+    required this.imgUrl,
   });
   final int part;
   final String title;
+  final String imgUrl;
 
   @override
   State<ToeicInstructionPage> createState() => _ToeicInstructionPageState();
@@ -36,7 +44,7 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
   @override
   void initState() {
     super.initState();
-    context.read<ToeicCubit>().getPart(widget.part);
+    context.read<ToeicPartCubit>().getPart(widget.part);
   }
 
   @override
@@ -73,10 +81,12 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
           padding: EdgeInsets.only(top: 20.r),
           child: Column(
             children: [
+              _buildHeader(context),
+              10.verticalSpace,
               InstructionComponent(
                 instructionComponent: getdata(widget.part, data),
               ),
-              30.verticalSpace,
+              20.verticalSpace,
               _buildOption(context),
               30.verticalSpace,
               _buildStartButton(context),
@@ -89,10 +99,32 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
     );
   }
 
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SvgPicture.asset(
+          widget.imgUrl,
+          width: 80.r,
+          height: 80.r,
+        ),
+        20.horizontalSpace,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Số câu đã làm: 0", style: AppTypography.body),
+            5.verticalSpace,
+            Text("Số câu chính xác: 0", style: AppTypography.body),
+          ],
+        )
+      ],
+    );
+  }
+
   Widget _buildLoadingIndicator(BuildContext context) {
-    return BlocBuilder<ToeicCubit, ToeicState>(
+    return BlocBuilder<ToeicPartCubit, ToeicPartState>(
       builder: (context, state) {
-        if (state.status == ToeicStatus.loading) {
+        if (state.status == ToeicPartStatus.loading) {
           return ClipRRect(
             borderRadius: BorderRadius.circular(20.r),
             child: SizedBox(
@@ -103,31 +135,48 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
               ),
             ),
           );
+        } else {
+          return 10.verticalSpace;
         }
-        return 10.verticalSpace;
       },
     );
   }
 
   Widget _buildStartButton(BuildContext context) {
-    return BlocBuilder<ToeicCubit, ToeicState>(
+    return BlocBuilder<ToeicPartCubit, ToeicPartState>(
       builder: (context, state) {
-        if (state.status == ToeicStatus.loading) {
+        if (state.status == ToeicPartStatus.loading) {
           return QuizButton(
             width: MediaQuery.of(context).size.width * 0.85,
             backgroundColor: AppColor.lightGray,
             textColor: Colors.white,
             text: "Làm bài kiểm tra",
-            onTap: () {},
+            onTap: null,
+          );
+        } else {
+          return QuizButton(
+            width: MediaQuery.of(context).size.width * 0.85,
+            backgroundColor: AppColor.primary,
+            textColor: Colors.white,
+            text: "Làm bài kiểm tra",
+            onTap: () {
+              context
+                  .read<ToeicCubitPartOne>()
+                  .getQuestions(widget.part, selectedValue);
+              if (state.status == ToeicPartStatus.done) {
+                Navigator.pushNamed(
+                  context,
+                  RouteName.toeicDoTest,
+                  arguments: ToeicDoTestPageParam(
+                    context: context,
+                    part: widget.part,
+                    title: widget.title,
+                  ),
+                );
+              }
+            },
           );
         }
-        return QuizButton(
-          width: MediaQuery.of(context).size.width * 0.85,
-          backgroundColor: AppColor.primary,
-          textColor: Colors.white,
-          text: "Làm bài kiểm tra",
-          onTap: () {},
-        );
       },
     );
   }
@@ -143,7 +192,9 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
             style: AppTypography.title,
           ),
           BkECustomDropdown(
-            onSelected: (p0) => selectedValue = p0,
+            onSelected: (p0) {
+              setState(() => selectedValue = p0);
+            },
             items: items,
             textStyle: AppTypography.body,
           )

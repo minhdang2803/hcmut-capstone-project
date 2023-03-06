@@ -15,6 +15,7 @@ class RouteName {
   static const testToeic = '/test_toeic';
   static const resultToeic = '/result_toeic';
   static const toeicInstruction = '/toeic_instruction';
+  static const toeicDoTest = "/toeic_do_test";
 
   static const videoPage = "/videoPage";
   static const videoPlayer = '/video_player';

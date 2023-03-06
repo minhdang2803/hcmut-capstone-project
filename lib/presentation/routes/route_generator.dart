@@ -2,6 +2,7 @@ import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_timer/quiz_timer_cubit.dart';
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
+import 'package:bke/bloc/toeic/toeic_part/toeic_part_cubit.dart';
 import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
 import 'package:bke/bloc/video/last_watch_video/last_watch_video_cubit.dart';
 import 'package:bke/bloc/video/video_cubit.dart';
@@ -12,6 +13,7 @@ import 'package:bke/presentation/pages/book/books_screen.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
 import 'package:bke/presentation/pages/flashcard/flashcards.dart';
 import 'package:bke/presentation/pages/quiz/quizzes.dart';
+import 'package:bke/presentation/pages/toeic_test/toeic_do_test_page.dart';
 import 'package:bke/presentation/pages/toeic_test/toeic_instruction_page.dart';
 import 'package:bke/presentation/pages/video/videos.dart';
 
@@ -25,6 +27,7 @@ import '../pages/my_dictionary/vocab_full_info_page.dart';
 import '../pages/notification/notifications_page.dart';
 
 import '../pages/toeic_test/toeic_page.dart';
+import '../pages/toeic_test/toeics.dart';
 import '../pages/welcome/welcome.dart';
 import '../pages/main/home_page.dart';
 import '../pages/profile/main/profile_page.dart';
@@ -59,9 +62,7 @@ class RouteGenerator {
 
       case RouteName.startToeic:
         page = MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => ToeicCubit()),
-          ],
+          providers: [BlocProvider(create: (context) => ToeicPartCubit())],
           child: const StartToeic(),
         );
 
@@ -71,22 +72,37 @@ class RouteGenerator {
         final args = settings.arguments as ToeicInstructionParam;
         page = MultiBlocProvider(
           providers: [
-            BlocProvider.value(value: args.context.read<ToeicCubit>())
+            BlocProvider.value(value: args.context.read<ToeicPartCubit>()),
+            BlocProvider(create: (context) => ToeicCubitPartOne()),
           ],
           child: ToeicInstructionPage(
+            imgUrl: args.imgUrl,
             part: args.part,
             title: args.title,
           ),
         );
         break;
 
-      // case RouteName.testToeic:
-      //   page = const TestToeicPage();
-      // break;
+      case RouteName.toeicDoTest:
+        final args = settings.arguments as ToeicDoTestPageParam;
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: args.context.read<ToeicCubitPartOne>())
+          ],
+          child: ToeicDoTestPage(
+            part: args.part,
+            title: args.title,
+          ),
+        );
+        break;
 
-      // case RouteName.resultToeic:
-      //   page = const ResultToeicPage();
-      //   break;
+      case RouteName.resultToeic:
+        final args = settings.arguments as ToeicResultPageParam;
+        page = MultiBlocProvider(providers: [
+          BlocProvider.value(value: args.context.read<ToeicCubitPartOne>())
+        ], child: ToeicResultPage());
+        break;
+
       case RouteName.quizMapScreen:
         page = MultiBlocProvider(
           providers: [

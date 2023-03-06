@@ -80,6 +80,7 @@ class _StartToeic extends State<StartToeic> {
                 context,
                 RouteName.toeicInstruction,
                 arguments: ToeicInstructionParam(
+                  imgUrl: imgUrls[index],
                   part: parts[index],
                   title: titles[index],
                   context: context,

@@ -11,10 +11,12 @@ class QuizPicture extends StatelessWidget {
     this.borderRadius = 20,
     this.height = 200,
     this.width = 350,
+    this.isBorder = true,
   });
   // final String? imageUrl;
   final Uint8List imgData;
   final double? borderRadius;
+  final bool? isBorder;
   final double? width;
   final double? height;
   // final bool? picturesFromLocal;
@@ -23,7 +25,7 @@ class QuizPicture extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(width: 1.0, color: Colors.grey),
+        border: isBorder! ? Border.all(width: 1.0, color: Colors.grey) : null,
         borderRadius: BorderRadius.circular(borderRadius!),
       ),
       child: ClipRRect(

@@ -30,7 +30,7 @@ class QuizButton extends StatelessWidget {
   final Color? borderColor;
   final double? width;
   final double? height;
-  final void Function() onTap;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {

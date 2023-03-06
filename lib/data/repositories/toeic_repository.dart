@@ -13,7 +13,7 @@ class ToeicRepository {
   static final _instance = ToeicRepository._internal();
 
   factory ToeicRepository.instance() => _instance;
-  
+
   Future<void> getPart125(int part, {int limit = 10}) async {
     final response = await _remote.getPart125(part, limit);
     final result = response.data!.listOfQuestions;
@@ -27,7 +27,7 @@ class ToeicRepository {
   }
 
   Future<LocalToeicPart> getPartFromLocal(int part, {int limit = 10}) async {
-    final response = _local.getPartFromLocal(part);
+    final response = _local.getPartFromLocal(part, limit: limit);
     if (response != null) {
       return response;
     }

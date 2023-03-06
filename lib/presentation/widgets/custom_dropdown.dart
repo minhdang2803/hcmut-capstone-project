@@ -23,7 +23,7 @@ class _BkECustomDropdownState extends State<BkECustomDropdown> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton2(
-      underline: SizedBox(),
+      underline: const SizedBox(),
       style: widget.textStyle ?? AppTypography.title,
       customButton: Container(
         padding: EdgeInsets.all(5.r),

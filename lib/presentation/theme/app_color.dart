@@ -21,10 +21,10 @@ class AppColor {
   static const Color textSecondary = Color(0xFF49465F);
   static const Color textSub = Color(0xFF858494);
   static const Color appBackground = Color(0xFFFFFFFF);
-
+  static const Color correctColor = Color(0xff53DF83);
   //scroll bar indicator color
   static const Color darkGray = Color(0xFF7B7B7B);
-
+  static const Color neutralGrey = Color(0xffEFEEFC);
   //pin border color (sms pin code)
   static const Color lightGray = Color(0xFFE6E6E6);
 
