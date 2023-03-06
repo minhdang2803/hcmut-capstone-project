@@ -23,23 +23,35 @@ class ToeicResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: SizedBox(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height,
-        child: ListView(
-          physics: const NeverScrollableScrollPhysics(),
-          primary: true,
-          children: [
-            _buildTopBar(context),
-            10.verticalSpace,
-            _buildStatisticContent(context),
-            20.verticalSpace,
-            _buildCorrectAnswers(context),
-          ],
-        ),
-      )),
+    return BlocSelector<ToeicCubitPartOne, ToeicStatePartOne, bool>(
+      selector: (state) {
+        return state.status == ToeicStatus.finish;
+      },
+      builder: (context, isDone) {
+        return Scaffold(
+            body: SafeArea(
+          bottom: false,
+          child: isDone ? _buildMainUI(context) : const SizedBox(),
+        ));
+      },
+    );
+  }
+
+  Widget _buildMainUI(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height,
+      child: ListView(
+        physics: const NeverScrollableScrollPhysics(),
+        primary: true,
+        children: [
+          _buildTopBar(context),
+          10.verticalSpace,
+          _buildStatisticContent(context),
+          20.verticalSpace,
+          _buildCorrectAnswers(context),
+        ],
+      ),
     );
   }
 
@@ -53,34 +65,32 @@ class ToeicResultPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(20.r),
             color: AppColor.neutralGrey,
           ),
-          child: Expanded(
-            child: SizedBox(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.5,
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                // physics: const ScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  List answer;
-                  if ([1, 2, 5].contains(state.part)) {
-                    answer = state.part125! as List<ToeicQuestionLocal>;
-                  } else {
-                    answer = state.part3467! as List<ToeicGroupQuestionLocal>;
-                  }
-                  if (index <= state.totalQuestion! - 1) {
-                    return AnswerPartOne(
-                      index: index,
-                      text: answer[index].transcript!,
-                      correctAnswer: answer[index].correctAnswer!,
-                      imgUrl: answer[index].imgUrl!,
-                    );
-                  } else {
-                    return 350.verticalSpace;
-                  }
-                },
-                itemCount: state.totalQuestion! + 1,
-              ),
+          child: SizedBox(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              // physics: const ScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                List answer;
+                if ([1, 2, 5].contains(state.part)) {
+                  answer = state.part125! as List<ToeicQuestionLocal>;
+                } else {
+                  answer = state.part3467! as List<ToeicGroupQuestionLocal>;
+                }
+                if (index <= state.totalQuestion! - 1) {
+                  return AnswerPartOne(
+                    index: index,
+                    text: answer[index].transcript!,
+                    correctAnswer: answer[index].correctAnswer!,
+                    imgUrl: answer[index].imgUrl!,
+                  );
+                } else {
+                  return 350.verticalSpace;
+                }
+              },
+              itemCount: state.totalQuestion! + 1,
             ),
           ),
         );
