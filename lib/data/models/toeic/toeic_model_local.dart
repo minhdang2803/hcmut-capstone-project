@@ -28,8 +28,11 @@ class ToeicQuestionLocal extends HiveObject {
   final String? correctAnswer;
   @HiveField(7)
   final List<String>? answers;
+  @HiveField(8)
+  final String? id;
 
   ToeicQuestionLocal({
+    this.id,
     this.qid,
     this.imgUrl,
     this.mp3UrlPro,
@@ -49,6 +52,7 @@ class ToeicQuestionLocal extends HiveObject {
         bytes = await compute(saveImageToLocal, element.imgUrl!);
       }
       result.add(ToeicQuestionLocal(
+        id: element.id,
         qid: element.qid,
         imgUrl: bytes,
         mp3Url: element.mp3Url,
@@ -64,6 +68,7 @@ class ToeicQuestionLocal extends HiveObject {
 
   factory ToeicQuestionLocal.fromJson(Map<String, dynamic> json) {
     return ToeicQuestionLocal(
+      id: json["_id"],
       qid: json['qid'],
       text: json['text'],
       transcript: json['transcript'],
@@ -75,18 +80,6 @@ class ToeicQuestionLocal extends HiveObject {
           (json['answers'] as List<dynamic>).map((e) => e as String).toList(),
     );
   }
-
-  @override
-  List<Object?> get props => [
-        qid,
-        text,
-        transcript,
-        imgUrl,
-        mp3Url,
-        mp3UrlPro,
-        correctAnswer,
-        answers
-      ];
 }
 
 @HiveType(typeId: 19)
@@ -105,8 +98,10 @@ class ToeicGroupQuestionLocal extends HiveObject {
   final String? transcript;
   @HiveField(6)
   final List<ToeicQuestionLocal>? questions;
-
+  @HiveField(7)
+  final String? id;
   ToeicGroupQuestionLocal({
+    this.id,
     this.gid,
     this.text,
     this.imgUrl,
@@ -118,6 +113,7 @@ class ToeicGroupQuestionLocal extends HiveObject {
 
   factory ToeicGroupQuestionLocal.fromJson(Map<String, dynamic> json) {
     return ToeicGroupQuestionLocal(
+      id: json["_id"],
       gid: json['gid'],
       text: json['text'],
       imgUrl: json['imgUrl'],
@@ -141,6 +137,7 @@ class ToeicGroupQuestionLocal extends HiveObject {
       final questions =
           await ToeicQuestionLocal.fromInternet(element.questions!);
       result.add(ToeicGroupQuestionLocal(
+        id: element.id,
         gid: element.gid,
         imgUrl: bytes,
         mp3Url: element.mp3Url,
@@ -152,10 +149,6 @@ class ToeicGroupQuestionLocal extends HiveObject {
     }
     return result;
   }
-
-  @override
-  List<Object?> get props =>
-      [gid, imgUrl, mp3Url, mp3UrlPro, questions, transcript];
 }
 
 @HiveType(typeId: 20)

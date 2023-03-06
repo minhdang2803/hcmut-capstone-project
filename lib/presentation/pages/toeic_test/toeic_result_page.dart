@@ -1,7 +1,5 @@
 import 'dart:typed_data';
-
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
-import 'package:bke/bloc/toeic/toeic_part/toeic_part_cubit.dart';
 import 'package:bke/data/models/toeic/toeic_models.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/widgets/widgets.dart';

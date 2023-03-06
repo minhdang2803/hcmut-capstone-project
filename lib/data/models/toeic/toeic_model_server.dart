@@ -1,4 +1,5 @@
 class ToeicQuestion {
+  final String? id;
   final int? qid;
   final String? text;
   final String? imgUrl;
@@ -9,6 +10,7 @@ class ToeicQuestion {
   final List<String>? answers;
 
   ToeicQuestion({
+    this.id,
     this.qid,
     this.imgUrl,
     this.mp3UrlPro,
@@ -21,6 +23,7 @@ class ToeicQuestion {
 
   factory ToeicQuestion.fromJson(Map<String, dynamic> json) {
     return ToeicQuestion(
+      id: json['_id'],
       qid: json['qid'],
       text: json['text'],
       transcript: json['transcript'],
@@ -47,6 +50,7 @@ class ToeicQuestionResponse {
 }
 
 class ToeicGroupQuestion {
+  final String? id;
   final int? gid;
   final String? text;
   final String? imgUrl;
@@ -56,6 +60,7 @@ class ToeicGroupQuestion {
   final List<ToeicQuestion>? questions;
 
   ToeicGroupQuestion({
+    this.id,
     this.gid,
     this.text,
     this.imgUrl,
@@ -67,6 +72,7 @@ class ToeicGroupQuestion {
 
   factory ToeicGroupQuestion.fromJson(Map<String, dynamic> json) {
     return ToeicGroupQuestion(
+      id: json['_id'],
       gid: json['gid'],
       text: json['text'],
       imgUrl: json['imgUrl'],
