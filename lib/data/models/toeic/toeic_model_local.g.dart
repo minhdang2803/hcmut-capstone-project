@@ -17,6 +17,7 @@ class ToeicQuestionLocalAdapter extends TypeAdapter<ToeicQuestionLocal> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ToeicQuestionLocal(
+      id: fields[8] as String?,
       qid: fields[0] as int?,
       imgUrl: fields[2] as Uint8List?,
       mp3UrlPro: fields[3] as String?,
@@ -31,7 +32,7 @@ class ToeicQuestionLocalAdapter extends TypeAdapter<ToeicQuestionLocal> {
   @override
   void write(BinaryWriter writer, ToeicQuestionLocal obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.qid)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class ToeicQuestionLocalAdapter extends TypeAdapter<ToeicQuestionLocal> {
       ..writeByte(6)
       ..write(obj.correctAnswer)
       ..writeByte(7)
-      ..write(obj.answers);
+      ..write(obj.answers)
+      ..writeByte(8)
+      ..write(obj.id);
   }
 
   @override
@@ -73,6 +76,7 @@ class ToeicGroupQuestionLocalAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ToeicGroupQuestionLocal(
+      id: fields[7] as String?,
       gid: fields[0] as int?,
       text: fields[1] as String?,
       imgUrl: fields[2] as Uint8List?,
@@ -86,7 +90,7 @@ class ToeicGroupQuestionLocalAdapter
   @override
   void write(BinaryWriter writer, ToeicGroupQuestionLocal obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.gid)
       ..writeByte(1)
@@ -100,7 +104,9 @@ class ToeicGroupQuestionLocalAdapter
       ..writeByte(5)
       ..write(obj.transcript)
       ..writeByte(6)
-      ..write(obj.questions);
+      ..write(obj.questions)
+      ..writeByte(7)
+      ..write(obj.id);
   }
 
   @override
@@ -150,6 +156,52 @@ class LocalToeicPartAdapter extends TypeAdapter<LocalToeicPart> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is LocalToeicPartAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class ToeicResultLocalAdapter extends TypeAdapter<ToeicResultLocal> {
+  @override
+  final int typeId = 21;
+
+  @override
+  ToeicResultLocal read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return ToeicResultLocal(
+      part: fields[0] as int,
+      total: fields[1] as int,
+      correct: fields[2] as int,
+      choosenAnswers: (fields[3] as Map).cast<String, dynamic>(),
+      score: (fields[4] as Map?)?.cast<String, dynamic>(),
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, ToeicResultLocal obj) {
+    writer
+      ..writeByte(5)
+      ..writeByte(0)
+      ..write(obj.part)
+      ..writeByte(1)
+      ..write(obj.total)
+      ..writeByte(2)
+      ..write(obj.correct)
+      ..writeByte(3)
+      ..write(obj.choosenAnswers)
+      ..writeByte(4)
+      ..write(obj.score);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ToeicResultLocalAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

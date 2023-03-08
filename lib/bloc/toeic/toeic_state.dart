@@ -16,6 +16,7 @@ class ToeicStatePartOne extends Equatable {
     this.isAnswerCorrect,
     this.chosenIndex,
     this.part,
+    this.resultByQuestion,
   });
   ToeicStatePartOne.initial() {
     status = ToeicStatus.initial;
@@ -29,6 +30,7 @@ class ToeicStatePartOne extends Equatable {
     isAnswerCorrect = null;
     chosenIndex = -1;
     part = 0;
+    resultByQuestion = {};
   }
   late final int? part;
   late final ToeicStatus? status;
@@ -41,6 +43,7 @@ class ToeicStatePartOne extends Equatable {
   late final List<bool>? answerPart1;
   late final bool? isAnswerCorrect;
   late final int? chosenIndex;
+  late final Map<String, dynamic>? resultByQuestion;
 
   ToeicStatePartOne copyWith({
     int? part,
@@ -54,6 +57,7 @@ class ToeicStatePartOne extends Equatable {
     List<bool>? answerPart1,
     bool? isAnswerCorrect,
     int? chosenIndex,
+    Map<String, dynamic>? resultByQuestion,
   }) {
     return ToeicStatePartOne(
       part: part ?? this.part,
@@ -67,6 +71,7 @@ class ToeicStatePartOne extends Equatable {
       currentIndex: currentIndex ?? this.currentIndex,
       isAnswerCorrect: isAnswerCorrect,
       chosenIndex: chosenIndex ?? this.chosenIndex,
+      resultByQuestion: resultByQuestion ?? this.resultByQuestion,
     );
   }
 
@@ -83,5 +88,6 @@ class ToeicStatePartOne extends Equatable {
         answerPart1,
         isAnswerCorrect,
         chosenIndex,
+        resultByQuestion,
       ];
 }

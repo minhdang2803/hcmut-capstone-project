@@ -6,7 +6,6 @@ class AudioService {
   AudioService() {
     player = AssetsAudioPlayer();
     player.setLoopMode(LoopMode.none);
-
     player.setVolume(0.5);
   }
 

@@ -1,6 +1,7 @@
 import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/toeic/toeic_model_local.dart';
 import 'package:bke/data/repositories/toeic_repository.dart';
+import 'package:bke/data/services/audio_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tuple/tuple.dart';
@@ -37,7 +38,9 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     }
   }
 
-  Future<void> checkAnswerPart1(String userAnswer, int questionIndex) async {
+  Future<void> checkAnswerPart1(
+      String userAnswer, int questionIndex, AudioService audio) async {
+    audio.stop();
     emit(state.copyWith(status: ToeicStatus.loading));
     final answer = state.part125![state.currentIndex!].correctAnswer!;
     final answerList = List<bool>.generate(4, (index) => false);
@@ -45,21 +48,25 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
       answerList[questionIndex] = true;
       emit(
         state.copyWith(
+          status: ToeicStatus.done,
           isAnswerCorrect: true,
           answerPart1: answerList,
           totalCorrect: state.totalCorrect! + 1,
           chosenIndex: questionIndex,
         ),
       );
+      print('current before await: ${state.currentIndex}');
     } else {
       emit(
         state.copyWith(
+          status: ToeicStatus.done,
           isAnswerCorrect: false,
           answerPart1: answerList,
           totalCorrect: state.totalCorrect!,
           chosenIndex: questionIndex,
         ),
       );
+      print('current before await: ${state.currentIndex}');
     }
     await Future.delayed(const Duration(seconds: 1));
     if (state.currentIndex! >= state.part125!.length - 1) {
@@ -67,10 +74,11 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     } else {
       emit(
         state.copyWith(
-          status: ToeicStatus.done,
           currentIndex: state.currentIndex! + 1,
         ),
       );
+      print('current after await: ${state.currentIndex}');
+      audio.setAudio(state.part125![state.currentIndex!].mp3Url!);
     }
   }
 }

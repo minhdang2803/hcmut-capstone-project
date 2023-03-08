@@ -43,10 +43,16 @@ class ToeicRepository {
     }
   }
 
-  // Future<BaseResponse> saveScoreToeicP1(
-  //   List<int> listQid,
-  //   List<String> listUserAnswer,
-  // ) async {
-  //   return _toeicSource.saveScoreToeicP1(listQid, listUserAnswer);
-  // }
+  void saveToeicResultByPart({
+    required int part,
+    required int totalQuestion,
+    required int totalCorrect,
+    required Map<String, dynamic> chosenResult,
+  }) {
+    _local.saveResultByPart(part, totalQuestion, totalCorrect, chosenResult);
+  }
+
+  ToeicResultLocal? getToeicResultByPart(int part) {
+    return _local.getResultByPartFromLocal(part);
+  }
 }

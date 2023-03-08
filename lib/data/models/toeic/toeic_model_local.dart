@@ -166,3 +166,24 @@ class LocalToeicPart extends HiveObject {
     this.part3467,
   });
 }
+
+@HiveType(typeId: 21)
+class ToeicResultLocal extends HiveObject {
+  @HiveField(0)
+  int part;
+  @HiveField(1)
+  int total;
+  @HiveField(2)
+  int correct;
+  @HiveField(3)
+  Map<String, dynamic> choosenAnswers;
+  @HiveField(4)
+  Map<String, dynamic>? score;
+  ToeicResultLocal({
+    required this.part,
+    required this.total,
+    required this.correct,
+    required this.choosenAnswers,
+    this.score,
+  });
+}
