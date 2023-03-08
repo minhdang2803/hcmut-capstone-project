@@ -1,4 +1,3 @@
-
 class EndPoint {
   static const _baseUrl = 'https://bkenglish-9ec8e.et.r.appspot.com/api';
   static const loginPath = '$_baseUrl/user/login';
@@ -33,7 +32,7 @@ class EndPoint {
   //Vocab
   static const findVocabsByListId = "$_baseUrl/vocab/getListVocab";
   static const getVocabInfos = '$_baseUrl/vocab';
-  
+
   //Flashcard
   static const getAllFlashcard = '$_baseUrl/flashCard/getAll';
   static const updateFlashcard = '$_baseUrl/flashCard/upsert';
@@ -50,4 +49,8 @@ class EndPoint {
 
   //Toeic
   static const getPart = "$_baseUrl/toeic/practice";
+
+  // calendar
+  static const getHistoryActivities =
+      "$_baseUrl/historyActivities/getByYearMonth";
 }
