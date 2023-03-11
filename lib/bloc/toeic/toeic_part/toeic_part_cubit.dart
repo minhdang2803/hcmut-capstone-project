@@ -14,7 +14,12 @@ class ToeicPartCubit extends Cubit<ToeicPartState> {
     try {
       emit(state.copyWith(status: ToeicPartStatus.loading));
       await instance.getPartFromLocal(part, limit: 30);
-      emit(state.copyWith(status: ToeicPartStatus.done));
+      final fromLocal = instance.getToeicResultByPart(part);
+      emit(state.copyWith(
+        status: ToeicPartStatus.done,
+        total: fromLocal?.total,
+        correct: fromLocal?.correct,
+      ));
     } on RemoteException catch (error) {
       emit(ToeicPartState.initial());
       emit(
@@ -26,13 +31,13 @@ class ToeicPartCubit extends Cubit<ToeicPartState> {
 
   void getDataFromLocal(int part) {
     try {
-      emit(state.copyWith(status: ToeicPartStatus.loading));
+      // emit(state.copyWith(status: ToeicPartStatus.loading));
       final fromLocal = instance.getToeicResultByPart(part);
       emit(
         state.copyWith(
-          status: ToeicPartStatus.done,
-          total: fromLocal!.total,
-          correct: fromLocal.correct,
+          // status: ToeicPartStatus.done,
+          total: fromLocal?.total,
+          correct: fromLocal?.correct,
         ),
       );
     } on RemoteException catch (error) {

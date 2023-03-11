@@ -157,6 +157,7 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
   Widget _buildStartButton(BuildContext context) {
     return BlocBuilder<ToeicPartCubit, ToeicPartState>(
       builder: (context, state) {
+        print(state.status);
         if (state.status == ToeicPartStatus.loading) {
           return QuizButton(
             width: MediaQuery.of(context).size.width * 0.85,

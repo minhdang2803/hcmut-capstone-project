@@ -48,6 +48,9 @@ class _ToeicPartOneComponentState extends State<ToeicPartOneComponent>
       curve: Curves.easeInOut,
     ));
     _slideAnimationController.forward();
+    context
+        .read<ToeicCubitPartOne>()
+        .setTimer(1, widget.isReal!, widget.audioService);
   }
 
   @override
@@ -63,11 +66,6 @@ class _ToeicPartOneComponentState extends State<ToeicPartOneComponent>
         }
       },
       builder: (context, state) {
-        if (state.currentIndex == 0) {
-          context
-              .read<ToeicCubitPartOne>()
-              .setTimer(1, widget.isReal!, widget.audioService);
-        }
         if (state.status == ToeicStatus.done) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
