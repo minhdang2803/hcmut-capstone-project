@@ -7,6 +7,7 @@ import 'package:bke/presentation/pages/quiz/component/map_object.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../models/authentication/user.dart';
+import '../models/calendar_activities/calendar_event.dart';
 import '../models/vocab/vocab.dart';
 
 class HiveConfig {
@@ -24,6 +25,8 @@ class HiveConfig {
   static const mapObject = "mapObject";
   static const toeicPart = "TOEICPART";
   static const toeicResult = "toeic_result";
+
+  static const calendarEvent = "CALENDAR_EVENT";
 
   Future<void> init() async {
     await Hive.initFlutter();
@@ -56,6 +59,9 @@ class HiveConfig {
     Hive.registerAdapter(LocalToeicPartAdapter());
     Hive.registerAdapter(ToeicResultLocalAdapter());
 
+    // calendar
+    Hive.registerAdapter(CalendarEventAdapter());
+
     await Hive.openBox(userBox);
     await Hive.openBox(localVocabs);
     await Hive.openBox(myDictionary);
@@ -67,5 +73,6 @@ class HiveConfig {
     await Hive.openBox(mapObject);
     await Hive.openBox(toeicPart);
     await Hive.openBox(toeicResult);
+    await Hive.openBox(calendarEvent);
   }
 }

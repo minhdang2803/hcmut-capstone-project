@@ -23,6 +23,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../pages/about_us/about_us.dart';
 import '../pages/authentication/authentication_page.dart';
+import '../pages/calendar/calendar_page.dart';
 import '../pages/my_dictionary/my_dictionary.dart';
 import '../pages/my_dictionary/vocab_full_info_page.dart';
 import '../pages/notification/notifications_page.dart';
@@ -234,6 +235,10 @@ class RouteGenerator {
       case RouteName.bookListen:
         final book = settings.arguments as BookArguments;
         page = BookListen(bookInfo: book);
+        break;
+
+      case RouteName.historyActivities:
+        page = const CalendarPage();
         break;
     }
 

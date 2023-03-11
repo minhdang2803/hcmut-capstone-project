@@ -94,13 +94,8 @@ class ProfileSettingPanel extends StatelessWidget {
                           ProfileSettingItem(
                             asset: 'assets/icons/ic_activity_setting.svg',
                             label: 'Events',
-                            onPress: () {
-                              WidgetUtil.showDialog(
-                                context: context,
-                                title: 'Coming soon',
-                                message: 'Feature is being updated',
-                              );
-                            },
+                            onPress: () => Navigator.of(context)
+                                .pushNamed(RouteName.historyActivities),
                           ),
                         ],
                       ),
