@@ -56,11 +56,8 @@ dependencies:
   tuple: ^2.0.1
   syncfusion_flutter_gauges: ^20.4.52
   assets_audio_player: ^3.0.6
-<<<<<<< HEAD
   path_provider: ^2.0.13
-=======
   table_calendar: ^3.0.7
->>>>>>> 94039978f4a48f80b6b0263ff856f9c6ed1074c7
  
 
 dev_dependencies:
