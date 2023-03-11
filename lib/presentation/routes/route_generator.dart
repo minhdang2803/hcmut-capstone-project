@@ -1,3 +1,4 @@
+import 'package:bke/bloc/cubit/count_down_cubit.dart';
 import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_timer/quiz_timer_cubit.dart';
@@ -87,11 +88,14 @@ class RouteGenerator {
         final args = settings.arguments as ToeicDoTestPageParam;
         page = MultiBlocProvider(
           providers: [
-            BlocProvider.value(value: args.context.read<ToeicCubitPartOne>())
+            BlocProvider.value(value: args.context.read<ToeicCubitPartOne>()),
+            BlocProvider<CountDownCubit>.value(
+                value: args.context.read<ToeicCubitPartOne>().state.timer!),
           ],
           child: ToeicDoTestPage(
             part: args.part,
             title: args.title,
+            isReal: args.isReal,
           ),
         );
         break;

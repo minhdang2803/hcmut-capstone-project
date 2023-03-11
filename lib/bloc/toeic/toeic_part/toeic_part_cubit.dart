@@ -23,4 +23,24 @@ class ToeicPartCubit extends Cubit<ToeicPartState> {
       );
     }
   }
+
+  void getDataFromLocal(int part) {
+    try {
+      emit(state.copyWith(status: ToeicPartStatus.loading));
+      final fromLocal = instance.getToeicResultByPart(part);
+      emit(
+        state.copyWith(
+          status: ToeicPartStatus.done,
+          total: fromLocal!.total,
+          correct: fromLocal.correct,
+        ),
+      );
+    } on RemoteException catch (error) {
+      emit(ToeicPartState.initial());
+      emit(
+        state.copyWith(
+            status: ToeicPartStatus.fail, errorMessage: error.message),
+      );
+    }
+  }
 }

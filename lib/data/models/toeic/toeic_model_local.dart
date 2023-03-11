@@ -1,13 +1,36 @@
+import 'dart:isolate';
+
+import 'package:bke/utils/top_function.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:tuple/tuple.dart';
 
 import 'toeic_models.dart';
 part 'toeic_model_local.g.dart';
 
-Future<Uint8List> saveImageToLocal(String url) async {
-  final ByteData imageData = await NetworkAssetBundle(Uri.parse(url)).load("");
-  return imageData.buffer.asUint8List();
+// Define a function to be executed in the background isolate
+void _backgroundTask(Tuple2<SendPort, String> data) async {
+  final task = await saveAudioToDocumentsFromInternet(data.item2);
+  data.item1.send(task);
+}
+
+// Create a Flutter isolate and run the background task in it
+Future<String> _runBackgroundTask(String url) async {
+  RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
+  // Initialize the BackgroundIsolateBinaryMessenger
+  BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+  final receivePort = ReceivePort();
+
+  // Spawn a new Flutter isolate and run the background task in it
+  await Isolate.spawn(_backgroundTask, Tuple2(receivePort.sendPort, url));
+
+  // Listen for messages from the background isolate
+  // receivePort.listen((message) {
+  //   print("Done");
+  // });
+  final message = await receivePort.first;
+  return message;
 }
 
 @HiveType(typeId: 18)
@@ -47,15 +70,19 @@ class ToeicQuestionLocal extends HiveObject {
       List<ToeicQuestion> questions) async {
     List<ToeicQuestionLocal> result = [];
     for (final element in questions) {
-      Uint8List? bytes;
+      Uint8List? imgBytes;
+      String? pathToLocal;
       if (element.imgUrl != null) {
-        bytes = await compute(saveImageToLocal, element.imgUrl!);
+        imgBytes = await compute(saveImageToLocal, element.imgUrl!);
+      }
+      if (element.mp3Url != null) {
+        pathToLocal = await saveAudioToDocumentsFromInternet(element.mp3Url!);
       }
       result.add(ToeicQuestionLocal(
         id: element.id,
         qid: element.qid,
-        imgUrl: bytes,
-        mp3Url: element.mp3Url,
+        imgUrl: imgBytes,
+        mp3Url: pathToLocal,
         mp3UrlPro: element.mp3UrlPro,
         answers: element.answers,
         transcript: element.transcript,
@@ -131,8 +158,12 @@ class ToeicGroupQuestionLocal extends HiveObject {
     List<ToeicGroupQuestionLocal> result = [];
     for (final element in questions) {
       Uint8List? bytes;
+      String? pathToLocal;
       if (element.imgUrl != null) {
         bytes = await compute(saveImageToLocal, element.imgUrl!);
+      }
+      if (element.mp3Url != null) {
+        pathToLocal = await saveAudioToDocumentsFromInternet(element.mp3Url!);
       }
       final questions =
           await ToeicQuestionLocal.fromInternet(element.questions!);
@@ -140,7 +171,7 @@ class ToeicGroupQuestionLocal extends HiveObject {
         id: element.id,
         gid: element.gid,
         imgUrl: bytes,
-        mp3Url: element.mp3Url,
+        mp3Url: pathToLocal,
         mp3UrlPro: element.mp3UrlPro,
         questions: questions,
         transcript: element.transcript,

@@ -2,6 +2,7 @@ import 'package:bke/bloc/flashcard/flashcard_card/flashcard_cubit.dart';
 import 'package:bke/bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
 import 'package:bke/data/dependency_injection/di.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,6 +21,9 @@ import 'presentation/widgets/custom_restart_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
+  // Initialize the BackgroundIsolateBinaryMessenger
+  BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
   await initServices();
   await HiveConfig().init();
   // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(

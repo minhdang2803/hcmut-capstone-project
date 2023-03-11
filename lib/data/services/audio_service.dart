@@ -17,7 +17,7 @@ class AudioService {
     const defaultTitle = "Funny English";
 
     player.open(
-      Audio.network(
+      Audio.file(
         audioFile,
         metas: Metas(
           title: defaultTitle,

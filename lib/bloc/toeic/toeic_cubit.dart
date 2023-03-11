@@ -1,22 +1,29 @@
+import 'package:bke/bloc/cubit/count_down_cubit.dart';
+
 import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/toeic/toeic_model_local.dart';
 import 'package:bke/data/repositories/toeic_repository.dart';
 import 'package:bke/data/services/audio_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:tuple/tuple.dart';
+import 'package:flutter/material.dart';
 
 part 'toeic_state.dart';
-
-Future<LocalToeicPart> getPartFromLocal(Tuple2<int, int> data) {
-  final instance = ToeicRepository.instance();
-  return instance.getPartFromLocal(data.item1, limit: data.item2);
-}
 
 class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
   ToeicCubitPartOne() : super(ToeicStatePartOne.initial());
 
   final instance = ToeicRepository.instance();
+  void setTimer(int part, bool isReal, AudioService audio) {
+    emit(state.copyWith(isReal: isReal));
+    switch (part) {
+      case 1:
+        audio.setAudio(state.part125![0].mp3Url!);
+        state.timer!.start(25);
+        audio.play();
+        break;
+    }
+  }
 
   void exit() => emit(ToeicStatePartOne.initial());
   void getQuestions(int part, int limit) async {
@@ -38,12 +45,14 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     }
   }
 
-  Future<void> checkAnswerPart1(
-      String userAnswer, int questionIndex, AudioService audio) async {
+  Future<void> checkAnswerPart1(String userAnswer, int questionIndex,
+      AudioService audio, AnimationController animation) async {
     audio.stop();
+
     emit(state.copyWith(status: ToeicStatus.loading));
     final answer = state.part125![state.currentIndex!].correctAnswer!;
     final answerList = List<bool>.generate(4, (index) => false);
+
     if (userAnswer.replaceAll(".", "") == answer) {
       answerList[questionIndex] = true;
       emit(
@@ -55,7 +64,6 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
           chosenIndex: questionIndex,
         ),
       );
-      print('current before await: ${state.currentIndex}');
     } else {
       emit(
         state.copyWith(
@@ -66,8 +74,14 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
           chosenIndex: questionIndex,
         ),
       );
-      print('current before await: ${state.currentIndex}');
     }
+    instance.saveToeicResultByPart(
+        part: state.part!,
+        totalQuestion: state.totalQuestion!,
+        totalCorrect: state.totalCorrect!,
+        chosenResult: {
+          state.part125![state.currentIndex!].id!.toString(): userAnswer,
+        });
     await Future.delayed(const Duration(seconds: 1));
     if (state.currentIndex! >= state.part125!.length - 1) {
       emit(state.copyWith(status: ToeicStatus.finish));
@@ -77,8 +91,9 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
           currentIndex: state.currentIndex! + 1,
         ),
       );
-      print('current after await: ${state.currentIndex}');
       audio.setAudio(state.part125![state.currentIndex!].mp3Url!);
+      animation.reset();
+      animation.forward();
     }
   }
 }

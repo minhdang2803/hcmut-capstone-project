@@ -45,8 +45,10 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
   void initState() {
     super.initState();
     context.read<ToeicPartCubit>().getPart(widget.part);
+    context.read<ToeicPartCubit>().getDataFromLocal(widget.part);
   }
 
+  bool isReal = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,9 +114,19 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Số câu đã làm: 0", style: AppTypography.body),
+            BlocBuilder<ToeicPartCubit, ToeicPartState>(
+              builder: (context, state) {
+                return Text("Số câu đã làm: ${state.total}",
+                    style: AppTypography.body);
+              },
+            ),
             5.verticalSpace,
-            Text("Số câu chính xác: 0", style: AppTypography.body),
+            BlocBuilder<ToeicPartCubit, ToeicPartState>(
+              builder: (context, state) {
+                return Text("Số câu chính xác: ${state.correct}",
+                    style: AppTypography.body);
+              },
+            ),
           ],
         )
       ],
@@ -154,27 +166,45 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
             onTap: null,
           );
         } else {
-          return QuizButton(
-            width: MediaQuery.of(context).size.width * 0.85,
-            backgroundColor: AppColor.primary,
-            textColor: Colors.white,
-            text: "Làm bài kiểm tra",
-            onTap: () {
-              context
-                  .read<ToeicCubitPartOne>()
-                  .getQuestions(widget.part, selectedValue);
-              if (state.status == ToeicPartStatus.done) {
-                Navigator.pushNamed(
-                  context,
-                  RouteName.toeicDoTest,
-                  arguments: ToeicDoTestPageParam(
-                    context: context,
-                    part: widget.part,
-                    title: widget.title,
-                  ),
-                );
-              }
-            },
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              QuizButton(
+                width: MediaQuery.of(context).size.width * 0.75,
+                backgroundColor: AppColor.primary,
+                textColor: Colors.white,
+                text: "Làm bài kiểm tra",
+                onTap: () {
+                  context
+                      .read<ToeicCubitPartOne>()
+                      .getQuestions(widget.part, selectedValue);
+                  if (state.status == ToeicPartStatus.done) {
+                    Navigator.pushNamed(
+                      context,
+                      RouteName.toeicDoTest,
+                      arguments: ToeicDoTestPageParam(
+                        context: context,
+                        isReal: isReal,
+                        part: widget.part,
+                        title: widget.title,
+                      ),
+                    ).then(
+                      (value) => context
+                          .read<ToeicPartCubit>()
+                          .getDataFromLocal(widget.part),
+                    );
+                  }
+                },
+              ),
+              Transform.scale(
+                scale: 1.5,
+                child: Checkbox(
+                  activeColor: AppColor.primary,
+                  value: isReal,
+                  onChanged: (value) => setState(() => isReal = value!),
+                ),
+              )
+            ],
           );
         }
       },

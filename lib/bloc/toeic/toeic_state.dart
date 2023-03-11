@@ -17,6 +17,8 @@ class ToeicStatePartOne extends Equatable {
     this.chosenIndex,
     this.part,
     this.resultByQuestion,
+    this.timer,
+    this.isReal,
   });
   ToeicStatePartOne.initial() {
     status = ToeicStatus.initial;
@@ -31,6 +33,8 @@ class ToeicStatePartOne extends Equatable {
     chosenIndex = -1;
     part = 0;
     resultByQuestion = {};
+    timer = CountDownCubit();
+    isReal = false;
   }
   late final int? part;
   late final ToeicStatus? status;
@@ -44,6 +48,8 @@ class ToeicStatePartOne extends Equatable {
   late final bool? isAnswerCorrect;
   late final int? chosenIndex;
   late final Map<String, dynamic>? resultByQuestion;
+  late final CountDownCubit? timer;
+  late final bool? isReal;
 
   ToeicStatePartOne copyWith({
     int? part,
@@ -58,8 +64,12 @@ class ToeicStatePartOne extends Equatable {
     bool? isAnswerCorrect,
     int? chosenIndex,
     Map<String, dynamic>? resultByQuestion,
+    CountDownCubit? timer,
+    bool? isReal,
   }) {
     return ToeicStatePartOne(
+      isReal: isReal ?? this.isReal,
+      timer: timer ?? this.timer,
       part: part ?? this.part,
       answerPart1: answerPart1 ?? this.answerPart1,
       status: status ?? this.status,
@@ -77,6 +87,7 @@ class ToeicStatePartOne extends Equatable {
 
   @override
   List<Object?> get props => [
+        isReal,
         part,
         status,
         part125,
@@ -89,5 +100,6 @@ class ToeicStatePartOne extends Equatable {
         isAnswerCorrect,
         chosenIndex,
         resultByQuestion,
+        timer,
       ];
 }

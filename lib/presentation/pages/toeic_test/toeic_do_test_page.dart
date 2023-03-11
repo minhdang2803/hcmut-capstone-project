@@ -10,7 +10,9 @@ class ToeicDoTestPageParam {
   final BuildContext context;
   final int part;
   final String title;
+  final bool isReal;
   ToeicDoTestPageParam({
+    required this.isReal,
     required this.context,
     required this.part,
     required this.title,
@@ -18,9 +20,15 @@ class ToeicDoTestPageParam {
 }
 
 class ToeicDoTestPage extends StatefulWidget {
-  const ToeicDoTestPage({super.key, required this.part, required this.title});
+  const ToeicDoTestPage({
+    super.key,
+    required this.part,
+    required this.title,
+    required this.isReal,
+  });
   final int part;
   final String title;
+  final bool isReal;
   @override
   State<ToeicDoTestPage> createState() => _ToeicDoTestPageState();
 }
@@ -39,15 +47,19 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
   @override
   void initState() {
     super.initState();
+
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
     _audio = AudioService();
-    _audio.player.isPlaying.listen((isPlaying) {
-      isPlaying
-          ? _animationController.forward()
-          : _animationController.reverse();
+    // _audio.getAudioPlayer.onPlayerStateChanged.listen((event) {
+    _audio.player.isPlaying.listen((event) {
+      if (event) {
+        _animationController.forward();
+      } else {
+        _animationController.reverse();
+      }
     });
   }
 
@@ -92,6 +104,7 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
                     questions: state.part125!,
                     audioService: _audio,
                     animationController: _animationController,
+                    isReal: widget.isReal,
                   )
                 ],
               ),
@@ -102,4 +115,3 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
     );
   }
 }
-

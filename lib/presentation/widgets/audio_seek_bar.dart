@@ -8,15 +8,18 @@ class AudioSeekBar extends StatefulWidget {
   const AudioSeekBar({
     Key? key,
     required this.audioPlayer,
+    this.width,
   }) : super(key: key);
 
   final AssetsAudioPlayer audioPlayer;
+  final double? width;
 
   @override
   State<AudioSeekBar> createState() => _AudioSeekBarState();
 }
 
 class _AudioSeekBarState extends State<AudioSeekBar> {
+  // Duration _duration = const Duration(seconds: 0);
   int _totalDuration = 1;
 
   @override
@@ -28,12 +31,18 @@ class _AudioSeekBarState extends State<AudioSeekBar> {
         _totalDuration = audio?.duration.inSeconds ?? 1;
       });
     });
+    // widget.audioPlayer.getAudioPlayer.onDurationChanged.listen((newDuration) {
+    //   setState(() {
+    //     _duration = newDuration;
+    //   });
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 4.r,
+      width: widget.width ?? 100.w,
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(2.r),
