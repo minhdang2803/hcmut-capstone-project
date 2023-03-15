@@ -17,9 +17,9 @@ void _backgroundTask(Tuple2<SendPort, String> data) async {
 
 // Create a Flutter isolate and run the background task in it
 Future<String> _runBackgroundTask(String url) async {
-  RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
+  // RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
   // Initialize the BackgroundIsolateBinaryMessenger
-  BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+  // BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
   final receivePort = ReceivePort();
 
   // Spawn a new Flutter isolate and run the background task in it

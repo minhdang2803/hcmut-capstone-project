@@ -10,7 +10,7 @@ import 'package:bke/bloc/video/video_cubit.dart';
 
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
-import 'package:bke/presentation/pages/book/books_screen.dart';
+import 'package:bke/presentation/pages/book/books_page.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
 import 'package:bke/presentation/pages/flashcard/flashcards.dart';
 import 'package:bke/presentation/pages/quiz/quizzes.dart';

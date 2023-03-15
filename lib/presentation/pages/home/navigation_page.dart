@@ -157,12 +157,12 @@ class _NavigationPageState extends State<NavigationPage> {
     String greeting() {
       var hour = DateTime.now().hour;
       if (hour < 12) {
-        return 'buổi sáng ☀️ !';
+        return 'buổi sáng ☀️';
       }
       if (hour < 17) {
-        return 'buổi chiều ☀️ ! ';
+        return 'buổi chiều ☀️';
       }
-      return 'buổi tối 🌙 ';
+      return 'buổi tối 🌙';
     }
 
     return Padding(
@@ -181,7 +181,7 @@ class _NavigationPageState extends State<NavigationPage> {
                     fontSize: 18.r),
               ),
               Text(
-                user?.fullName ?? "clm",
+                user?.fullName ?? "User",
                 style: AppTypography.subHeadline
                     .copyWith(color: Colors.white, fontWeight: FontWeight.w700),
               ),

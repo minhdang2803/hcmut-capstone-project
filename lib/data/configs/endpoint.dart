@@ -12,22 +12,24 @@ class EndPoint {
   static const getSubVideo = '$_baseUrl/subVideo';
   static const getYoutubeVideoInfos = '$_baseUrl/videoYoutubeInfo';
   static const getYoutubeVideoInfo = '$_baseUrl/videoYoutubeInfo/getOne';
-  static const updateCkpt = '$_baseUrl/bookCheckpoint/add';
   static const getContinueWatching = '$_baseUrl/videoCheckpoint/getAll';
   static const updateVideoCkpt = '$_baseUrl/videoCheckpoint/add';
+  static const getRecommendedVideos = '$_baseUrl/videoYoutubeInfo/recommendation';
+  static const getLatestVideo = '$_baseUrl/videoYoutubeInfo/latest';
 
   //Book
   static const getAllBooks = '$_baseUrl/BookInfo';
   static const getHomepageList = '$_baseUrl/BookInfo/listCategory';
   static const getContinueReading = '$_baseUrl/bookCheckpoint/getAllEBook';
-  static const getContinueListening =
-      '$_baseUrl/bookCheckpoint/getAllAudiobook';
+  static const getContinueListening = '$_baseUrl/bookCheckpoint/getAllAudiobook';
+  static const updateCkpt = '$_baseUrl/bookCheckpoint/add';
   static const getFavorites = '$_baseUrl/bookFavorites/getAll';
   static const getBookInfo = '$_baseUrl/bookInfo/getOne';
   static const getEbook = '$_baseUrl/bookDetail';
   static const getAudiobook = '$_baseUrl/bookDetail/audio';
   static const addFavorite = '$_baseUrl/bookFavorites/add';
   static const removeFavorite = '$_baseUrl/bookFavorites/delete';
+  static const getLatestBook = '$_baseUrl/bookInfo/latest';
 
   //Vocab
   static const findVocabsByListId = "$_baseUrl/vocab/getListVocab";
@@ -53,4 +55,10 @@ class EndPoint {
   // calendar
   static const getHistoryActivities =
       "$_baseUrl/historyActivities/getByYearMonth";
+
+  //search
+  static const searchAll = "$_baseUrl/search/all";
+  static const searchBooks = "$_baseUrl/search/book";
+  static const searchVideos = "$_baseUrl/search/video";
 }
+

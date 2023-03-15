@@ -1,6 +1,10 @@
+import 'package:bke/presentation/pages/main/components/search_results.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../bloc/search/search_bloc.dart';
+import '../../../../bloc/search/search_event.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_typography.dart';
 
@@ -38,21 +42,26 @@ class MonasterySearchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     return Container(
         color: AppColor.primary,
-        child: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Expanded(
-                child: Container(
-                    padding:
-                        const EdgeInsets.only(top: 20, left: 10, right: 10),
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                    ),
-                    child: Center(child: Text(query))))));
+        padding: const EdgeInsets.only(top: 20.0),
+        child: Expanded(
+          child: Container(
+            padding:
+                const EdgeInsets.only(top: 20, left: 10, right: 10),
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
+            child: BlocProvider(
+              create: (context) => SearchBloc()..add(SearchAllEvent(query: query)),
+              child: SearchResultsPage()
+            )
+          )
+        )
+    );
   }
 
   @override
@@ -69,37 +78,35 @@ class MonasterySearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     return Container(
       color: AppColor.primary,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: Expanded(
-          child: Container(
-            padding: EdgeInsets.only(top: 20.r, left: 10.r, right: 10.r),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.r),
-                topRight: Radius.circular(20.r),
-              ),
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Expanded(
+        child: Container(
+          padding: EdgeInsets.only(top: 20.r, left: 10.r, right: 10.r),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r),
+              topRight: Radius.circular(20.r),
             ),
-            child: ListView.separated(
-              padding: EdgeInsets.symmetric(vertical: 20.r),
-              separatorBuilder: (context, index) => 10.verticalSpace,
-              itemCount: _historySearch.length,
-              itemBuilder: (context, index) => ListTile(
-                leading: Image.asset(
-                  'assets/images/default_logo.png',
-                  width: 36.r,
-                  height: 36.r,
-                  fit: BoxFit.contain,
-                ),
-                title: Text(_historySearch[index], style: AppTypography.body),
-                trailing: const Icon(Icons.history_rounded),
-                onTap: () {
-                  query = _historySearch[index];
-                  showResults(context);
-                },
+          ),
+          child: ListView.separated(
+            padding: EdgeInsets.symmetric(vertical: 20.r),
+            separatorBuilder: (context, index) => 10.verticalSpace,
+            itemCount: _historySearch.length,
+            itemBuilder: (context, index) => ListTile(
+              leading: Image.asset(
+                'assets/images/default_logo.png',
+                width: 36.r,
+                height: 36.r,
+                fit: BoxFit.contain,
               ),
+              title: Text(_historySearch[index], style: AppTypography.body),
+              trailing: const Icon(Icons.history_rounded),
+              onTap: () {
+                query = _historySearch[index];
+                showResults(context);
+              },
             ),
           ),
         ),

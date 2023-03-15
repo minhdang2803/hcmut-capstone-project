@@ -136,24 +136,26 @@ class _VideoPageState extends State<VideoPage>
                   },
                 ),
               ),
-              ...state.data!.values.map((e) {
+              ...state.data!.entries.map((e) {
                 return VideoYoutubeHorizontalList(
-                  title: e.first.category.toCapitalizeEachWord(),
-                  data: e,
+                  title: state.data!.length == 3 ? e.value.first.category.toCapitalizeEachWord():e.key.toCapitalize() ,
+                  data: e.value,
                   onSeeMore: () {
-                    var action = e.first.category.contains("talk")
-                        ? SeeMoreVideoAction.category1
-                        : e.first.category.contains("ed")
-                            ? SeeMoreVideoAction.category2
-                            : SeeMoreVideoAction.category3;
-                    Navigator.of(context).pushNamed(
-                      RouteName.videoSeeMore,
-                      arguments: VideoSeeMorePageModel(
-                        context: context,
-                        category: e.first.category,
-                        action: action,
-                      ),
-                    );
+                    if (state.data!.length == 3){
+                      var action = e.value.first.category.contains("talk")
+                          ? SeeMoreVideoAction.category1
+                          : e.value.first.category.contains("ed")
+                              ? SeeMoreVideoAction.category2
+                              : SeeMoreVideoAction.category3;
+                      Navigator.of(context).pushNamed(
+                        RouteName.videoSeeMore,
+                        arguments: VideoSeeMorePageModel(
+                          context: context,
+                          category: e.value.first.category,
+                          action: action,
+                        ),
+                      );
+                    }
                   },
                 );
               }).toList()
