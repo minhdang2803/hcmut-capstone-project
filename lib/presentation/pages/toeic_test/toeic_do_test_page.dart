@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../utils/widget_util.dart';
+
 class ToeicDoTestPageParam {
   final BuildContext context;
   final int part;
@@ -53,7 +55,6 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
       duration: const Duration(milliseconds: 500),
     );
     _audio = AudioService();
-    // _audio.getAudioPlayer.onPlayerStateChanged.listen((event) {
     _audio.player.isPlaying.listen((event) {
       if (event) {
         _animationController.forward();
@@ -75,8 +76,18 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
           children: [
             BackButton(
               onPressed: () {
-                context.read<ToeicCubitPartOne>().exit();
-                Navigator.pop(context);
+                context.read<ToeicCubitPartOne>().stopCountDown(_audio);
+                WidgetUtil.showDialog(
+                  context: context,
+                  title: 'Thoát khỏi màn chơi',
+                  message: 'Quá trình sẽ bị huỷ bỏ!',
+                  onAccepted: () {
+                    context.read<ToeicCubitPartOne>().exit();
+                    Navigator.pop(context);
+                  },
+                  onDismissed: () =>
+                      context.read<ToeicCubitPartOne>().resumeCountDown(_audio),
+                );
               },
             ),
             Align(
@@ -96,16 +107,10 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
           builder: (context, state) {
             return SizedBox(
               width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: ListView(
                 children: [
                   10.verticalSpace,
-                  ToeicPartOneComponent(
-                    questions: state.part125!,
-                    audioService: _audio,
-                    animationController: _animationController,
-                    isReal: widget.isReal,
-                  )
+                  _getPart(widget.part, state),
                 ],
               ),
             );
@@ -113,5 +118,28 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
         ),
       ),
     );
+  }
+
+  Widget _getPart(int part, ToeicStatePartOne state) {
+    Widget widgetReturn;
+    switch (part) {
+      case 1:
+        widgetReturn = ToeicPartOneComponent(
+          questions: state.part125!,
+          audioService: _audio,
+          animationController: _animationController,
+          isReal: widget.isReal,
+        );
+        break;
+      default:
+        widgetReturn = ToeicPartOneComponent(
+          questions: state.part125!,
+          audioService: _audio,
+          animationController: _animationController,
+          isReal: widget.isReal,
+        );
+        break;
+    }
+    return widgetReturn;
   }
 }

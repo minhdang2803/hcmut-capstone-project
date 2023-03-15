@@ -33,6 +33,7 @@ class _ToeicPartOneComponentState extends State<ToeicPartOneComponent>
     with SingleTickerProviderStateMixin {
   late final Animation<Offset> _slideAnimation;
   late final AnimationController _slideAnimationController;
+  bool isPlayed = false;
   @override
   void initState() {
     super.initState();
@@ -48,9 +49,20 @@ class _ToeicPartOneComponentState extends State<ToeicPartOneComponent>
       curve: Curves.easeInOut,
     ));
     _slideAnimationController.forward();
+    widget.audioService.play();
     context
         .read<ToeicCubitPartOne>()
         .setTimer(1, widget.isReal!, widget.audioService);
+  }
+
+  @override
+  void didUpdateWidget(covariant ToeicPartOneComponent oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final state = context.read<ToeicCubitPartOne>().state;
+    if (!isPlayed && state.currentIndex! + 1 <= state.totalQuestion!) {
+      widget.audioService.play();
+      setState(() => isPlayed = !isPlayed);
+    }
   }
 
   @override
@@ -292,7 +304,16 @@ class _ToeicPartOneComponentState extends State<ToeicPartOneComponent>
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildAudioListener(context),
-          BlocBuilder<CountDownCubit, CountDownState>(
+          BlocConsumer<CountDownCubit, CountDownState>(
+            listener: (context, state) async {
+              if (state.status == CountDownStatus.done) {
+                await context.read<ToeicCubitPartOne>().autoCheckAnswerPart1(
+                      widget.audioService,
+                      widget.animationController,
+                      context,
+                    );
+              }
+            },
             builder: (context, state) {
               return Text(
                 "Time ⌛️: ${state.timeLeft}",

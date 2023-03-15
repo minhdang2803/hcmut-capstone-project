@@ -271,7 +271,8 @@ class ToeicResultPage extends StatelessWidget {
           const Spacer(flex: 1),
           IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context, true);
+              context.read<ToeicCubitPartOne>().deleteDataToServer();
               context.read<ToeicCubitPartOne>().exit();
             },
             icon: Icon(

@@ -9,14 +9,14 @@ class AudioService {
     player.setVolume(0.5);
   }
 
-  void setAudio(String audioFile) {
+  Future<void> setAudio(String audioFile) async{
     if (audioFile.isEmpty) {
       player.stop();
       return;
     }
     const defaultTitle = "Funny English";
 
-    player.open(
+    await player.open(
       Audio.file(
         audioFile,
         metas: Metas(
