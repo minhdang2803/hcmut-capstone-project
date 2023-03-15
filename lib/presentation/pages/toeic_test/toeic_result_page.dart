@@ -1,6 +1,9 @@
 import 'dart:typed_data';
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
 import 'package:bke/data/models/toeic/toeic_models.dart';
+import 'package:bke/presentation/pages/toeic_test/components/answer_part1_component.dart';
+import 'package:bke/presentation/pages/toeic_test/components/answer_part2_component.dart';
+import 'package:bke/presentation/pages/toeic_test/components/answer_part5_component.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -78,12 +81,7 @@ class ToeicResultPage extends StatelessWidget {
                   answer = state.part3467! as List<ToeicGroupQuestionLocal>;
                 }
                 if (index <= state.totalQuestion! - 1) {
-                  return AnswerPartOne(
-                    index: index,
-                    text: answer[index].transcript!,
-                    correctAnswer: answer[index].correctAnswer!,
-                    imgUrl: answer[index].imgUrl!,
-                  );
+                  return _getAnswerPart(state.part!, answer, index);
                 } else {
                   return 350.verticalSpace;
                 }
@@ -284,69 +282,42 @@ class ToeicResultPage extends StatelessWidget {
       ),
     );
   }
-}
 
-class AnswerPartOne extends StatelessWidget {
-  const AnswerPartOne({
-    super.key,
-    required this.index,
-    required this.text,
-    required this.correctAnswer,
-    required this.imgUrl,
-  });
-  final int index;
-  final String text;
-  final String correctAnswer;
-  final Uint8List imgUrl;
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(10.r),
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.8,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.r),
-          color: Colors.white,
-        ),
-        padding: EdgeInsets.all(10.r),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Question $index: ",
-              style: AppTypography.body,
-            ),
-            10.verticalSpace,
-            QuizPicture(
-              imgData: imgUrl,
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.25,
-            ),
-            10.verticalSpace,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text.rich(TextSpan(
-                    text: "Transcript: ",
-                    style:
-                        AppTypography.title.copyWith(color: AppColor.primary),
-                    children: [
-                      TextSpan(text: text, style: AppTypography.title)
-                    ])),
-                10.verticalSpace,
-                Text.rich(TextSpan(
-                    text: "Answer: ",
-                    style:
-                        AppTypography.title.copyWith(color: AppColor.primary),
-                    children: [
-                      TextSpan(text: correctAnswer, style: AppTypography.title)
-                    ])),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
+  Widget _getAnswerPart(int part, List<dynamic> answer, int index) {
+    Widget returnWidget;
+    switch (part) {
+      case 1:
+        returnWidget = AnswerPartOne(
+          index: index,
+          text: answer[index].transcript!,
+          correctAnswer: answer[index].correctAnswer!,
+          imgUrl: answer[index].imgUrl!,
+        );
+        break;
+      case 2:
+        returnWidget = AnswerPartTwo(
+          index: index,
+          text: answer[index].transcript!,
+          correctAnswer: answer[index].correctAnswer!,
+        );
+        break;
+      case 5:
+        returnWidget = AnswerPartFive(
+          answer: answer[index].answers!,
+          index: index,
+          text: answer[index].text!,
+          correctAnswer: answer[index].correctAnswer!,
+        );
+        break;
+      default:
+        returnWidget = AnswerPartOne(
+          index: index,
+          text: answer[index].transcript!,
+          correctAnswer: answer[index].correctAnswer!,
+          imgUrl: answer[index].imgUrl!,
+        );
+        break;
+    }
+    return returnWidget;
   }
 }

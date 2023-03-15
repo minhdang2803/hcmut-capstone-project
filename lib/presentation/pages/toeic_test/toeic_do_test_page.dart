@@ -1,6 +1,8 @@
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
 import 'package:bke/data/services/audio_service.dart';
 import 'package:bke/presentation/pages/toeic_test/components/toeic_part1.dart';
+import 'package:bke/presentation/pages/toeic_test/components/toeic_part2.dart';
+import 'package:bke/presentation/pages/toeic_test/toeics.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -131,8 +133,24 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
           isReal: widget.isReal,
         );
         break;
+      case 2:
+        widgetReturn = ToeicPartTwoComponent(
+          questions: state.part125!,
+          audioService: _audio,
+          animationController: _animationController,
+          isReal: widget.isReal,
+        );
+        break;
+      case 5:
+        widgetReturn = ToeicPartFiveComponent(
+          questions: state.part125!,
+          audioService: _audio,
+          animationController: _animationController,
+          isReal: widget.isReal,
+        );
+        break;
       default:
-        widgetReturn = ToeicPartOneComponent(
+        widgetReturn = ToeicPartTwoComponent(
           questions: state.part125!,
           audioService: _audio,
           animationController: _animationController,
