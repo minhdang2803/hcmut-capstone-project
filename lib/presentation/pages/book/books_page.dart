@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:bke/data/models/search/search_model.dart';
 import 'package:bke/presentation/pages/book/widgets/books_section.dart';
 import 'package:bke/presentation/pages/book/widgets/books_section_shorten.dart';
 import 'package:bke/presentation/pages/book/widgets/menu_sheet.dart';
@@ -15,6 +16,7 @@ import '../../../bloc/book/book_state.dart';
 import '../../../bloc/book/book_event.dart';
 
 import '../../widgets/holder_widget.dart';
+import '../main/components/monastery_search_delegate.dart';
 
 class BookPage extends StatelessWidget {
   const BookPage({Key? key}) : super(key: key);
@@ -33,8 +35,11 @@ class BookPage extends StatelessWidget {
                 BkEAppBar(
                   label: 'Thư viện',
                   onBackButtonPress: () => Navigator.pop(context),
+                  onSearchButtonPress: (){
+                    showSearch(context: context, delegate: MonasterySearchDelegate(searchType: SearchType.books));
+                  },
                 ),
-                _buildOptionBar(),
+                // _buildOptionBar(context),
                 Expanded(
                   child: Container(
                     padding:
@@ -58,7 +63,7 @@ class BookPage extends StatelessWidget {
         ));
   }
 
-  Widget _buildOptionBar() {
+  Widget _buildOptionBar(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(10.r),
       child: Row(
@@ -89,8 +94,10 @@ class BookPage extends StatelessWidget {
               color: Colors.white,
               size: 35.r,
             ),
-            onPressed: () {},
-          ),
+            onPressed: () {
+              showSearch(context: context, delegate: MonasterySearchDelegate(searchType: SearchType.books));
+            },
+          )
         ],
       ),
     );
@@ -131,9 +138,7 @@ class BookPage extends StatelessWidget {
                 bookList: bookList[4].list)
             ],
           ); //Continue reading
-        } else if (heading == 'Continue Reading') {
-        } else if (heading == 'My List') {
-        } else {
+        }else {
           return BookSectionDisplayAll(heading: heading, bookList: bookList);
         }
       }

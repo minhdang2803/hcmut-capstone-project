@@ -14,6 +14,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState>{
   SearchBloc() : super(SearchLoadingState()){
 
     on<SearchAllEvent>(_onSearchAll);
+    on<SearchBooksEvent>(_onSearchBooks);
+    on<SearchVideosEvent>(_onSearchVideos);
   }
 
   void _onSearchAll(SearchAllEvent event, Emitter<SearchState> emit) async{
@@ -21,8 +23,32 @@ class SearchBloc extends Bloc<SearchEvent, SearchState>{
       try{
         var response = await _searchRepos.searchAll(event.query);
         var res = response.data! ;
-        LogUtil.debug(res.books.first as String?);
-        emit(SearchLoadedState(res.books, res.videos, event.query));
+        print(res.books.first);
+        emit(SearchLoadedState(books: res.books, videos: res.videos, query: event.query));
+      }
+      catch(e){
+        emit(SearchErrorState(e.toString()));
+      }
+  }
+
+  void _onSearchBooks(SearchBooksEvent event, Emitter<SearchState> emit) async{
+      emit(SearchLoadingState());
+      try{
+        var response = await _searchRepos.searchBooks(event.query);
+        var res = response.data?.list ?? [];
+        emit(SearchLoadedState(books: res, query: event.query));
+      }
+      catch(e){
+        emit(SearchErrorState(e.toString()));
+      }
+  }
+
+  void _onSearchVideos(SearchVideosEvent event, Emitter<SearchState> emit) async{
+      emit(SearchLoadingState());
+      try{
+        var response = await _searchRepos.searchVideos(event.query);
+        var res = response.data?.list ?? [];
+        emit(SearchLoadedState(videos: res, query: event.query));
       }
       catch(e){
         emit(SearchErrorState(e.toString()));

@@ -5,11 +5,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../bloc/search/search_bloc.dart';
 import '../../../../bloc/search/search_event.dart';
+import '../../../../data/models/search/search_model.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_typography.dart';
 
 class MonasterySearchDelegate extends SearchDelegate {
+
+  MonasterySearchDelegate({required this.searchType});
+
   final List<String> _historySearch = [];
+  final SearchType searchType;
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -56,7 +61,15 @@ class MonasterySearchDelegate extends SearchDelegate {
               ),
             ),
             child: BlocProvider(
-              create: (context) => SearchBloc()..add(SearchAllEvent(query: query)),
+              create: (context) { 
+                if (searchType == SearchType.all){
+                  return SearchBloc()..add(SearchAllEvent(query: query));
+                }
+                else if (searchType == SearchType.videos){
+                  return SearchBloc()..add(SearchVideosEvent(query: query));
+                }
+                return SearchBloc()..add(SearchBooksEvent(query: query));
+              },
               child: SearchResultsPage()
             )
           )
@@ -115,7 +128,9 @@ class MonasterySearchDelegate extends SearchDelegate {
   }
 
   @override
-  String get searchFieldLabel => 'Tra từ vựng, video, sách,...';
+  String get searchFieldLabel => searchType == SearchType.all ? 'Tra từ vựng, video, sách,...' 
+                               : searchType == SearchType.books ? 'Tra sách'
+                                                                : 'Tra video';
 
   @override
   TextStyle? get searchFieldStyle =>

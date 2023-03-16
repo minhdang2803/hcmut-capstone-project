@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bke/data/data_source/local/auth_local_source.dart';
+import 'package:bke/data/models/search/search_model.dart';
 import 'package:bke/presentation/pages/home/components/continue_card.dart';
 import 'package:bke/presentation/pages/home/components/join_quiz_card.dart';
 import 'package:bke/presentation/routes/route_name.dart';
@@ -208,7 +209,7 @@ class _NavigationPageState extends State<NavigationPage> {
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: TextButton(
         onPressed: () {
-          showSearch(context: context, delegate: MonasterySearchDelegate());
+          showSearch(context: context, delegate: MonasterySearchDelegate(searchType: SearchType.all));
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),

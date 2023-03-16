@@ -1,3 +1,4 @@
+import 'package:bke/presentation/pages/main/components/result_listview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,70 +35,42 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
     return BlocBuilder<SearchBloc, SearchState>(
             builder: (context, state) {
               if (state is SearchLoadedState){
-                final books = state.books;
-                final videos = state.videos;
-                return ListView.builder(
-                itemCount: books.length, // Replace with your actual data length
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(
-                            left: 10,
-                          ),
-                          width: size.width * 0.1,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Container(
-                              height: size.height * 0.1,
-                              color: AppColor.lightGray,
-                              child: FadeInImage.assetNetwork(
-                                placeholder: 'assets/images/default_logo.png',
-                                placeholderFit: BoxFit.contain,
-                                image: books.elementAt(index).coverUrl,
-                                fadeInDuration: const Duration(milliseconds: 400),
-                                fit: BoxFit.fill,
-                                // placeholderFit: BoxFit.fill,
-                                imageErrorBuilder: (context, error, stackTrace) =>
-                                    Image.asset(
-                                  'assets/images/default_logo.png',
-                                ),
-                              ),
-                            ),
-                          )
-                        ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              books.elementAt(index).title, // Replace with your actual title
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              books.elementAt(index).author, // Replace with your actual description
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                final books = state.books??[];
+                final videos = state.videos??[];
+                if (videos.isEmpty){// search book only
+                  return ResultList(data: books, isBook: true);
+                }
+                else if (books.isEmpty){
+                  return ResultList(data: videos, isBook: false);
+                }
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Video',
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                  );
-                },
-              );
+                    SizedBox(
+                      height: size.height*0.2,
+                      child: ResultList(data: videos, isBook: false)),
+                    SizedBox(height: size.height*0.02),
+                    Text(
+                      'Sách',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    SizedBox(
+                      height: size.height*0.2,
+                      child: ResultList(data: books, isBook: true)
+                    ),
+              
+                  ],
+                );
             }
             return Center(
                   child: CircularProgressIndicator(color: AppColor.primary));
           }
     );
   }
+
+  
 }

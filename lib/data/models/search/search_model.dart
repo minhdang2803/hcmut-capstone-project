@@ -2,6 +2,12 @@ import 'package:bke/data/models/video/video_youtube_info_model.dart';
 import 'package:bke/utils/log_util.dart';
 import '../book/book_info.dart';
 
+enum SearchType { 
+   all, 
+   books,
+   videos
+} 
+
 class SearchResponse{
   SearchResponse({required this.books, required this.videos});
 

@@ -14,9 +14,9 @@ class SearchLoadingState extends SearchState{
 }
 
 class SearchLoadedState extends SearchState{
-  SearchLoadedState(this.books, this.videos, this.query);
-  final List<BookInfo> books;
-  final List<VideoYoutubeInfo> videos;
+  SearchLoadedState({this.books, this.videos, required this.query});
+  final List<BookInfo>? books;
+  final List<VideoYoutubeInfo>? videos;
   final String query;
 
   @override

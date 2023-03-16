@@ -19,5 +19,12 @@ class SearchBooksEvent extends SearchEvent{
   List<Object> get props => [query];
 }
 
+class SearchVideosEvent extends SearchEvent{
+  final String query;
+  const SearchVideosEvent({required this.query});
+  @override
+  List<Object> get props => [query];
+}
+
 
 

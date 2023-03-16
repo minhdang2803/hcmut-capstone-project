@@ -10,8 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/models/search/search_model.dart';
 import '../../routes/route_name.dart';
 import '../../widgets/holder_widget.dart';
+import '../main/components/monastery_search_delegate.dart';
 import 'component/video_horizontal_list.dart';
 
 class VideoPage extends StatefulWidget {
@@ -57,6 +59,10 @@ class _VideoPageState extends State<VideoPage>
               onBackButtonPress: () {
                 context.read<CategoryVideoCubit>().exit();
                 Navigator.pop(context);
+                
+              },
+              onSearchButtonPress: (){
+                showSearch(context: context, delegate: MonasterySearchDelegate(searchType: SearchType.videos));
               },
             ),
             _buildBody(),
@@ -138,24 +144,30 @@ class _VideoPageState extends State<VideoPage>
               ),
               ...state.data!.entries.map((e) {
                 return VideoYoutubeHorizontalList(
-                  title: state.data!.length == 3 ? e.value.first.category.toCapitalizeEachWord():e.key.toCapitalize() ,
+                  title: e.key == 'category1' ? 'TED Talk'
+                        :e.key == 'category2'  ? 'TED Ed'
+                        :e.key == 'category3' ? 'In a Nutshell'
+                        :e.key.toCapitalize(),
                   data: e.value,
                   onSeeMore: () {
-                    if (state.data!.length == 3){
-                      var action = e.value.first.category.contains("talk")
+                      
+                      var action = e.key == 'category1'
                           ? SeeMoreVideoAction.category1
-                          : e.value.first.category.contains("ed")
-                              ? SeeMoreVideoAction.category2
-                              : SeeMoreVideoAction.category3;
-                      Navigator.of(context).pushNamed(
-                        RouteName.videoSeeMore,
-                        arguments: VideoSeeMorePageModel(
-                          context: context,
-                          category: e.value.first.category,
-                          action: action,
-                        ),
-                      );
-                    }
+                          : e.key == 'category2'
+                          ? SeeMoreVideoAction.category2
+                          : e.key == 'category3'
+                          ?  SeeMoreVideoAction.category3
+                          : null;
+                      if (action != null){
+                        Navigator.of(context).pushNamed(
+                          RouteName.videoSeeMore,
+                          arguments: VideoSeeMorePageModel(
+                            context: context,
+                            category: e.value.first.category,
+                            action: action,
+                          ),
+                        );
+                      }
                   },
                 );
               }).toList()
