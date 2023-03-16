@@ -1,6 +1,6 @@
 import 'package:bke/bloc/cubit/count_down_cubit.dart';
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
-import 'package:bke/data/models/toeic/toeic_model_local.dart';
+import 'package:bke/data/models/toeic/toeic_models.dart';
 import 'package:bke/data/services/audio_service.dart';
 import 'package:bke/presentation/pages/toeic_test/toeics.dart';
 import 'package:bke/presentation/routes/route_name.dart';
@@ -10,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ToeicPartTwoComponent extends StatefulWidget {
-  const ToeicPartTwoComponent({
+class ToeicPartThreeComponent extends StatefulWidget {
+  const ToeicPartThreeComponent({
     super.key,
     required this.animationController,
     required this.audioService,
@@ -23,10 +23,11 @@ class ToeicPartTwoComponent extends StatefulWidget {
   final bool? isReal;
 
   @override
-  State<ToeicPartTwoComponent> createState() => _ToeicPartTwoComponentState();
+  State<ToeicPartThreeComponent> createState() =>
+      _ToeicPartThreeComponentState();
 }
 
-class _ToeicPartTwoComponentState extends State<ToeicPartTwoComponent>
+class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
     with SingleTickerProviderStateMixin {
   late final Animation<Offset> _slideAnimation;
   late final AnimationController _slideAnimationController;
@@ -49,11 +50,11 @@ class _ToeicPartTwoComponentState extends State<ToeicPartTwoComponent>
     widget.audioService.play();
     context
         .read<ToeicCubitPartOne>()
-        .setTimer(2, widget.isReal!, widget.audioService);
+        .setTimer(3, widget.isReal!, widget.audioService);
   }
 
   @override
-  void didUpdateWidget(covariant ToeicPartTwoComponent oldWidget) {
+  void didUpdateWidget(covariant ToeicPartThreeComponent oldWidget) {
     super.didUpdateWidget(oldWidget);
     final state = context.read<ToeicCubitPartOne>().state;
     if (!isPlayed && state.currentIndex! + 1 <= state.totalQuestion!) {
@@ -111,7 +112,7 @@ class _ToeicPartTwoComponentState extends State<ToeicPartTwoComponent>
             BlocBuilder<ToeicCubitPartOne, ToeicStatePartOne>(
               builder: (context, state) {
                 return Text(
-                  state.part125![state.currentIndex!].text ??
+                  state.part3467![state.currentIndex!].text ??
                       "Nghe và chọn đáp án đúng",
                   style: AppTypography.body,
                 );
@@ -120,117 +121,156 @@ class _ToeicPartTwoComponentState extends State<ToeicPartTwoComponent>
             5.verticalSpace,
             const Divider(thickness: 1, color: AppColor.primary),
             5.verticalSpace,
-            _buildAnswerContent(context)
+            _buildTestContent(context)
           ],
         ),
       ),
     );
   }
 
-  Widget _buildAnswerContent(BuildContext context) {
+  Widget _buildTestContent(BuildContext context) {
     return BlocBuilder<ToeicCubitPartOne, ToeicStatePartOne>(
       builder: (context, state) {
         return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.2,
+          height: MediaQuery.of(context).size.height * 0.8,
           child: ListView.separated(
             padding: EdgeInsets.zero,
             itemBuilder: (context, index) {
-              final userAnser =
-                  state.part125![state.currentIndex!].answers![index];
-              return GestureDetector(
-                onTap: () async {
-                  await context.read<ToeicCubitPartOne>().checkAnswerPart1(
-                        userAnser,
-                        index,
-                        widget.audioService,
-                        _slideAnimationController,
-                      );
-                },
-                child: _buildAnswer(userAnser, index, state),
-              );
+              final question =
+                  state.part3467![state.currentIndex!].questions![index];
+              return _buildQuestions(
+                  question: question,
+                  currentState: state,
+                  questionIndex: index);
             },
-            separatorBuilder: (context, index) => 5.verticalSpace,
-            itemCount: state.part125![state.currentIndex!].answers!.length - 1,
+            separatorBuilder: (context, index) => 20.verticalSpace,
+            itemCount: state.part3467![state.currentIndex!].questions!.length,
           ),
         );
       },
     );
   }
 
-  Widget _buildAnswer(String text, int index, ToeicStatePartOne currentState) {
-    if (currentState.isAnswer125Correct == null) {
-      return _buildAnswerUI(text, index, null, currentState);
+  Widget _buildQuestions({
+    required ToeicQuestionLocal question,
+    required ToeicStatePartOne currentState,
+    required int questionIndex,
+  }) {
+    final answerList = question.answers;
+    final questionContent = question.text!;
+    return Container(
+      padding: EdgeInsets.all(10.r),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.r),
+          border: Border.all(width: 1, color: AppColor.primary)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            questionContent,
+            style: AppTypography.title,
+          ),
+          const Divider(thickness: 1, color: AppColor.primary),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, answerIndex) {
+              return GestureDetector(
+                onTap: () async {
+                  await context.read<ToeicCubitPartOne>().checkAnswerPart3(
+                        userAnswer: question.answers![answerIndex],
+                        questionIndex: questionIndex,
+                        answerIndex: answerIndex,
+                        audio: widget.audioService,
+                        animation: widget.animationController,
+                      );
+                },
+                child: _buildAnswerOptions(
+                  questionIndex: questionIndex,
+                  question: question,
+                  answerIndex: answerIndex,
+                  currentState: currentState,
+                ),
+              );
+            },
+            separatorBuilder: (context, index) => 5.verticalSpace,
+            itemCount: answerList!.length,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAnswerOptions({
+    required ToeicQuestionLocal question,
+    required int answerIndex,
+    required int questionIndex,
+    required ToeicStatePartOne currentState,
+  }) {
+    final answerContent =
+        question.answers![answerIndex].replaceFirst(" ", ") ", 1);
+
+    //case 1: Have not chosen any answer
+    if (currentState.isAnswer3467Correct?[questionIndex] == null) {
+      return _buildAnswerUI(answerContent, null, currentState);
     } else {
-      final correctAnswer =
-          currentState.part125![currentState.currentIndex!].correctAnswer!;
-      final answerList = currentState
-          .part125![currentState.currentIndex!].answers!
-          .map((e) => e.replaceAll(".", ""))
-          .toList();
+      // get the answer of questions
+      final correctAnswer = question.correctAnswer!;
+      final answerList = question.answers!.map((e) => e[0]).toList();
       final correctIndex = answerList.indexOf(correctAnswer);
-      if (currentState.isAnswer125Correct == true) {
-        if (index != correctIndex) {
-          return _buildAnswerUI(text, index, null, currentState);
+
+      // Case 2: when user choose correct answer
+      if (currentState.isAnswer3467Correct![questionIndex] == true) {
+        if (answerIndex != correctIndex) {
+          // những câu không chọn sẽ không có tíck
+          return _buildAnswerUI(answerContent, null, currentState);
         } else {
+          // câu chọn đúng sẽ có tick
           return Row(
             children: [
-              _buildAnswerUI(text, index, AppColor.correctColor, currentState),
+              _buildAnswerUI(
+                  answerContent, AppColor.correctColor, currentState),
               10.horizontalSpace,
-              Text(
-                "Đáp án chính xác!",
-                style: AppTypography.body,
-              )
+              Icon(Icons.check, color: Colors.green, size: 25.r)
             ],
           );
         }
       } else {
-        if (index == correctIndex) {
+        if (answerIndex == correctIndex) {
           return Row(
             children: [
-              _buildAnswerUI(text, index, AppColor.correctColor, currentState),
+              _buildAnswerUI(
+                  answerContent, AppColor.correctColor, currentState),
               10.horizontalSpace,
-              Text(
-                "Đáp án chính xác!",
-                style: AppTypography.body,
-              )
+              Icon(Icons.check, color: Colors.green, size: 25.r),
             ],
           );
-        } else if (index == currentState.chosenIndex125) {
+        } else if (answerIndex ==
+            currentState.chosenIndex3467![questionIndex]) {
           return Row(
             children: [
-              _buildAnswerUI(text, index, Colors.red, currentState),
+              _buildAnswerUI(answerContent, Colors.red, currentState),
               10.horizontalSpace,
-              Text(
-                "Sai rồi!",
-                style: AppTypography.body,
-              )
+              Icon(Icons.clear, color: Colors.red, size: 25.r)
             ],
           );
         } else {
-          return _buildAnswerUI(text, index, null, currentState);
+          return _buildAnswerUI(answerContent, null, currentState);
         }
       }
     }
   }
 
   Widget _buildAnswerUI(
-      String text, int index, Color? color, ToeicStatePartOne currentState) {
+      String text, Color? color, ToeicStatePartOne currentState) {
     return Align(
       widthFactor: 1,
       heightFactor: 1,
       alignment: Alignment.centerLeft,
-      child: Container(
-        padding: EdgeInsets.all(10.r),
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.black),
-        ),
-        child: Text(
-          text.replaceAll(".", ""),
-          textAlign: TextAlign.center,
-          style: AppTypography.body,
-        ),
+      child: Text(
+        text.replaceAll(".", ""),
+        textAlign: TextAlign.left,
+        style: AppTypography.body,
       ),
     );
   }
@@ -256,9 +296,9 @@ class _ToeicPartTwoComponentState extends State<ToeicPartTwoComponent>
           BlocConsumer<CountDownCubit, CountDownState>(
             listener: (context, state) async {
               if (state.status == CountDownStatus.done) {
-                await context.read<ToeicCubitPartOne>().autoCheckAnswerPart1(
+                await context.read<ToeicCubitPartOne>().autoCheckAnswerPart3(
                       widget.audioService,
-                      widget.animationController,
+                      _slideAnimationController,
                       context,
                     );
               }

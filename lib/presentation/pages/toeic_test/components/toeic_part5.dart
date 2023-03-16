@@ -1,6 +1,5 @@
 import 'package:bke/bloc/cubit/count_down_cubit.dart';
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
-import 'package:bke/data/models/toeic/toeic_model_local.dart';
 import 'package:bke/data/services/audio_service.dart';
 import 'package:bke/presentation/pages/toeic_test/toeics.dart';
 import 'package:bke/presentation/routes/route_name.dart';
@@ -13,12 +12,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ToeicPartFiveComponent extends StatefulWidget {
   const ToeicPartFiveComponent({
     super.key,
-    required this.questions,
     required this.animationController,
     required this.audioService,
     this.isReal = false,
   });
-  final List<ToeicQuestionLocal> questions;
+
   final AnimationController animationController;
   final AudioService audioService;
   final bool? isReal;
@@ -149,7 +147,7 @@ class _ToeicPartFiveComponentState extends State<ToeicPartFiveComponent>
   }
 
   Widget _buildAnswer(String text, int index, ToeicStatePartOne currentState) {
-    if (currentState.isAnswerCorrect == null) {
+    if (currentState.isAnswer125Correct == null) {
       return _buildAnswerUI(text, index, null, currentState);
     } else {
       final correctAnswer =
@@ -160,7 +158,7 @@ class _ToeicPartFiveComponentState extends State<ToeicPartFiveComponent>
           .toList();
 
       final correctIndex = answerList.indexOf(correctAnswer);
-      if (currentState.isAnswerCorrect == true) {
+      if (currentState.isAnswer125Correct == true) {
         if (index != correctIndex) {
           return _buildAnswerUI(text, index, null, currentState);
         } else {
@@ -181,7 +179,7 @@ class _ToeicPartFiveComponentState extends State<ToeicPartFiveComponent>
               Icon(Icons.check, color: Colors.green, size: 25.r)
             ],
           );
-        } else if (index == currentState.chosenIndex) {
+        } else if (index == currentState.chosenIndex125) {
           return Row(
             children: [
               _buildAnswerUI(text, index, Colors.red, currentState),

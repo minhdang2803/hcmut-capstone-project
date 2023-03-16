@@ -1,3 +1,4 @@
+import 'package:bke/bloc/toeic/cubit/toeic_part3467_cubit.dart';
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
 import 'package:bke/data/services/audio_service.dart';
 import 'package:bke/presentation/pages/toeic_test/components/toeic_part1.dart';
@@ -127,7 +128,6 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
     switch (part) {
       case 1:
         widgetReturn = ToeicPartOneComponent(
-          questions: state.part125!,
           audioService: _audio,
           animationController: _animationController,
           isReal: widget.isReal,
@@ -135,7 +135,6 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
         break;
       case 2:
         widgetReturn = ToeicPartTwoComponent(
-          questions: state.part125!,
           audioService: _audio,
           animationController: _animationController,
           isReal: widget.isReal,
@@ -143,7 +142,13 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
         break;
       case 5:
         widgetReturn = ToeicPartFiveComponent(
-          questions: state.part125!,
+          audioService: _audio,
+          animationController: _animationController,
+          isReal: widget.isReal,
+        );
+        break;
+      case 3:
+        widgetReturn = ToeicPartThreeComponent(
           audioService: _audio,
           animationController: _animationController,
           isReal: widget.isReal,
@@ -151,7 +156,6 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
         break;
       default:
         widgetReturn = ToeicPartTwoComponent(
-          questions: state.part125!,
           audioService: _audio,
           animationController: _animationController,
           isReal: widget.isReal,
