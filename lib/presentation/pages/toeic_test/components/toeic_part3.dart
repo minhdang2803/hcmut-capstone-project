@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bke/bloc/cubit/count_down_cubit.dart';
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
 import 'package:bke/data/models/toeic/toeic_models.dart';
@@ -136,15 +137,22 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
           child: ListView.separated(
             padding: EdgeInsets.zero,
             itemBuilder: (context, index) {
-              final question =
-                  state.part3467![state.currentIndex!].questions![index];
-              return _buildQuestions(
+              if (index <=
+                  state.part3467![state.currentIndex!].questions!.length - 1) {
+                final question =
+                    state.part3467![state.currentIndex!].questions![index];
+                return _buildQuestions(
                   question: question,
                   currentState: state,
-                  questionIndex: index);
+                  questionIndex: index,
+                );
+              } else {
+                return 100.verticalSpace;
+              }
             },
             separatorBuilder: (context, index) => 20.verticalSpace,
-            itemCount: state.part3467![state.currentIndex!].questions!.length,
+            itemCount:
+                state.part3467![state.currentIndex!].questions!.length + 1,
           ),
         );
       },
@@ -182,7 +190,8 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
                         questionIndex: questionIndex,
                         answerIndex: answerIndex,
                         audio: widget.audioService,
-                        animation: widget.animationController,
+                        animation: _slideAnimationController,
+                        part: 3,
                       );
                 },
                 child: _buildAnswerOptions(
@@ -263,11 +272,9 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
 
   Widget _buildAnswerUI(
       String text, Color? color, ToeicStatePartOne currentState) {
-    return Align(
-      widthFactor: 1,
-      heightFactor: 1,
-      alignment: Alignment.centerLeft,
-      child: Text(
+    return SizedBox(
+      width: 200.r,
+      child: AutoSizeText(
         text.replaceAll(".", ""),
         textAlign: TextAlign.left,
         style: AppTypography.body,

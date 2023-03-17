@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
 import 'package:bke/data/models/toeic/toeic_models.dart';
 import 'package:bke/presentation/pages/toeic_test/components/answer_part1_component.dart';
@@ -6,7 +5,6 @@ import 'package:bke/presentation/pages/toeic_test/components/answer_part2_compon
 import 'package:bke/presentation/pages/toeic_test/components/answer_part3_component.dart';
 import 'package:bke/presentation/pages/toeic_test/components/answer_part5_component.dart';
 import 'package:bke/presentation/theme/app_color.dart';
-import 'package:bke/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -311,6 +309,12 @@ class ToeicResultPage extends StatelessWidget {
         );
         break;
       case 3:
+        returnWidget = AnswerPartThree(
+          index: index,
+          answer: answer[index].questions!,
+        );
+        break;
+      case 4:
         returnWidget = AnswerPartThree(
           index: index,
           answer: answer[index].questions!,

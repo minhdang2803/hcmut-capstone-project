@@ -154,6 +154,13 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
           isReal: widget.isReal,
         );
         break;
+      case 4:
+        widgetReturn = ToeicPartThreeComponent(
+          audioService: _audio,
+          animationController: _animationController,
+          isReal: widget.isReal,
+        );
+        break;
       default:
         widgetReturn = ToeicPartTwoComponent(
           audioService: _audio,
