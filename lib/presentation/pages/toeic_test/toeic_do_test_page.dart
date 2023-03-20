@@ -1,8 +1,5 @@
-import 'package:bke/bloc/toeic/cubit/toeic_part3467_cubit.dart';
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
 import 'package:bke/data/services/audio_service.dart';
-import 'package:bke/presentation/pages/toeic_test/components/toeic_part1.dart';
-import 'package:bke/presentation/pages/toeic_test/components/toeic_part2.dart';
 import 'package:bke/presentation/pages/toeic_test/toeics.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
@@ -149,6 +146,7 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
         break;
       case 3:
         widgetReturn = ToeicPartThreeComponent(
+          part: 3,
           audioService: _audio,
           animationController: _animationController,
           isReal: widget.isReal,
@@ -156,6 +154,23 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
         break;
       case 4:
         widgetReturn = ToeicPartThreeComponent(
+          part: 4,
+          audioService: _audio,
+          animationController: _animationController,
+          isReal: widget.isReal,
+        );
+        break;
+      case 6:
+        widgetReturn = ToeicPartSixComponent(
+          part: 6,
+          audioService: _audio,
+          animationController: _animationController,
+          isReal: widget.isReal,
+        );
+        break;
+      case 7:
+        widgetReturn = ToeicPartSixComponent(
+          part: 6,
           audioService: _audio,
           animationController: _animationController,
           isReal: widget.isReal,

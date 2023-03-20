@@ -26,12 +26,22 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
         audio.setAudio(state.part125![0].mp3Url!);
         state.timer!.start(25);
         break;
-      case 5:
-        state.timer!.start(25);
-        break;
       case 3:
         audio.setAudio(state.part3467![0].mp3Url!);
         state.timer!.start(90);
+        break;
+      case 4:
+        audio.setAudio(state.part3467![0].mp3Url!);
+        state.timer!.start(90);
+        break;
+      case 5:
+        state.timer!.start(25);
+        break;
+      case 6:
+        state.timer!.start(200);
+        break;
+      case 7:
+        state.timer!.start(200);
         break;
     }
     emit(state.copyWith(isReal: isReal, status: ToeicStatus.done));
@@ -216,7 +226,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     required int answerIndex,
     required AudioService audio,
     required AnimationController animation,
-    required int part,
+    required int totalQuestion,
   }) async {
     int count = 0;
     for (final element in state.isAnswer3467Correct!) {
@@ -224,7 +234,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
         count++;
       }
     }
-    if (count == part-1) {
+    if (count == totalQuestion - 1) {
       audio.stop();
       state.timer!.reset();
     }
@@ -244,7 +254,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
         state.copyWith(
           status: ToeicStatus.done,
           isAnswer3467Correct: answerChoosenList,
-          totalCorrect: state.totalChosen! == part
+          totalCorrect: state.totalChosen! == totalQuestion
               ? state.totalCorrect! + 1
               : state.totalCorrect!,
           chosenIndex3467: chosenIndexByQuestion,
@@ -279,12 +289,12 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
       }
     }
     //Last question
-    if (countAnswered == part &&
+    if (countAnswered == totalQuestion &&
         state.currentIndex! >= state.part3467!.length - 1) {
       await Future.delayed(const Duration(seconds: 1));
       emit(state.copyWith(status: ToeicStatus.finish));
     } else {
-      if (countAnswered == part) {
+      if (countAnswered == totalQuestion) {
         await Future.delayed(const Duration(seconds: 1));
         emit(
           state.copyWith(
@@ -294,7 +304,9 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
             totalChosen: 0,
           ),
         );
-        await audio.setAudio(state.part3467![state.currentIndex!].mp3Url!);
+        if (state.part3467![state.currentIndex!].mp3Url != null) {
+          await audio.setAudio(state.part3467![state.currentIndex!].mp3Url!);
+        }
         animation.reset();
         animation.forward();
         state.timer!.start(90);
@@ -304,8 +316,11 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     }
   }
 
-  Future<void> autoCheckAnswerPart3(AudioService audio,
-      AnimationController animation, BuildContext context) async {
+  Future<void> autoCheckAnswerPart3(
+    AudioService audio,
+    AnimationController animation,
+    BuildContext context,
+  ) async {
     audio.stop();
     state.timer!.reset();
     emit(state.copyWith(status: ToeicStatus.loading));

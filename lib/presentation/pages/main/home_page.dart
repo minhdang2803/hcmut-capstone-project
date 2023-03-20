@@ -1,3 +1,4 @@
+import 'package:bke/presentation/pages/calendar/calendar_page.dart';
 import 'package:bke/presentation/pages/home/navigation_page.dart';
 
 import 'package:flutter/material.dart';
@@ -21,9 +22,7 @@ class _MainPageState extends State<MainPage> {
   final List<Widget> _pages = [
     const NavigationPage(),
     const LookUpPage(),
-    Container(
-      color: Colors.blue,
-    ),
+    const CalendarPage(),
     const ProfilePage(),
   ];
 

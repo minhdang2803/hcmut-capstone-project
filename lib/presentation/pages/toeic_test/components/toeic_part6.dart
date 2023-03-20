@@ -11,13 +11,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ToeicPartThreeComponent extends StatefulWidget {
-  const ToeicPartThreeComponent({
+class ToeicPartSixComponent extends StatefulWidget {
+  const ToeicPartSixComponent({
     super.key,
     required this.animationController,
     required this.audioService,
-    required this.part,
     this.isReal = false,
+    required this.part,
   });
 
   final AnimationController animationController;
@@ -26,14 +26,18 @@ class ToeicPartThreeComponent extends StatefulWidget {
   final int part;
 
   @override
-  State<ToeicPartThreeComponent> createState() =>
-      _ToeicPartThreeComponentState();
+  State<ToeicPartSixComponent> createState() => _ToeicPartSixComponentState();
 }
 
-class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
-    with SingleTickerProviderStateMixin {
+class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
+    with TickerProviderStateMixin {
   late final Animation<Offset> _slideAnimation;
   late final AnimationController _slideAnimationController;
+  late final TabController _tabController;
+  static const tabs = <Tab>[
+    Tab(child: FittedBox(child: Text('Đoạn văn'))),
+    Tab(child: FittedBox(child: Text('Câu hỏi'))),
+  ];
   bool isPlayed = false;
   @override
   void initState() {
@@ -49,21 +53,12 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
       parent: _slideAnimationController,
       curve: Curves.easeInOut,
     ));
+    _tabController = TabController(length: tabs.length, vsync: this);
     _slideAnimationController.forward();
     widget.audioService.play();
     context
         .read<ToeicCubitPartOne>()
         .setTimer(widget.part, widget.isReal!, widget.audioService);
-  }
-
-  @override
-  void didUpdateWidget(covariant ToeicPartThreeComponent oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    final state = context.read<ToeicCubitPartOne>().state;
-    if (!isPlayed && state.currentIndex! + 1 <= state.totalQuestion!) {
-      widget.audioService.play();
-      setState(() => isPlayed = !isPlayed);
-    }
   }
 
   @override
@@ -80,13 +75,32 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
       },
       builder: (context, state) {
         if (state.status == ToeicStatus.done) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildTimer(context),
-              10.verticalSpace,
-              _buildQuestionContent(context),
-            ],
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildTimer(context),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: TabBar(
+                    labelStyle: AppTypography.body,
+                    labelColor: AppColor.primary,
+                    unselectedLabelStyle: AppTypography.body,
+                    unselectedLabelColor: AppColor.primary,
+                    indicatorColor: AppColor.primary,
+                    // indicator: BoxDecoration(
+                    //   color: AppColor.primary,
+                    //   borderRadius: BorderRadius.circular(16.r),
+                    // ),
+                    tabs: tabs,
+                    controller: _tabController,
+                  ),
+                ),
+                _buildQuestionContent(context),
+              ],
+            ),
           );
         } else {
           return const Center(
@@ -100,33 +114,41 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
   }
 
   Widget _buildQuestionContent(BuildContext context) {
-    return SlideTransition(
-      position: _slideAnimation,
+    return Expanded(
       child: Container(
+        padding: EdgeInsets.only(top: 5.r),
         width: MediaQuery.of(context).size.width * 0.9,
-        padding: EdgeInsets.all(10.r),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20.r),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: TabBarView(
+          controller: _tabController,
           children: [
-            BlocBuilder<ToeicCubitPartOne, ToeicStatePartOne>(
-              builder: (context, state) {
-                return Text(
-                  state.part3467![state.currentIndex!].text ??
-                      "Nghe và chọn đáp án đúng",
-                  style: AppTypography.body,
-                );
-              },
-            ),
-            5.verticalSpace,
-            const Divider(thickness: 1, color: AppColor.primary),
-            5.verticalSpace,
+            _buildContentParagraph(context),
             _buildTestContent(context)
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildContentParagraph(BuildContext context) {
+    return SlideTransition(
+      position: _slideAnimation,
+      child: BlocBuilder<ToeicCubitPartOne, ToeicStatePartOne>(
+        builder: (context, state) {
+          return Container(
+            padding: EdgeInsets.all(10.r),
+            decoration: BoxDecoration(
+              border: Border.all(width: 1, color: AppColor.primary),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20.r),
+            ),
+            child: Text(
+              state.part3467![state.currentIndex!].text ??
+                  "Nghe và chọn đáp án đúng",
+              style: AppTypography.title,
+              textAlign: TextAlign.justify,
+            ),
+          );
+        },
       ),
     );
   }
@@ -167,7 +189,7 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
     required int questionIndex,
   }) {
     final answerList = question.answers;
-    final questionContent = question.text!;
+
     return Container(
       padding: EdgeInsets.all(10.r),
       decoration: BoxDecoration(
@@ -177,8 +199,8 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            questionContent,
-            style: AppTypography.title,
+            "Question: ${questionIndex + 1}",
+            style: AppTypography.body,
           ),
           const Divider(thickness: 1, color: AppColor.primary),
           ListView.separated(
@@ -193,7 +215,7 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
                         answerIndex: answerIndex,
                         audio: widget.audioService,
                         animation: _slideAnimationController,
-                        totalQuestion: 3,
+                        totalQuestion: 4,
                       );
                 },
                 child: _buildAnswerOptions(
@@ -284,24 +306,11 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
     );
   }
 
-  Widget _buildAudioListener(BuildContext context) {
-    return BlocBuilder<ToeicCubitPartOne, ToeicStatePartOne>(
-      builder: (context, state) {
-        return ToeicAudioPlayer(
-          isReal: widget.isReal!,
-          animationController: widget.animationController,
-          audioService: widget.audioService,
-        );
-      },
-    );
-  }
-
   Widget _buildTimer(BuildContext context) {
     if (widget.isReal!) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildAudioListener(context),
           BlocConsumer<CountDownCubit, CountDownState>(
             listener: (context, state) async {
               if (state.status == CountDownStatus.done) {
@@ -322,10 +331,7 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
         ],
       );
     } else {
-      return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.r),
-        child: _buildAudioListener(context),
-      );
+      return SizedBox();
     }
   }
 }
