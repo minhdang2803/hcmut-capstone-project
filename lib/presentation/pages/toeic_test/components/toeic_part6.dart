@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:bke/bloc/cubit/count_down_cubit.dart';
+import 'package:bke/bloc/countdown_cubit/count_down_cubit.dart';
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
 import 'package:bke/data/models/toeic/toeic_models.dart';
 import 'package:bke/data/services/audio_service.dart';
@@ -216,6 +216,7 @@ class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
                         audio: widget.audioService,
                         animation: _slideAnimationController,
                         totalQuestion: 4,
+                        time: 200,
                       );
                 },
                 child: _buildAnswerOptions(

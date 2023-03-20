@@ -1,8 +1,7 @@
-import 'package:bke/bloc/cubit/count_down_cubit.dart';
+import 'package:bke/bloc/countdown_cubit/count_down_cubit.dart';
 import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_timer/quiz_timer_cubit.dart';
-import 'package:bke/bloc/toeic/cubit/toeic_part3467_cubit.dart';
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
 import 'package:bke/bloc/toeic/toeic_part/toeic_part_cubit.dart';
 import 'package:bke/bloc/video/category_video/category_video_cubit.dart';

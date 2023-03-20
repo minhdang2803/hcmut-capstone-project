@@ -74,7 +74,7 @@ class _VideoPageState extends State<VideoPage>
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(20.r)),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(30.r)),
           ),
           child: ListView(
             padding: EdgeInsets.only(bottom: 30.r),

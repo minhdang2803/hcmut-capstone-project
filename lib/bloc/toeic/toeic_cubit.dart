@@ -1,4 +1,4 @@
-import 'package:bke/bloc/cubit/count_down_cubit.dart';
+import 'package:bke/bloc/countdown_cubit/count_down_cubit.dart';
 
 import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/toeic/toeic_model_local.dart';
@@ -227,6 +227,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     required AudioService audio,
     required AnimationController animation,
     required int totalQuestion,
+    required int time,
   }) async {
     int count = 0;
     for (final element in state.isAnswer3467Correct!) {

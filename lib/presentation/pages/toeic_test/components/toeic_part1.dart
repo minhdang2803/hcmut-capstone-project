@@ -1,6 +1,5 @@
-import 'package:bke/bloc/cubit/count_down_cubit.dart';
+import 'package:bke/bloc/countdown_cubit/count_down_cubit.dart';
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
-import 'package:bke/data/models/toeic/toeic_model_local.dart';
 import 'package:bke/data/services/audio_service.dart';
 import 'package:bke/presentation/pages/toeic_test/toeics.dart';
 import 'package:bke/presentation/routes/route_name.dart';
