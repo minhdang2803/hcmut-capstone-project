@@ -75,13 +75,21 @@ class _ToeicPartTwoComponentState extends State<ToeicPartTwoComponent>
       },
       builder: (context, state) {
         if (state.status == ToeicStatus.done) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildTimer(context),
-              10.verticalSpace,
-              _buildQuestionContent(context),
-            ],
+          return Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius:
+                    BorderRadius.only(topLeft: Radius.circular(30.r))),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                10.verticalSpace,
+                _buildTimer(context),
+                10.verticalSpace,
+                _buildQuestionContent(context),
+              ],
+            ),
           );
         } else {
           return const Center(
@@ -101,6 +109,7 @@ class _ToeicPartTwoComponentState extends State<ToeicPartTwoComponent>
         width: MediaQuery.of(context).size.width * 0.9,
         padding: EdgeInsets.all(10.r),
         decoration: BoxDecoration(
+          border: Border.all(width: 1, color: AppColor.primary),
           color: Colors.white,
           borderRadius: BorderRadius.circular(20.r),
         ),

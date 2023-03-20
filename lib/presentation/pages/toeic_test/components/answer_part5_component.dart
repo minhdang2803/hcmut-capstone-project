@@ -40,7 +40,7 @@ class AnswerPartFive extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text.rich(TextSpan(
-                    text: "Transcript: ",
+                    text: "Question: ",
                     style:
                         AppTypography.title.copyWith(color: AppColor.primary),
                     children: [

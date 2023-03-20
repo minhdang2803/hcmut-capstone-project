@@ -1,7 +1,9 @@
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
 import 'package:bke/data/services/audio_service.dart';
 import 'package:bke/presentation/pages/toeic_test/toeics.dart';
+import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
+import 'package:bke/presentation/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -67,48 +69,69 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            BackButton(
-              onPressed: () {
-                context.read<ToeicCubitPartOne>().stopCountDown(_audio);
-                WidgetUtil.showDialog(
-                  context: context,
-                  title: 'Thoát khỏi màn chơi',
-                  message: 'Quá trình sẽ bị huỷ bỏ!',
-                  onAccepted: () {
-                    context.read<ToeicCubitPartOne>().exit();
-                    Navigator.pop(context);
-                  },
-                  onDismissed: () =>
-                      context.read<ToeicCubitPartOne>().resumeCountDown(_audio),
-                );
-              },
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                widget.title,
-                style: AppTypography.subHeadline
-                    .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(width: 35.r)
-          ],
-        ),
-      ),
+      backgroundColor: AppColor.primary,
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   automaticallyImplyLeading: false,
+      //   title: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //     crossAxisAlignment: CrossAxisAlignment.center,
+      //     children: [
+      //       BackButton(
+      //         onPressed: () {
+      //           context.read<ToeicCubitPartOne>().stopCountDown(_audio);
+      //           WidgetUtil.showDialog(
+      //             context: context,
+      //             title: 'Thoát khỏi màn chơi',
+      //             message: 'Quá trình sẽ bị huỷ bỏ!',
+      //             onAccepted: () {
+      //               context.read<ToeicCubitPartOne>().exit();
+      //               Navigator.pop(context);
+      //             },
+      //             onDismissed: () =>
+      //                 context.read<ToeicCubitPartOne>().resumeCountDown(_audio),
+      //           );
+      //         },
+      //       ),
+      //       Align(
+      //         alignment: Alignment.center,
+      //         child: Text(
+      //           widget.title,
+      //           style: AppTypography.subHeadline
+      //               .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+      //         ),
+      //       ),
+      //       SizedBox(width: 35.r)
+      //     ],
+      //   ),
+      // ),
       body: SafeArea(
+        bottom: false,
         child: BlocBuilder<ToeicCubitPartOne, ToeicStatePartOne>(
           builder: (context, state) {
             return SizedBox(
               width: double.infinity,
               child: ListView(
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
+                  BkEAppBar(
+                    label: widget.title,
+                    onBackButtonPress: () {
+                      context.read<ToeicCubitPartOne>().stopCountDown(_audio);
+                      WidgetUtil.showDialog(
+                        context: context,
+                        title: 'Thoát khỏi màn chơi',
+                        message: 'Quá trình sẽ bị huỷ bỏ!',
+                        onAccepted: () {
+                          context.read<ToeicCubitPartOne>().exit();
+                          Navigator.pop(context);
+                        },
+                        onDismissed: () => context
+                            .read<ToeicCubitPartOne>()
+                            .resumeCountDown(_audio),
+                      );
+                    },
+                  ),
                   10.verticalSpace,
                   _getPart(widget.part, state),
                 ],

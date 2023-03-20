@@ -228,6 +228,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     required AnimationController animation,
     required int totalQuestion,
     required int time,
+    TabController? tabController,
   }) async {
     int count = 0;
     for (final element in state.isAnswer3467Correct!) {
@@ -312,16 +313,20 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
         animation.forward();
         state.timer!.start(90);
         audio.play();
+        if (tabController != null) {
+          tabController.animateTo(0);
+        }
       }
       // Not the last question
     }
   }
 
-  Future<void> autoCheckAnswerPart3(
-    AudioService audio,
-    AnimationController animation,
-    BuildContext context,
-  ) async {
+  Future<void> autoCheckAnswerPart3({
+    required AudioService audio,
+    required AnimationController animation,
+    required BuildContext context,
+    TabController? tabController,
+  }) async {
     audio.stop();
     state.timer!.reset();
     emit(state.copyWith(status: ToeicStatus.loading));
@@ -342,6 +347,9 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
       animation.forward();
       state.timer!.start(90);
       audio.play();
+      if (tabController != null) {
+        tabController.animateTo(0);
+      }
     }
   }
 }

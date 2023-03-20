@@ -65,13 +65,21 @@ class _ToeicPartFiveComponentState extends State<ToeicPartFiveComponent>
       },
       builder: (context, state) {
         if (state.status == ToeicStatus.done) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildTimer(context),
-              10.verticalSpace,
-              _buildQuestionContent(context),
-            ],
+          return Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius:
+                    BorderRadius.only(topLeft: Radius.circular(30.r))),
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                10.verticalSpace,
+                _buildTimer(context),
+                10.verticalSpace,
+                _buildQuestionContent(context),
+              ],
+            ),
           );
         } else {
           return const Center(
@@ -91,6 +99,7 @@ class _ToeicPartFiveComponentState extends State<ToeicPartFiveComponent>
         width: MediaQuery.of(context).size.width * 0.9,
         padding: EdgeInsets.all(10.r),
         decoration: BoxDecoration(
+          border: Border.all(width: 1, color: AppColor.primary),
           color: Colors.white,
           borderRadius: BorderRadius.circular(20.r),
         ),
@@ -101,7 +110,7 @@ class _ToeicPartFiveComponentState extends State<ToeicPartFiveComponent>
               builder: (context, state) {
                 return Text(
                   state.part125![state.currentIndex!].text ??
-                      "Nghe và chọn đáp án đúng",
+                      "Question${state.currentIndex! + 1}\nNghe và chọn đáp án đúng",
                   style: AppTypography.subHeadline,
                 );
               },

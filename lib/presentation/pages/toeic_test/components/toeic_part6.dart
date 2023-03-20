@@ -75,29 +75,31 @@ class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
       },
       builder: (context, state) {
         if (state.status == ToeicStatus.done) {
-          return SizedBox(
+          return Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius:
+                    BorderRadius.only(topLeft: Radius.circular(30.r))),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                10.verticalSpace,
                 _buildTimer(context),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: TabBar(
-                    labelStyle: AppTypography.body,
+                    labelStyle: AppTypography.title,
                     labelColor: AppColor.primary,
-                    unselectedLabelStyle: AppTypography.body,
-                    unselectedLabelColor: AppColor.primary,
-                    indicatorColor: AppColor.primary,
-                    // indicator: BoxDecoration(
-                    //   color: AppColor.primary,
-                    //   borderRadius: BorderRadius.circular(16.r),
-                    // ),
+                    unselectedLabelStyle: AppTypography.title,
+                    unselectedLabelColor: AppColor.secondary,
+                    indicatorColor: Colors.deepPurple,
                     tabs: tabs,
                     controller: _tabController,
                   ),
                 ),
+                5.verticalSpace,
                 _buildQuestionContent(context),
               ],
             ),
@@ -114,17 +116,13 @@ class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
   }
 
   Widget _buildQuestionContent(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.only(top: 5.r),
-        width: MediaQuery.of(context).size.width * 0.9,
-        child: TabBarView(
-          controller: _tabController,
-          children: [
-            _buildContentParagraph(context),
-            _buildTestContent(context)
-          ],
-        ),
+    return Container(
+      padding: EdgeInsets.only(top: 5.r),
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.height * 0.7,
+      child: TabBarView(
+        controller: _tabController,
+        children: [_buildContentParagraph(context), _buildTestContent(context)],
       ),
     );
   }
@@ -135,17 +133,24 @@ class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
       child: BlocBuilder<ToeicCubitPartOne, ToeicStatePartOne>(
         builder: (context, state) {
           return Container(
+            height: MediaQuery.of(context).size.height,
             padding: EdgeInsets.all(10.r),
             decoration: BoxDecoration(
               border: Border.all(width: 1, color: AppColor.primary),
               color: Colors.white,
               borderRadius: BorderRadius.circular(20.r),
             ),
-            child: Text(
-              state.part3467![state.currentIndex!].text ??
-                  "Nghe và chọn đáp án đúng",
-              style: AppTypography.title,
-              textAlign: TextAlign.justify,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(
+                    state.part3467![state.currentIndex!].text ??
+                        "Nghe và chọn đáp án đúng",
+                    style: AppTypography.title,
+                    textAlign: TextAlign.justify,
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -156,8 +161,12 @@ class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
   Widget _buildTestContent(BuildContext context) {
     return BlocBuilder<ToeicCubitPartOne, ToeicStatePartOne>(
       builder: (context, state) {
-        return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.8,
+        return Container(
+          padding: EdgeInsets.all(10.r),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20.r),
+          ),
           child: ListView.separated(
             padding: EdgeInsets.zero,
             itemBuilder: (context, index) {
@@ -210,14 +219,14 @@ class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
               return GestureDetector(
                 onTap: () async {
                   await context.read<ToeicCubitPartOne>().checkAnswerPart3(
-                        userAnswer: question.answers![answerIndex],
-                        questionIndex: questionIndex,
-                        answerIndex: answerIndex,
-                        audio: widget.audioService,
-                        animation: _slideAnimationController,
-                        totalQuestion: 4,
-                        time: 200,
-                      );
+                      userAnswer: question.answers![answerIndex],
+                      questionIndex: questionIndex,
+                      answerIndex: answerIndex,
+                      audio: widget.audioService,
+                      animation: _slideAnimationController,
+                      totalQuestion: 4,
+                      time: 200,
+                      tabController: _tabController);
                 },
                 child: _buildAnswerOptions(
                   questionIndex: questionIndex,
@@ -316,16 +325,17 @@ class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
             listener: (context, state) async {
               if (state.status == CountDownStatus.done) {
                 await context.read<ToeicCubitPartOne>().autoCheckAnswerPart3(
-                      widget.audioService,
-                      _slideAnimationController,
-                      context,
+                      tabController: _tabController,
+                      animation: widget.animationController,
+                      audio: widget.audioService,
+                      context: context,
                     );
               }
             },
             builder: (context, state) {
               return Text(
                 "Time ⌛️: ${state.timeLeft}",
-                style: AppTypography.body,
+                style: AppTypography.subHeadline,
               );
             },
           )

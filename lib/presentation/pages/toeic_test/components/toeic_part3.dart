@@ -80,13 +80,20 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
       },
       builder: (context, state) {
         if (state.status == ToeicStatus.done) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildTimer(context),
-              10.verticalSpace,
-              _buildQuestionContent(context),
-            ],
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(30.r)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                10.verticalSpace,
+                _buildTimer(context),
+                10.verticalSpace,
+                _buildQuestionContent(context),
+              ],
+            ),
           );
         } else {
           return const Center(
@@ -307,9 +314,9 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
             listener: (context, state) async {
               if (state.status == CountDownStatus.done) {
                 await context.read<ToeicCubitPartOne>().autoCheckAnswerPart3(
-                      widget.audioService,
-                      _slideAnimationController,
-                      context,
+                      animation: widget.animationController,
+                      audio: widget.audioService,
+                      context: context,
                     );
               }
             },

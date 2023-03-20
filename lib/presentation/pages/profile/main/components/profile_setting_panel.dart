@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../data/configs/hive_config.dart';
 import '../../../../../utils/widget_util.dart';
@@ -106,9 +107,37 @@ class ProfileSettingPanel extends StatelessWidget {
                           ProfileSettingItem(
                             asset: 'assets/icons/ic_info.svg',
                             label: 'About us',
-                            onPress: () => Navigator.of(context)
-                                .pushNamed(RouteName.aboutUs),
+                            onPress: () async {
+                              String url = 'myenglisk.vercel.app';
+                              if (await canLaunchUrl(Uri.https(url))) {
+                                // Launch the url in the Chrome browser
+                                await launchUrl(
+                                  Uri.https(url),
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                            },
                           ),
+                          20.verticalSpace,
+                          ProfileSettingItem(
+                            asset: 'assets/icons/contact.svg',
+                            label: "Contact us",
+                            onPress: () async {
+                              String url = 'myenglisk.vercel.app';
+                              if (await canLaunchUrl(
+                                  Uri.https(url, "/contact"))) {
+                                // Launch the url in the Chrome browser
+                                await launchUrl(Uri.https(url, "/contact"),
+                                    mode: LaunchMode.externalApplication,
+                                    webViewConfiguration:
+                                        WebViewConfiguration());
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                            },
+                          )
                         ],
                       ),
                     ),
