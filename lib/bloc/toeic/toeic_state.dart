@@ -34,9 +34,9 @@ class ToeicStatePartOne extends Equatable {
     answerPart125 = List<bool>.generate(4, (index) => false);
     totalChosen = 0;
     isAnswer125Correct = null;
-    isAnswer3467Correct = List<bool?>.generate(4, (index) => null);
+    isAnswer3467Correct = List<bool?>.generate(5, (index) => null);
     chosenIndex125 = -1;
-    chosenIndex3467 = List<int?>.generate(4, (index) => -1);
+    chosenIndex3467 = List<int?>.generate(5, (index) => -1);
     part = 0;
     resultByQuestion = {};
     timer = CountDownCubit();

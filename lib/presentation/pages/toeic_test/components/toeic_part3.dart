@@ -313,7 +313,8 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
           BlocConsumer<CountDownCubit, CountDownState>(
             listener: (context, state) async {
               if (state.status == CountDownStatus.done) {
-                await context.read<ToeicCubitPartOne>().autoCheckAnswerPart3(
+                await context.read<ToeicCubitPartOne>().autoCheckAnswerPart3467(
+                      time: 90,
                       animation: widget.animationController,
                       audio: widget.audioService,
                       context: context,

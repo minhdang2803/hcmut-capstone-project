@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ToeicPartSixComponent extends StatefulWidget {
-  const ToeicPartSixComponent({
+class ToeicPartSevenComponent extends StatefulWidget {
+  const ToeicPartSevenComponent({
     super.key,
     required this.animationController,
     required this.audioService,
@@ -26,10 +26,11 @@ class ToeicPartSixComponent extends StatefulWidget {
   final int part;
 
   @override
-  State<ToeicPartSixComponent> createState() => _ToeicPartSixComponentState();
+  State<ToeicPartSevenComponent> createState() =>
+      _ToeicPartSevenComponentState();
 }
 
-class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
+class _ToeicPartSevenComponentState extends State<ToeicPartSevenComponent>
     with TickerProviderStateMixin {
   late final Animation<Offset> _slideAnimation;
   late final AnimationController _slideAnimationController;
@@ -208,7 +209,7 @@ class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Question: ${questionIndex + 1}",
+            question.text!,
             style: AppTypography.body,
           ),
           const Divider(thickness: 1, color: AppColor.primary),
@@ -218,15 +219,19 @@ class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
             itemBuilder: (context, answerIndex) {
               return GestureDetector(
                 onTap: () async {
-                  await context.read<ToeicCubitPartOne>().checkAnswerPart3(
-                      userAnswer: question.answers![answerIndex],
-                      questionIndex: questionIndex,
-                      answerIndex: answerIndex,
-                      audio: widget.audioService,
-                      animation: _slideAnimationController,
-                      totalQuestion: 4,
-                      time: 200,
-                      tabController: _tabController);
+                  await context.read<ToeicCubitPartOne>().checkAnswerPart7(
+                        userAnswer: question.answers![answerIndex],
+                        questionIndex: questionIndex,
+                        answerIndex: answerIndex,
+                        audio: widget.audioService,
+                        animation: _slideAnimationController,
+                        totalQuestion: currentState
+                            .part3467![currentState.currentIndex!]
+                            .questions!
+                            .length,
+                        time: 200,
+                        tabController: _tabController,
+                      );
                 },
                 child: _buildAnswerOptions(
                   questionIndex: questionIndex,
@@ -325,7 +330,6 @@ class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
             listener: (context, state) async {
               if (state.status == CountDownStatus.done) {
                 await context.read<ToeicCubitPartOne>().autoCheckAnswerPart3467(
-                      time: 200,
                       tabController: _tabController,
                       animation: widget.animationController,
                       audio: widget.audioService,

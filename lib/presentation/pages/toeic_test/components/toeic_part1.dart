@@ -245,7 +245,7 @@ class _ToeicPartOneComponentState extends State<ToeicPartOneComponent>
                   state.part125![state.currentIndex!].answers![index];
               return GestureDetector(
                 onTap: () async {
-                  await context.read<ToeicCubitPartOne>().checkAnswerPart1(
+                  await context.read<ToeicCubitPartOne>().checkAnswerPart125(
                         userAnser,
                         index,
                         widget.audioService,

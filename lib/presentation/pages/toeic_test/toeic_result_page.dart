@@ -1,5 +1,6 @@
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
 import 'package:bke/data/models/toeic/toeic_models.dart';
+import 'package:bke/presentation/pages/toeic_test/components/answer_part7_component.dart';
 import 'package:bke/presentation/pages/toeic_test/components/toeic_components.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:flutter/material.dart';
@@ -325,11 +326,10 @@ class ToeicResultPage extends StatelessWidget {
         );
         break;
       default:
-        returnWidget = AnswerPartOne(
+        returnWidget = AnswerPartSeven(
           index: index,
-          text: answer[index].transcript!,
-          correctAnswer: answer[index].correctAnswer!,
-          imgUrl: answer[index].imgUrl!,
+          text: answer[index].text!,
+          answer: answer[index].questions!,
         );
         break;
     }

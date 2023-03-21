@@ -106,7 +106,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     }
   }
 
-  Future<void> checkAnswerPart1(String userAnswer, int questionIndex,
+  Future<void> checkAnswerPart125(String userAnswer, int questionIndex,
       AudioService audio, AnimationController animation) async {
     audio.stop();
     state.timer!.reset();
@@ -321,10 +321,112 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     }
   }
 
-  Future<void> autoCheckAnswerPart3({
+  Future<void> checkAnswerPart7({
+    required String userAnswer,
+    required int questionIndex,
+    required int answerIndex,
+    required AudioService audio,
+    required AnimationController animation,
+    required int totalQuestion,
+    required int time,
+    TabController? tabController,
+  }) async {
+    int count = 0;
+    for (final element in state.isAnswer3467Correct!) {
+      if (element != null) {
+        count++;
+      }
+    }
+    if (count == totalQuestion - 1) {
+      audio.stop();
+      state.timer!.reset();
+    }
+
+    emit(state.copyWith(status: ToeicStatus.loading));
+    final answer = state
+        .part3467![state.currentIndex!].questions![questionIndex].correctAnswer;
+    // check each small question is answered
+    final answerChoosenList = state.isAnswer3467Correct!;
+    // Chosen answer for each question
+    final chosenIndexByQuestion = state.chosenIndex3467!;
+    if (userAnswer[0] == answer) {
+      answerChoosenList[questionIndex] = true;
+      chosenIndexByQuestion[questionIndex] = answerIndex;
+      emit(state.copyWith(totalChosen: state.totalChosen! + 1));
+      emit(
+        state.copyWith(
+          status: ToeicStatus.done,
+          isAnswer3467Correct: answerChoosenList,
+          totalCorrect: state.totalChosen! == totalQuestion
+              ? state.totalCorrect! + 1
+              : state.totalCorrect!,
+          chosenIndex3467: chosenIndexByQuestion,
+        ),
+      );
+    } else {
+      answerChoosenList[questionIndex] = false;
+      chosenIndexByQuestion[questionIndex] = answerIndex;
+      emit(
+        state.copyWith(
+          status: ToeicStatus.done,
+          isAnswer3467Correct: answerChoosenList,
+          totalCorrect: state.totalCorrect!,
+          chosenIndex3467: chosenIndexByQuestion,
+          totalChosen: state.totalChosen!,
+        ),
+      );
+    }
+
+    // instance.saveToeicResultByPart(
+    //     part: state.part!,
+    //     totalQuestion: state.totalQuestion!,
+    //     totalCorrect: state.totalCorrect!,
+    //     chosenResult: {
+    //       state.part3467![state.currentIndex!].id!.toString(): userAnswer[0],
+    //     });
+
+    int countAnswered = 0;
+    for (final element in state.isAnswer3467Correct!) {
+      if (element != null) {
+        countAnswered++;
+      }
+    }
+    // Not Last Question
+    if (countAnswered == totalQuestion &&
+        state.currentIndex! >= state.part3467!.length - 1) {
+      await Future.delayed(const Duration(seconds: 1));
+      emit(state.copyWith(status: ToeicStatus.finish));
+    } else {
+      //Last question
+      if (countAnswered == totalQuestion) {
+        await Future.delayed(const Duration(seconds: 1));
+        emit(
+          state.copyWith(
+            currentIndex: state.currentIndex! + 1,
+            isAnswer3467Correct: List<bool?>.generate(5, (index) => null),
+            chosenIndex3467: List<int>.generate(5, (index) => -1),
+            totalChosen: 0,
+          ),
+        );
+        if (state.part3467![state.currentIndex!].mp3Url != null) {
+          await audio.setAudio(state.part3467![state.currentIndex!].mp3Url!);
+        }
+        animation.reset();
+        animation.forward();
+        state.timer!.start(90);
+        audio.play();
+        if (tabController != null) {
+          tabController.animateTo(0);
+        }
+      }
+    }
+  }
+
+  Future<void> autoCheckAnswerPart3467({
     required AudioService audio,
     required AnimationController animation,
     required BuildContext context,
+    required int time,
     TabController? tabController,
   }) async {
     audio.stop();
@@ -345,7 +447,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
       await audio.setAudio(state.part3467![state.currentIndex!].mp3Url!);
       animation.reset();
       animation.forward();
-      state.timer!.start(90);
+      state.timer!.start(time);
       audio.play();
       if (tabController != null) {
         tabController.animateTo(0);
