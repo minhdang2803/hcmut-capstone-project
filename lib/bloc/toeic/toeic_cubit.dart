@@ -112,15 +112,15 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     state.timer!.reset();
     emit(state.copyWith(status: ToeicStatus.loading));
     final answer = state.part125![state.currentIndex!].correctAnswer!;
-    final answerList = List<bool>.generate(4, (index) => false);
+    // final answerList = List<bool>.generate(4, (index) => false);
 
     if (userAnswer.replaceAll(".", "") == answer) {
-      answerList[questionIndex] = true;
+      // answerList[questionIndex] = true;
       emit(
         state.copyWith(
           status: ToeicStatus.done,
           isAnswer125Correct: true,
-          answerPart125: answerList,
+          // answerPart125: answerList,
           totalCorrect: state.totalCorrect! + 1,
           chosenIndex125: questionIndex,
         ),
@@ -130,7 +130,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
         state.copyWith(
           status: ToeicStatus.done,
           isAnswer125Correct: false,
-          answerPart125: answerList,
+          // answerPart125: answerList,
           totalCorrect: state.totalCorrect!,
           chosenIndex125: questionIndex,
         ),
@@ -173,7 +173,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
         state.copyWith(
           status: ToeicStatus.done,
           isAnswer125Correct: true,
-          answerPart125: answerList,
+          // answerPart125: answerList,
           totalCorrect: state.totalCorrect! + 1,
           chosenIndex125: questionIndex,
         ),
@@ -183,7 +183,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
         state.copyWith(
           status: ToeicStatus.done,
           isAnswer125Correct: false,
-          answerPart125: answerList,
+          // answerPart125: answerList,
           totalCorrect: state.totalCorrect!,
           chosenIndex125: questionIndex,
         ),
@@ -377,13 +377,13 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
       );
     }
 
-    // instance.saveToeicResultByPart(
-    //     part: state.part!,
-    //     totalQuestion: state.totalQuestion!,
-    //     totalCorrect: state.totalCorrect!,
-    //     chosenResult: {
-    //       state.part3467![state.currentIndex!].id!.toString(): userAnswer[0],
-    //     });
+    instance.saveToeicResultByPart(
+        part: state.part!,
+        totalQuestion: state.totalQuestion!,
+        totalCorrect: state.totalCorrect!,
+        chosenResult: {
+          state.part3467![state.currentIndex!].id!.toString(): [userAnswer[0]],
+        });
 
     int countAnswered = 0;
     for (final element in state.isAnswer3467Correct!) {

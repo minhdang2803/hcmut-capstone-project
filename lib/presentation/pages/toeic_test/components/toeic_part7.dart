@@ -330,6 +330,7 @@ class _ToeicPartSevenComponentState extends State<ToeicPartSevenComponent>
             listener: (context, state) async {
               if (state.status == CountDownStatus.done) {
                 await context.read<ToeicCubitPartOne>().autoCheckAnswerPart3467(
+                      time: 200,
                       tabController: _tabController,
                       animation: widget.animationController,
                       audio: widget.audioService,
