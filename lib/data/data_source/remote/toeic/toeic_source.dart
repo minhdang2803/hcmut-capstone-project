@@ -13,6 +13,8 @@ abstract class ToeicSource {
   Future<BaseResponse<ToeicQuestionResponse>> getPart125(int part, int limit);
   Future<BaseResponse<ToeicGroupQuestionResponse>> getPart3467(
       int part, int limit);
+  Future<BaseResponse<void>> updateScore(
+      {required Map<String, dynamic> data, required int part});
 }
 
 class ToeicSourceImpl extends ToeicSource {
@@ -57,25 +59,24 @@ class ToeicSourceImpl extends ToeicSource {
     LogUtil.debug('Get toeic test: $part');
     return _api.get(request);
   }
-
-  // @override
-  // Future<BaseResponse> saveScoreToeicP1(
-  //   List<int> listQid,
-  //   List<String> listUserAnswer,
-  // ) async {
-  //   const path = EndPoint.saveScoreToeicP1Path;
-  //   final token = await const FlutterSecureStorage()
-  //       .read(key: HiveConfig.currentUserTokenKey);
-  //   final header = {'Authorization': 'Bearer $token'};
-  //   final bodyRequest = {'listQid': listQid, 'listUserAnswer': listUserAnswer};
-
-  //   final getToeicP1Request = APIServiceRequest(
-  //     path,
-  //     header: header,
-  //     dataBody: bodyRequest,
-  //     (response) => BaseResponse.fromJson(json: response, dataBuilder: null),
-  //   );
-  //   LogUtil.debug('save score toeic test: $path');
-  //   return _api.post(getToeicP1Request);
-  // }
+  
+  @override
+  Future<BaseResponse<void>> updateScore({
+    required Map<String, dynamic> data,
+    required int part,
+  }) async {
+    const path = EndPoint.submitToeicScore;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+    final bodyRequest = {'part$part': data};
+    final request = APIServiceRequest(
+      path,
+      header: header,
+      dataBody: bodyRequest,
+      (response) =>
+          BaseResponse<void>.fromJson(json: response, dataBuilder: null),
+    );
+    return _api.post(request);
+  }
 }

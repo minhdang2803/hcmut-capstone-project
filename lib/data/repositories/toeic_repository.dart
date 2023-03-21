@@ -43,6 +43,11 @@ class ToeicRepository {
     }
   }
 
+  Future<void> updateScoreToServer(
+      {required int part, required Map<String, dynamic> data}) async {
+    await _remote.updateScore(data: data, part: part);
+  }
+
   void saveToeicResultByPart({
     required int part,
     required int totalQuestion,

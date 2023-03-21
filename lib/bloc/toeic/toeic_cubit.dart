@@ -15,6 +15,28 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
   ToeicCubitPartOne() : super(ToeicStatePartOne.initial());
 
   final instance = ToeicRepository.instance();
+
+  List<String> calculateList3467(int index, String option, {int length = 4}) {
+    final List<String> resultList = List.generate(length, (index) => "");
+
+    for (int i = 0; i < state.result3467!.length; i++) {
+      resultList[i] = state.result3467![i];
+    }
+    resultList[index] = option;
+    return resultList;
+  }
+
+  Map<String, dynamic> calculateResult(String option, int index,
+      {int length = 4}) {
+    final resultList = calculateList3467(index, option, length: length);
+    final Map<String, dynamic> resultMap = {};
+    resultMap.addAll(state.resultByQuestion!);
+    resultMap.addAll(
+      {state.part3467![state.currentIndex!].id!.toString(): resultList},
+    );
+    return resultMap;
+  }
+
   void setTimer(int part, bool isReal, AudioService audio) {
     emit(state.copyWith(isReal: isReal, status: ToeicStatus.loading));
     switch (part) {
@@ -112,17 +134,17 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     state.timer!.reset();
     emit(state.copyWith(status: ToeicStatus.loading));
     final answer = state.part125![state.currentIndex!].correctAnswer!;
-    // final answerList = List<bool>.generate(4, (index) => false);
 
     if (userAnswer.replaceAll(".", "") == answer) {
-      // answerList[questionIndex] = true;
       emit(
         state.copyWith(
           status: ToeicStatus.done,
           isAnswer125Correct: true,
-          // answerPart125: answerList,
           totalCorrect: state.totalCorrect! + 1,
           chosenIndex125: questionIndex,
+          resultByQuestion: {
+            state.part125![state.currentIndex!].id!.toString(): userAnswer[0],
+          },
         ),
       );
     } else {
@@ -130,19 +152,20 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
         state.copyWith(
           status: ToeicStatus.done,
           isAnswer125Correct: false,
-          // answerPart125: answerList,
           totalCorrect: state.totalCorrect!,
           chosenIndex125: questionIndex,
+          resultByQuestion: {
+            state.part125![state.currentIndex!].id!.toString(): userAnswer[0],
+          },
         ),
       );
     }
     instance.saveToeicResultByPart(
-        part: state.part!,
-        totalQuestion: state.totalQuestion!,
-        totalCorrect: state.totalCorrect!,
-        chosenResult: {
-          state.part125![state.currentIndex!].id!.toString(): userAnswer[0],
-        });
+      part: state.part!,
+      totalQuestion: state.totalQuestion!,
+      totalCorrect: state.totalCorrect!,
+      chosenResult: {},
+    );
     await Future.delayed(const Duration(seconds: 1));
     if (state.currentIndex! >= state.part125!.length - 1) {
       emit(state.copyWith(status: ToeicStatus.finish));
@@ -165,17 +188,17 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     state.timer!.reset();
     emit(state.copyWith(status: ToeicStatus.loading));
     final answer = state.part125![state.currentIndex!].correctAnswer!;
-    final answerList = List<bool>.generate(4, (index) => false);
 
     if (userAnswer[0] == answer) {
-      answerList[questionIndex] = true;
       emit(
         state.copyWith(
           status: ToeicStatus.done,
           isAnswer125Correct: true,
-          // answerPart125: answerList,
           totalCorrect: state.totalCorrect! + 1,
           chosenIndex125: questionIndex,
+          resultByQuestion: {
+            state.part125![state.currentIndex!].id!.toString(): userAnswer[0],
+          },
         ),
       );
     } else {
@@ -183,9 +206,11 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
         state.copyWith(
           status: ToeicStatus.done,
           isAnswer125Correct: false,
-          // answerPart125: answerList,
           totalCorrect: state.totalCorrect!,
           chosenIndex125: questionIndex,
+          resultByQuestion: {
+            state.part125![state.currentIndex!].id!.toString(): userAnswer[0],
+          },
         ),
       );
     }
@@ -248,19 +273,23 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     final answerChoosenList = state.isAnswer3467Correct!;
     // Chosen answer for each question
     final chosenIndexByQuestion = state.chosenIndex3467!;
+    //
+    final resultList = calculateList3467(questionIndex, userAnswer[0]);
+    final resultMap = calculateResult(userAnswer[0], questionIndex);
     if (userAnswer[0] == answer) {
       answerChoosenList[questionIndex] = true;
       chosenIndexByQuestion[questionIndex] = answerIndex;
       emit(state.copyWith(totalChosen: state.totalChosen! + 1));
       emit(
         state.copyWith(
-          status: ToeicStatus.done,
-          isAnswer3467Correct: answerChoosenList,
-          totalCorrect: state.totalChosen! == totalQuestion
-              ? state.totalCorrect! + 1
-              : state.totalCorrect!,
-          chosenIndex3467: chosenIndexByQuestion,
-        ),
+            status: ToeicStatus.done,
+            isAnswer3467Correct: answerChoosenList,
+            totalCorrect: state.totalChosen! == totalQuestion
+                ? state.totalCorrect! + 1
+                : state.totalCorrect!,
+            chosenIndex3467: chosenIndexByQuestion,
+            result3467: resultList,
+            resultByQuestion: resultMap),
       );
     } else {
       answerChoosenList[questionIndex] = false;
@@ -272,17 +301,20 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
           totalCorrect: state.totalCorrect!,
           chosenIndex3467: chosenIndexByQuestion,
           totalChosen: state.totalChosen!,
+          result3467: resultList,
+          resultByQuestion: resultMap,
         ),
       );
     }
 
-    // instance.saveToeicResultByPart(
-    //     part: state.part!,
-    //     totalQuestion: state.totalQuestion!,
-    //     totalCorrect: state.totalCorrect!,
-    //     chosenResult: {
-    //       state.part3467![state.currentIndex!].id!.toString(): userAnswer[0],
-    //     });
+    instance.saveToeicResultByPart(
+      part: state.part!,
+      totalQuestion: state.totalQuestion!,
+      totalCorrect: state.totalCorrect!,
+      chosenResult: {
+        state.part3467![state.currentIndex!].id!.toString(): userAnswer[0],
+      },
+    );
 
     int countAnswered = 0;
     for (final element in state.isAnswer3467Correct!) {
@@ -349,31 +381,41 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     final answerChoosenList = state.isAnswer3467Correct!;
     // Chosen answer for each question
     final chosenIndexByQuestion = state.chosenIndex3467!;
+    //
+    final resultList = calculateList3467(questionIndex, userAnswer[0],
+        length: state.part3467![state.currentIndex!].questions!.length);
+    //
+    final resultMap = calculateResult(userAnswer[0], questionIndex,
+        length: state.part3467![state.currentIndex!].questions!.length);
     if (userAnswer[0] == answer) {
       answerChoosenList[questionIndex] = true;
       chosenIndexByQuestion[questionIndex] = answerIndex;
       emit(state.copyWith(totalChosen: state.totalChosen! + 1));
       emit(
         state.copyWith(
-          status: ToeicStatus.done,
-          isAnswer3467Correct: answerChoosenList,
-          totalCorrect: state.totalChosen! == totalQuestion
-              ? state.totalCorrect! + 1
-              : state.totalCorrect!,
-          chosenIndex3467: chosenIndexByQuestion,
-        ),
+            status: ToeicStatus.done,
+            isAnswer3467Correct: answerChoosenList,
+            totalCorrect: state.totalChosen! == totalQuestion
+                ? state.totalCorrect! + 1
+                : state.totalCorrect!,
+            chosenIndex3467: chosenIndexByQuestion,
+            chosenIndex125: questionIndex,
+            result3467: resultList,
+            resultByQuestion: resultMap),
       );
     } else {
       answerChoosenList[questionIndex] = false;
       chosenIndexByQuestion[questionIndex] = answerIndex;
       emit(
         state.copyWith(
-          status: ToeicStatus.done,
-          isAnswer3467Correct: answerChoosenList,
-          totalCorrect: state.totalCorrect!,
-          chosenIndex3467: chosenIndexByQuestion,
-          totalChosen: state.totalChosen!,
-        ),
+            status: ToeicStatus.done,
+            isAnswer3467Correct: answerChoosenList,
+            totalCorrect: state.totalCorrect!,
+            chosenIndex3467: chosenIndexByQuestion,
+            totalChosen: state.totalChosen!,
+            chosenIndex125: questionIndex,
+            result3467: resultList,
+            resultByQuestion: resultMap),
       );
     }
 
@@ -405,6 +447,9 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
             currentIndex: state.currentIndex! + 1,
             isAnswer3467Correct: List<bool?>.generate(5, (index) => null),
             chosenIndex3467: List<int>.generate(5, (index) => -1),
+            result3467: List.generate(
+                state.part3467![state.currentIndex! + 1].questions!.length,
+                (index) => ""),
             totalChosen: 0,
           ),
         );
@@ -420,9 +465,11 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
         }
       }
     }
+    print(state.resultByQuestion);
   }
 
   Future<void> autoCheckAnswerPart3467({
+    required int questionIndex,
     required AudioService audio,
     required AnimationController animation,
     required BuildContext context,
@@ -432,10 +479,22 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     audio.stop();
     state.timer!.reset();
     emit(state.copyWith(status: ToeicStatus.loading));
+    //store result
+    final List<String> resultList = [];
+    final Map<String, dynamic> resultMap = {};
+    resultList.addAll(state.result3467!);
+    resultList.insert(questionIndex, "skip");
+    resultMap.addAll(state.resultByQuestion!);
+    resultMap.addAll(
+      {state.part3467![state.currentIndex!].id!.toString(): resultList},
+    );
     emit(
       state.copyWith(
         status: ToeicStatus.done,
         totalCorrect: state.totalCorrect!,
+        chosenIndex125: questionIndex,
+        result3467: resultList,
+        resultByQuestion: resultMap,
       ),
     );
     if (state.currentIndex! >= state.part3467!.length - 1) {
