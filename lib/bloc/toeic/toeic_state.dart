@@ -12,13 +12,13 @@ class ToeicStatePartOne extends Equatable {
     this.totalCorrect,
     this.totalQuestion,
     this.currentIndex,
-    this.answerPart125,
     this.isAnswer125Correct,
     this.isAnswer3467Correct,
     this.chosenIndex125,
     this.chosenIndex3467,
     this.part,
     this.resultByQuestion,
+    this.result3467,
     this.timer,
     this.isReal,
     this.totalChosen,
@@ -31,7 +31,6 @@ class ToeicStatePartOne extends Equatable {
     totalCorrect = 0;
     totalQuestion = 0;
     currentIndex = 0;
-    answerPart125 = List<bool>.generate(4, (index) => false);
     totalChosen = 0;
     isAnswer125Correct = null;
     isAnswer3467Correct = List<bool?>.generate(5, (index) => null);
@@ -39,6 +38,7 @@ class ToeicStatePartOne extends Equatable {
     chosenIndex3467 = List<int?>.generate(5, (index) => -1);
     part = 0;
     resultByQuestion = {};
+    result3467 = [];
     timer = CountDownCubit();
     isReal = false;
   }
@@ -50,12 +50,12 @@ class ToeicStatePartOne extends Equatable {
   late final int? totalCorrect;
   late final int? totalQuestion;
   late final int? currentIndex;
-  late final List<bool>? answerPart125;
   late final bool? isAnswer125Correct;
   late final List<bool?>? isAnswer3467Correct;
   late final int? chosenIndex125;
   late final List<int?>? chosenIndex3467;
   late final Map<String, dynamic>? resultByQuestion;
+  late final List<String>? result3467;
   late final CountDownCubit? timer;
   late final bool? isReal;
   late final int? totalChosen;
@@ -69,22 +69,22 @@ class ToeicStatePartOne extends Equatable {
     int? totalCorrect,
     int? totalQuestion,
     int? currentIndex,
-    List<bool>? answerPart125,
     bool? isAnswer125Correct,
     List<bool?>? isAnswer3467Correct,
     int? chosenIndex125,
     List<int?>? chosenIndex3467,
     Map<String, dynamic>? resultByQuestion,
+    List<String>? result3467,
     CountDownCubit? timer,
     bool? isReal,
     int? totalChosen,
   }) {
     return ToeicStatePartOne(
+      result3467: result3467 ?? this.result3467,
       totalChosen: totalChosen ?? this.totalChosen,
       isReal: isReal ?? this.isReal,
       timer: timer ?? this.timer,
       part: part ?? this.part,
-      answerPart125: answerPart125 ?? this.answerPart125,
       status: status ?? this.status,
       part125: part125 ?? this.part125,
       part3467: part3467 ?? this.part3467,
@@ -111,11 +111,11 @@ class ToeicStatePartOne extends Equatable {
         totalQuestion,
         errorMessage,
         currentIndex,
-        answerPart125,
         isAnswer125Correct,
         isAnswer3467Correct,
         chosenIndex125,
         chosenIndex3467,
+        result3467,
         resultByQuestion,
         timer,
         totalChosen,

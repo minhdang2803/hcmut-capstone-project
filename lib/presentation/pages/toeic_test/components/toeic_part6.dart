@@ -34,6 +34,7 @@ class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
   late final Animation<Offset> _slideAnimation;
   late final AnimationController _slideAnimationController;
   late final TabController _tabController;
+  int questionINDEX = -1;
   static const tabs = <Tab>[
     Tab(child: FittedBox(child: Text('Đoạn văn'))),
     Tab(child: FittedBox(child: Text('Câu hỏi'))),
@@ -218,6 +219,7 @@ class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
             itemBuilder: (context, answerIndex) {
               return GestureDetector(
                 onTap: () async {
+                  setState(() => questionINDEX = questionIndex);
                   await context.read<ToeicCubitPartOne>().checkAnswerPart3(
                       userAnswer: question.answers![answerIndex],
                       questionIndex: questionIndex,
@@ -325,6 +327,7 @@ class _ToeicPartSixComponentState extends State<ToeicPartSixComponent>
             listener: (context, state) async {
               if (state.status == CountDownStatus.done) {
                 await context.read<ToeicCubitPartOne>().autoCheckAnswerPart3467(
+                      questionIndex: questionINDEX,
                       time: 200,
                       tabController: _tabController,
                       animation: widget.animationController,

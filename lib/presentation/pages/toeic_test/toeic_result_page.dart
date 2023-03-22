@@ -264,16 +264,22 @@ class ToeicResultPage extends StatelessWidget {
             },
           ),
           const Spacer(flex: 1),
-          IconButton(
-            onPressed: () {
-              Navigator.pop(context, true);
-              context.read<ToeicCubitPartOne>().deleteDataToServer();
-              context.read<ToeicCubitPartOne>().exit();
+          BlocBuilder<ToeicCubitPartOne, ToeicStatePartOne>(
+            builder: (context, state) {
+              return IconButton(
+                onPressed: () {
+                  Navigator.pop(context, true);
+                  context
+                      .read<ToeicCubitPartOne>()
+                      .updateScore(state.part!, state.resultByQuestion!);
+                  context.read<ToeicCubitPartOne>().exit();
+                },
+                icon: Icon(
+                  Icons.clear,
+                  size: 25.r,
+                ),
+              );
             },
-            icon: Icon(
-              Icons.clear,
-              size: 25.r,
-            ),
           )
         ],
       ),

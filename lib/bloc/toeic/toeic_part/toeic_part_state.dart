@@ -1,6 +1,6 @@
 part of 'toeic_part_cubit.dart';
 
-enum ToeicPartStatus { initial, loading, done, fail }
+enum ToeicPartStatus { initial, loading, done, fail, updateHistory }
 
 class ToeicPartState extends Equatable {
   // ignore: prefer_const_constructors_in_immutables

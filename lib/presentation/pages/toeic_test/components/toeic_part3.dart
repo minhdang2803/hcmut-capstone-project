@@ -35,6 +35,7 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
   late final Animation<Offset> _slideAnimation;
   late final AnimationController _slideAnimationController;
   bool isPlayed = false;
+  int questionINDEX = -1;
   @override
   void initState() {
     super.initState();
@@ -194,6 +195,7 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
             itemBuilder: (context, answerIndex) {
               return GestureDetector(
                 onTap: () async {
+                  setState(() => questionINDEX = questionIndex);
                   await context.read<ToeicCubitPartOne>().checkAnswerPart3(
                         userAnswer: question.answers![answerIndex],
                         questionIndex: questionIndex,
@@ -314,6 +316,7 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
             listener: (context, state) async {
               if (state.status == CountDownStatus.done) {
                 await context.read<ToeicCubitPartOne>().autoCheckAnswerPart3467(
+                  questionIndex: questionINDEX,
                       time: 90,
                       animation: widget.animationController,
                       audio: widget.audioService,
