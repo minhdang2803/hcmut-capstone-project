@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../../../../data/configs/hive_config.dart';
 import '../../../../../utils/widget_util.dart';
 import '../../../../routes/route_name.dart';
@@ -132,7 +131,7 @@ class ProfileSettingPanel extends StatelessWidget {
                                 await launchUrl(Uri.https(url, "/contact"),
                                     mode: LaunchMode.externalApplication,
                                     webViewConfiguration:
-                                        WebViewConfiguration());
+                                        const WebViewConfiguration());
                               } else {
                                 throw 'Could not launch $url';
                               }

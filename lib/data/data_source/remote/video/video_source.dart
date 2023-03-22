@@ -21,6 +21,7 @@ abstract class VideoSource {
   });
   Future<BaseResponse<VideoYoutubeInfo>> getVideo(String videoId);
   Future<BaseResponse<VideoYoutubeInfos>> getContinueWatching();
+  Future<BaseResponse<RecommendedVideos>> getRecommendedVideos();
   Future<BaseResponse> updateCkpt(String videoId, int ckpt);
 }
 
@@ -72,6 +73,24 @@ class VideoSourceImpl extends VideoSource {
       (response) => BaseResponse<VideoYoutubeInfos>.fromJson(
         json: response,
         dataBuilder: VideoYoutubeInfos.fromJson,
+      ),
+      header: header,
+    );
+    return _api.get(request);
+  }
+
+  @override
+  Future<BaseResponse<RecommendedVideos>> getRecommendedVideos() async {
+    const path = EndPoint.getRecommendedVideos;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+   
+    final request = APIServiceRequest(
+      path,
+      (response) => BaseResponse<RecommendedVideos>.fromJson(
+        json: response,
+        dataBuilder: RecommendedVideos.fromJson,
       ),
       header: header,
     );

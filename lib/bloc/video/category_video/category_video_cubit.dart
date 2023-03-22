@@ -20,12 +20,19 @@ class CategoryVideoCubit extends Cubit<CategoryVideoState> {
         emit(state.copyWith(errorMessage: 'Không có kết nối internet!'));
         return;
       }
+
       Map<String, List<VideoYoutubeInfo>> data = {};
       final results = await Future.wait([
         getVideo(pageKey: 1, pageSize: 5, category: "english ted-talk"),
         getVideo(pageKey: 1, pageSize: 5, category: "english ted-ed"),
         getVideo(pageKey: 1, pageSize: 5, category: "english in-a-nutshell")
       ]);
+      final response = await _videoRepository.getRecommendedVideos();
+      final recommendations = response.data!;
+
+      if (recommendations.list.isNotEmpty) {
+        data[recommendations.category] = recommendations.list;
+      }
 
       if (results[0].isNotEmpty) {
         data['category1'] = results[0];
@@ -38,6 +45,7 @@ class CategoryVideoCubit extends Cubit<CategoryVideoState> {
         data['category3'] = results[2];
       }
       final lastWatch = await _videoRepository.getRecentlyWatchList();
+      
       emit(
         state.copyWith(
             data: data, status: CategoryVideoStatus.done, videos: lastWatch),
@@ -84,6 +92,27 @@ class CategoryVideoCubit extends Cubit<CategoryVideoState> {
         level: level,
         title: title,
       );
+      final list = response.data?.list;
+      return list ?? [];
+    } on RemoteException catch (e, s) {
+      LogUtil.error(
+        'Get video list error: ${e.message}',
+        error: e,
+        stackTrace: s,
+      );
+    } catch (e, s) {
+      LogUtil.error(
+        'Get vide list error',
+        error: e,
+        stackTrace: s,
+      );
+    }
+    return [];
+  }
+
+  Future<List<VideoYoutubeInfo>> getRecommendation() async {
+    try {
+      final response = await _videoRepository.getRecommendedVideos();
       final list = response.data?.list;
       return list ?? [];
     } on RemoteException catch (e, s) {

@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bke/data/data_source/local/auth_local_source.dart';
+import 'package:bke/data/models/search/search_model.dart';
 import 'package:bke/presentation/pages/home/components/continue_card.dart';
 import 'package:bke/presentation/pages/home/components/join_quiz_card.dart';
 import 'package:bke/presentation/routes/route_name.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
-
 
 import '../../theme/app_color.dart';
 import '../main/components/monastery_search_delegate.dart';
@@ -157,12 +157,12 @@ class _NavigationPageState extends State<NavigationPage> {
     String greeting() {
       var hour = DateTime.now().hour;
       if (hour < 12) {
-        return 'buổi sáng ☀️ !';
+        return 'buổi sáng ☀️';
       }
       if (hour < 17) {
-        return 'buổi chiều ☀️ ! ';
+        return 'buổi chiều ☀️';
       }
-      return 'buổi tối 🌙 ';
+      return 'buổi tối 🌙';
     }
 
     return Padding(
@@ -181,7 +181,7 @@ class _NavigationPageState extends State<NavigationPage> {
                     fontSize: 18.r),
               ),
               Text(
-                user?.fullName ?? "clm",
+                user?.fullName ?? "User",
                 style: AppTypography.subHeadline
                     .copyWith(color: Colors.white, fontWeight: FontWeight.w700),
               ),
@@ -208,7 +208,11 @@ class _NavigationPageState extends State<NavigationPage> {
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: TextButton(
         onPressed: () {
-          showSearch(context: context, delegate: MonasterySearchDelegate());
+          showSearch(
+            context: context,
+            delegate: MonasterySearchDelegate(
+                searchType: SearchType.all, buildContext: context),
+          );
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),

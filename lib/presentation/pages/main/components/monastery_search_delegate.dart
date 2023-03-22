@@ -1,11 +1,22 @@
+import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
+import 'package:bke/presentation/pages/main/components/search_results.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../bloc/search/search_bloc.dart';
+import '../../../../bloc/search/search_event.dart';
+import '../../../../data/models/search/search_model.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_typography.dart';
 
 class MonasterySearchDelegate extends SearchDelegate {
+  MonasterySearchDelegate(
+      {required this.searchType, required this.buildContext});
+
   final List<String> _historySearch = [];
+  final SearchType searchType;
+  final BuildContext buildContext;
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -37,22 +48,40 @@ class MonasterySearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return Container(
-        color: AppColor.primary,
-        child: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Expanded(
-                child: Container(
-                    padding:
-                        const EdgeInsets.only(top: 20, left: 10, right: 10),
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                    ),
-                    child: Center(child: Text(query))))));
+      color: AppColor.primary,
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Container(
+        padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) {
+                if (searchType == SearchType.all) {
+                  return SearchBloc()..add(SearchAllEvent(query: query));
+                } else if (searchType == SearchType.videos) {
+                  return SearchBloc()..add(SearchVideosEvent(query: query));
+                }
+                return SearchBloc()..add(SearchBooksEvent(query: query));
+              },
+            ),
+          ],
+          child: searchType == SearchType.videos
+              ? BlocProvider.value(
+                  value: buildContext.read<CategoryVideoCubit>(),
+                  child: SearchResultsPage(),
+                )
+              : SearchResultsPage(),
+        ),
+      ),
+    );
   }
 
   @override
@@ -69,38 +98,34 @@ class MonasterySearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     return Container(
       color: AppColor.primary,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: Expanded(
-          child: Container(
-            padding: EdgeInsets.only(top: 20.r, left: 10.r, right: 10.r),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.r),
-                topRight: Radius.circular(20.r),
-              ),
+      padding: EdgeInsets.only(top: 10.0.r),
+      child: Container(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30.r),
+            topRight: Radius.circular(30.r),
+          ),
+        ),
+        child: ListView.separated(
+          padding: EdgeInsets.symmetric(vertical: 20.r),
+          separatorBuilder: (context, index) => 10.verticalSpace,
+          itemCount: _historySearch.length,
+          itemBuilder: (context, index) => ListTile(
+            leading: Image.asset(
+              'assets/images/default_logo.png',
+              width: 36.r,
+              height: 36.r,
+              fit: BoxFit.contain,
             ),
-            child: ListView.separated(
-              padding: EdgeInsets.symmetric(vertical: 20.r),
-              separatorBuilder: (context, index) => 10.verticalSpace,
-              itemCount: _historySearch.length,
-              itemBuilder: (context, index) => ListTile(
-                leading: Image.asset(
-                  'assets/images/default_logo.png',
-                  width: 36.r,
-                  height: 36.r,
-                  fit: BoxFit.contain,
-                ),
-                title: Text(_historySearch[index], style: AppTypography.body),
-                trailing: const Icon(Icons.history_rounded),
-                onTap: () {
-                  query = _historySearch[index];
-                  showResults(context);
-                },
-              ),
-            ),
+            title: Text(_historySearch[index], style: AppTypography.body),
+            trailing: const Icon(Icons.history_rounded),
+            onTap: () {
+              query = _historySearch[index];
+              showResults(context);
+            },
           ),
         ),
       ),
@@ -108,7 +133,11 @@ class MonasterySearchDelegate extends SearchDelegate {
   }
 
   @override
-  String get searchFieldLabel => 'Tra từ vựng, video, sách,...';
+  String get searchFieldLabel => searchType == SearchType.all
+      ? 'Tra từ vựng, video, sách,...'
+      : searchType == SearchType.books
+          ? 'Tra sách'
+          : 'Tra video';
 
   @override
   TextStyle? get searchFieldStyle =>
@@ -134,7 +163,9 @@ class MonasterySearchDelegate extends SearchDelegate {
         filled: true,
         fillColor: Colors.black.withOpacity(0.1),
         border: UnderlineInputBorder(
-          borderRadius: BorderRadius.circular(15.r),
+          borderRadius: BorderRadius.circular(
+            15.r,
+          ),
         ),
       ),
     );

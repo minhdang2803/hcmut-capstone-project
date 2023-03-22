@@ -21,10 +21,10 @@ import 'presentation/theme/app_theme.dart';
 import 'presentation/widgets/custom_restart_widget.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
+  // WidgetsFlutterBinding.ensureInitialized();
+  // RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
   // Initialize the BackgroundIsolateBinaryMessenger
-  BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+  // BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
   await initServices();
   await HiveConfig().init();
   // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(

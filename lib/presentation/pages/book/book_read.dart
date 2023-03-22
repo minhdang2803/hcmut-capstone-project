@@ -291,7 +291,7 @@ class _BookReadState extends State<BookRead> {
                             setInitialCkpt(_ebook.ckpt);
                             Future.delayed(const Duration(seconds: 2), () {
                               _scrollController.animateTo(_position - 100.0,
-                                  duration: const Duration(seconds: 3),
+                                  duration: const Duration(seconds: 1),
                                   curve: Curves.easeInOut);
                             });
                             // Perform the action here

@@ -194,7 +194,7 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
     return FadeTransition(
       opacity: _animationEaseOut,
       child: Container(
-        width: double.infinity,
+        width: MediaQuery.of(context).size.width * 0.6,
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.symmetric(horizontal: 30.r),
         child: ListView.separated(
@@ -204,57 +204,63 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
             children: [
               SkeletonAvatar(
                 style: SkeletonAvatarStyle(
-                    shape: BoxShape.rectangle, width: 100.r, height: 70.r),
+                  shape: BoxShape.rectangle,
+                  width: 100.r,
+                  height: 70.r,
+                ),
               ),
               SizedBox(width: 15.r),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SkeletonLine(
-                      style: SkeletonLineStyle(
-                        height: 15.r,
-                        borderRadius: BorderRadius.circular(8),
-                        width: double.infinity,
-                      ),
-                    ),
-                    SizedBox(height: 4.r),
-                    SkeletonLine(
-                      style: SkeletonLineStyle(
-                        randomLength: true,
-                        height: 15.r,
-                        borderRadius: BorderRadius.circular(8),
-                        minLength: MediaQuery.of(context).size.width / 6,
-                        maxLength: MediaQuery.of(context).size.width / 3,
-                      ),
-                    ),
-                    SizedBox(height: 12.r),
-                    Row(
-                      children: [
-                        SkeletonLine(
-                          style: SkeletonLineStyle(
-                            randomLength: true,
-                            height: 20.r,
-                            borderRadius: BorderRadius.circular(8),
-                            minLength: 40.r,
-                            maxLength: 70.r,
-                          ),
+              Flex(
+                direction: Axis.vertical,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SkeletonLine(
+                        style: SkeletonLineStyle(
+                          height: 15.r,
+                          borderRadius: BorderRadius.circular(8),
+                          width: MediaQuery.of(context).size.width * 0.5,
                         ),
-                        10.horizontalSpace,
-                        SkeletonLine(
-                          style: SkeletonLineStyle(
-                            randomLength: true,
-                            height: 20.r,
-                            borderRadius: BorderRadius.circular(8),
-                            minLength: 60.r,
-                            maxLength: 90.r,
-                          ),
+                      ),
+                      SizedBox(height: 4.r),
+                      SkeletonLine(
+                        style: SkeletonLineStyle(
+                          randomLength: true,
+                          height: 15.r,
+                          borderRadius: BorderRadius.circular(8),
+                          minLength: MediaQuery.of(context).size.width / 6,
+                          maxLength: MediaQuery.of(context).size.width / 3,
                         ),
-                      ],
-                    )
-                  ],
-                ),
+                      ),
+                      SizedBox(height: 12.r),
+                      Row(
+                        children: [
+                          SkeletonLine(
+                            style: SkeletonLineStyle(
+                              randomLength: true,
+                              height: 20.r,
+                              borderRadius: BorderRadius.circular(8),
+                              minLength: 40.r,
+                              maxLength: 70.r,
+                            ),
+                          ),
+                          10.horizontalSpace,
+                          SkeletonLine(
+                            style: SkeletonLineStyle(
+                              randomLength: true,
+                              height: 20.r,
+                              borderRadius: BorderRadius.circular(8),
+                              minLength: 60.r,
+                              maxLength: 90.r,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
               ),
             ],
           ),

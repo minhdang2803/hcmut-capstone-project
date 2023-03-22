@@ -11,7 +11,7 @@ import 'package:bke/bloc/video/video_cubit.dart';
 
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
-import 'package:bke/presentation/pages/book/books_screen.dart';
+import 'package:bke/presentation/pages/book/books_page.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
 import 'package:bke/presentation/pages/flashcard/flashcards.dart';
 import 'package:bke/presentation/pages/quiz/quizzes.dart';
@@ -140,12 +140,11 @@ class RouteGenerator {
           providers: [
             BlocProvider(create: (context) => VideoCubit()),
             BlocProvider(create: (context) => LastWatchVideoCubit()),
+            BlocProvider.value(
+                value: BlocProvider.of<CategoryVideoCubit>(videoId.context,
+                    listen: false)),
           ],
-          child: BlocProvider.value(
-            value: BlocProvider.of<CategoryVideoCubit>(videoId.context,
-                listen: false),
-            child: VideoPlayerPage(video: videoId.video),
-          ),
+          child: VideoPlayerPage(video: videoId.video),
         );
         break;
 

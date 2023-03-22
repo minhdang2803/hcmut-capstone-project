@@ -53,8 +53,8 @@ class BkEAppBar extends StatelessWidget {
             _buildNotificationIcon(context),
             if (onSearchButtonPress != null) 12.horizontalSpace,
             _buildSearchIcon(context),
-            10.horizontalSpace,
-            _buildOptions(context)
+            // 10.horizontalSpace,
+            // _buildOptions(context)
           ],
         ),
       ),
