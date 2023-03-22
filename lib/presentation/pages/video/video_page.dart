@@ -64,8 +64,8 @@ class _VideoPageState extends State<VideoPage>
               onSearchButtonPress: () async {
                 await showSearch(
                   context: context,
-                  delegate:
-                      MonasterySearchDelegate(searchType: SearchType.videos),
+                  delegate: MonasterySearchDelegate(
+                      searchType: SearchType.videos, buildContext: context),
                 );
               },
             ),

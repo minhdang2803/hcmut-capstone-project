@@ -128,10 +128,7 @@ class RouteGenerator {
         break;
 
       case RouteName.videoPage:
-        page = BlocProvider(
-          create: (context) => CategoryVideoCubit(),
-          child: const VideoPage(),
-        );
+        page = const VideoPage();
         break;
 
       case RouteName.videoPlayer:
@@ -140,9 +137,11 @@ class RouteGenerator {
           providers: [
             BlocProvider(create: (context) => VideoCubit()),
             BlocProvider(create: (context) => LastWatchVideoCubit()),
+            BlocProvider.value(
+                value: BlocProvider.of<CategoryVideoCubit>(videoId.context,
+                    listen: false)),
           ],
           child: VideoPlayerPage(video: videoId.video),
-          
         );
         break;
 

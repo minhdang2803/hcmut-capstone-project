@@ -11,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 
-
 import '../../theme/app_color.dart';
 import '../main/components/monastery_search_delegate.dart';
 
@@ -209,7 +208,11 @@ class _NavigationPageState extends State<NavigationPage> {
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: TextButton(
         onPressed: () {
-          showSearch(context: context, delegate: MonasterySearchDelegate(searchType: SearchType.all));
+          showSearch(
+            context: context,
+            delegate: MonasterySearchDelegate(
+                searchType: SearchType.all, buildContext: context),
+          );
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
