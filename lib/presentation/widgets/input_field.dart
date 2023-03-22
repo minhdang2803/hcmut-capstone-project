@@ -5,17 +5,17 @@ import '../../data/models/search/search_model.dart';
 import '../pages/main/components/monastery_search_delegate.dart';
 
 class InputField extends StatelessWidget {
-  const InputField({
-    Key? key,
-    this.hintText,
-    this.hintStyle,
-    this.prefixIcon,
-    this.suffixIcon,
-    this.controller,
-    this.onChange,
-    this.focusNode,
-    this.color
-  }) : super(key: key);
+  const InputField(
+      {Key? key,
+      this.hintText,
+      this.hintStyle,
+      this.prefixIcon,
+      this.suffixIcon,
+      this.controller,
+      this.onChange,
+      this.focusNode,
+      this.color})
+      : super(key: key);
 
   final String? hintText;
   final TextStyle? hintStyle;
@@ -31,20 +31,21 @@ class InputField extends StatelessWidget {
     return TextField(
       controller: controller,
       focusNode: focusNode,
-      
       onTap: () {
-                showSearch(
-                  context: context,
-                  delegate: MonasterySearchDelegate(searchType: SearchType.all),
-                );
-              },
+        showSearch(
+          context: context,
+          delegate: MonasterySearchDelegate(
+            searchType: SearchType.all,
+            buildContext: context,
+          ),
+        );
+      },
       decoration: InputDecoration(
         filled: true,
         fillColor: color,
         border: UnderlineInputBorder(
-          borderRadius: BorderRadius.circular(15.r),  
+          borderRadius: BorderRadius.circular(15.r),
         ),
-
         hintText: hintText,
         hintStyle: hintStyle,
         prefixIcon: prefixIcon,

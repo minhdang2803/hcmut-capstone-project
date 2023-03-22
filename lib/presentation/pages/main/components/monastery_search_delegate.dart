@@ -1,3 +1,4 @@
+import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
 import 'package:bke/presentation/pages/main/components/search_results.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,10 +11,12 @@ import '../../../theme/app_color.dart';
 import '../../../theme/app_typography.dart';
 
 class MonasterySearchDelegate extends SearchDelegate {
-  MonasterySearchDelegate({required this.searchType});
+  MonasterySearchDelegate(
+      {required this.searchType, required this.buildContext});
 
   final List<String> _historySearch = [];
   final SearchType searchType;
+  final BuildContext buildContext;
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -45,28 +48,40 @@ class MonasterySearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return Container(
-        color: AppColor.primary,
-        padding: const EdgeInsets.only(top: 20.0),
-        child: Container(
-            padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
+      color: AppColor.primary,
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Container(
+        padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) {
+                if (searchType == SearchType.all) {
+                  return SearchBloc()..add(SearchAllEvent(query: query));
+                } else if (searchType == SearchType.videos) {
+                  return SearchBloc()..add(SearchVideosEvent(query: query));
+                }
+                return SearchBloc()..add(SearchBooksEvent(query: query));
+              },
             ),
-            child: BlocProvider(
-                create: (context) {
-                  if (searchType == SearchType.all) {
-                    return SearchBloc()..add(SearchAllEvent(query: query));
-                  } else if (searchType == SearchType.videos) {
-                    return SearchBloc()..add(SearchVideosEvent(query: query));
-                  }
-                  return SearchBloc()..add(SearchBooksEvent(query: query));
-                },
-                child: SearchResultsPage())));
+          ],
+          child: searchType == SearchType.videos
+              ? BlocProvider.value(
+                  value: buildContext.read<CategoryVideoCubit>(),
+                  child: SearchResultsPage(),
+                )
+              : SearchResultsPage(),
+        ),
+      ),
+    );
   }
 
   @override

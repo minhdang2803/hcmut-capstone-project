@@ -194,7 +194,7 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
     return FadeTransition(
       opacity: _animationEaseOut,
       child: Container(
-        width: double.infinity,
+        width: MediaQuery.of(context).size.width * 0.6,
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.symmetric(horizontal: 30.r),
         child: ListView.separated(
@@ -204,7 +204,10 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
             children: [
               SkeletonAvatar(
                 style: SkeletonAvatarStyle(
-                    shape: BoxShape.rectangle, width: 100.r, height: 70.r),
+                  shape: BoxShape.rectangle,
+                  width: 100.r,
+                  height: 70.r,
+                ),
               ),
               SizedBox(width: 15.r),
               Flex(
@@ -218,7 +221,7 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
                         style: SkeletonLineStyle(
                           height: 15.r,
                           borderRadius: BorderRadius.circular(8),
-                          width: double.infinity,
+                          width: MediaQuery.of(context).size.width * 0.5,
                         ),
                       ),
                       SizedBox(height: 4.r),

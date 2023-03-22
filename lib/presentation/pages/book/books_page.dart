@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 import '../../../bloc/book/book_bloc.dart';
 import '../../../bloc/book/book_state.dart';
 import '../../../bloc/book/book_event.dart';
@@ -35,8 +34,12 @@ class BookPage extends StatelessWidget {
                 BkEAppBar(
                   label: 'Thư viện',
                   onBackButtonPress: () => Navigator.pop(context),
-                  onSearchButtonPress: (){
-                    showSearch(context: context, delegate: MonasterySearchDelegate(searchType: SearchType.books));
+                  onSearchButtonPress: () {
+                    showSearch(
+                        context: context,
+                        delegate: MonasterySearchDelegate(
+                            searchType: SearchType.books,
+                            buildContext: context));
                   },
                 ),
                 // _buildOptionBar(context),
@@ -95,7 +98,10 @@ class BookPage extends StatelessWidget {
               size: 35.r,
             ),
             onPressed: () {
-              showSearch(context: context, delegate: MonasterySearchDelegate(searchType: SearchType.books));
+              showSearch(
+                  context: context,
+                  delegate: MonasterySearchDelegate(
+                      searchType: SearchType.books, buildContext: context));
             },
           )
         ],
@@ -119,26 +125,20 @@ class BookPage extends StatelessWidget {
         if (heading == 'Home') {
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            children:
-            [
+            children: [
               BookSection(
-                heading: bookList[0].category, 
-                bookList: bookList[0].list),
+                  heading: bookList[0].category, bookList: bookList[0].list),
               BookSection(
-                heading: bookList[1].category, 
-                bookList: bookList[1].list),
+                  heading: bookList[1].category, bookList: bookList[1].list),
               BookSection(
-                heading: bookList[2].category, 
-                bookList: bookList[2].list),
+                  heading: bookList[2].category, bookList: bookList[2].list),
               BookSection(
-                heading: bookList[3].category, 
-                bookList: bookList[3].list),
+                  heading: bookList[3].category, bookList: bookList[3].list),
               BookSection(
-                heading: bookList[4].category, 
-                bookList: bookList[4].list)
+                  heading: bookList[4].category, bookList: bookList[4].list)
             ],
           ); //Continue reading
-        }else {
+        } else {
           return BookSectionDisplayAll(heading: heading, bookList: bookList);
         }
       }
@@ -159,7 +159,3 @@ class BookPage extends StatelessWidget {
     });
   }
 }
-
-
-
-
