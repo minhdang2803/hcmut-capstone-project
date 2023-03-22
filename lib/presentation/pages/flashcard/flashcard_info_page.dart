@@ -254,7 +254,7 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
     AnimationController controller,
     BuildContext context,
   ) {
-    audio.setAudio(audioUrl);
+    audio.setAudioInternet(audioUrl);
 
     return PlayPauseButton(
       controller: controller,

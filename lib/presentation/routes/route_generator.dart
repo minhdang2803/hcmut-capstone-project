@@ -1,8 +1,9 @@
-import 'package:bke/bloc/cubit/count_down_cubit.dart';
+import 'package:bke/bloc/countdown_cubit/count_down_cubit.dart';
 import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_timer/quiz_timer_cubit.dart';
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
+import 'package:bke/bloc/toeic/toeic_history/toeic_history_cubit.dart';
 import 'package:bke/bloc/toeic/toeic_part/toeic_part_cubit.dart';
 import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
 import 'package:bke/bloc/video/last_watch_video/last_watch_video_cubit.dart';
@@ -14,8 +15,6 @@ import 'package:bke/presentation/pages/book/books_page.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
 import 'package:bke/presentation/pages/flashcard/flashcards.dart';
 import 'package:bke/presentation/pages/quiz/quizzes.dart';
-import 'package:bke/presentation/pages/toeic_test/toeic_do_test_page.dart';
-import 'package:bke/presentation/pages/toeic_test/toeic_instruction_page.dart';
 import 'package:bke/presentation/pages/video/videos.dart';
 
 import 'package:flutter/material.dart';
@@ -28,7 +27,6 @@ import '../pages/my_dictionary/my_dictionary.dart';
 import '../pages/my_dictionary/vocab_full_info_page.dart';
 import '../pages/notification/notifications_page.dart';
 
-import '../pages/toeic_test/toeic_page.dart';
 import '../pages/toeic_test/toeics.dart';
 import '../pages/welcome/welcome.dart';
 import '../pages/main/home_page.dart';
@@ -64,7 +62,10 @@ class RouteGenerator {
 
       case RouteName.startToeic:
         page = MultiBlocProvider(
-          providers: [BlocProvider(create: (context) => ToeicPartCubit())],
+          providers: [
+            BlocProvider(create: (context) => ToeicPartCubit()),
+            BlocProvider(create: (context) => ToeicHistoryCubit()),
+          ],
           child: const StartToeic(),
         );
 
@@ -76,6 +77,7 @@ class RouteGenerator {
           providers: [
             BlocProvider.value(value: args.context.read<ToeicPartCubit>()),
             BlocProvider(create: (context) => ToeicCubitPartOne()),
+            // BlocProvider(create: (context) => ToeicPart3467Cubit())
           ],
           child: ToeicInstructionPage(
             imgUrl: args.imgUrl,
@@ -90,8 +92,11 @@ class RouteGenerator {
         page = MultiBlocProvider(
           providers: [
             BlocProvider.value(value: args.context.read<ToeicCubitPartOne>()),
+            // BlocProvider.value(value: args.context.read<ToeicPart3467Cubit>()),
             BlocProvider<CountDownCubit>.value(
                 value: args.context.read<ToeicCubitPartOne>().state.timer!),
+            // BlocProvider<CountDownCubit>.value(
+            //     value: args.context.read<ToeicPart3467Cubit>().state.timer!),
           ],
           child: ToeicDoTestPage(
             part: args.part,

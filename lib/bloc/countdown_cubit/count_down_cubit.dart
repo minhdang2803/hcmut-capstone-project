@@ -24,12 +24,23 @@ class CountDownCubit extends Cubit<CountDownState> {
         emit(state.copyWith(status: CountDownStatus.done));
       }
     });
-    emit(state.copyWith(status: CountDownStatus.done));
   }
 
   void pause() {
     _timer.cancel();
     emit(state.copyWith(status: CountDownStatus.pause));
+  }
+
+  void reset() {
+    _timer.cancel();
+    emit(state.copyWith(
+      timeLeft: 0,
+      status: CountDownStatus.initial,
+    ));
+  }
+
+  void resume() {
+    start(state.timeLeft!);
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
+// ignore: unused_import
 import 'package:bke/data/models/video/video_models.dart';
 import 'package:bke/presentation/pages/video/video_see_more_page.dart';
 import 'package:bke/presentation/pages/video/videos.dart';
@@ -83,7 +84,7 @@ class _VideoPageState extends State<VideoPage>
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(20.r)),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(30.r)),
           ),
           child: ListView(
             padding: EdgeInsets.only(bottom: 30.r),

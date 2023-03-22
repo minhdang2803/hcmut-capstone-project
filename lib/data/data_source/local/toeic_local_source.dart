@@ -109,14 +109,14 @@ class ToeicLocalSourceImpl implements ToeicLocalSource {
 
   @override
   LocalToeicPart? getPartFromLocal(int part, {int limit = 10}) {
-    late LocalToeicPart toeicPart;
+    LocalToeicPart? toeicPart;
     final List<LocalToeicPart> parts = [];
     final box = Hive.box(HiveConfig.toeicPart);
     final userId = getUserId();
 
     // 1. get Box of Toeic Part
     final List<dynamic> response = box.get(userId, defaultValue: []);
-    // 2. addAll element from local to a partsget
+    // 2. addAll element from local to a parts get
     for (final element in response) {
       parts.add(element);
     }
@@ -128,7 +128,9 @@ class ToeicLocalSourceImpl implements ToeicLocalSource {
         break;
       }
     }
-
+    if (toeicPart == null) {
+      return null;
+    }
     // 4. check if the part is Question or GroupQuestion
 
     if ([1, 2, 5].contains(part)) {

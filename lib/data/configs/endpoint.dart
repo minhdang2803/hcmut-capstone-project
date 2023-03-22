@@ -51,6 +51,8 @@ class EndPoint {
 
   //Toeic
   static const getPart = "$_baseUrl/toeic/practice";
+  static const submitToeicScore = "$_baseUrl/toeic/submit";
+  static const toeicHistory = "$_baseUrl/toeic/submit/history";
 
   // calendar
   static const getHistoryActivities =

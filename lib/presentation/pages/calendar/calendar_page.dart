@@ -75,16 +75,16 @@ class _CalendarPageState extends State<CalendarPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final topPadding = MediaQuery.of(context).padding.top;
+    // final topPadding = MediaQuery.of(context).padding.top;
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(top: topPadding),
+      body: Container(
+        color: AppColor.primary,
+        // padding: EdgeInsets.only(top: topPadding),
         child: Column(
           children: [
-            BkEAppBar(
-              label: 'Lịch sử',
-              onBackButtonPress: () => Navigator.pop(context),
-            ),
+            const BkEAppBar(label: 'Lịch sử'
+                // onBackButtonPress: () => Navigator.pop(context),
+                ),
             Expanded(
               child: _buildBody(),
             )
