@@ -1,4 +1,5 @@
 import 'package:bke/data/data_source/local/video_local_source.dart';
+import 'package:bke/utils/log_util.dart';
 import '../data_source/remote/video/video_source.dart';
 import '../models/network/base_response.dart';
 import '../models/video/sub_video_model.dart';
@@ -20,10 +21,9 @@ class VideoRepository {
     _videoLocalSource.saveRecentlyWatchVideos(video);
   }
 
-  Future<List<VideoYoutubeInfo>> getRecentlyWatchList() async {
-    final response = await _videoSource.getContinueWatching();
-    final data = response.data!.list;
-    return data;
+  Future<BaseResponse<VideoYoutubeInfos>> getRecentlyWatchList() {
+    final response = _videoSource.getContinueWatching();
+    return response;
   }
 
   Future<BaseResponse<void>> saveProcess(

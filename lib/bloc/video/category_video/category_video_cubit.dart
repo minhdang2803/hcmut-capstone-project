@@ -1,3 +1,4 @@
+import 'package:bke/bloc/video/last_watch_video/last_watch_video_cubit.dart';
 import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/video/video_models.dart';
 import 'package:bke/data/repositories/video_repository.dart';
@@ -28,9 +29,9 @@ class CategoryVideoCubit extends Cubit<CategoryVideoState> {
         getVideo(pageKey: 1, pageSize: 5, category: "english in-a-nutshell")
       ]);
       final response = await _videoRepository.getRecommendedVideos();
-      final recommendations = response.data!;
+      final recommendations = response.data;
 
-      if (recommendations.list.isNotEmpty) {
+      if (recommendations != null) {
         data[recommendations.category] = recommendations.list;
       }
 
@@ -44,8 +45,9 @@ class CategoryVideoCubit extends Cubit<CategoryVideoState> {
       if (results[2].isNotEmpty) {
         data['category3'] = results[2];
       }
-      final lastWatch = await _videoRepository.getRecentlyWatchList();
-      
+      final lastWatchRes = await _videoRepository.getRecentlyWatchList();
+      final lastWatch = lastWatchRes.data!.list;
+  
       emit(
         state.copyWith(
             data: data, status: CategoryVideoStatus.done, videos: lastWatch),
@@ -66,7 +68,8 @@ class CategoryVideoCubit extends Cubit<CategoryVideoState> {
     try {
       emit(state.copyWith(status: CategoryVideoStatus.loading));
       final response = await _videoRepository.getRecentlyWatchList();
-      emit(state.copyWith(status: CategoryVideoStatus.done, videos: response));
+      final data = response.data!.list;
+      emit(state.copyWith(status: CategoryVideoStatus.done, videos: data));
     } on RemoteException catch (error) {
       emit(
         state.copyWith(

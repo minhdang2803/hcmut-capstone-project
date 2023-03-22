@@ -100,6 +100,7 @@ class VideoYoutubeInfo {
       "category": category,
       "isVerify": isVerify,
       "adminVerify": adminVerify,
+      "checkpoint": checkpoint
     };
   }
 }
@@ -107,11 +108,13 @@ class VideoYoutubeInfo {
 class RecommendedVideos {
   RecommendedVideos({required this.category, required this.list});
 
-  late final String category; 
+  String category = ''; 
   List<VideoYoutubeInfo> list = [];
 
   RecommendedVideos.fromJson(Map<String, dynamic> json) {
-    category = json['category'];
+    if (json['category'] != null){
+      category = json['category'];
+    }
     if (json['list'] != null) {
       for (var e in (json['list'] as List)) {
         list.add(VideoYoutubeInfo.fromJson(e));
