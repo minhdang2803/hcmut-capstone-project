@@ -60,4 +60,9 @@ class ToeicRepository {
   ToeicResultLocal? getToeicResultByPart(int part) {
     return _local.getResultByPartFromLocal(part);
   }
+
+  Future<ToeicHistoryResponse>? getHistory() async {
+    final response = await _remote.getHistory();
+    return response.data!;
+  }
 }

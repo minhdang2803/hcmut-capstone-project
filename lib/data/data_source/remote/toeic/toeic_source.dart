@@ -15,6 +15,7 @@ abstract class ToeicSource {
       int part, int limit);
   Future<BaseResponse<void>> updateScore(
       {required Map<String, dynamic> data, required int part});
+  Future<BaseResponse<ToeicHistoryResponse>> getHistory();
 }
 
 class ToeicSourceImpl extends ToeicSource {
@@ -79,5 +80,22 @@ class ToeicSourceImpl extends ToeicSource {
     );
     LogUtil.debug("Get toeic test: ${{'part$part': data}}");
     return _api.post(request);
+  }
+
+  @override
+  Future<BaseResponse<ToeicHistoryResponse>> getHistory() async {
+    const path = EndPoint.toeicHistory;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+    final request = APIServiceRequest(
+      path,
+      header: header,
+      (response) => BaseResponse<ToeicHistoryResponse>.fromJson(
+        json: response,
+        dataBuilder: ToeicHistoryResponse.fromJson,
+      ),
+    );
+    return _api.get(request);
   }
 }

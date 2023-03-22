@@ -2,7 +2,6 @@ import 'package:bke/bloc/toeic/toeic_cubit.dart';
 import 'package:bke/data/services/audio_service.dart';
 import 'package:bke/presentation/pages/toeic_test/toeics.dart';
 import 'package:bke/presentation/theme/app_color.dart';
-import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/presentation/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -89,7 +88,7 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
                         message: 'Quá trình sẽ bị huỷ bỏ!',
                         onAccepted: () {
                           context.read<ToeicCubitPartOne>().exit();
-                          Navigator.pop(context);
+                          Navigator.pop(context, true);
                         },
                         onDismissed: () => context
                             .read<ToeicCubitPartOne>()

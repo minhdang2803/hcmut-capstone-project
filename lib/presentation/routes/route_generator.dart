@@ -3,6 +3,7 @@ import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_timer/quiz_timer_cubit.dart';
 import 'package:bke/bloc/toeic/toeic_cubit.dart';
+import 'package:bke/bloc/toeic/toeic_history/toeic_history_cubit.dart';
 import 'package:bke/bloc/toeic/toeic_part/toeic_part_cubit.dart';
 import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
 import 'package:bke/bloc/video/last_watch_video/last_watch_video_cubit.dart';
@@ -61,7 +62,10 @@ class RouteGenerator {
 
       case RouteName.startToeic:
         page = MultiBlocProvider(
-          providers: [BlocProvider(create: (context) => ToeicPartCubit())],
+          providers: [
+            BlocProvider(create: (context) => ToeicPartCubit()),
+            BlocProvider(create: (context) => ToeicHistoryCubit()),
+          ],
           child: const StartToeic(),
         );
 

@@ -97,3 +97,66 @@ class ToeicGroupQuestionResponse {
     );
   }
 }
+
+class ToeicHistoryResponse {
+  List<ToeicHistory> histories;
+  ToeicHistoryResponse(this.histories);
+  factory ToeicHistoryResponse.fromJson(Map<String, dynamic> json) {
+    return ToeicHistoryResponse(
+      (json['data'] as List<dynamic>)
+          .map((e) => ToeicHistory.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+class ToeicHistory {
+  final ToeicHistoryScore score;
+
+  ToeicHistory({required this.score});
+
+  factory ToeicHistory.fromJson(Map<String, dynamic> json) {
+    return ToeicHistory(
+      score: ToeicHistoryScore.fromJson(json['score']),
+    );
+  }
+}
+
+class ToeicHistoryScore {
+  final ToeicPart? part1;
+  final ToeicPart? part2;
+  final ToeicPart? part3;
+  final ToeicPart? part4;
+  final ToeicPart? part5;
+  final ToeicPart? part6;
+  final ToeicPart? part7;
+  ToeicHistoryScore({
+    required this.part1,
+    required this.part2,
+    required this.part3,
+    required this.part4,
+    required this.part5,
+    required this.part6,
+    required this.part7,
+  });
+  factory ToeicHistoryScore.fromJson(Map<String, dynamic> json) {
+    return ToeicHistoryScore(
+      part1: json['part1'] != null ? ToeicPart.fromJson(json['part1']) : null,
+      part2: json['part2'] != null ? ToeicPart.fromJson(json['part2']) : null,
+      part3: json['part3'] != null ? ToeicPart.fromJson(json['part3']) : null,
+      part4: json['part4'] != null ? ToeicPart.fromJson(json['part4']) : null,
+      part5: json['part5'] != null ? ToeicPart.fromJson(json['part5']) : null,
+      part6: json['part6'] != null ? ToeicPart.fromJson(json['part6']) : null,
+      part7: json['part7'] != null ? ToeicPart.fromJson(json['part7']) : null,
+    );
+  }
+}
+
+class ToeicPart {
+  final int total;
+  final int noCorrect;
+  ToeicPart({required this.total, required this.noCorrect});
+  factory ToeicPart.fromJson(Map<String, dynamic> json) {
+    return ToeicPart(total: json['total'], noCorrect: json['noCorrect']);
+  }
+}

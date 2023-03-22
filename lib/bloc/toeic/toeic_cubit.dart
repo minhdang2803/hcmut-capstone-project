@@ -184,7 +184,6 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
       state.timer!.start(25);
       audio.play();
     }
-    print(state.resultByQuestion!);
   }
 
   Future<void> checkAnswerPart5(String userAnswer, int questionIndex,
