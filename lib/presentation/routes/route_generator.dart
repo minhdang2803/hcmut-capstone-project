@@ -136,11 +136,8 @@ class RouteGenerator {
             BlocProvider(create: (context) => VideoCubit()),
             BlocProvider(create: (context) => LastWatchVideoCubit()),
           ],
-          child: BlocProvider.value(
-            value: BlocProvider.of<CategoryVideoCubit>(videoId.context,
-                listen: false),
-            child: VideoPlayerPage(video: videoId.video),
-          ),
+          child: VideoPlayerPage(video: videoId.video),
+          
         );
         break;
 

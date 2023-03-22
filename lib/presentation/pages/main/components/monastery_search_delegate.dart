@@ -83,17 +83,19 @@ class MonasterySearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     return Container(
       color: AppColor.primary,
-      padding: EdgeInsets.only(top: 10.0.r),
-      child: Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.r),
-            topRight: Radius.circular(30.r),
+      padding: const EdgeInsets.only(top: 20.0),
+      
+        child: Container(
+          padding: EdgeInsets.only(top: 20.r, left: 10.r, right: 10.r),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r),
+              topRight: Radius.circular(20.r),
+            ),
           ),
-        ),
+        
         child: ListView.separated(
           padding: EdgeInsets.symmetric(vertical: 20.r),
           separatorBuilder: (context, index) => 10.verticalSpace,
@@ -113,7 +115,7 @@ class MonasterySearchDelegate extends SearchDelegate {
             },
           ),
         ),
-      ),
+      )
     );
   }
 
