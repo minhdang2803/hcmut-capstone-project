@@ -70,41 +70,6 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.primary,
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   automaticallyImplyLeading: false,
-      //   title: Row(
-      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //     crossAxisAlignment: CrossAxisAlignment.center,
-      //     children: [
-      //       BackButton(
-      //         onPressed: () {
-      //           context.read<ToeicCubitPartOne>().stopCountDown(_audio);
-      //           WidgetUtil.showDialog(
-      //             context: context,
-      //             title: 'Thoát khỏi màn chơi',
-      //             message: 'Quá trình sẽ bị huỷ bỏ!',
-      //             onAccepted: () {
-      //               context.read<ToeicCubitPartOne>().exit();
-      //               Navigator.pop(context);
-      //             },
-      //             onDismissed: () =>
-      //                 context.read<ToeicCubitPartOne>().resumeCountDown(_audio),
-      //           );
-      //         },
-      //       ),
-      //       Align(
-      //         alignment: Alignment.center,
-      //         child: Text(
-      //           widget.title,
-      //           style: AppTypography.subHeadline
-      //               .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-      //         ),
-      //       ),
-      //       SizedBox(width: 35.r)
-      //     ],
-      //   ),
-      // ),
       body: SafeArea(
         bottom: false,
         child: BlocBuilder<ToeicCubitPartOne, ToeicStatePartOne>(

@@ -16,6 +16,10 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
 
   final instance = ToeicRepository.instance();
 
+  Future<void> updateScore(int part, Map<String, dynamic> data) async {
+    await instance.updateScoreToServer(part: part, data: data);
+  }
+
   List<String> calculateList3467(int index, String option, {int length = 4}) {
     final List<String> resultList = List.generate(length, (index) => "");
 
@@ -26,9 +30,8 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     return resultList;
   }
 
-  Map<String, dynamic> calculateResult(String option, int index,
+  Map<String, dynamic> calculateResult(List<String> resultList,
       {int length = 4}) {
-    final resultList = calculateList3467(index, option, length: length);
     final Map<String, dynamic> resultMap = {};
     resultMap.addAll(state.resultByQuestion!);
     resultMap.addAll(
@@ -134,7 +137,11 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     state.timer!.reset();
     emit(state.copyWith(status: ToeicStatus.loading));
     final answer = state.part125![state.currentIndex!].correctAnswer!;
-
+    final Map<String, dynamic> data = {};
+    data.addAll(state.resultByQuestion!);
+    data.addAll({
+      state.part125![state.currentIndex!].id!.toString(): userAnswer[0],
+    });
     if (userAnswer.replaceAll(".", "") == answer) {
       emit(
         state.copyWith(
@@ -142,9 +149,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
           isAnswer125Correct: true,
           totalCorrect: state.totalCorrect! + 1,
           chosenIndex125: questionIndex,
-          resultByQuestion: {
-            state.part125![state.currentIndex!].id!.toString(): userAnswer[0],
-          },
+          resultByQuestion: data,
         ),
       );
     } else {
@@ -154,9 +159,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
           isAnswer125Correct: false,
           totalCorrect: state.totalCorrect!,
           chosenIndex125: questionIndex,
-          resultByQuestion: {
-            state.part125![state.currentIndex!].id!.toString(): userAnswer[0],
-          },
+          resultByQuestion: data,
         ),
       );
     }
@@ -181,6 +184,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
       state.timer!.start(25);
       audio.play();
     }
+    print(state.resultByQuestion!);
   }
 
   Future<void> checkAnswerPart5(String userAnswer, int questionIndex,
@@ -188,7 +192,11 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     state.timer!.reset();
     emit(state.copyWith(status: ToeicStatus.loading));
     final answer = state.part125![state.currentIndex!].correctAnswer!;
-
+    final Map<String, dynamic> data = {};
+    data.addAll(state.resultByQuestion!);
+    data.addAll({
+      state.part125![state.currentIndex!].id!.toString(): userAnswer[0],
+    });
     if (userAnswer[0] == answer) {
       emit(
         state.copyWith(
@@ -196,9 +204,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
           isAnswer125Correct: true,
           totalCorrect: state.totalCorrect! + 1,
           chosenIndex125: questionIndex,
-          resultByQuestion: {
-            state.part125![state.currentIndex!].id!.toString(): userAnswer[0],
-          },
+          resultByQuestion: data,
         ),
       );
     } else {
@@ -275,21 +281,22 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     final chosenIndexByQuestion = state.chosenIndex3467!;
     //
     final resultList = calculateList3467(questionIndex, userAnswer[0]);
-    final resultMap = calculateResult(userAnswer[0], questionIndex);
+    final resultMap = calculateResult(resultList);
     if (userAnswer[0] == answer) {
       answerChoosenList[questionIndex] = true;
       chosenIndexByQuestion[questionIndex] = answerIndex;
       emit(state.copyWith(totalChosen: state.totalChosen! + 1));
       emit(
         state.copyWith(
-            status: ToeicStatus.done,
-            isAnswer3467Correct: answerChoosenList,
-            totalCorrect: state.totalChosen! == totalQuestion
-                ? state.totalCorrect! + 1
-                : state.totalCorrect!,
-            chosenIndex3467: chosenIndexByQuestion,
-            result3467: resultList,
-            resultByQuestion: resultMap),
+          status: ToeicStatus.done,
+          isAnswer3467Correct: answerChoosenList,
+          totalCorrect: state.totalChosen! == totalQuestion
+              ? state.totalCorrect! + 1
+              : state.totalCorrect!,
+          chosenIndex3467: chosenIndexByQuestion,
+          result3467: resultList,
+          resultByQuestion: resultMap,
+        ),
       );
     } else {
       answerChoosenList[questionIndex] = false;
@@ -385,7 +392,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
     final resultList = calculateList3467(questionIndex, userAnswer[0],
         length: state.part3467![state.currentIndex!].questions!.length);
     //
-    final resultMap = calculateResult(userAnswer[0], questionIndex,
+    final resultMap = calculateResult(resultList,
         length: state.part3467![state.currentIndex!].questions!.length);
     if (userAnswer[0] == answer) {
       answerChoosenList[questionIndex] = true;
@@ -408,14 +415,15 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
       chosenIndexByQuestion[questionIndex] = answerIndex;
       emit(
         state.copyWith(
-            status: ToeicStatus.done,
-            isAnswer3467Correct: answerChoosenList,
-            totalCorrect: state.totalCorrect!,
-            chosenIndex3467: chosenIndexByQuestion,
-            totalChosen: state.totalChosen!,
-            chosenIndex125: questionIndex,
-            result3467: resultList,
-            resultByQuestion: resultMap),
+          status: ToeicStatus.done,
+          isAnswer3467Correct: answerChoosenList,
+          totalCorrect: state.totalCorrect!,
+          chosenIndex3467: chosenIndexByQuestion,
+          totalChosen: state.totalChosen!,
+          chosenIndex125: questionIndex,
+          result3467: resultList,
+          resultByQuestion: resultMap,
+        ),
       );
     }
 
@@ -465,7 +473,6 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
         }
       }
     }
-    print(state.resultByQuestion);
   }
 
   Future<void> autoCheckAnswerPart3467({

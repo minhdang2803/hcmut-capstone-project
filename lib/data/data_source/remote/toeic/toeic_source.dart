@@ -59,7 +59,7 @@ class ToeicSourceImpl extends ToeicSource {
     LogUtil.debug('Get toeic test: $part');
     return _api.get(request);
   }
-  
+
   @override
   Future<BaseResponse<void>> updateScore({
     required Map<String, dynamic> data,
@@ -77,6 +77,7 @@ class ToeicSourceImpl extends ToeicSource {
       (response) =>
           BaseResponse<void>.fromJson(json: response, dataBuilder: null),
     );
+    LogUtil.debug("Get toeic test: ${{'part$part': data}}");
     return _api.post(request);
   }
 }
