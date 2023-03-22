@@ -128,10 +128,7 @@ class RouteGenerator {
         break;
 
       case RouteName.videoPage:
-        page = BlocProvider(
-          create: (context) => CategoryVideoCubit(),
-          child: const VideoPage(),
-        );
+        page = const VideoPage();
         break;
 
       case RouteName.videoPlayer:

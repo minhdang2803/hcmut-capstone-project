@@ -1,6 +1,7 @@
 import 'package:bke/bloc/calendar_activities/calendar_activities_cubit.dart';
 import 'package:bke/bloc/flashcard/flashcard_card/flashcard_cubit.dart';
 import 'package:bke/bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
+import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
 import 'package:bke/data/dependency_injection/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (ctx) => AuthCubit()),
-              // BlocProvider(create: (ctx) => ToeicCubit()),
+              BlocProvider(create: (ctx) => CategoryVideoCubit()),
               BlocProvider(create: (ctx) => VocabCubit()),
               BlocProvider(create: (ctx) => FlashcardCollectionCubit()),
               BlocProvider(create: (ctx) => FlashcardCubit()),
