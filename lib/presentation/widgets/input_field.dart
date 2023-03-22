@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../data/models/search/search_model.dart';
 import '../pages/main/components/monastery_search_delegate.dart';
 
 class InputField extends StatelessWidget {
@@ -34,7 +35,7 @@ class InputField extends StatelessWidget {
       onTap: () {
                 showSearch(
                   context: context,
-                  delegate: MonasterySearchDelegate(),
+                  delegate: MonasterySearchDelegate(searchType: SearchType.all),
                 );
               },
       decoration: InputDecoration(

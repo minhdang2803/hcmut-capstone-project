@@ -69,4 +69,8 @@ class VideoRepository {
       category: category,
     );
   }
+
+  Future<BaseResponse<RecommendedVideos>> getRecommendedVideos() {
+    return _videoSource.getRecommendedVideos();
+  }
 }
