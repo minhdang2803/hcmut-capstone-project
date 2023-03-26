@@ -58,22 +58,22 @@ class _VerifyOTPComponentState extends State<VerifyOTPComponent> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Enter the OTP Code',
+              'Nhập mã OTP',
               style: AppTypography.title.copyWith(
-                color: AppColor.primary,
+                color: AppColor.textPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
             RichText(
               text: TextSpan(
                 text:
-                    'Hãy nhập mã OTP đã được gửi tới email của bạn',
+                    'Nhập mã OTP đã được gửi tới email của bạn',
                 style: AppTypography.body,
                 children: [
                   TextSpan(
                     text: widget.email,
                     style: AppTypography.body.copyWith(
-                      color: AppColor.primary,
+                      color: AppColor.textPrimary,
                     ),
                   ),
                 ],
@@ -121,8 +121,9 @@ class _VerifyOTPComponentState extends State<VerifyOTPComponent> {
             );
           }
           return RoundedElevatedButton(
-            label: 'Confirm',
-            labelStyle: AppTypography.title.copyWith(color: Colors.white),
+            label: 'Xác nhận',
+            labelStyle: AppTypography.title.copyWith(color: AppColor.textPrimary),
+            backgroundColor: AppColor.accentBlue,
             width: 225.w,
             height: 44.h,
             radius: 22.r,

@@ -37,7 +37,7 @@ class MyDictionaryPage extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.only(left: 10.w, right: 10.w),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColor.primary,
           borderRadius: BorderRadius.only(topLeft: Radius.circular(20.r)),
         ),
         width: double.infinity,
@@ -74,7 +74,7 @@ class MyDictionaryPage extends StatelessWidget {
         },
         child: VocabDictionaryItem(
           vocab: vocabList[index],
-          color: AppColor.accentPink,
+          color: AppColor.primary,
         ),
       ),
       separatorBuilder: (BuildContext context, int index) => 5.verticalSpace,

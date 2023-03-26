@@ -16,7 +16,7 @@ class BkEAppBar extends StatelessWidget {
     this.showNotificationAction = false,
     this.leading,
     this.trailing,
-    this.color = AppColor.primary,
+    this.color = AppColor.appBackground,
   }) : super(key: key);
 
   final String? label;
@@ -74,7 +74,7 @@ class BkEAppBar extends StatelessWidget {
         textAlign: TextAlign.center,
         style: AppTypography.headline.copyWith(
           fontWeight: FontWeight.w900,
-          color: Colors.white,
+          color: AppColor.textPrimary,
         ),
         maxLines: 1,
       ),
@@ -87,7 +87,7 @@ class BkEAppBar extends StatelessWidget {
         : Visibility(
             visible: onBackButtonPress != null,
             child: BackButton(
-              color: Colors.white,
+              color: AppColor.textPrimary,
               onPressed: onBackButtonPress,
             ),
           );
@@ -124,7 +124,7 @@ class BkEAppBar extends StatelessWidget {
         child: SvgPicture.asset(
           'assets/icons/ic_search.svg',
           fit: BoxFit.contain,
-          color: AppColor.primary,
+          color: AppColor.textPrimary,
           width: 16.r,
           height: 16.r,
         ),

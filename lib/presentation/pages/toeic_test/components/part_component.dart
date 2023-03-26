@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../theme/app_color.dart';
+
 class PartComponent extends StatelessWidget {
   const PartComponent({
     super.key,
@@ -29,6 +31,7 @@ class PartComponent extends StatelessWidget {
               elevation: 1.5,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.r),
+                side: const BorderSide(color: AppColor.defaultBorder)
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +57,7 @@ class PartComponent extends StatelessWidget {
             child: Text(
               title,
               textAlign: TextAlign.center,
-              style: AppTypography.body.copyWith(fontWeight: FontWeight.w700),
+              style: AppTypography.body.copyWith(fontWeight: FontWeight.w700, fontSize:10.h),
             ),
           )
         ],

@@ -1,7 +1,9 @@
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 
+import '../../../../../data/data_source/local/auth_local_source.dart';
 import '../../../../theme/app_color.dart';
 
 class ProfileUserCard extends StatelessWidget {
@@ -18,11 +20,14 @@ class ProfileUserCard extends StatelessWidget {
   }
 
   Container _buildUserScore(BuildContext context) {
+    final authLocal = GetIt.I.get<AuthLocalSourceImpl>();
+    final user = authLocal.getCurrentUser();
+
     return Container(
       alignment: Alignment.bottomCenter,
-      height: 130.r,
+      height: 110.r,
       decoration: BoxDecoration(
-        color: AppColor.primary,
+        color: AppColor.secondary,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20.r),
           bottomRight: Radius.circular(20.r),
@@ -40,9 +45,9 @@ class ProfileUserCard extends StatelessWidget {
             ),
             12.horizontalSpace,
             Text(
-              "BkE",
-              style: AppTypography.superHeadline
-                  .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                user?.fullName ?? "User",
+                style: AppTypography.subHeadline
+                    .copyWith(color: AppColor.textPrimary, fontWeight: FontWeight.w700),
             ),
           ],
         ),

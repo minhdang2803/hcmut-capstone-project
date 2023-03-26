@@ -25,7 +25,7 @@ class BookPage extends StatelessWidget {
     return BlocProvider(
         create: (context) => BookListBloc()..add(LoadAllEvent()),
         child: Scaffold(
-          backgroundColor: AppColor.primary,
+          backgroundColor: AppColor.appBackground,
           body: SafeArea(
             top: true,
             bottom: false,
@@ -49,7 +49,7 @@ class BookPage extends StatelessWidget {
                         const EdgeInsets.only(top: 50, left: 10, right: 10),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColor.primary,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(40),
                         // topRight: Radius.circular(40),
@@ -66,55 +66,55 @@ class BookPage extends StatelessWidget {
         ));
   }
 
-  Widget _buildOptionBar(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(10.r),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          BlocBuilder<BookListBloc, BookListState>(
-            builder: (context, state) {
-              return IconButton(
-                icon: Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                  size: 35.r,
-                ),
-                onPressed: () => showModalBottomSheet(
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (_) => BlocProvider.value(
-                    value: BlocProvider.of<BookListBloc>(context),
-                    child: const MenuSheet(),
-                  ),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-              size: 35.r,
-            ),
-            onPressed: () {
-              showSearch(
-                  context: context,
-                  delegate: MonasterySearchDelegate(
-                      searchType: SearchType.books, buildContext: context));
-            },
-          )
-        ],
-      ),
-    );
-  }
+  // Widget _buildOptionBar(BuildContext context) {
+  //   return Padding(
+  //     padding: EdgeInsets.all(10.r),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         BlocBuilder<BookListBloc, BookListState>(
+  //           builder: (context, state) {
+  //             return IconButton(
+  //               icon: Icon(
+  //                 Icons.menu,
+  //                 color: AppColor.textPrimary,
+  //                 size: 35.r,
+  //               ),
+  //               onPressed: () => showModalBottomSheet(
+  //                 isScrollControlled: true,
+  //                 context: context,
+  //                 builder: (_) => BlocProvider.value(
+  //                   value: BlocProvider.of<BookListBloc>(context),
+  //                   child: const MenuSheet(),
+  //                 ),
+  //               ),
+  //             );
+  //           },
+  //         ),
+  //         IconButton(
+  //           icon: Icon(
+  //             Icons.search,
+  //             color: Colors.white,
+  //             size: 35.r,
+  //           ),
+  //           onPressed: () {
+  //             showSearch(
+  //                 context: context,
+  //                 delegate: MonasterySearchDelegate(
+  //                     searchType: SearchType.books, buildContext: context));
+  //           },
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _contentSection(BuildContext context) {
     late String heading;
     return BlocBuilder<BookListBloc, BookListState>(builder: (context, state) {
       if (state is BookListLoadingState) {
         return Center(
-            child: CircularProgressIndicator(color: AppColor.primary));
+            child: CircularProgressIndicator(color: AppColor.accentBlue));
       }
 
       if (state is BookListLoadedState) {

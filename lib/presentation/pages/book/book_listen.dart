@@ -5,6 +5,7 @@ import 'package:bke/presentation/theme/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../data/models/book/book_listener.dart';
 
@@ -143,7 +144,7 @@ class _BookListen extends State<BookListen> {
                             child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                color: AppColor.appBackground,
+                                color: AppColor.primary,
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(50),
                                   topRight: Radius.circular(50),
@@ -172,7 +173,7 @@ class _BookListen extends State<BookListen> {
                                         value: _duration != Duration.zero
                                             ? _position.inSeconds.toDouble()
                                             : 0.0,
-                                        activeColor: AppColor.primary,
+                                        activeColor: AppColor.secondary,
                                         onChanged: (value) async {
                                           if (_isLoaded) {
                                             final position = Duration(
@@ -222,7 +223,7 @@ class _BookListen extends State<BookListen> {
                                       IconButton(
                                           icon: Icon(
                                             Icons.skip_previous,
-                                            color: AppColor.primary,
+                                            color: AppColor.secondary,
                                             size: 38,
                                           ),
                                           onPressed: () async {
@@ -238,19 +239,13 @@ class _BookListen extends State<BookListen> {
                                               await audioPlayer.seek(position);
                                             }
                                           }),
-                                      Container(
-                                        height: size.height * 0.06,
-                                        width: size.height * 0.06,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: AppColor.primary,
-                                        ),
-                                        child: IconButton(
-                                          icon: Icon(
+                                      FloatingActionButton(
+                                        backgroundColor: AppColor.secondary,
+                                        child: Icon(
                                             _isPlaying
                                                 ? Icons.pause
                                                 : Icons.play_arrow,
-                                            color: AppColor.appBackground,
+                                            color: AppColor.primary,
                                             size: 38,
                                           ),
                                           onPressed: () async {
@@ -260,12 +255,12 @@ class _BookListen extends State<BookListen> {
                                               await audioPlayer.resume();
                                             }
                                           },
-                                        ),
+                                        
                                       ),
                                       IconButton(
                                           icon: Icon(
                                             Icons.skip_next,
-                                            color: AppColor.primary,
+                                            color: AppColor.secondary,
                                             size: 38,
                                           ),
                                           onPressed: () async {

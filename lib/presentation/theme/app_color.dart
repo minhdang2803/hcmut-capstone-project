@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 class AppColor {
   //main colors
-  static const Color primary = Color(0xFF6A5AE0);
-  static const Color secondary = Color(0xFF9087E5);
+  static const Color primary = Colors.white;
+  static const Color secondary = Color.fromARGB(255, 221, 203, 231);
 
-  static const Color mainPink = Color(0xFFFF8FA2);
+  static const Color mainPink = Color.fromARGB(255, 195, 165, 211);
   static const Color onPrimary = Colors.white;
   static const Color onSecondary = Colors.white;
 
   static const Color accentPink = Color(0xFFFFD6DD);
-  static const Color accentBlue = Color(0xFFC4D0FB);
+  static const Color accentBlue = Color.fromARGB(255, 222, 190, 240);
   static const Color accentGreen = Color(0xFFC9F2E9);
 
   static const Color falseColor = Color(0xFFFF6666);
@@ -18,24 +18,24 @@ class AppColor {
 
   static const Color pastelPink = Color(0xffFFD6DD);
   static const Color textPrimary = Color(0xFF000000);
-  static const Color textSecondary = Color(0xFF49465F);
+  static const Color textSecondary = Color.fromARGB(255, 99, 99, 99);
   static const Color textSub = Color(0xFF858494);
-  static const Color appBackground = Color(0xFFFFFFFF);
+  static const Color appBackground = Color.fromARGB(255, 238, 238, 238);
   static const Color correctColor = Color(0xff53DF83);
   //scroll bar indicator color
-  static const Color darkGray = Color(0xFF7B7B7B);
+  static const Color darkGray = Color.fromARGB(255, 216, 216, 216);
   static const Color neutralGrey = Color(0xffEFEEFC);
   //pin border color (sms pin code)
   static const Color lightGray = Color(0xFFE6E6E6);
 
   //Icon border color
-  static const Color iconBorder = Color(0xFFF3F3F3);
+  static const Color iconBorder = Color.fromARGB(255, 187, 187, 187);
 
   //input text field border color
   static const Color inputTextBorder = Color(0xFFE3E3E3);
 
   //default border color
-  static const Color defaultBorder = Color(0xFFE3E3E3);
+  static const Color defaultBorder = Color.fromARGB(255, 170, 170, 170);
 
   // // Bottom Navigation Icon colors
   static const Color inactiveIconColor = Color(0xFFE3E3E3);

@@ -61,7 +61,7 @@ class ToeicResultPage extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.r),
-            color: AppColor.neutralGrey,
+            color: AppColor.primary,
           ),
           child: SizedBox(
             width: double.infinity,
@@ -122,7 +122,7 @@ class ToeicResultPage extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.3,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.r),
-                  color: AppColor.primary,
+                  color: AppColor.secondary,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -134,13 +134,13 @@ class ToeicResultPage extends StatelessWidget {
                         Text(
                           "Part ${state.part}",
                           style: AppTypography.title.copyWith(
-                              color: Colors.white, fontWeight: FontWeight.w700),
+                              color: AppColor.textPrimary, fontWeight: FontWeight.w700),
                         ),
                         5.verticalSpace,
                         Text(
                           titles[state.part! - 1],
                           style: AppTypography.title.copyWith(
-                              color: Colors.white, fontWeight: FontWeight.w700),
+                              color: AppColor.textPrimary, fontWeight: FontWeight.w700),
                         )
                       ],
                     ),
@@ -186,9 +186,9 @@ class ToeicResultPage extends StatelessWidget {
                     SizedBox(
                       width: 130.r,
                       child: Text(
-                        "You have correct ${state.totalCorrect} over ${state.totalQuestion} questions",
+                        "Bạn đã đúng ${state.totalCorrect} trên ${state.totalQuestion} câu hỏi!",
                         style: AppTypography.title.copyWith(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold),
                       ),
                     )
                   ],
@@ -237,7 +237,7 @@ class ToeicResultPage extends StatelessWidget {
                 angle: 90,
                 widget: Text('${state.totalCorrect} / ${state.totalQuestion}',
                     style: AppTypography.body.copyWith(
-                      color: Colors.white,
+                      color: AppColor.textPrimary,
                       fontWeight: FontWeight.bold,
                     )),
               )
@@ -257,9 +257,9 @@ class ToeicResultPage extends StatelessWidget {
           BlocBuilder<ToeicCubitPartOne, ToeicStatePartOne>(
             builder: (context, state) {
               return Text(
-                'Xem lại kết quả part ${state.part} !',
+                'Xem lại kết quả part ${state.part}',
                 style: AppTypography.subHeadline
-                    .copyWith(fontWeight: FontWeight.w700),
+                    .copyWith(fontSize: 14.h, fontWeight: FontWeight.w700),
               );
             },
           ),

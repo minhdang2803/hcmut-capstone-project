@@ -67,7 +67,7 @@ class _ToeicPartFiveComponentState extends State<ToeicPartFiveComponent>
         if (state.status == ToeicStatus.done) {
           return Container(
             decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.primary,
                 borderRadius:
                     BorderRadius.only(topLeft: Radius.circular(30.r))),
             height: MediaQuery.of(context).size.height,
@@ -84,7 +84,7 @@ class _ToeicPartFiveComponentState extends State<ToeicPartFiveComponent>
         } else {
           return const Center(
             child: CircularProgressIndicator(
-              color: AppColor.primary,
+              color: AppColor.secondary,
             ),
           );
         }
@@ -99,8 +99,8 @@ class _ToeicPartFiveComponentState extends State<ToeicPartFiveComponent>
         width: MediaQuery.of(context).size.width * 0.9,
         padding: EdgeInsets.all(10.r),
         decoration: BoxDecoration(
-          border: Border.all(width: 1, color: AppColor.primary),
-          color: Colors.white,
+          border: Border.all(width: 1, color: AppColor.defaultBorder),
+          color: AppColor.primary,
           borderRadius: BorderRadius.circular(20.r),
         ),
         child: Column(
@@ -116,7 +116,7 @@ class _ToeicPartFiveComponentState extends State<ToeicPartFiveComponent>
               },
             ),
             5.verticalSpace,
-            const Divider(thickness: 1, color: AppColor.primary),
+            const Divider(thickness: 1, color: AppColor.defaultBorder),
             5.verticalSpace,
             _buildAnswerContent(context)
           ],

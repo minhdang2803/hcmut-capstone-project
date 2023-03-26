@@ -36,7 +36,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.appBackground,
       body: _buildMainScreen(topPadding),
       bottomNavigationBar: _buildBottomNavigationBar(),
       floatingActionButton: _buildFloattingButton(context),
@@ -45,10 +45,12 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  ClipRRect _buildBottomNavigationBar() {
-    return ClipRRect(
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r)),
+  Widget _buildBottomNavigationBar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColor.primary,
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r)),
+      ),
       child: BottomAppBar(
         notchMargin: 8.0,
         clipBehavior: Clip.antiAlias,
@@ -56,11 +58,10 @@ class _MainPageState extends State<MainPage> {
         child: BottomNavigationBar(
           currentIndex: _pageIndex,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
           showSelectedLabels: true,
           showUnselectedLabels: true,
           onTap: _onPageSelected,
-          unselectedItemColor: AppColor.textPrimary,
+          unselectedItemColor: AppColor.textSecondary,
           selectedItemColor: AppColor.textPrimary,
           selectedLabelStyle: AppTypography.bodySmall,
           unselectedLabelStyle: AppTypography.bodySmall,
@@ -80,7 +81,7 @@ class _MainPageState extends State<MainPage> {
                 padding: EdgeInsets.only(bottom: 4.r),
                 child: SvgPicture.asset(
                   'assets/icons/ic_home.svg',
-                  color: AppColor.primary,
+                  color: AppColor.secondary,
                   width: 20.r,
                   height: 20.r,
                 ),
@@ -101,7 +102,7 @@ class _MainPageState extends State<MainPage> {
                 padding: EdgeInsets.only(bottom: 4.r),
                 child: SvgPicture.asset(
                   'assets/icons/ic_search.svg',
-                  color: AppColor.primary,
+                  color: AppColor.secondary,
                   width: 20.r,
                   height: 20.r,
                 ),
@@ -122,7 +123,7 @@ class _MainPageState extends State<MainPage> {
                 padding: EdgeInsets.only(bottom: 4.r),
                 child: SvgPicture.asset(
                   'assets/icons/ic-leaderboard.svg',
-                  color: AppColor.primary,
+                  color: AppColor.secondary,
                   width: 20.r,
                   height: 20.r,
                 ),
@@ -143,7 +144,7 @@ class _MainPageState extends State<MainPage> {
                 padding: EdgeInsets.only(bottom: 4.r),
                 child: SvgPicture.asset(
                   'assets/icons/ic_user.svg',
-                  color: AppColor.primary,
+                  color: AppColor.secondary,
                   width: 20.r,
                   height: 20.r,
                 ),
@@ -169,13 +170,13 @@ class _MainPageState extends State<MainPage> {
   Widget _buildFloattingButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {},
-      backgroundColor: Colors.white,
+      backgroundColor: AppColor.secondary,
       elevation: 2,
       isExtended: false,
       child: Icon(
         Icons.chat,
         color: AppColor.primary,
-        size: 30.r,
+        size: 20.r,
       ),
     );
   }

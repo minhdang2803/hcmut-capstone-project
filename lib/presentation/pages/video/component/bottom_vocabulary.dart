@@ -66,7 +66,7 @@ class _BottomVocabState extends State<BottomVocab>
         padding: EdgeInsets.symmetric(vertical: 16.r),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.r),
-          color: Colors.white,
+          color: AppColor.primary,
         ),
         child: BlocConsumer<VocabCubit, VocabState>(
           listener: (context, state) async {
@@ -136,7 +136,7 @@ class _BottomVocabState extends State<BottomVocab>
                         widget.text.toCapitalize(),
                         style: AppTypography.headline.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: AppColor.primary,
+                          color: AppColor.textPrimary,
                         ),
                       ),
                       5.verticalSpace,
@@ -146,7 +146,7 @@ class _BottomVocabState extends State<BottomVocab>
                   Icon(
                     Icons.volume_up,
                     size: 20.r,
-                    color: AppColor.textSecondary,
+                    color: AppColor.textPrimary,
                   ),
                 ],
               ),
@@ -170,48 +170,51 @@ class _BottomVocabState extends State<BottomVocab>
   }
 
   Widget _buildVocabTypes() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: _vocabTypeList
-            .map(
-              (e) => Padding(
-                padding: EdgeInsets.only(right: 10.r),
-                child: GestureDetector(
-                  onTap: () => setState(() {
-                    _currentTab = _vocabTypeList.indexOf(e);
-                  }),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: _vocabTypeList[_currentTab] == e
-                          ? AppColor.secondary
-                          : Colors.white,
-                      border: Border.all(width: 1.r, color: AppColor.secondary),
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 6.r, vertical: 2.r),
-                      child: Center(
-                        child: Text(
-                          e,
-                          style: _vocabTypeList.length > 2
-                              ? AppTypography.bodySmall.copyWith(
-                                  color: _vocabTypeList[_currentTab] == e
-                                      ? Colors.white
-                                      : Colors.black)
-                              : AppTypography.body.copyWith(
-                                  color: _vocabTypeList[_currentTab] == e
-                                      ? Colors.white
-                                      : Colors.black),
+    return SizedBox(
+      width: 250.w,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: _vocabTypeList
+              .map(
+                (e) => Padding(
+                  padding: EdgeInsets.only(right: 10.r),
+                  child: GestureDetector(
+                    onTap: () => setState(() {
+                      _currentTab = _vocabTypeList.indexOf(e);
+                    }),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _vocabTypeList[_currentTab] == e
+                            ? AppColor.secondary
+                            : AppColor.darkGray,
+                        border: Border.all(width: 1.r, color: AppColor.defaultBorder),
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 6.r, vertical: 2.r),
+                        child: Center(
+                          child: Text(
+                            e,
+                            style: _vocabTypeList.length > 2
+                                ? AppTypography.bodySmall.copyWith(
+                                    color: _vocabTypeList[_currentTab] == e
+                                        ? AppColor.textPrimary
+                                        : AppColor.textSecondary)
+                                : AppTypography.body.copyWith(
+                                    color: _vocabTypeList[_currentTab] == e
+                                         ? AppColor.textPrimary
+                                        : AppColor.textSecondary)
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            )
-            .toList(),
+              )
+              .toList(),
+        ),
       ),
     );
   }
@@ -246,7 +249,7 @@ class _BottomVocabState extends State<BottomVocab>
                     ),
                   ),
                   10.verticalSpace,
-                  Divider(height: 1.r, color: Colors.black38),
+                  Divider(height: 1.r, color: AppColor.defaultBorder),
                   10.verticalSpace,
                   SkeletonLine(
                     style: SkeletonLineStyle(

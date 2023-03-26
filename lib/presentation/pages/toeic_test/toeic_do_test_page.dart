@@ -68,7 +68,7 @@ class _ToeicDoTestPageState extends State<ToeicDoTestPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.appBackground,
       body: SafeArea(
         bottom: false,
         child: BlocBuilder<ToeicCubitPartOne, ToeicStatePartOne>(

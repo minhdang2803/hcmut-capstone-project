@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../routes/route_name.dart';
+import '../../theme/app_color.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../my_dictionary/vocab_item.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -24,6 +25,7 @@ class LookUpPage extends StatelessWidget {
           child: SvgPicture.asset(
             'assets/texture/hoatiet.svg',
             fit: BoxFit.contain,
+            color: AppColor.accentBlue
           ),
         ),
         Column(
@@ -94,7 +96,7 @@ class LookUpPage extends StatelessWidget {
         Text(
           "Bạn chưa lưu từ vựng nào!",
           style: AppTypography.subHeadline.copyWith(
-            color: Colors.white,
+            color: AppColor.textPrimary,
             fontWeight: FontWeight.w700,
           ),
         )

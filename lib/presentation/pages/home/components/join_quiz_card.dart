@@ -17,7 +17,7 @@ class JoinQuizCard extends StatelessWidget {
       child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Container(
-              color: Colors.white.withOpacity(0.3),
+              color: AppColor.primary,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -29,7 +29,7 @@ class JoinQuizCard extends StatelessWidget {
                     style: AppTypography.title.copyWith(
                       fontSize: 15,
                       fontWeight: FontWeight.w800,
-                      color: Colors.white,
+                      color: AppColor.textPrimary,
                     ),
                     maxLines: 2,
                   ),
@@ -40,23 +40,23 @@ class JoinQuizCard extends StatelessWidget {
                       child: Container(
                         height: size.height * 0.05,
                         width: size.width * 0.4,
-                        color: Colors.white,
+                        color: AppColor.secondary,
                         padding: const EdgeInsets.symmetric(vertical: 0.1),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            SvgPicture.asset(
-                              'assets/icons/ic_locate.svg',
-                              color: AppColor.darkGray,
-                              width: 20,
-                              height: 20,
-                            ),
+                            // SvgPicture.asset(
+                            //   'assets/icons/ic_locate.svg',
+                            //   color: AppColor.textPrimary,
+                            //   width: 20,
+                            //   height: 20,
+                            // ),
                             AutoSizeText(
                               'Tham gia ngay',
                               style: AppTypography.bodySmall.copyWith(
-                                fontSize: 11,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w800,
-                                color: AppColor.darkGray,
+                                color: AppColor.textPrimary,
                               ),
                               maxLines: 2,
                             ),

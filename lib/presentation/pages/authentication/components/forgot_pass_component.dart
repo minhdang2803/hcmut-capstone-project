@@ -57,7 +57,7 @@ class _ForgotPassComponentState extends State<ForgotPassComponent> {
             Text(
               'Ối! Bạn quên mật khẩu?',
               style: AppTypography.headline.copyWith(
-                color: AppColor.primary,
+                color: AppColor.textPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -108,7 +108,8 @@ class _ForgotPassComponentState extends State<ForgotPassComponent> {
           }
           return RoundedElevatedButton(
             label: 'Xác nhận email',
-            labelStyle: AppTypography.title.copyWith(color: Colors.white),
+            labelStyle: AppTypography.title.copyWith(color: AppColor.textPrimary),
+            backgroundColor: AppColor.accentBlue,
             width: 225.w,
             height: 44.h,
             radius: 22.r,

@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../bloc/search/search_bloc.dart';
 import '../../../../bloc/search/search_state.dart';
 import '../../../theme/app_color.dart';
+import '../../../theme/app_typography.dart';
 
 class SearchResultsPage extends StatefulWidget {
   @override
@@ -57,20 +58,20 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                   children: [
                     Text(
                       'Video',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: AppTypography.title.copyWith(color: AppColor.textPrimary, fontSize: 20, fontWeight: FontWeight.w600),
                     ),
                     ResultList(data: videos, isBook: false),
                     SizedBox(height: 0.02.sh),
                     Text(
                       'Sách',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: AppTypography.title.copyWith(color: AppColor.textPrimary, fontSize: 20, fontWeight: FontWeight.w600),
                     ),
                     ResultList(data: books, isBook: true)
                   ],
                 );
             }
-            return Center(
-                  child: CircularProgressIndicator(color: AppColor.primary));
+            return const Center(
+                  child: CircularProgressIndicator(color: AppColor.secondary));
           }
     );
   }

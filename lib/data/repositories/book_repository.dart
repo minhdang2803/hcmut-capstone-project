@@ -42,6 +42,10 @@ class BookRepository{
     return await _bookSource.getBookInfo(bookId);
   }
 
+  Future<BaseResponse<BookInfo>> getLatest() async {
+    return await _bookSource.getLatest();
+  }
+
   Future<BaseResponse<BookReader>> getEbook(String bookId, int pageKey) async {
     return await _bookSource.getEbook(bookId, pageKey);
   }

@@ -8,11 +8,11 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.appBackground,
       body: SafeArea(
         bottom: false,
         child: Container(
-          color: Colors.white,
+          color: AppColor.primary,
           child: Column(
             children: [
               BkEAppBar(

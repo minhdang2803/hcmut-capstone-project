@@ -34,6 +34,13 @@ class VideoRepository {
     return await _videoSource.updateCkpt(mongoId, second);
   }
 
+  Future<VideoYoutubeInfo> saveExternalVideo(
+    String videoId
+  ) async {
+    final res = await _videoSource.saveExternalVideo(videoId);
+    return res.data!;
+  }
+
   int getProcess(String videoId) {
     final fromLocal = _videoLocalSource.getLastWatchAt(videoId);
     if (fromLocal == null) {
@@ -51,6 +58,12 @@ class VideoRepository {
   Future<VideoYoutubeInfo?> getVideoById(String videoId) async {
     final response = await _videoSource.getVideo(videoId);
     final data = response.data;
+    return data;
+  }
+
+  Future<VideoYoutubeInfo> getLatest() async {
+    final response = await _videoSource.getLatest();
+    final data = response.data!;
     return data;
   }
 

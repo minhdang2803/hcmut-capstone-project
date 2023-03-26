@@ -16,6 +16,7 @@ class EndPoint {
   static const updateVideoCkpt = '$_baseUrl/videoCheckpoint/add';
   static const getRecommendedVideos = '$_baseUrl/videoYoutubeInfo/recommendation';
   static const getLatestVideo = '$_baseUrl/videoYoutubeInfo/latest';
+  static const saveExternalVideo = '$_baseUrl/videoYoutubeInfo/createExternal';
 
   //Book
   static const getAllBooks = '$_baseUrl/BookInfo';

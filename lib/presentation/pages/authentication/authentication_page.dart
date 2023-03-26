@@ -20,12 +20,15 @@ class AuthenticationPage extends StatelessWidget {
           width: 1.sw,
           fit: BoxFit.cover,
         ),
-        ListView(
-          children: [
-            Center(
-              child: AuthContentCard(initialTabIndex: tabIndex ?? 0),
-            )
-          ],
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: ListView(
+            children: [
+              Center(
+                child: AuthContentCard(initialTabIndex: tabIndex ?? 0),
+              )
+            ],
+          ),
         ),
       ]),
     );

@@ -57,9 +57,9 @@ class _VerifyRegisterOTPComponentState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Nhập OTP',
+              'Nhập mã OTP',
               style: AppTypography.title.copyWith(
-                color: AppColor.primary,
+                color: AppColor.textPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -72,7 +72,7 @@ class _VerifyRegisterOTPComponentState
                   TextSpan(
                     text: widget.email,
                     style: AppTypography.body.copyWith(
-                      color: AppColor.primary,
+                      color: AppColor.textPrimary,
                     ),
                   ),
                 ],
@@ -142,7 +142,8 @@ class _VerifyRegisterOTPComponentState
           }
           return RoundedElevatedButton(
             label: 'Xác nhận',
-            labelStyle: AppTypography.title.copyWith(color: Colors.white),
+            labelStyle: AppTypography.title.copyWith(color: AppColor.textPrimary),
+            backgroundColor: AppColor.accentBlue,
             width: 225.w,
             height: 44.h,
             radius: 22.r,

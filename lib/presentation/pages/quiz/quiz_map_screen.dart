@@ -22,7 +22,7 @@ class QuizMapScreen extends StatefulWidget {
 }
 
 class _QuizMapScreenState extends State<QuizMapScreen> {
-  List<MapObject> _clm = [];
+  List<MapObject> _objs = [];
   double getScreenSize() {
     String getDoubleRoundedToTwo(double size) {
       return size.toStringAsFixed(2);
@@ -50,8 +50,9 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.appBackground,
       appBar: AppBar(
+        backgroundColor: AppColor.appBackground,
         elevation: 0,
         automaticallyImplyLeading: false,
         title: Row(
@@ -59,6 +60,7 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             BackButton(
+              color: AppColor.textPrimary,
               onPressed: () {
                 context.read<QuizCubit>().upsertQuizResult();
                 Navigator.pop(context);
@@ -69,7 +71,7 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
               child: Text(
                 "Trò chơi giải đố",
                 style: AppTypography.subHeadline
-                    .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                    .copyWith(color: AppColor.textPrimary, fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(width: 35.r)
@@ -79,10 +81,10 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
       body: SafeArea(
         child: Padding(
           // padding: EdgeInsets.all(20.r),
-          padding: EdgeInsets.only(top: 10.r, left: 10.r, right: 10.r),
+          padding: EdgeInsets.only(top: 10.r),
           child: ClipRRect(
             // borderRadius: BorderRadius.circular(20.r),
-            borderRadius: BorderRadius.circular(10.r
+            borderRadius: BorderRadius.circular(20.r
                 // topRight: Radius.circular(20.r),
                 // topLeft: Radius.circular(20.r),
                 ),
@@ -101,10 +103,10 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
                       );
                     } else {
                       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                        _clm.clear();
+                        _objs.clear();
                         for (final element in state.listMapObject!) {
                           setState(() {
-                            _clm.add(
+                            _objs.add(
                               MapObject(
                                 id: element.id,
                                 offset: Offset(element.dx!, element.dy!),
@@ -123,8 +125,8 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
                         assetImage: 'assets/images/mapQuiz.jpg',
                         width: constraints.maxWidth,
                         height: constraints.maxHeight,
-                        backgroundColor: const Color(0xFFC0C0C0),
-                        objects: _clm,
+                        backgroundColor: AppColor.primary,
+                        objects: _objs,
                         onItemClick: (mapObj) {
                           if (mapObj.isDone) {
                             context.read<QuizCubit>().setInitial();

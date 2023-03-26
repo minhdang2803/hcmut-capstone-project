@@ -75,7 +75,7 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
       height: MediaQuery.of(context).size.height * 0.75,
       padding: EdgeInsets.all(15.r),
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(20.r)),
+          color: AppColor.primary, borderRadius: BorderRadius.circular(20.r), border: Border.all(color: AppColor.defaultBorder)),
       child: SingleChildScrollView(
         child: SlideTransition(
           position: _offsetAnimation,
@@ -173,7 +173,7 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
                 final text =
                     state.quizMC![state.currentIndex!].vocabAns![index];
                 return QuizButton(
-                  hightlightColor: AppColor.primary,
+                  hightlightColor: AppColor.accentBlue,
                   backgroundColor: AppColor.accentBlue,
                   splashColor: AppColor.secondary,
                   text: text,
@@ -196,8 +196,8 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
               return QuizButton(
                 height: 40.h,
                 text: "Submit",
-                textColor: Colors.white,
-                backgroundColor: AppColor.primary,
+                textColor: AppColor.textPrimary,
+                backgroundColor: AppColor.accentBlue,
                 onTap: () async {
                   if (state.totalLoop! < 8) {
                     await context.read<QuizCubit>().onSubmitGame2(_controller);
@@ -236,7 +236,7 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
               textAlign: TextAlign.center,
               style: AppTypography.title.copyWith(
                 fontWeight: FontWeight.w700,
-                color: Colors.black54,
+                color: AppColor.textPrimary,
                 fontSize: 22,
               ),
             );
@@ -246,7 +246,7 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
               textAlign: TextAlign.center,
               style: AppTypography.title.copyWith(
                 fontWeight: FontWeight.w700,
-                color: Colors.black54,
+                color: AppColor.textPrimary,
                 fontSize: 20,
               ),
             );
@@ -278,7 +278,7 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
               return LinearProgressIndicator(
                 value: (state.currentIndex! + 1) / state.total!,
                 backgroundColor: AppColor.pastelPink,
-                color: AppColor.mainPink,
+                color: AppColor.secondary,
               );
             },
           ),
@@ -293,7 +293,7 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
                   return Text(
                     "Question: ${state.currentIndex! + 1}/${state.total}",
                     style: AppTypography.title.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.w700),
+                        color: AppColor.textPrimary, fontWeight: FontWeight.w700),
                   );
                 },
               ),

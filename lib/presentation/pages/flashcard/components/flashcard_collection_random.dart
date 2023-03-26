@@ -30,7 +30,7 @@ class _RandomComponentState extends State<RandomComponent> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColor.greyBackground,
+        color: AppColor.primary,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.r),
           topRight: Radius.circular(30.r),
@@ -61,7 +61,7 @@ class _RandomComponentState extends State<RandomComponent> {
       builder: (context, state) {
         if (state.status == FlashcardCollectionThumbStatus.loading) {
           return const Center(
-            child: CircularProgressIndicator(color: AppColor.primary),
+            child: CircularProgressIndicator(color: AppColor.accentBlue),
           );
         }
         return GridView.builder(
@@ -98,7 +98,7 @@ class _RandomComponentState extends State<RandomComponent> {
 
   Widget _buildEmptyScreen() {
     return const Center(
-      child: CircularProgressIndicator(color: AppColor.primary),
+      child: CircularProgressIndicator(color: AppColor.accentBlue),
     );
     // return Column(
     //   mainAxisAlignment: MainAxisAlignment.start,

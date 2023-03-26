@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class CustomButton extends StatefulWidget {
   const CustomButton({
     super.key,
-    this.color = AppColor.primary,
+    this.color = AppColor.secondary,
     required this.title,
     this.width,
     this.height,
@@ -66,7 +66,7 @@ class _CustomButtonState extends State<CustomButton> {
       widget.title,
       textAlign: TextAlign.center,
       style: AppTypography.title.copyWith(
-        color: Colors.white,
+        color: AppColor.textPrimary,
         fontWeight: FontWeight.bold,
       ),
     );

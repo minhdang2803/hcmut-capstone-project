@@ -83,7 +83,7 @@ class _QuizScreenState extends State<QuizScreen>
               );
             } else if (state.status == QuizStatus.finished) {
               return const Center(
-                  child: CircularProgressIndicator(color: Colors.white));
+                  child: CircularProgressIndicator(color: AppColor.accentBlue));
             } else {
               return SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -108,7 +108,7 @@ class _QuizScreenState extends State<QuizScreen>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           BackButton(
-            color: Colors.white,
+            color: AppColor.textPrimary,
             onPressed: () {
               context.read<TimerCubit>().pauseCountdown();
               WidgetUtil.showDialog(

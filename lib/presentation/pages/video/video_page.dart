@@ -50,7 +50,7 @@ class _VideoPageState extends State<VideoPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.appBackground,
       body: SafeArea(
         bottom: false,
         child: Column(
@@ -116,7 +116,7 @@ class _VideoPageState extends State<VideoPage>
             width: double.infinity,
             child: const Center(
                 child: CircularProgressIndicator(
-              color: AppColor.primary,
+              color: AppColor.accentBlue,
             )),
           );
         }
@@ -169,7 +169,7 @@ class _VideoPageState extends State<VideoPage>
                         RouteName.videoSeeMore,
                         arguments: VideoSeeMorePageModel(
                           context: context,
-                          category: e.value.first.category,
+                          category: e.value.first.category!,
                           action: action,
                         ),
                       );

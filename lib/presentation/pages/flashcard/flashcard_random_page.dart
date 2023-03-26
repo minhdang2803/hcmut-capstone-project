@@ -51,7 +51,7 @@ class _FlashcardRandomScreenState extends State<FlashcardRandomScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.appBackground,
       body: SafeArea(
         bottom: false,
         child: BlocSelector<FlashcardRandomCubit, FlashcardRandomState, bool>(
@@ -92,7 +92,7 @@ class _FlashcardRandomScreenState extends State<FlashcardRandomScreen>
       child: Container(
         width: size.width,
         decoration: BoxDecoration(
-          color: AppColor.greyBackground,
+          color: AppColor.primary,
           borderRadius: BorderRadius.only(topLeft: Radius.circular(30.r)),
         ),
         child: Column(
@@ -118,13 +118,13 @@ class _FlashcardRandomScreenState extends State<FlashcardRandomScreen>
                         angle: 0,
                         front: Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: AppColor.primary,
                             borderRadius: BorderRadius.circular(30.r),
                           ),
                         ),
                         back: Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: AppColor.primary,
                             borderRadius: BorderRadius.circular(30.r),
                           ),
                         ),
@@ -199,25 +199,26 @@ class _FlashcardRandomScreenState extends State<FlashcardRandomScreen>
                       Text(
                         state.flashcards![state.index!].vocab.toCapitalize(),
                         style: AppTypography.subHeadline
-                            .copyWith(fontWeight: FontWeight.bold),
+                            .copyWith(fontWeight: FontWeight.bold, color: AppColor.textPrimary),
                       ),
                       Text(
                         '(${state.flashcards![state.index!].vocabType.toCapitalize()})',
                         style: AppTypography.title.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: AppColor.primary),
+                            color: AppColor.textPrimary),
                       ),
                       5.verticalSpace,
                       Text.rich(
                         TextSpan(
                             text: "UK: ",
                             style: AppTypography.title
-                                .copyWith(color: AppColor.primary),
+                                .copyWith(color: AppColor.textPrimary),
                             children: [
                               TextSpan(
                                 text: state
                                     .flashcards![state.index!].pronounce.uk,
-                                style: AppTypography.title,
+                                style: AppTypography.title
+                                .copyWith(color: AppColor.textPrimary),
                               )
                             ]),
                       ),
@@ -226,12 +227,13 @@ class _FlashcardRandomScreenState extends State<FlashcardRandomScreen>
                         TextSpan(
                           text: "US: ",
                           style: AppTypography.title
-                              .copyWith(color: AppColor.primary),
+                              .copyWith(color: AppColor.textPrimary),
                           children: [
                             TextSpan(
                               text:
                                   state.flashcards![state.index!].pronounce.us,
-                              style: AppTypography.title,
+                              style: AppTypography.title
+                              .copyWith(color: AppColor.textPrimary),
                             )
                           ],
                         ),
@@ -262,6 +264,7 @@ class _FlashcardRandomScreenState extends State<FlashcardRandomScreen>
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(30.r),
                   child: LinearProgressIndicator(
+                    color: AppColor.secondary,
                     backgroundColor: AppColor.secondary.withOpacity(0.5),
                     value: (state.index! + 1) / state.flashcards!.length,
                   ),

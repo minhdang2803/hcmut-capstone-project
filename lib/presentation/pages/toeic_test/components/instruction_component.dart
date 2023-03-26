@@ -28,7 +28,7 @@ class InstructionComponent extends StatelessWidget {
                 children: [
                   Text(
                     "Instruction:",
-                    style: AppTypography.title.apply(color: AppColor.primary),
+                    style: AppTypography.title.apply(color: AppColor.textPrimary),
                   ),
                   5.verticalSpace,
                   Text(
@@ -36,10 +36,10 @@ class InstructionComponent extends StatelessWidget {
                     style: AppTypography.title,
                   ),
                   5.verticalSpace,
-                  const Divider(thickness: 1, color: AppColor.primary),
+                  const Divider(thickness: 1, color: AppColor.textPrimary),
                   Text(
                     "Hướng Dẫn:",
-                    style: AppTypography.title.apply(color: AppColor.primary),
+                    style: AppTypography.title.apply(color: AppColor.textPrimary),
                   ),
                   5.verticalSpace,
                   Text(

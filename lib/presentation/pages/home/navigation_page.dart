@@ -7,10 +7,14 @@ import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/utils/enum.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../../bloc/recent_action/action_bloc.dart';
+import '../../../bloc/recent_action/action_event.dart';
+import '../../../bloc/recent_action/action_state.dart';
 import '../../theme/app_color.dart';
 import '../main/components/monastery_search_delegate.dart';
 
@@ -24,6 +28,7 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   late final List<String> _pages;
   late int _pageIndex;
+  late final ActionBloc _actionBloc;
   @override
   void initState() {
     super.initState();
@@ -36,6 +41,8 @@ class _NavigationPageState extends State<NavigationPage> {
       RouteName.quizMapScreen,
       RouteName.chatPage
     ];
+    _actionBloc = ActionBloc();
+    _actionBloc.add(GetRecentActionsEvent());
   }
 
   @override
@@ -56,59 +63,97 @@ class _NavigationPageState extends State<NavigationPage> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: AppColor.primary,
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: SvgPicture.asset(
-              'assets/texture/hoatiet.svg',
-              fit: BoxFit.contain,
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildUserBanner(context),
-              Visibility(
-                visible: true,
-                child: SizedBox(
-                  height: size.height * 0.12,
-                  width: size.width * 0.8,
-                  child:
-                      ContinueCard(recentAction: RecentAction.readBook.index),
-                ),
+      backgroundColor: AppColor.appBackground,
+      
+      body: 
+        CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child:  Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildUserBanner(context),
+                  BlocProvider(
+                    create: (context) => _actionBloc,
+                    child: BlocBuilder<ActionBloc, ActionState>(
+                        builder: (context, state) {
+                          if (state is ActionLoadedState) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Visibility(
+                                  visible: state.book != null,
+                                  child: ContinueCard(recentAction: RecentAction.readBook, item: state.book),
+                                ),
+                                Visibility(
+                                  visible: state.video != null,
+                                  child: ContinueCard(recentAction: RecentAction.watchVideo, item: state.video),
+                                ),
+                              ]
+                            );
+                          }
+                          return SizedBox(height: 0.02.sh);
+                        }
+                    )
+                      
+                  ),
+                  
+                  SizedBox(
+                      height: size.height * 0.25,
+                      width: size.width,
+                      child: Stack(
+                        alignment: AlignmentDirectional.bottomStart,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(
+                                top: 30, bottom: 30, left: 50, right: 50),
+                            child: JoinQuizCard(),
+                          ),
+                          Image.asset(
+                            'assets/images/proud.png',
+                            height: size.height * 0.2,
+                            width: size.height * 0.12,
+                          ),
+                        ],
+                      )
+                  ),
+                  _buildSearchBar(context, size),
+                  SizedBox(height: 0.02.sh),
+                  Expanded(
+                    child: SingleChildScrollView(
+                        child: Container(
+                        padding:
+                            const EdgeInsets.only(top: 20, left: 10, right: 10),
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                          color: AppColor.primary,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(40),
+                            // topRight: Radius.circular(40),
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            _buildFeaturesList(size, context, menuList),
+                            100.verticalSpace
+                            ]
+                        )
+                      )
+                    )
+                  )
+                ],
               ),
-              SizedBox(
-                  height: size.height * 0.25,
-                  width: size.width,
-                  child: Stack(
-                    alignment: AlignmentDirectional.bottomStart,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(
-                            top: 30, bottom: 30, left: 50, right: 50),
-                        child: JoinQuizCard(),
-                      ),
-                      Image.asset(
-                        'assets/images/proud.png',
-                        height: size.height * 0.2,
-                        width: size.height * 0.12,
-                      ),
-                    ],
-                  )),
-              _buildFeaturesList(size, context, menuList),
-              SizedBox(height: size.height * 0.03),
-              _buildSearchBar(context, size),
-              SizedBox(height: size.height * 0.03),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ] 
+        )
+            
     );
   }
 
   SizedBox _buildFeaturesList(
-      Size size, BuildContext context, List<String> menuList) {
+    Size size, BuildContext context, List<String> menuList) {
+    final List<String> featureList = <String>["Video", "Sách", "Từ vựng", "TOEIC", "Giải đố", "Trò chuyện"];
     return SizedBox(
         height: size.height * 0.08,
         child: ListView.builder(
@@ -119,31 +164,44 @@ class _NavigationPageState extends State<NavigationPage> {
               });
               Navigator.pushNamed(context, _pages[index]);
             },
-            child: Container(
-              margin: const EdgeInsets.only(
-                left: 10,
-              ),
-              width: size.height * 0.08,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: [
-                    Container(
-                      color: AppColor.accentBlue,
+            child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(
+                    left: 10,
+                  ),
+                  width: size.height * 0.08,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.r),
+                    child: Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        // Container(
+                        //   color: AppColor.accentBlue,
+                        // ),
+                        Image.asset(
+                          'assets/icons/${menuList[index]}.png',
+                          height: size.height * 0.05,
+                          width: size.height * 0.05,
+                        ),
+                      ],
                     ),
-                    Image.asset(
-                      'assets/icons/${menuList[index]}.png',
-                      height: size.height * 0.05,
-                      width: size.height * 0.05,
-                    ),
-                  ],
+                    // Image.network(
+                    //   bookList[i].coverUrl,
+                    //   height: size.height*0.25
+                    // ),
+                  ),
                 ),
-                // Image.network(
-                //   bookList[i].coverUrl,
-                //   height: size.height*0.25
-                // ),
-              ),
+                AutoSizeText(
+                  featureList[index],
+                  style: AppTypography.bodySmall.copyWith(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    color: AppColor.textPrimary,
+                  ),
+                  maxLines: 2,
+                ),
+              ],
             ),
           ),
           itemCount: 6,
@@ -156,17 +214,17 @@ class _NavigationPageState extends State<NavigationPage> {
     final user = authLocal.getCurrentUser();
     String greeting() {
       var hour = DateTime.now().hour;
-      if (hour < 12) {
+      if (hour > 5 && hour < 12) {
         return 'buổi sáng ☀️';
       }
-      if (hour < 17) {
+      if (hour >=  12 && hour < 18) {
         return 'buổi chiều ☀️';
       }
       return 'buổi tối 🌙';
     }
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.r),
+      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 4.r),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -174,16 +232,16 @@ class _NavigationPageState extends State<NavigationPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Xin chào ${greeting()}!",
+                "Chào ${greeting()}",
                 style: AppTypography.title.copyWith(
-                    color: AppColor.pastelPink,
+                    color: AppColor.textPrimary,
                     fontWeight: FontWeight.w700,
                     fontSize: 18.r),
               ),
               Text(
                 user?.fullName ?? "User",
                 style: AppTypography.subHeadline
-                    .copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+                    .copyWith(color: AppColor.textPrimary, fontWeight: FontWeight.w700),
               ),
             ],
           ),
@@ -215,11 +273,11 @@ class _NavigationPageState extends State<NavigationPage> {
           );
         },
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(20.r),
           child: Container(
             height: size.height * 0.05,
             width: size.width * 0.95,
-            color: AppColor.secondary,
+            color: AppColor.darkGray,
             padding: EdgeInsets.symmetric(vertical: 0.8.r),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -227,7 +285,7 @@ class _NavigationPageState extends State<NavigationPage> {
                 SizedBox(width: size.width * 0.04),
                 SvgPicture.asset(
                   'assets/icons/ic_search.svg',
-                  color: AppColor.lightGray,
+                  color: AppColor.textSecondary,
                   width: 20,
                   height: 20,
                 ),
@@ -236,7 +294,7 @@ class _NavigationPageState extends State<NavigationPage> {
                   'Tra từ vựng, video, sách,...',
                   style: AppTypography.body.copyWith(
                     fontWeight: FontWeight.w500,
-                    color: AppColor.lightGray,
+                    color: AppColor.textSecondary,
                   ),
                   maxLines: 1,
                 ),

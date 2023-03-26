@@ -119,7 +119,7 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.appBackground,
       body: SafeArea(
         bottom: false,
         child: Column(
@@ -153,7 +153,7 @@ class _VideoSeeMorePageState extends State<VideoSeeMorePage>
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30.r),
               ),
-              color: Colors.white,
+              color: AppColor.primary,
             ),
             child: PagedListView<int, VideoYoutubeInfo>(
               shrinkWrap: true,

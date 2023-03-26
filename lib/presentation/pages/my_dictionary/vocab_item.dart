@@ -11,8 +11,8 @@ class VocabDictionaryItem extends StatefulWidget {
   const VocabDictionaryItem(
       {super.key,
       required this.vocab,
-      this.color = Colors.white,
-      this.textColor = AppColor.primary});
+      this.color = AppColor.primary,
+      this.textColor = AppColor.textPrimary});
 
   final LocalVocabInfo vocab;
   final Color? color;
@@ -40,10 +40,11 @@ class _VocabDictionaryItemState extends State<VocabDictionaryItem> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10.r),
-      height: 60.h,
+      height: 70.h,
       decoration: BoxDecoration(
         color: widget.color,
         borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(color: AppColor.defaultBorder)
       ),
       child: _buildVocabPanel(),
     );
@@ -57,10 +58,10 @@ class _VocabDictionaryItemState extends State<VocabDictionaryItem> {
         Row(
           children: [
             Text(
-              widget.vocab.vocab.toCapitalize(),
+              widget.vocab.vocab,
               style: AppTypography.title.copyWith(
                 fontWeight: FontWeight.bold,
-                color: AppColor.primary,
+                color: widget.textColor,
               ),
             ),
             5.horizontalSpace,
@@ -68,7 +69,7 @@ class _VocabDictionaryItemState extends State<VocabDictionaryItem> {
               "(${widget.vocab.vocabType})",
               style: AppTypography.body.copyWith(
                 fontWeight: FontWeight.bold,
-                color: AppColor.secondary,
+                color: AppColor.textSecondary,
               ),
             ),
           ],

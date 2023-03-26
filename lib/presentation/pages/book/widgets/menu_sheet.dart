@@ -74,7 +74,7 @@ class _MenuSheetState extends State<MenuSheet> {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      color: AppColor.appBackground,
+      color: AppColor.primary,
       padding: EdgeInsets.only(top: size.height * 0.05),
       child: ListView.builder(
         itemBuilder: (ctx, i) => GestureDetector(
@@ -96,11 +96,11 @@ class _MenuSheetState extends State<MenuSheet> {
                 style: picked && i == at
                     ? Theme.of(context).textTheme.headlineMedium!.copyWith(
                           fontWeight: FontWeight.w500,
-                          color: AppColor.primary,
+                          color: AppColor.secondary,
                         )
                     : Theme.of(context).textTheme.headlineSmall!.copyWith(
                           fontWeight: FontWeight.w200,
-                          color: Theme.of(context).hintColor,
+                          color: AppColor.textSecondary,
                         ),
                 textAlign: TextAlign.center,
               ),

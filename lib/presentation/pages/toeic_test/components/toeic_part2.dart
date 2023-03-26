@@ -78,7 +78,7 @@ class _ToeicPartTwoComponentState extends State<ToeicPartTwoComponent>
           return Container(
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.primary,
                 borderRadius:
                     BorderRadius.only(topLeft: Radius.circular(30.r))),
             child: Column(
@@ -94,7 +94,7 @@ class _ToeicPartTwoComponentState extends State<ToeicPartTwoComponent>
         } else {
           return const Center(
             child: CircularProgressIndicator(
-              color: AppColor.primary,
+              color: AppColor.secondary,
             ),
           );
         }
@@ -109,8 +109,8 @@ class _ToeicPartTwoComponentState extends State<ToeicPartTwoComponent>
         width: MediaQuery.of(context).size.width * 0.9,
         padding: EdgeInsets.all(10.r),
         decoration: BoxDecoration(
-          border: Border.all(width: 1, color: AppColor.primary),
-          color: Colors.white,
+          border: Border.all(width: 1, color: AppColor.defaultBorder),
+          color: AppColor.primary,
           borderRadius: BorderRadius.circular(20.r),
         ),
         child: Column(
@@ -126,7 +126,7 @@ class _ToeicPartTwoComponentState extends State<ToeicPartTwoComponent>
               },
             ),
             5.verticalSpace,
-            const Divider(thickness: 1, color: AppColor.primary),
+            const Divider(thickness: 1, color: AppColor.defaultBorder),
             5.verticalSpace,
             _buildAnswerContent(context)
           ],
@@ -232,7 +232,7 @@ class _ToeicPartTwoComponentState extends State<ToeicPartTwoComponent>
         decoration: BoxDecoration(
           color: color,
           shape: BoxShape.circle,
-          border: Border.all(color: Colors.black),
+          border: Border.all(color: AppColor.defaultBorder),
         ),
         child: Text(
           text.replaceAll(".", ""),

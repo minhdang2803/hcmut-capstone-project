@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../bloc/video/category_video/category_video_cubit.dart';
+
+import '../../../../data/repositories/video_repository.dart';
 import '../../../routes/route_name.dart';
 import '../../../theme/app_color.dart';
+import '../../../theme/app_typography.dart';
 import '../../video/video_player_page.dart';
 
 class ResultList extends StatefulWidget {
@@ -12,8 +14,18 @@ class ResultList extends StatefulWidget {
   final List<dynamic> data;
   final bool isBook;
 
+
   @override
   ResultListState createState() => ResultListState();
+}
+
+void onVideoClick(BuildContext context, String videoId) async{
+  if (!context.mounted) return;
+
+  final videoRepository = VideoRepository.instance();
+  final savedItem = await videoRepository.saveExternalVideo(videoId);
+  // ignore: use_build_context_synchronously
+  Navigator.of(context).pushNamed(RouteName.videoPlayer, arguments: VideoPlayerPageModel(context: context, video: savedItem));
 }
 
 class ResultListState extends State<ResultList> {
@@ -29,12 +41,8 @@ class ResultListState extends State<ResultList> {
                         if (widget.isBook) {
                           Navigator.of(context)
                               .pushNamed(RouteName.bookDetails, arguments: item.bookId);
-                        }else{
-                          Navigator.of(context).pushNamed(
-                            RouteName.videoPlayer,
-                            arguments:
-                                VideoPlayerPageModel(context: context, video: item),
-                          );
+                        }else{ 
+                          onVideoClick(context, item.videoId);
                         }
                     },
                     child: Padding(
@@ -49,9 +57,9 @@ class ResultListState extends State<ResultList> {
                             height: 0.2.sw,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
-                              child: Container(
+                              child: SizedBox(
                                 height: 0.2.sw,
-                                color: AppColor.lightGray,
+                                
                                 child: FadeInImage.assetNetwork(
                                   placeholder: 'assets/images/default_logo.png',
                                   placeholderFit: BoxFit.contain,
@@ -73,17 +81,15 @@ class ResultListState extends State<ResultList> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                
                                 Text(
                                   widget.data.elementAt(index).title, // Replace with your actual title
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style: AppTypography.title.copyWith(color: AppColor.textPrimary),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                           
                                 ),
-                                SizedBox(height: 5),
+                                SizedBox(height: 5.r),
                                 // Text(
                                 //   widget.data.elementAt(index).author??'', // Replace with your actual description
                                 //   style: TextStyle(

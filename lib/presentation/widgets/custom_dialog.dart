@@ -28,7 +28,7 @@ class BKEDialog extends StatelessWidget {
           width: 0.8.sw,
           height: 0.5.sw,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColor.primary,
             borderRadius: BorderRadius.circular(20.r),
           ),
           child: Column(
@@ -52,7 +52,7 @@ class BKEDialog extends StatelessWidget {
                         title,
                         textAlign: TextAlign.center,
                         style: AppTypography.title.copyWith(
-                          color: AppColor.primary,
+                          color: AppColor.textPrimary,
                           fontWeight: FontWeight.bold,
                         ),
                         maxLines: 1,
@@ -80,16 +80,17 @@ class BKEDialog extends StatelessWidget {
                         behavior: HitTestBehavior.translucent,
                         child: Container(
                           alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: AppColor.secondary.withOpacity(0.5),
-                            borderRadius: const BorderRadius.only(
+                          decoration: const BoxDecoration(
+                            color: AppColor.secondary,
+                            borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(20),
                             ),
                           ),
                           child: Text(
                             'Huỷ',
                             style: AppTypography.body.copyWith(
-                              color: AppColor.onSecondary,
+                              color: AppColor.textPrimary
+                              ,
                             ),
                           ),
                         ),
@@ -101,16 +102,18 @@ class BKEDialog extends StatelessWidget {
                         behavior: HitTestBehavior.translucent,
                         child: Container(
                           alignment: Alignment.center,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             color: AppColor.secondary,
-                            borderRadius: BorderRadius.only(
+                            border: Border.all(color: AppColor.defaultBorder),
+                            borderRadius: const BorderRadius.only(
                               bottomRight: Radius.circular(20),
                             ),
+                            
                           ),
                           child: Text(
                             'Đồng ý',
                             style: AppTypography.body
-                                .copyWith(color: AppColor.onPrimary),
+                                .copyWith(color: AppColor.textPrimary),
                           ),
                         ),
                       ),

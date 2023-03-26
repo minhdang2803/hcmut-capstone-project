@@ -134,8 +134,9 @@ class _LoginComponentState extends State<LoginComponent> {
           );
         }
         return RoundedElevatedButton(
-          label: 'Login',
-          labelStyle: AppTypography.title.copyWith(color: Colors.white),
+          label: 'Đăng nhập',
+          labelStyle: AppTypography.title.copyWith(color: AppColor.textPrimary),
+          backgroundColor: AppColor.accentBlue,
           width: 225.w,
           height: 44.h,
           radius: 22.r,
