@@ -1,17 +1,22 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bke/utils/enum.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../theme/app_color.dart';
 import '../../../theme/app_typography.dart';
 
 
 class ContinueCard extends StatelessWidget {
   const ContinueCard({
     Key? key,
-    required this.recentAction
+    required this.recentAction,
+    required this.item
   }) : super(key: key);
 
-  final int recentAction;
+  final RecentAction recentAction;
+  final dynamic item;
 
   
 
@@ -19,7 +24,7 @@ class ContinueCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     late final String action;
-    switch (recentAction) {
+    switch (recentAction.index) {
       case 0:
         action = 'xem';
         break;
@@ -39,84 +44,95 @@ class ContinueCard extends StatelessWidget {
         action = 'chơi';
         break;
     }
-    return Stack(
-        children: [
-          SvgPicture.asset(
-            'assets/texture/card.svg',
-            width: size.width,
-            fit: BoxFit.contain,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        color: Colors.white.withOpacity(0.3),
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: size.width*0.55,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+    return SizedBox(
+      height: 0.15.sh,
+      width: 0.9.sw,
+      // child: Stack(
+      //     children: [
+      //       SvgPicture.asset(
+      //         'assets/texture/card.svg',
+      //         width: size.width,
+      //         fit: BoxFit.contain,
+      //       ),
+      child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          color: AppColor.primary,
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: size.width*0.4,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      AutoSizeText(
+                                      'Tiếp tục $action',
+                                      style: AppTypography.body.copyWith(
+                                        fontWeight: FontWeight.w400,
+                                        color:  AppColor.textPrimary,
+                                      ),
+                                      maxLines: 1,
+                                    ),
                                     AutoSizeText(
-                                    'Tiếp tục $action',
-                                    style: AppTypography.body.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color:  Colors.white,
-                                    ),
-                                    maxLines: 1,
-                                  ),
-                                  AutoSizeText(
-                                    'Is he living or he dead?',
-                                    style: AppTypography.title.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color:  Colors.white,
-                                    ),
-                                    maxLines: 2,
-                                  ),
-                                  
-                                  ],
-                                ),
-                              ),
-
-                               Stack(
-                                alignment: AlignmentDirectional.center,
-                                  children: [
-                                    SizedBox(
-                                      width: size.width*0.12,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Container(
-                                          color: Colors.white)
+                                      item.title,
+                                      style: AppTypography.body.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        color:  AppColor.textPrimary,
                                       ),
+                                      maxLines: 2,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(1.0),
-                                      child: SizedBox(
-                                        width: size.width*0.11,
-                                        child: ClipRRect(
+                                    
+                                    ],
+                                  ),
+                                ),
+    
+                                 Stack(
+                                  alignment: AlignmentDirectional.center,
+                                    children: [
+                                      // SizedBox(
+                                      //   width: size.width*0.12,
+                                      //   child: ClipRRect(
+                                      //     borderRadius: BorderRadius.circular(10),
+                                      //     child: Container(
+                                      //       color: Colors.white)
+                                      //   ),
+                                      // ),
+                                      ClipRRect(
                                           borderRadius: BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            'assets/images/Is_He_Living_or_is_He_Dead-Mark_Twain.jpg',
-                                            fit: BoxFit.fill,
-                                          ),
+                                          child:
+                                          Container(
+                                            padding: const EdgeInsets.all(1.0),
+                                            height: recentAction == RecentAction.readBook ? 0.3.sw : 0.18.sw,
+                                            color: AppColor.primary,
+                                            child: FadeInImage.assetNetwork(
+                                              placeholder: 'assets/images/default_logo.png',
+                                              placeholderFit: BoxFit.contain,
+                                              image: recentAction == RecentAction.readBook ? item.coverUrl : item.thumbUrl,
+                                              fadeInDuration: const Duration(milliseconds: 400),
+                                              fit: BoxFit.fill,
+                                              // placeholderFit: BoxFit.fill,
+                                              imageErrorBuilder: (context, error, stackTrace) =>
+                                                  Image.asset(
+                                                'assets/images/default_logo.png',
+                                              ),
+                                            ),
                                         ),
-                                      ),
-                                    ),  
-                                  ],
-                                ),
-                              
-                            ],
+                                      )
+                                     
+                                    ],
+                                  ),
+                                
+                              ],
+                          )
                         )
-                      )
-                    ),
-          ),
-        ],
-      );
+                      ),
+            ),
+    );
   }
 
 

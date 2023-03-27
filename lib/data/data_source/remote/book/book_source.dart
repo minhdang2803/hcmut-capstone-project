@@ -16,6 +16,7 @@ abstract class BookSource {
    Future<BaseResponse<BookInfos>> getByCategory(String category);
 
    Future<BaseResponse<BookInfo>> getBookInfo(String bookId);
+   Future<BaseResponse<BookInfo>> getLatest();
    Future<BaseResponse<BookReader>> getEbook(String bookId, int pageKey);
    Future<BaseResponse<BookListener>> getAudioBook(String bookId);
    Future<BaseResponse> updateCkpt(String bookId, int ckpt, bool isEbook);
@@ -150,8 +151,23 @@ class BookSourceImpl extends BookSource {
     );
 
     return _api.get(request);
-    // final data = await getAll();
-    // return data.where((e) => (e.bookId == bookId)).toList()[0]; //return info of book bookId
+  }
+
+  @override
+  Future<BaseResponse<BookInfo>> getLatest() async {
+    const path = EndPoint.getLatestBook;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+  
+    final request = APIServiceRequest(
+      path,
+      header: header,
+      (response) => BaseResponse<BookInfo>.fromJson(
+          json: response, dataBuilder: BookInfo.fromJson),
+    );
+
+    return _api.get(request);
   }
 
   @override

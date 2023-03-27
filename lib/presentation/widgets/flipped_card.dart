@@ -49,6 +49,7 @@ class _FlipCardState extends State<FlipCard> {
             decoration: BoxDecoration(
               color: AppColor.greyBackground,
               borderRadius: BorderRadius.circular(30.r),
+              border: Border.all(color: AppColor.defaultBorder)
             ),
             child: Transform(
               alignment: Alignment.center,
@@ -84,7 +85,7 @@ class _FlipCardState extends State<FlipCard> {
       decoration: BoxDecoration(
         border: Border.all(color: AppColor.primary, width: 3),
         borderRadius: BorderRadius.circular(30.r),
-        color: Colors.white,
+        color: AppColor.primary,
       ),
       child: child,
     );

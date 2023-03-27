@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../bloc/book/book_bloc.dart';
 import '../../../../bloc/book/book_event.dart';
 import '../../../../bloc/book/book_state.dart';
+import '../../../theme/app_color.dart';
 
 class LikeButton extends StatefulWidget {
   const LikeButton({super.key, required this.isLiked, required this.id});
@@ -29,7 +30,7 @@ class LikeButtonState extends State<LikeButton> {
         return IconButton(
           icon: Icon(
             _isLiked ? Icons.favorite : Icons.favorite_border,
-            color: Colors.white,
+            color: AppColor.secondary,
           ),
           onPressed: () {
             setState(() {
@@ -47,7 +48,7 @@ class LikeButtonState extends State<LikeButton> {
       }
       return const Icon(
         Icons.favorite_border,
-        color: Colors.white,
+        color: AppColor.secondary,
       );
     });
   }

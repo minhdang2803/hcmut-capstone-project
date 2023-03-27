@@ -7,6 +7,7 @@ import '../../../../../data/configs/hive_config.dart';
 import '../../../../../utils/widget_util.dart';
 import '../../../../routes/route_name.dart';
 
+import '../../../../theme/app_color.dart';
 import '../../../../theme/app_typography.dart';
 import '../widgets/profile_setting_item.dart';
 
@@ -50,7 +51,7 @@ class ProfileSettingPanel extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 20.r),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.r),
-                color: Colors.white,
+                color: AppColor.primary
               ),
               child: Padding(
                 padding: EdgeInsets.all(10.r),
@@ -86,7 +87,7 @@ class ProfileSettingPanel extends StatelessWidget {
                           const ProfileSettingItem(
                             asset: 'assets/icons/ic_user.svg',
                             label: 'User',
-                            iconColor: Color(0xFFDE5900),
+                            iconColor: AppColor.secondary,
                             // onPress: () => Navigator.of(context)
                             //     .pushNamed(RouteName.updateProfile),
                           ),
@@ -161,16 +162,16 @@ class ProfileSettingPanel extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Logout',
+              'Đăng xuất',
               style: AppTypography.title.copyWith(
-                color: Colors.white,
+                color: AppColor.textPrimary ,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Icon(
               Icons.keyboard_arrow_right_rounded,
               size: 24.r,
-              color: Colors.white,
+              color: AppColor.textPrimary,
             ),
           ],
         ),

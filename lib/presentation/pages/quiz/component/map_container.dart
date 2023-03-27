@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../theme/app_color.dart';
 import 'image_view_port.dart';
 import 'map_object.dart';
 
@@ -109,7 +110,7 @@ class _MapContainerState extends State<MapContainer> {
             padding: EdgeInsets.all(4),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
-              color: Colors.green,
+              color: AppColor.secondary,
               boxShadow: const [
                 BoxShadow(
                   color: Colors.black12,
@@ -121,7 +122,7 @@ class _MapContainerState extends State<MapContainer> {
             child: const Icon(
               Icons.remove,
               size: 24,
-              color: Colors.white,
+              color: AppColor.textPrimary,
             ),
           ),
           onPressed: () {
@@ -137,7 +138,7 @@ class _MapContainerState extends State<MapContainer> {
             padding: EdgeInsets.all(5.r),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
-              color: Colors.green,
+              color: AppColor.secondary,
               boxShadow: const [
                 BoxShadow(
                   color: Colors.black12,
@@ -149,7 +150,7 @@ class _MapContainerState extends State<MapContainer> {
             child: const Icon(
               Icons.add,
               size: 24,
-              color: Colors.white,
+              color: AppColor.textPrimary,
             ),
           ),
           onPressed: () {

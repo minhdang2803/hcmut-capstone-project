@@ -51,7 +51,7 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.appBackground,
       body: SafeArea(
         bottom: false,
         child: SizedBox(
@@ -76,7 +76,7 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColor.primary,
             borderRadius: BorderRadius.only(topLeft: Radius.circular(30.r))),
         child: Padding(
           padding: EdgeInsets.only(top: 20.r),
@@ -159,19 +159,19 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
         if (state.status == ToeicPartStatus.loading) {
           return QuizButton(
             width: MediaQuery.of(context).size.width * 0.85,
-            backgroundColor: AppColor.lightGray,
-            textColor: Colors.white,
+            backgroundColor: AppColor.darkGray,
+            textColor: AppColor.textSecondary,
             text: "Làm bài kiểm tra",
             onTap: null,
           );
         } else {
-          return Row(
+          return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               QuizButton(
                 width: MediaQuery.of(context).size.width * 0.75,
-                backgroundColor: AppColor.primary,
-                textColor: Colors.white,
+                backgroundColor: AppColor.secondary,
+                textColor: AppColor.textPrimary,
                 text: "Làm bài kiểm tra",
                 onTap: () {
                   context
@@ -195,13 +195,23 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
                   }
                 },
               ),
-              Transform.scale(
-                scale: 1.5,
-                child: Checkbox(
-                  activeColor: AppColor.primary,
-                  value: isReal,
-                  onChanged: (value) => setState(() => isReal = value!),
+              SizedBox(height: 5.r),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                  "Chế độ kiểm tra",
+                  style: AppTypography.title,
                 ),
+                  Transform.scale(
+                    scale: 1,
+                    child: Checkbox(
+                      activeColor: AppColor.secondary,
+                      value: isReal,
+                      onChanged: (value) => setState(() => isReal = value!),
+                    ),
+                  ),
+                ],
               )
             ],
           );

@@ -159,7 +159,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
               child: Text(
                 "Huỷ",
                 style: AppTypography.body.copyWith(
-                  color: Colors.white,
+                  color: AppColor.textPrimary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -208,7 +208,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
                   child: Text(
                     "Thay đổi",
                     style: AppTypography.body.copyWith(
-                      color: Colors.white,
+                      color: AppColor.textPrimary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -227,7 +227,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
               child: Text(
                 "Huỷ",
                 style: AppTypography.body.copyWith(
-                  color: Colors.white,
+                  color: AppColor.textPrimary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -325,7 +325,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
                   child: Text(
                     "Thêm",
                     style: AppTypography.body.copyWith(
-                      color: Colors.white,
+                      color: AppColor.textPrimary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -344,7 +344,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
               child: Text(
                 "Huỷ",
                 style: AppTypography.body.copyWith(
-                  color: Colors.white,
+                  color: AppColor.textPrimary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -360,7 +360,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(
-            color: value == index ? AppColor.primary : Colors.transparent,
+            color: value == index ? AppColor.accentBlue : Colors.transparent,
             width: 2.0),
       ),
       child: Image(
@@ -372,18 +372,20 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.appBackground,
       appBar: AppBar(
-        backgroundColor: AppColor.primary,
+        
+        backgroundColor: AppColor.appBackground,
         elevation: 0,
         automaticallyImplyLeading: false,
         bottom: TabBar(
-          indicatorColor: Colors.transparent,
+          indicatorColor: AppColor.secondary.withOpacity(0.5),
           tabs: const [
             Tab(
-              icon: FaIcon(FontAwesomeIcons.userLarge),
+              icon: FaIcon(color: AppColor.textPrimary, FontAwesomeIcons.userLarge),
             ),
             Tab(
-              icon: FaIcon(FontAwesomeIcons.layerGroup),
+              icon: FaIcon(color: AppColor.textPrimary, FontAwesomeIcons.layerGroup),
             )
           ],
           controller: _tabController,
@@ -393,6 +395,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             BackButton(
+              color: AppColor.textPrimary,
               onPressed: () {
                 final flashcardCollections = context
                     .read<FlashcardCollectionCubit>()
@@ -409,16 +412,18 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
             Align(
               alignment: Alignment.center,
               child: Text(
-                "Bộ sưu tập Flashcard",
-                style: AppTypography.subHeadline
-                    .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
+                      "Flashcards",
+                      style: AppTypography.subHeadline.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
             ),
             SizedBox(width: 35.r)
           ],
         ),
       ),
-      backgroundColor: AppColor.primary,
       body: SafeArea(
         bottom: false,
         child: TabBarView(
@@ -439,11 +444,12 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
       ),
       floatingActionButton: _selectedIndex == 0
           ? FloatingActionButton(
+              backgroundColor: AppColor.accentBlue,
               onPressed: () => _addCollection(context),
-              backgroundColor: AppColor.primary,
+              // backgroundColor: AppColor.primary,
               child: const Icon(
                 Icons.add,
-                color: Colors.white,
+                color: AppColor.textPrimary,
               ),
             )
           : null,

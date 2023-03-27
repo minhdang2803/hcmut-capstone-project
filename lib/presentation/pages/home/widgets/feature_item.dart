@@ -44,7 +44,7 @@ class FeatureItem extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 Card(
-                  color: Colors.white,
+                  color: AppColor.primary,
                   elevation: elevation,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(

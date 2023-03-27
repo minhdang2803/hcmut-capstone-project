@@ -245,7 +245,8 @@ class _BookReadState extends State<BookRead> {
             ..onTap = () {
               showModalBottomSheet(
                 context: context,
-                backgroundColor: Colors.transparent,
+                backgroundColor: Colors.transparent
+                ,
                 builder: (context) => BottomVocab(text: text.toLowerCase()),
               );
             },
@@ -261,10 +262,10 @@ class _BookReadState extends State<BookRead> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     if (_rowHeight == 0.0) {
-      _rowHeight = size.height * 0.11;
+      _rowHeight = size.height * 0.16;
     }
     return Scaffold(
-        backgroundColor: AppColor.secondary,
+        backgroundColor: AppColor.primary,
         body: SafeArea(
             top: true,
             bottom: false,
@@ -281,7 +282,7 @@ class _BookReadState extends State<BookRead> {
                               padding: EdgeInsets.symmetric(horizontal: 30.r),
                               child: const Center(
                                   child: CircularProgressIndicator(
-                                      color: AppColor.appBackground)));
+                                      color: AppColor.accentBlue)));
                         } else if (state is EbookLoadedState) {
                           _ebook = state.book!.ebook;
 
@@ -354,22 +355,26 @@ class _BookReadState extends State<BookRead> {
           IconButton(
             icon: const Icon(
               Icons.arrow_back,
-              color: Colors.black,
+              color: AppColor.textPrimary,
               size: 24,
             ),
             onPressed: () => Navigator.pop(context),
           ),
-          Text(widget.book.title!,
-              style: const TextStyle(
-                fontSize: 19,
-                color: AppColor.textPrimary,
-                fontWeight: FontWeight.w400,
-              ),
-              textAlign: TextAlign.center),
+          SizedBox(
+            width: 200.w,
+            child: Text(
+                      widget.book.title!,
+                      style: AppTypography.title.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+          ),
           IconButton(
               icon: Icon(
                 Icons.menu,
-                color: Colors.black,
+                color: AppColor.textPrimary,
                 size: 24.r,
               ),
               onPressed: () => showModalBottomSheet(
@@ -426,7 +431,8 @@ class _BookReadState extends State<BookRead> {
       chapterList = chapters.keys.cast<String>().toList();
       if (chapterList.isNotEmpty) {
         return Container(
-          color: AppColor.appBackground,
+          padding: EdgeInsets.only(top: 20.r),
+          color: AppColor.primary,
           child: ListView.builder(
             itemBuilder: (ctx, i) => GestureDetector(
                 onTap: () {
@@ -438,7 +444,7 @@ class _BookReadState extends State<BookRead> {
                   setCkpt(chapters[chapter]);
                   Future.delayed(const Duration(seconds: 2), () {
                     _scrollController.animateTo(_position,
-                        duration: const Duration(seconds: 3),
+                        duration: const Duration(seconds: 1),
                         curve: Curves.easeInOut);
                   });
                   Navigator.pop(context);
@@ -452,11 +458,11 @@ class _BookReadState extends State<BookRead> {
                     style: picked && i == at
                         ? Theme.of(context).textTheme.headlineMedium!.copyWith(
                               fontWeight: FontWeight.w500,
-                              color: AppColor.primary,
+                              color: AppColor.secondary,
                             )
                         : Theme.of(context).textTheme.headlineSmall!.copyWith(
                               fontWeight: FontWeight.w200,
-                              color: Theme.of(context).hintColor,
+                              color: AppColor.textPrimary,
                             ),
                     textAlign: TextAlign.center,
                   ),

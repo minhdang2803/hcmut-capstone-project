@@ -20,9 +20,11 @@ abstract class VideoSource {
     String? title,
   });
   Future<BaseResponse<VideoYoutubeInfo>> getVideo(String videoId);
+  Future<BaseResponse<VideoYoutubeInfo>> getLatest();
   Future<BaseResponse<VideoYoutubeInfos>> getContinueWatching();
   Future<BaseResponse<RecommendedVideos>> getRecommendedVideos();
   Future<BaseResponse> updateCkpt(String videoId, int ckpt);
+  Future<BaseResponse<VideoYoutubeInfo>> saveExternalVideo(String videoId);
 }
 
 class VideoSourceImpl extends VideoSource {
@@ -117,6 +119,23 @@ class VideoSourceImpl extends VideoSource {
   }
 
   @override
+  Future<BaseResponse<VideoYoutubeInfo>> getLatest() async {
+    const path = EndPoint.getLatestVideo;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+    final request = APIServiceRequest(
+      path,
+      header: header,
+      (response) => BaseResponse<VideoYoutubeInfo>.fromJson(
+        json: response,
+        dataBuilder: VideoYoutubeInfo.fromJson,
+      ),
+    );
+    return _api.get(request);
+  }
+
+  @override
   Future<BaseResponse<VideoYoutubeInfos>> getContinueWatching() async {
     const path = EndPoint.getContinueWatching;
     final token = await const FlutterSecureStorage()
@@ -148,6 +167,25 @@ class VideoSourceImpl extends VideoSource {
       (response) => BaseResponse.fromJson(json: response, dataBuilder: null),
     );
     LogUtil.debug('$bodyRequest');
+    return _api.post(request);
+  }
+
+  @override
+  Future<BaseResponse<VideoYoutubeInfo>> saveExternalVideo(String videoId)async {
+    const path = EndPoint.saveExternalVideo;
+    final token = await const FlutterSecureStorage()
+        .read(key: HiveConfig.currentUserTokenKey);
+    final header = {'Authorization': 'Bearer $token'};
+    final Map<String, dynamic> params = {'videoId': videoId};
+    final request = APIServiceRequest(
+      path,
+      header: header,
+      queryParams: params,
+            (response) => BaseResponse<VideoYoutubeInfo>.fromJson(
+        json: response,
+        dataBuilder: VideoYoutubeInfo.fromJson,
+      ),
+    );
     return _api.post(request);
   }
 }

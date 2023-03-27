@@ -83,7 +83,7 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
         if (state.status == ToeicStatus.done) {
           return Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColor.primary,
               borderRadius: BorderRadius.only(topLeft: Radius.circular(30.r)),
             ),
             child: Column(
@@ -99,7 +99,7 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
         } else {
           return const Center(
             child: CircularProgressIndicator(
-              color: AppColor.primary,
+              color: AppColor.secondary,
             ),
           );
         }
@@ -114,7 +114,7 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
         width: MediaQuery.of(context).size.width * 0.9,
         padding: EdgeInsets.all(10.r),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColor.primary,
           borderRadius: BorderRadius.circular(20.r),
         ),
         child: Column(
@@ -130,7 +130,7 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
               },
             ),
             5.verticalSpace,
-            const Divider(thickness: 1, color: AppColor.primary),
+            const Divider(thickness: 1, color: AppColor.defaultBorder),
             5.verticalSpace,
             _buildTestContent(context)
           ],
@@ -188,7 +188,7 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
             questionContent,
             style: AppTypography.title,
           ),
-          const Divider(thickness: 1, color: AppColor.primary),
+          const Divider(thickness: 1, color: AppColor.defaultBorder),
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),

@@ -1,5 +1,6 @@
 import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../data/models/book/book_info.dart';
 import '../../../../data/models/book/book_listener.dart';
@@ -52,7 +53,7 @@ class BookSection extends StatelessWidget {
                       .pushNamed(RouteName.bookDetails, arguments: book.bookId);
                 }
               },
-              child: Row(
+              child: Column(
                 children: [
                   Container(
                       margin: const EdgeInsets.only(
@@ -63,7 +64,7 @@ class BookSection extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         child: Container(
                           height: size.height * 0.25,
-                          color: AppColor.lightGray,
+                          color: AppColor.primary,
                           child: FadeInImage.assetNetwork(
                             placeholder: 'assets/images/default_logo.png',
                             placeholderFit: BoxFit.contain,
@@ -77,7 +78,43 @@ class BookSection extends StatelessWidget {
                             ),
                           ),
                         ),
-                      )),
+                      )
+                    ),
+                    // Visibility(
+                    // visible:  heading == "Tiếp tục đọc",
+                    // child: SizedBox(
+                    //       height: 5.r,
+                    //       child: LinearProgressIndicator(
+                    //         color: AppColor.accentBlue,
+                    //         value: bookList.elementAt(i).checkpoint! *100 / int.parse(bookList.elementAt(i).totalWords!).toDouble(),
+                    //       ),
+                    //     )
+                    // ),
+                  // Visibility(
+                  //   visible: bookList.elementAt(i).checkpoint != null,
+                  //   child: Container(
+                  //     color: AppColor.primary,
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //       children: [
+                  //         IconButton(
+                  //           iconSize: 14.r,
+                  //           color: AppColor.textPrimary,
+                  //           onPressed: () {
+                  //             _showInfo(context);
+                  //           },
+                  //           icon: const FaIcon(FontAwesomeIcons.circleExclamation),
+                  //         ),
+                  //         IconButton(
+                  //           iconSize: 14.r,
+                  //           color: AppColor.textPrimary,
+                  //           onPressed: () {},
+                  //           icon: const FaIcon(FontAwesomeIcons.ellipsisVertical),
+                  //         )
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

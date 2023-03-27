@@ -55,7 +55,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.appBackground,
       body: SafeArea(
         bottom: false,
         child: BlocSelector<FlashcardCubit, FlashcardState, bool>(
@@ -90,7 +90,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
       child: Container(
         width: size.width,
         decoration: BoxDecoration(
-          color: AppColor.greyBackground,
+          color: AppColor.primary,
           borderRadius: BorderRadius.only(topLeft: Radius.circular(30.r)),
         ),
         child: Column(
@@ -116,13 +116,13 @@ class _FlashCardScreenState extends State<FlashCardScreen>
                         angle: 0,
                         front: Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: AppColor.primary,
                             borderRadius: BorderRadius.circular(30.r),
                           ),
                         ),
                         back: Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: AppColor.primary,
                             borderRadius: BorderRadius.circular(30.r),
                           ),
                         ),
@@ -174,7 +174,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
             },
             icon: Icon(
               Icons.close,
-              color: AppColor.primary,
+              color: AppColor.textPrimary,
               size: 25.r,
             ),
           ),
@@ -210,7 +210,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
                 .deleteFlashcard(widget.currentCollection, index),
             icon: Icon(
               Icons.close,
-              color: AppColor.primary,
+              color: AppColor.textPrimary,
               size: 25.r,
             ),
           ),
@@ -231,14 +231,14 @@ class _FlashCardScreenState extends State<FlashCardScreen>
                     Text(
                       '(${state.flashcards[state.index].vocabType.toCapitalize()})',
                       style: AppTypography.title.copyWith(
-                          fontWeight: FontWeight.bold, color: AppColor.primary),
+                          fontWeight: FontWeight.bold, color: AppColor.textPrimary),
                     ),
                     5.verticalSpace,
                     Text.rich(
                       TextSpan(
                           text: "UK: ",
                           style: AppTypography.title
-                              .copyWith(color: AppColor.primary),
+                              .copyWith(color: AppColor.textPrimary),
                           children: [
                             TextSpan(
                               text: state.flashcards[state.index].pronounce.uk,
@@ -251,7 +251,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
                       TextSpan(
                         text: "US: ",
                         style: AppTypography.title
-                            .copyWith(color: AppColor.primary),
+                            .copyWith(color: AppColor.textPrimary),
                         children: [
                           TextSpan(
                             text: state.flashcards[state.index].pronounce.us,
@@ -283,6 +283,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
                 borderRadius: BorderRadius.circular(30.r),
                 child: LinearProgressIndicator(
                   backgroundColor: AppColor.secondary.withOpacity(0.5),
+                  color: AppColor.secondary,
                   value: (state.index + 1) / state.flashcards.length,
                 ),
               ),

@@ -43,14 +43,14 @@ class BookInfo {
     required this.bookId,
     required this.id,
     required this.title,
-    required this.author,
+    this.author,
     required this.coverUrl,
-    required this.description,
-    required this.level,
-    required this.genre,
-    required this.totalWords,
-    required this.length,
-    required this.mp3Url,
+    this.description,
+    this.level,
+    this.genre,
+    this.totalWords,
+    this.length,
+    this.mp3Url,
     this.checkpoint,
     this.isLiked,
   });
@@ -58,14 +58,14 @@ class BookInfo {
   late final String bookId;
   late final String id;
   late final String title;
-  late final String author;
+  late final String? author;
   late final String coverUrl;
-  late final String description;
-  late final String level;
-  late final String genre;
-  late final String totalWords;
-  late final String length;
-  late final String mp3Url;
+  late final String? description;
+  late final String? level;
+  late final String? genre;
+  late final String? totalWords;
+  late final String? length;
+  late final String? mp3Url;
   late final int? checkpoint;
   late final bool? isLiked;
 

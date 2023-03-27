@@ -28,13 +28,13 @@ class _StartToeic extends State<StartToeic> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.appBackground,
       body: SafeArea(
         bottom: false,
         child: Column(
           children: [
             BkEAppBar(
-              label: "Kiểm tra Toeic",
+              label: "Luyện thi Toeic",
               onBackButtonPress: () => Navigator.pop(context),
             ),
             _buildMainUI(context),
@@ -48,16 +48,16 @@ class _StartToeic extends State<StartToeic> {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColor.primary,
             borderRadius: BorderRadius.only(topLeft: Radius.circular(30.r))),
         width: double.infinity,
         child: SingleChildScrollView(
           child: Column(
             children: [
               20.verticalSpace,
-              const ToeicDivider(text: "Practice TOEIC"),
+              const ToeicDivider(text: "Luyện tập"),
               _buildParts(context),
-              const ToeicDivider(text: "History"),
+              const ToeicDivider(text: "Lịch sử làm bài"),
               20.verticalSpace,
               _buildHistory(context),
             ],
@@ -76,7 +76,7 @@ class _StartToeic extends State<StartToeic> {
             if (state.status == ToeicHistoryStatus.loading) {
               return const Center(
                 child: CircularProgressIndicator(
-                  color: AppColor.primary,
+                  color: AppColor.secondary,
                 ),
               );
             }
@@ -216,7 +216,7 @@ class HistoryCard extends StatelessWidget {
     final percentage = ((score!.noCorrect) / score.total) * 100;
     return ListTile(
       subtitle: const Divider(
-        color: AppColor.primary,
+        color: AppColor.defaultBorder,
         thickness: 1,
       ),
       leading: SvgPicture.asset(
@@ -253,7 +253,7 @@ class ToeicDivider extends StatelessWidget {
           10.horizontalSpace,
           const Expanded(
             child: Divider(
-              color: AppColor.primary,
+              color: AppColor.defaultBorder,
               thickness: 1,
             ),
           ),

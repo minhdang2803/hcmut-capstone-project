@@ -63,7 +63,7 @@ class _ResetPassComponentState extends State<ResetPassComponent> {
             Text(
               'Tạo mật khẩu mới',
               style: AppTypography.title.copyWith(
-                color: AppColor.primary,
+                color: AppColor.textPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -130,8 +130,9 @@ class _ResetPassComponentState extends State<ResetPassComponent> {
             );
           }
           return RoundedElevatedButton(
-            label: 'Confirm',
-            labelStyle: AppTypography.title.copyWith(color: Colors.white),
+            label: 'Xác nhận',
+            labelStyle: AppTypography.title.copyWith(color: AppColor.textPrimary),
+            backgroundColor: AppColor.accentBlue,
             width: 225.w,
             height: 44.h,
             radius: 22.r,

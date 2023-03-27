@@ -81,7 +81,7 @@ class _ToeicPartSevenComponentState extends State<ToeicPartSevenComponent>
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.primary,
                 borderRadius:
                     BorderRadius.only(topLeft: Radius.circular(30.r))),
             child: Column(
@@ -93,10 +93,10 @@ class _ToeicPartSevenComponentState extends State<ToeicPartSevenComponent>
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: TabBar(
                     labelStyle: AppTypography.title,
-                    labelColor: AppColor.primary,
+                    labelColor: AppColor.textPrimary,
                     unselectedLabelStyle: AppTypography.title,
-                    unselectedLabelColor: AppColor.secondary,
-                    indicatorColor: Colors.deepPurple,
+                    unselectedLabelColor: AppColor.textSecondary,
+                    indicatorColor: AppColor.secondary,
                     tabs: tabs,
                     controller: _tabController,
                   ),
@@ -109,7 +109,7 @@ class _ToeicPartSevenComponentState extends State<ToeicPartSevenComponent>
         } else {
           return const Center(
             child: CircularProgressIndicator(
-              color: AppColor.primary,
+              color: AppColor.secondary,
             ),
           );
         }
@@ -138,8 +138,8 @@ class _ToeicPartSevenComponentState extends State<ToeicPartSevenComponent>
             height: MediaQuery.of(context).size.height,
             padding: EdgeInsets.all(10.r),
             decoration: BoxDecoration(
-              border: Border.all(width: 1, color: AppColor.primary),
-              color: Colors.white,
+              border: Border.all(width: 1, color: AppColor.defaultBorder),
+              color: AppColor.primary,
               borderRadius: BorderRadius.circular(20.r),
             ),
             child: SingleChildScrollView(
@@ -166,7 +166,7 @@ class _ToeicPartSevenComponentState extends State<ToeicPartSevenComponent>
         return Container(
           padding: EdgeInsets.all(10.r),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColor.primary,
             borderRadius: BorderRadius.circular(20.r),
           ),
           child: ListView.separated(
@@ -205,7 +205,7 @@ class _ToeicPartSevenComponentState extends State<ToeicPartSevenComponent>
       padding: EdgeInsets.all(10.r),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(width: 1, color: AppColor.primary)),
+          border: Border.all(width: 1, color: AppColor.defaultBorder)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -213,7 +213,7 @@ class _ToeicPartSevenComponentState extends State<ToeicPartSevenComponent>
             question.text!,
             style: AppTypography.body,
           ),
-          const Divider(thickness: 1, color: AppColor.primary),
+          const Divider(thickness: 1, color: AppColor.defaultBorder),
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),

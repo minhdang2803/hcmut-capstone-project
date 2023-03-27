@@ -18,11 +18,11 @@ class FlashcardComponent extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(8.r),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.primary,
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(
           width: 2.r,
-          color: AppColor.primary,
+          color: AppColor.defaultBorder,
         ),
       ),
       child: Column(
@@ -31,7 +31,9 @@ class FlashcardComponent extends StatelessWidget {
           AutoSizeText(
             title,
             textAlign: TextAlign.center,
-            style: AppTypography.body.copyWith(fontWeight: FontWeight.w500),
+            style: AppTypography.body.copyWith(fontSize: 10.h, fontWeight: FontWeight.w500),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           )
         ],
       ),
@@ -53,12 +55,11 @@ class FlashcardRandomComponent extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(8.r),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
+        color: AppColor.primary,
         border: Border.all(
           width: 2.r,
-          color: AppColor.primary,
-        ),
+          color: AppColor.defaultBorder),
+        borderRadius: BorderRadius.circular(20.r),
       ),
       child: Column(
         children: [
@@ -79,7 +80,7 @@ class FlashcardRandomComponent extends StatelessWidget {
           AutoSizeText(
             title, 
             textAlign: TextAlign.center,
-            style: AppTypography.body.copyWith(fontWeight: FontWeight.w500),
+            style: AppTypography.body.copyWith(fontSize: 10.h, fontWeight: FontWeight.w500),
           )
         ],
       ),

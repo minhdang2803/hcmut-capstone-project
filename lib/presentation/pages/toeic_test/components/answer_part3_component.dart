@@ -21,7 +21,7 @@ class AnswerPartThree extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
-          color: Colors.white,
+          color: AppColor.primary,
         ),
         padding: EdgeInsets.all(10.r),
         child: Column(
@@ -54,7 +54,7 @@ class AnswerPartThree extends StatelessWidget {
       padding: EdgeInsets.all(10.r),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(width: 1, color: AppColor.primary),
+        border: Border.all(width: 1, color: AppColor.defaultBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +66,7 @@ class AnswerPartThree extends StatelessWidget {
           10.verticalSpace,
           Text.rich(TextSpan(
               text: "Question: ",
-              style: AppTypography.title.copyWith(color: AppColor.primary),
+              style: AppTypography.title.copyWith(color: AppColor.textPrimary),
               children: [
                 TextSpan(
                     text: "${toeicLocal.text}\n", style: AppTypography.title),
@@ -77,7 +77,7 @@ class AnswerPartThree extends StatelessWidget {
               ])),
           Text.rich(TextSpan(
               text: "Answer: ",
-              style: AppTypography.title.copyWith(color: AppColor.primary),
+              style: AppTypography.title.copyWith(color: AppColor.textPrimary),
               children: [
                 TextSpan(
                     text: toeicLocal.correctAnswer, style: AppTypography.title)

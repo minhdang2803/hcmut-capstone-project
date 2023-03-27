@@ -5,7 +5,7 @@ import 'search_state.dart';
 import 'search_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-late List<BookInfo> _books;
+
 
 class SearchBloc extends Bloc<SearchEvent, SearchState>{
   final _searchRepos = SearchRepository.instance();

@@ -77,9 +77,16 @@ class _CalendarPageState extends State<CalendarPage>
     super.build(context);
     // final topPadding = MediaQuery.of(context).padding.top;
     return Scaffold(
+      backgroundColor: AppColor.appBackground,
       body: Container(
-        color: AppColor.primary,
         // padding: EdgeInsets.only(top: topPadding),
+        decoration: const BoxDecoration(
+                      color: AppColor.primary,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40),
+                        // topRight: Radius.circular(40),
+                      ),
+                    ),
         child: Column(
           children: [
             const BkEAppBar(label: 'Lịch sử'
@@ -102,7 +109,7 @@ class _CalendarPageState extends State<CalendarPage>
             context: context,
             builder: (context) {
               return const Center(
-                  child: CircularProgressIndicator(color: AppColor.primary));
+                  child: CircularProgressIndicator(color: AppColor.secondary));
             },
           );
         }
@@ -131,7 +138,7 @@ class _CalendarPageState extends State<CalendarPage>
 
   Widget _buildCalendar() {
     return Container(
-      color: Colors.white,
+      color: AppColor.primary,
       child: TableCalendar(
         //calendar's configurations
         locale: 'vi_VI',
@@ -161,30 +168,31 @@ class _CalendarPageState extends State<CalendarPage>
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: AppColor.secondary,
+              border: Border.all(color: AppColor.primary),
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Text(
               day.day.toString(),
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: AppColor.textPrimary),
             ),
           ),
           selectedBuilder: (context, day, events) => Container(
             margin: EdgeInsets.all(2.r),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                color: AppColor.primary,
+                border: Border.all(color: AppColor.defaultBorder),
                 borderRadius: BorderRadius.circular(10.0)),
             child: Text(
               day.day.toString(),
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: AppColor.textPrimary),
             ),
           ),
           singleMarkerBuilder: (context, day, event) => Container(
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: day == _selectedDay
-                    ? Colors.white
-                    : AppColor.primary), //Change color
+                    ? AppColor.primary
+                    : AppColor.secondary), //Change color
             width: 5.r,
             height: 5.r,
             margin: EdgeInsets.symmetric(horizontal: 1.5.r),
@@ -200,7 +208,7 @@ class _CalendarPageState extends State<CalendarPage>
             return 'Tháng ${date.month}, ${date.year}';
           },
           titleTextStyle: AppTypography.title.copyWith(
-            color: AppColor.primary,
+            color: AppColor.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -220,7 +228,7 @@ class _CalendarPageState extends State<CalendarPage>
       itemCount: _events?[_selectedDay]?.length ?? 0,
       itemBuilder: (context, index) => Card(
         elevation: 2,
-        color: Colors.white,
+        color: AppColor.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
         ),

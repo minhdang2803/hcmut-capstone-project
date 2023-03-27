@@ -69,7 +69,7 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
         height: 510.h,
         padding: EdgeInsets.all(15.r),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(20.r)),
+            color: AppColor.primary, borderRadius: BorderRadius.circular(20.r), border: Border.all(color: AppColor.defaultBorder)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -120,7 +120,7 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
                   return Text(
                     "Question: ${state.currentIndex! + 1}/${state.total}",
                     style: AppTypography.title.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.w700),
+                        color: AppColor.textPrimary, fontWeight: FontWeight.w700),
                   );
                 },
               ),
@@ -161,8 +161,8 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
           width: MediaQuery.of(context).size.width * 0.95,
           height: 50.h,
           text: "Next",
-          textColor: Colors.white,
-          backgroundColor: AppColor.primary,
+          textColor: AppColor.textPrimary,
+          backgroundColor: AppColor.secondary,
           onTap: () {
             {
               if (state.totalLoop! < 9) {
@@ -204,7 +204,7 @@ class _QuizGame01State extends State<QuizGame01> with TickerProviderStateMixin {
               textAlign: TextAlign.center,
               style: AppTypography.title.copyWith(
                 fontWeight: FontWeight.w700,
-                color: Colors.black54,
+                color: AppColor.textPrimary,
                 fontSize: 20,
               ),
             );

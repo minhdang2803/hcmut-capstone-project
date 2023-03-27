@@ -29,9 +29,9 @@ class CategoryVideoCubit extends Cubit<CategoryVideoState> {
         getVideo(pageKey: 1, pageSize: 5, category: "english in-a-nutshell")
       ]);
       final response = await _videoRepository.getRecommendedVideos();
-      final recommendations = response.data;
-
-      if (recommendations != null) {
+      final recommendations = response.data!;
+      
+      if (recommendations.list.isNotEmpty) {
         data[recommendations.category] = recommendations.list;
       }
 
@@ -47,7 +47,7 @@ class CategoryVideoCubit extends Cubit<CategoryVideoState> {
       }
       final lastWatchRes = await _videoRepository.getRecentlyWatchList();
       final lastWatch = lastWatchRes.data!.list;
-  
+      print(data.length);
       emit(
         state.copyWith(
             data: data, status: CategoryVideoStatus.done, videos: lastWatch),

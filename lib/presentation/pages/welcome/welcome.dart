@@ -21,16 +21,17 @@ class WelcomeScreen extends StatelessWidget {
             'assets/authentication/welcome_screen.svg',
             width: 1.sw,
             fit: BoxFit.contain,
+            color: AppColor.accentBlue
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               _buildHuman(),
               Padding(
-                padding: EdgeInsets.all(15.r),
+                padding: EdgeInsets.all(30.r),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    border: Border.all(color: AppColor.defaultBorder, width: 1.5),
                     borderRadius: BorderRadius.circular(25.r),
                   ),
                   padding: const EdgeInsets.all(4),
@@ -46,7 +47,7 @@ class WelcomeScreen extends StatelessWidget {
                       Text(
                         'Đăng nhập hoặc tạo một tài khoản để bắt đầu cuộc hành trình nào!',
                         style: AppTypography.title.copyWith(
-                          color: AppColor.textSecondary,
+                          color: AppColor.textPrimary,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -77,9 +78,9 @@ class WelcomeScreen extends StatelessWidget {
       elevation: 0,
       label: title,
       labelStyle: AppTypography.subHeadline.copyWith(
-          color: isLogin ? Colors.white : AppColor.primary,
+          color: AppColor.textPrimary,
           fontWeight: FontWeight.bold),
-      backgroundColor: isLogin ? AppColor.primary : AppColor.appBackground,
+      backgroundColor: isLogin ?AppColor.accentBlue : AppColor.darkGray,
       width: 250.w,
       height: 46.h,
       radius: 17.r,

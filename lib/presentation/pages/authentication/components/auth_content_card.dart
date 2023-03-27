@@ -95,7 +95,8 @@ class _AuthContentCardState extends State<AuthContentCard>
         }
       },
       decoration: BoxDecoration(
-        color: Colors.white,
+        border: Border.all(color: AppColor.textPrimary, width: 1.5),
+        color: AppColor.primary,
         borderRadius: BorderRadius.circular(34.r),
       ),
       curve: Curves.decelerate,
@@ -115,17 +116,17 @@ class _AuthContentCardState extends State<AuthContentCard>
             height: 32.h,
             width: 225.w,
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey[300]!),
+              border: Border.all(color: AppColor.defaultBorder),
               borderRadius: BorderRadius.circular(16.h),
             ),
             child: TabBar(
               controller: _tabController,
               labelStyle: AppTypography.body,
-              labelColor: Colors.white,
+              labelColor: AppColor.textPrimary,
               unselectedLabelStyle: AppTypography.body,
-              unselectedLabelColor: AppColor.primary,
+              unselectedLabelColor: AppColor.textSecondary,
               indicator: BoxDecoration(
-                color: AppColor.primary,
+                color: AppColor.accentBlue,
                 borderRadius: BorderRadius.circular(16.r),
               ),
               // indicatorColor: themeData.colorScheme.primary,

@@ -6,6 +6,7 @@ import '../../../../bloc/authentication/auth_cubit.dart';
 import '../../../../data/models/authentication/register_model.dart';
 import '../../../../utils/enum.dart';
 import '../../../../utils/validation_util.dart';
+import '../../../theme/app_color.dart';
 import '../../../theme/app_typography.dart';
 import '../../../widgets/rounded_elevated_button.dart';
 import '../widgets/3rdservices.dart';
@@ -78,7 +79,8 @@ class _RegisterComponentState extends State<RegisterComponent> {
         }
         return RoundedElevatedButton(
           label: 'Đăng ký',
-          labelStyle: AppTypography.title.copyWith(color: Colors.white),
+          labelStyle: AppTypography.title.copyWith(color: AppColor.textPrimary),
+          backgroundColor: AppColor.accentBlue,
           width: 225.w,
           height: 44.h,
           radius: 22.r,

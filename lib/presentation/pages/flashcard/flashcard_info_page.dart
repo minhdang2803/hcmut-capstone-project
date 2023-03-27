@@ -58,7 +58,7 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.appBackground,
       body: SafeArea(
         bottom: false,
         child: Column(
@@ -80,7 +80,7 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
         width: double.infinity,
         padding: EdgeInsets.all(20.r),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColor.primary,
           borderRadius: BorderRadius.only(topLeft: Radius.circular(30.r)),
         ),
         child: Column(

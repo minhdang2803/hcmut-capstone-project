@@ -20,33 +20,33 @@ class VideoYoutubeInfos {
 
 class VideoYoutubeInfo {
   VideoYoutubeInfo({
-    required this.id,
+    this.id,
     required this.videoId,
     required this.title,
-    required this.description,
+    this.description,
     required this.thumbUrl,
-    required this.playlistId,
-    required this.length,
-    required this.viewCount,
-    required this.level,
-    required this.category,
-    required this.isVerify,
-    required this.adminVerify,
+    this.playlistId,
+    this.length,
+    this.viewCount,
+    this.level,
+    this.category,
+    this.isVerify,
+    this.adminVerify,
     this.checkpoint,
   });
 
-  late final String id;
+  late final String? id;
   late final String videoId;
   late final String title;
-  late final String description;
+  late final String? description;
   late final String thumbUrl;
-  late final String playlistId;
-  late final String length;
-  late final String viewCount;
-  late final int level;
-  late final String category;
-  late final bool isVerify;
-  late final String adminVerify;
+  late final String? playlistId;
+  late final String? length;
+  late final String? viewCount;
+  late final int? level;
+  late final String? category;
+  late final bool? isVerify;
+  late final String? adminVerify;
   late final int? checkpoint;
 
   factory VideoYoutubeInfo.fromJson(Map<String, dynamic> json) {

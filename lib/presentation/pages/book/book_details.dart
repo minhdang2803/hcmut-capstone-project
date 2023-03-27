@@ -103,7 +103,7 @@ class _BookDetails extends State<BookDetails> {
                                         child: Container(
                                       width: double.infinity,
                                       decoration: const BoxDecoration(
-                                        color: AppColor.appBackground,
+                                        color: AppColor.primary,
                                         borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(50),
                                           topRight: Radius.circular(50),
@@ -118,14 +118,13 @@ class _BookDetails extends State<BookDetails> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            _bookInfo.author,
+                                            _bookInfo.author!,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .titleLarge!
                                                 .copyWith(
                                                   fontWeight: FontWeight.normal,
-                                                  color: Theme.of(context)
-                                                      .hintColor,
+                                                  color: AppColor.textPrimary
                                                 ),
                                           ),
                                           const SizedBox(
@@ -151,7 +150,7 @@ class _BookDetails extends State<BookDetails> {
                                                 decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(70),
-                                                  color: AppColor.primary,
+                                                  color: AppColor.accentBlue,
                                                 ),
                                                 child: TextButton(
                                                   onPressed: () {
@@ -175,13 +174,11 @@ class _BookDetails extends State<BookDetails> {
                                                       const Icon(
                                                           Icons.menu_book,
                                                           size: 20,
-                                                          color: AppColor
-                                                              .appBackground),
+                                                          color: AppColor.textPrimary),
                                                       const Text(
-                                                        "Read",
+                                                        "Đọc",
                                                         style: TextStyle(
-                                                          color: AppColor
-                                                              .appBackground,
+                                                          color: AppColor.textPrimary,
                                                           fontWeight:
                                                               FontWeight.w500,
                                                           fontSize: 15,
@@ -203,7 +200,7 @@ class _BookDetails extends State<BookDetails> {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             70),
-                                                    color: AppColor.primary,
+                                                    color: AppColor.accentBlue,
                                                   ),
                                                   child: TextButton(
                                                     onPressed: () {
@@ -233,13 +230,11 @@ class _BookDetails extends State<BookDetails> {
                                                       children: [
                                                         Icon(Icons.headphones,
                                                             size: 20,
-                                                            color: AppColor
-                                                                .appBackground),
+                                                            color: AppColor.textPrimary),
                                                         Text(
-                                                          "Listen",
+                                                          "Nghe",
                                                           style: TextStyle(
-                                                            color: AppColor
-                                                                .appBackground,
+                                                            color: AppColor.textPrimary,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                             fontSize: 15,
@@ -260,11 +255,11 @@ class _BookDetails extends State<BookDetails> {
                               )))));
             } catch (e) {
               return Center(
-                  child: CircularProgressIndicator(color: AppColor.primary));
+                  child: CircularProgressIndicator(color: AppColor.accentBlue));
             }
           }
           return Center(
-              child: CircularProgressIndicator(color: AppColor.primary));
+              child: CircularProgressIndicator(color: AppColor.accentBlue));
         }));
   }
 

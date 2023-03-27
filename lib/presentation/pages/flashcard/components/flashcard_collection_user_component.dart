@@ -38,7 +38,7 @@ class _UserComponentState extends State<UserComponent> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColor.greyBackground,
+        color: AppColor.primary,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.r),
           topRight: Radius.circular(30.r),
@@ -68,7 +68,7 @@ class _UserComponentState extends State<UserComponent> {
       builder: (context, state) {
         if (state.status == FlashcardCollectionStatus.loading) {
           return const Center(
-            child: CircularProgressIndicator(color: AppColor.primary),
+            child: CircularProgressIndicator(color: AppColor.accentBlue),
           );
         }
         return GridView.builder(

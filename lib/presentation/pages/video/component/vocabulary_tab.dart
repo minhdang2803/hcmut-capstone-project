@@ -72,7 +72,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
                 5.verticalSpace,
                 Text(e.example, style: AppTypography.body),
                 10.verticalSpace,
-                Divider(height: 1.r, color: Colors.black38),
+                Divider(height: 1.r, color: AppColor.defaultBorder),
               ],
             ),
           )
@@ -93,7 +93,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
         return Icon(
           Icons.favorite,
           size: 25.r,
-          color: isLiked ? Colors.red : Colors.black38,
+          color: isLiked ? AppColor.secondary : AppColor.iconBorder,
         );
       },
       likeCountPadding: EdgeInsets.zero,
@@ -126,7 +126,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
       icon: Icon(
         Icons.queue,
         size: 25.r,
-        color: Colors.black38,
+        color: AppColor.iconBorder,
       ),
     );
   }
@@ -171,14 +171,14 @@ class _VocabularyTabState extends State<VocabularyTab> {
                             padding: EdgeInsets.zero,
                             child: Text(
                               list[index].title,
-                              style: AppTypography.body,
+                              style: AppTypography.body.copyWith(color: AppColor.textPrimary),
                             ),
                           ),
                           trailing: IconButton(
                             splashColor: AppColor.secondary,
                             splashRadius: 20.r,
                             padding: EdgeInsets.zero,
-                            onPressed: () =>
+                            onPressed: () {
                                 context.read<FlashcardCubit>().addFlashcard(
                                       LocalVocabInfo(
                                         vocab: vocabInfo.vocab,
@@ -188,7 +188,9 @@ class _VocabularyTabState extends State<VocabularyTab> {
                                         translate: vocabInfo.translate,
                                       ),
                                       index,
-                                    ),
+                                    );
+                                Navigator.pop(context);
+                            },
                             icon: Icon(
                               Icons.add,
                               color: Colors.black38,
@@ -213,7 +215,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
                 child: Text(
                   "Bộ sưu tập mới",
                   style: AppTypography.body.copyWith(
-                    color: Colors.white,
+                    color: AppColor.textPrimary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -229,7 +231,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
                 child: Text(
                   "Huỷ",
                   style: AppTypography.body.copyWith(
-                    color: Colors.white,
+                    color: AppColor.textPrimary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -328,7 +330,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
                   child: Text(
                     "Thêm",
                     style: AppTypography.body.copyWith(
-                      color: Colors.white,
+                      color: AppColor.textPrimary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -347,7 +349,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
               child: Text(
                 "Huỷ",
                 style: AppTypography.body.copyWith(
-                  color: Colors.white,
+                  color: AppColor.textPrimary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -363,7 +365,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(
-            color: value == index ? AppColor.primary : Colors.transparent,
+            color: value == index ? AppColor.secondary : Colors.transparent,
             width: 2.0),
       ),
       child: Image(

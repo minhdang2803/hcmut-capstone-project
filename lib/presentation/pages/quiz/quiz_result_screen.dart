@@ -48,8 +48,8 @@ class _QuizDoneScreenState extends State<QuizDoneScreen> {
         context.read<QuizCubit>().updateData();
         context.read<MapCubit>().getMapObject();
       },
-      textColor: Colors.white,
-      backgroundColor: AppColor.primary,
+      textColor: AppColor.textPrimary,
+      backgroundColor: AppColor.secondary,
     );
   }
 
@@ -89,7 +89,7 @@ class _QuizDoneScreenState extends State<QuizDoneScreen> {
       height: 318.r,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
-        color: AppColor.mainPink,
+        color: AppColor.primary,
       ),
       child: Padding(
         padding: EdgeInsets.all(20.r),
@@ -107,7 +107,7 @@ class _QuizDoneScreenState extends State<QuizDoneScreen> {
                 return Text(
                   "Bạn hoàn thành cấp độ ${state.quizId}",
                   style: AppTypography.subHeadline.copyWith(
-                      color: Colors.white, fontWeight: FontWeight.w700),
+                      color: AppColor.textPrimary, fontWeight: FontWeight.w700),
                 );
               },
             ),
@@ -117,7 +117,7 @@ class _QuizDoneScreenState extends State<QuizDoneScreen> {
               onTap: () {},
               width: 237.r,
               height: 56.r,
-              textColor: Colors.white,
+              textColor: AppColor.textPrimary,
             )
           ],
         ),
