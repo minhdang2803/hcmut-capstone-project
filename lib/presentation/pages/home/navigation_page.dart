@@ -27,12 +27,10 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   late final List<String> _pages;
-  late int _pageIndex;
   late final ActionBloc _actionBloc;
   @override
   void initState() {
     super.initState();
-    _pageIndex = 0;
     _pages = [
       RouteName.videoPage,
       RouteName.bookPage,
@@ -42,7 +40,7 @@ class _NavigationPageState extends State<NavigationPage> {
       RouteName.chatPage
     ];
     _actionBloc = ActionBloc();
-    _actionBloc.add(GetRecentActionsEvent());
+    _actionBloc.add(const GetRecentActionsEvent());
   }
 
   @override
@@ -63,105 +61,107 @@ class _NavigationPageState extends State<NavigationPage> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: AppColor.appBackground,
-      
-      body: 
-        CustomScrollView(
-          slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child:  Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _buildUserBanner(context),
-                  BlocProvider(
+        backgroundColor: AppColor.appBackground,
+        body: CustomScrollView(slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _buildUserBanner(context),
+                BlocProvider(
                     create: (context) => _actionBloc,
                     child: BlocBuilder<ActionBloc, ActionState>(
                         builder: (context, state) {
-                          if (state is ActionLoadedState) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Visibility(
-                                  visible: state.book != null,
-                                  child: ContinueCard(recentAction: RecentAction.readBook, item: state.book),
-                                ),
-                                Visibility(
-                                  visible: state.video != null,
-                                  child: ContinueCard(recentAction: RecentAction.watchVideo, item: state.video),
-                                ),
-                              ]
-                            );
-                          }
-                          return SizedBox(height: 0.02.sh);
-                        }
-                    )
-                      
-                  ),
-                  
-                  SizedBox(
-                      height: size.height * 0.25,
-                      width: size.width,
-                      child: Stack(
-                        alignment: AlignmentDirectional.bottomStart,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(
-                                top: 30, bottom: 30, left: 50, right: 50),
-                            child: JoinQuizCard(),
-                          ),
-                          Image.asset(
-                            'assets/images/proud.png',
-                            height: size.height * 0.2,
-                            width: size.height * 0.12,
-                          ),
-                        ],
-                      )
-                  ),
-                  _buildSearchBar(context, size),
-                  SizedBox(height: 0.02.sh),
-                  Expanded(
-                    child: SingleChildScrollView(
-                        child: Container(
-                        padding:
-                            const EdgeInsets.only(top: 20, left: 10, right: 10),
-                        width: double.infinity,
-                        decoration: const BoxDecoration(
-                          color: AppColor.primary,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40),
-                            // topRight: Radius.circular(40),
+                      if (state is ActionLoadedState) {
+                        return Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Visibility(
+                                visible: state.book != null,
+                                child: ContinueCard(
+                                    recentAction: RecentAction.readBook,
+                                    item: state.book),
+                              ),
+                              Visibility(
+                                visible: state.video != null,
+                                child: ContinueCard(
+                                    recentAction: RecentAction.watchVideo,
+                                    item: state.video),
+                              ),
+                            ]);
+                      }
+                      return SizedBox(height: 0.02.sh);
+                    })),
+                SizedBox(
+                    height: size.height * 0.25,
+                    width: size.width,
+                    child: Stack(
+                      alignment: AlignmentDirectional.bottomStart,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 30, bottom: 30, left: 50, right: 50),
+                          child: JoinQuizCard(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                RouteName.startToeic,
+                              );
+                            },
                           ),
                         ),
-                        child: Column(
-                          children: [
-                            _buildFeaturesList(size, context, menuList),
-                            100.verticalSpace
-                            ]
-                        )
-                      )
-                    )
-                  )
-                ],
-              ),
+                        Image.asset(
+                          'assets/images/proud.png',
+                          height: size.height * 0.2,
+                          width: size.height * 0.12,
+                        ),
+                      ],
+                    )),
+                _buildSearchBar(context, size),
+                SizedBox(height: 0.02.sh),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding:
+                          const EdgeInsets.only(top: 20, left: 10, right: 10),
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: AppColor.primary,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                          // topRight: Radius.circular(40),
+                        ),
+                      ),
+                      child: Column(children: [
+                        _buildFeaturesList(size, context, menuList),
+                        100.verticalSpace
+                      ]),
+                    ),
+                  ),
+                )
+              ],
             ),
-          ] 
-        )
-            
-    );
+          ),
+        ]));
   }
 
   SizedBox _buildFeaturesList(
-    Size size, BuildContext context, List<String> menuList) {
-    final List<String> featureList = <String>["Video", "Sách", "Từ vựng", "TOEIC", "Giải đố", "Trò chuyện"];
+      Size size, BuildContext context, List<String> menuList) {
+    final List<String> featureList = <String>[
+      "Video",
+      "Sách",
+      "Từ vựng",
+      "TOEIC",
+      "Giải đố",
+      "Trò chuyện"
+    ];
     return SizedBox(
         height: size.height * 0.08,
         child: ListView.builder(
           itemBuilder: (ctx, index) => GestureDetector(
             onTap: () {
-              setState(() {
-                _pageIndex = index;
-              });
+              setState(() {});
               Navigator.pushNamed(context, _pages[index]);
             },
             child: Column(
@@ -217,7 +217,7 @@ class _NavigationPageState extends State<NavigationPage> {
       if (hour > 5 && hour < 12) {
         return 'buổi sáng ☀️';
       }
-      if (hour >=  12 && hour < 18) {
+      if (hour >= 12 && hour < 18) {
         return 'buổi chiều ☀️';
       }
       return 'buổi tối 🌙';
@@ -240,8 +240,8 @@ class _NavigationPageState extends State<NavigationPage> {
               ),
               Text(
                 user?.fullName ?? "User",
-                style: AppTypography.subHeadline
-                    .copyWith(color: AppColor.textPrimary, fontWeight: FontWeight.w700),
+                style: AppTypography.subHeadline.copyWith(
+                    color: AppColor.textPrimary, fontWeight: FontWeight.w700),
               ),
             ],
           ),

@@ -198,7 +198,7 @@ class HistoryCard extends StatelessWidget {
       return 3;
     } else if (toeicScore.part4 != null) {
       return 4;
-    } else if (toeicScore.part6 != null) {
+    } else if (toeicScore.part5 != null) {
       return 5;
     } else if (toeicScore.part6 != null) {
       return 6;

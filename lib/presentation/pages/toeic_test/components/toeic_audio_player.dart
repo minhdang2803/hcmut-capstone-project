@@ -21,8 +21,8 @@ class ToeicAudioPlayer extends StatelessWidget {
     return Container(
       width: isReal == false ? MediaQuery.of(context).size.width * 0.9 : null,
       decoration: BoxDecoration(
-        border: Border.all(color: AppColor.primary),
-        color: AppColor.primary,
+        border: Border.all(color: AppColor.greyBackground),
+        color: AppColor.greyBackground,
         borderRadius: BorderRadius.circular(15.r),
       ),
       padding: EdgeInsets.symmetric(horizontal: 10.r, vertical: 10.r),

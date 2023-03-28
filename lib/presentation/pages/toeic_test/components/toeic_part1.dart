@@ -112,7 +112,7 @@ class _ToeicPartOneComponentState extends State<ToeicPartOneComponent>
         width: MediaQuery.of(context).size.width * 0.9,
         padding: EdgeInsets.all(10.r),
         decoration: BoxDecoration(
-          border: Border.all(width: 1, color: AppColor.primary),
+          border: Border.all(width: 1, color: AppColor.defaultBorder),
           color: AppColor.primary,
           borderRadius: BorderRadius.circular(20.r),
         ),

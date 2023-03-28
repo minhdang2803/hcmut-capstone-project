@@ -195,6 +195,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
               builder: (context, value, child) {
                 return ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColor.secondary,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.r)),
                   ),
@@ -217,6 +218,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.secondary,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.r)),
               ),
@@ -282,6 +284,9 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
                         onTap: () {
                           selected.value = index;
                           imgUrl = cubit.pictures[index];
+                          if (imgUrl == "") {
+                            imgUrl = "assets/images/peace.png";
+                          }
                         },
                         child: ValueListenableBuilder(
                           valueListenable: selected,
@@ -303,10 +308,11 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
               builder: (context, value, child) {
                 return ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColor.secondary,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.r)),
                   ),
-                  onPressed: value.text.isEmpty
+                  onPressed: value.text.isEmpty || imgUrl == ""
                       ? null
                       : () {
                           context
@@ -334,6 +340,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.secondary,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.r)),
               ),
@@ -374,7 +381,6 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
     return Scaffold(
       backgroundColor: AppColor.appBackground,
       appBar: AppBar(
-        
         backgroundColor: AppColor.appBackground,
         elevation: 0,
         automaticallyImplyLeading: false,
@@ -382,10 +388,12 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
           indicatorColor: AppColor.secondary.withOpacity(0.5),
           tabs: const [
             Tab(
-              icon: FaIcon(color: AppColor.textPrimary, FontAwesomeIcons.userLarge),
+              icon: FaIcon(
+                  color: AppColor.textPrimary, FontAwesomeIcons.userLarge),
             ),
             Tab(
-              icon: FaIcon(color: AppColor.textPrimary, FontAwesomeIcons.layerGroup),
+              icon: FaIcon(
+                  color: AppColor.textPrimary, FontAwesomeIcons.layerGroup),
             )
           ],
           controller: _tabController,
@@ -412,13 +420,13 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
             Align(
               alignment: Alignment.center,
               child: Text(
-                      "Flashcards",
-                      style: AppTypography.subHeadline.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
+                "Flashcards",
+                style: AppTypography.subHeadline.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             ),
             SizedBox(width: 35.r)
           ],

@@ -129,7 +129,9 @@ class _LoginComponentState extends State<LoginComponent> {
             child: FittedBox(
               child: Padding(
                   padding: EdgeInsets.all(10.r),
-                  child: const CircularProgressIndicator()),
+                  child: const CircularProgressIndicator(
+                    color: AppColor.secondary,
+                  )),
             ),
           );
         }

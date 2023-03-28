@@ -32,7 +32,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
         children: [
           Container(
             decoration: BoxDecoration(
-              border: Border.all(width: 3.r, color: AppColor.primary),
+              border: Border.all(width: 1.r, color: AppColor.textPrimary),
               borderRadius: BorderRadius.circular(16.h),
             ),
             child: Padding(
@@ -171,7 +171,8 @@ class _VocabularyTabState extends State<VocabularyTab> {
                             padding: EdgeInsets.zero,
                             child: Text(
                               list[index].title,
-                              style: AppTypography.body.copyWith(color: AppColor.textPrimary),
+                              style: AppTypography.body
+                                  .copyWith(color: AppColor.textPrimary),
                             ),
                           ),
                           trailing: IconButton(
@@ -179,17 +180,17 @@ class _VocabularyTabState extends State<VocabularyTab> {
                             splashRadius: 20.r,
                             padding: EdgeInsets.zero,
                             onPressed: () {
-                                context.read<FlashcardCubit>().addFlashcard(
-                                      LocalVocabInfo(
-                                        vocab: vocabInfo.vocab,
-                                        vocabType: vocabInfo.vocabType,
-                                        id: vocabInfo.id,
-                                        pronounce: vocabInfo.pronounce,
-                                        translate: vocabInfo.translate,
-                                      ),
-                                      index,
-                                    );
-                                Navigator.pop(context);
+                              context.read<FlashcardCubit>().addFlashcard(
+                                    LocalVocabInfo(
+                                      vocab: vocabInfo.vocab,
+                                      vocabType: vocabInfo.vocabType,
+                                      id: vocabInfo.id,
+                                      pronounce: vocabInfo.pronounce,
+                                      translate: vocabInfo.translate,
+                                    ),
+                                    index,
+                                  );
+                              Navigator.pop(context);
                             },
                             icon: Icon(
                               Icons.add,
@@ -208,6 +209,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
             actions: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.secondary,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.r)),
                 ),
@@ -222,6 +224,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.secondary,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.r)),
                 ),

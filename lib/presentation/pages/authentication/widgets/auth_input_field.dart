@@ -45,6 +45,7 @@ class _AuthInputFieldState extends State<AuthInputField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      cursorColor: AppColor.textSecondary,
       focusNode: widget.focusNode,
       textCapitalization: widget.capitalization ?? TextCapitalization.none,
       decoration: InputDecoration(

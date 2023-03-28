@@ -24,6 +24,7 @@ class AnswerPartOne extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
+          border: Border.all(color: AppColor.defaultBorder),
           borderRadius: BorderRadius.circular(20.r),
           color: AppColor.primary,
         ),
@@ -33,7 +34,7 @@ class AnswerPartOne extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Question ${index+1}: ",
+              "Question ${index + 1}: ",
               style: AppTypography.body,
             ),
             10.verticalSpace,
@@ -49,7 +50,7 @@ class AnswerPartOne extends StatelessWidget {
                 Text.rich(TextSpan(
                     text: "Transcript: ",
                     style:
-                        AppTypography.title.copyWith(color: AppColor.secondary),
+                        AppTypography.title.copyWith(color: AppColor.mainPink),
                     children: [
                       TextSpan(text: text, style: AppTypography.title)
                     ])),
@@ -57,7 +58,7 @@ class AnswerPartOne extends StatelessWidget {
                 Text.rich(TextSpan(
                     text: "Answer: ",
                     style:
-                        AppTypography.title.copyWith(color: AppColor.secondary),
+                        AppTypography.title.copyWith(color: AppColor.mainPink),
                     children: [
                       TextSpan(text: correctAnswer, style: AppTypography.title)
                     ])),

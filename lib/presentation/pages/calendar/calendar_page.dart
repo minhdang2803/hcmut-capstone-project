@@ -77,16 +77,16 @@ class _CalendarPageState extends State<CalendarPage>
     super.build(context);
     // final topPadding = MediaQuery.of(context).padding.top;
     return Scaffold(
-      backgroundColor: AppColor.appBackground,
+      backgroundColor: AppColor.lightGray,
       body: Container(
         // padding: EdgeInsets.only(top: topPadding),
         decoration: const BoxDecoration(
-                      color: AppColor.primary,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        // topRight: Radius.circular(40),
-                      ),
-                    ),
+          color: AppColor.primary,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(40),
+            // topRight: Radius.circular(40),
+          ),
+        ),
         child: Column(
           children: [
             const BkEAppBar(label: 'Lịch sử'
@@ -130,6 +130,7 @@ class _CalendarPageState extends State<CalendarPage>
         padding: EdgeInsets.only(bottom: 30.r),
         children: [
           _buildCalendar(),
+          10.verticalSpace,
           _buildEvents(),
         ],
       ),
@@ -228,7 +229,7 @@ class _CalendarPageState extends State<CalendarPage>
       itemCount: _events?[_selectedDay]?.length ?? 0,
       itemBuilder: (context, index) => Card(
         elevation: 2,
-        color: AppColor.primary,
+        color: AppColor.appBackground,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
         ),

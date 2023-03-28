@@ -53,8 +53,7 @@ class _BottomVocabState extends State<BottomVocab>
     super.initState();
 
     // context.read<VocabCubit>().getVocab('can');
-   final vocal = context.read<VocabCubit>().getVocab(widget.text);
-    
+    final vocal = context.read<VocabCubit>().getVocab(widget.text);
   }
 
   @override
@@ -188,25 +187,24 @@ class _BottomVocabState extends State<BottomVocab>
                         color: _vocabTypeList[_currentTab] == e
                             ? AppColor.secondary
                             : AppColor.darkGray,
-                        border: Border.all(width: 1.r, color: AppColor.defaultBorder),
+                        border:
+                            Border.all(width: 1.r, color: AppColor.secondary),
                         borderRadius: BorderRadius.circular(16.r),
                       ),
                       child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 6.r, vertical: 2.r),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 6.r, vertical: 2.r),
                         child: Center(
-                          child: Text(
-                            e,
-                            style: _vocabTypeList.length > 2
-                                ? AppTypography.bodySmall.copyWith(
-                                    color: _vocabTypeList[_currentTab] == e
-                                        ? AppColor.textPrimary
-                                        : AppColor.textSecondary)
-                                : AppTypography.body.copyWith(
-                                    color: _vocabTypeList[_currentTab] == e
-                                         ? AppColor.textPrimary
-                                        : AppColor.textSecondary)
-                          ),
+                          child: Text(e,
+                              style: _vocabTypeList.length > 2
+                                  ? AppTypography.bodySmall.copyWith(
+                                      color: _vocabTypeList[_currentTab] == e
+                                          ? AppColor.textPrimary
+                                          : AppColor.textSecondary)
+                                  : AppTypography.body.copyWith(
+                                      color: _vocabTypeList[_currentTab] == e
+                                          ? AppColor.textPrimary
+                                          : AppColor.textSecondary)),
                         ),
                       ),
                     ),

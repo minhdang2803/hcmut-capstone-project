@@ -49,17 +49,6 @@ class _VideoItemState extends State<VideoItem> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Text.rich(TextSpan(
-                    //   text: ": ",
-                    //   children: [
-                    //     TextSpan(
-                    //         text: widget.item!.category!.toCapitalize(),
-                    //         style: AppTypography.bodySmall)
-                    //   ],
-                    //   style: AppTypography.bodySmall
-                    //       .copyWith(color: AppColor.primary),
-                    // )),
-                    // 5.verticalSpace,
                     Text.rich(TextSpan(
                       text: "Tựa đề: ",
                       children: [
@@ -99,7 +88,7 @@ class _VideoItemState extends State<VideoItem> {
               child: Text(
                 "Huỷ",
                 style: AppTypography.body.copyWith(
-                  color: Colors.white,
+                  color: AppColor.pastelPink,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -138,7 +127,8 @@ class _VideoItemState extends State<VideoItem> {
                         height: widget.isLastSeen == true ? 110.r : 140.r,
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/images/default_logo.png',
-                          image: widget.item?.thumbUrl ?? 'assets/images/default_logo.png',
+                          image: widget.item?.thumbUrl ??
+                              'assets/images/default_logo.png',
                           width: 150.r,
                           height: widget.isLastSeen == true ? 110.r : 140.r,
                           fadeInDuration: const Duration(milliseconds: 350),
@@ -162,33 +152,38 @@ class _VideoItemState extends State<VideoItem> {
                               ),
                             )
                           : const Visibility(visible: false, child: SizedBox()),
-                      widget.isLastSeen == true?
-                        Container(
-                          color: AppColor.darkGray,
-                          height: 23.r,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              IconButton(
-                                iconSize: 13.r,
-                                color: AppColor.textPrimary,
-                                onPressed: () {
-                                  _showInfo(context);
-                                },
-                                icon: const FaIcon(FontAwesomeIcons.circleExclamation),
+                      widget.isLastSeen == true
+                          ? Container(
+                              color: AppColor.darkGray,
+                              height: 25.r,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  IconButton(
+                                    iconSize: 13.r,
+                                    color: AppColor.textPrimary,
+                                    onPressed: () {
+                                      _showInfo(context);
+                                    },
+                                    icon: const FaIcon(
+                                        FontAwesomeIcons.circleExclamation),
+                                  ),
+                                  IconButton(
+                                    iconSize: 13.r,
+                                    color: AppColor.textPrimary,
+                                    onPressed: () {},
+                                    icon: const FaIcon(
+                                        FontAwesomeIcons.ellipsisVertical),
+                                  )
+                                ],
                               ),
-                              IconButton(
-                                iconSize: 13.r,
-                                color: AppColor.textPrimary,
-                                onPressed: () {},
-                                icon: const FaIcon(FontAwesomeIcons.ellipsisVertical),
-                              )
-                            ],
-                          ),
-                        ):const Visibility(visible: false, child: const SizedBox()),
-                      
-                      
+                            )
+                          : const Visibility(
+                              visible: false,
+                              child: const SizedBox(),
+                            ),
                     ],
                   ),
                 ],
@@ -196,17 +191,17 @@ class _VideoItemState extends State<VideoItem> {
             ),
           ),
           SizedBox(
-              width: 150.r,
-              child: Text(
-                        widget.item!.title, // Replace with your actual title
-                        style: AppTypography.bodySmall.copyWith(color: AppColor.textPrimary, fontWeight: FontWeight.w500),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      ),
+            width: 150.r,
+            child: Text(
+              widget.item!.title, // Replace with your actual title
+              style: AppTypography.bodySmall.copyWith(
+                  color: AppColor.textPrimary, fontWeight: FontWeight.w500),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+            ),
           ),
         ],
       ),
-      
     );
   }
 }

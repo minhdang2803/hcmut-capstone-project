@@ -142,7 +142,7 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
               height: 10.h,
               width: MediaQuery.of(context).size.width * 0.85,
               child: const LinearProgressIndicator(
-                color: AppColor.primary,
+                color: AppColor.secondary,
               ),
             ),
           );
@@ -200,9 +200,9 @@ class _ToeicInstructionPageState extends State<ToeicInstructionPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                  "Chế độ kiểm tra",
-                  style: AppTypography.title,
-                ),
+                    "Chế độ kiểm tra",
+                    style: AppTypography.title,
+                  ),
                   Transform.scale(
                     scale: 1,
                     child: Checkbox(

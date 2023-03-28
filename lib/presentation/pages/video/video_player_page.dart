@@ -159,22 +159,24 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
                 color: AppColor.textPrimary,
                 onPressed: () {
                   context.read<VideoCubit>().exit();
-                  widget.video.id != null ? context.read<LastWatchVideoCubit>().saveProcess(
-                        mongoID: widget.video.id!,
-                        second: _currentDuration ~/ 1000,
-                      ) : null;
+                  widget.video.id != null
+                      ? context.read<LastWatchVideoCubit>().saveProcess(
+                            mongoID: widget.video.id!,
+                            second: _currentDuration ~/ 1000,
+                          )
+                      : null;
 
                   Navigator.pop(context, true);
                 },
               ),
               title: Text(
-                    widget.video.title,
-                    style: AppTypography.title.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
+                widget.video.title,
+                style: AppTypography.title.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             )
           : null,
       body: Column(
@@ -282,7 +284,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
                           AppTypography.title.copyWith(
                             color: (_currentDuration > e.from) &&
                                     (_currentDuration < e.to)
-                                ? AppColor.accentBlue
+                                ? AppColor.mainPink
                                 : AppColor.textPrimary,
                           ),
                         ),

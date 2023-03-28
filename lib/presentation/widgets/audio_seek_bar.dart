@@ -46,7 +46,7 @@ class _AudioSeekBarState extends State<AudioSeekBar> {
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(2.r),
-        color: AppColor.defaultBorder,
+        color: AppColor.primary,
       ),
       child: StreamBuilder(
         stream: widget.audioPlayer.currentPosition,
@@ -58,7 +58,7 @@ class _AudioSeekBarState extends State<AudioSeekBar> {
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(2.r),
-                color: AppColor.primary,
+                color: AppColor.mainPink,
               ),
             ),
           );

@@ -50,9 +50,8 @@ class ProfileSettingPanel extends StatelessWidget {
               height: 300.r,
               padding: EdgeInsets.symmetric(vertical: 20.r),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.r),
-                color: AppColor.primary
-              ),
+                  borderRadius: BorderRadius.circular(20.r),
+                  color: AppColor.primary),
               child: Padding(
                 padding: EdgeInsets.all(10.r),
                 child: Row(
@@ -93,11 +92,22 @@ class ProfileSettingPanel extends StatelessWidget {
                           ),
                           SizedBox(height: 20.r),
                           ProfileSettingItem(
-                            asset: 'assets/icons/ic_activity_setting.svg',
-                            label: 'Events',
-                            onPress: () => Navigator.of(context)
-                                .pushNamed(RouteName.historyActivities),
-                          ),
+                            asset: 'assets/icons/contact.svg',
+                            label: "Contact us",
+                            onPress: () async {
+                              String url = 'myenglisk.vercel.app';
+                              if (await canLaunchUrl(
+                                  Uri.https(url, "/contact"))) {
+                                // Launch the url in the Chrome browser
+                                await launchUrl(Uri.https(url, "/contact"),
+                                    mode: LaunchMode.externalApplication,
+                                    webViewConfiguration:
+                                        const WebViewConfiguration());
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                            },
+                          )
                         ],
                       ),
                     ),
@@ -120,24 +130,6 @@ class ProfileSettingPanel extends StatelessWidget {
                               }
                             },
                           ),
-                          20.verticalSpace,
-                          ProfileSettingItem(
-                            asset: 'assets/icons/contact.svg',
-                            label: "Contact us",
-                            onPress: () async {
-                              String url = 'myenglisk.vercel.app';
-                              if (await canLaunchUrl(
-                                  Uri.https(url, "/contact"))) {
-                                // Launch the url in the Chrome browser
-                                await launchUrl(Uri.https(url, "/contact"),
-                                    mode: LaunchMode.externalApplication,
-                                    webViewConfiguration:
-                                        const WebViewConfiguration());
-                              } else {
-                                throw 'Could not launch $url';
-                              }
-                            },
-                          )
                         ],
                       ),
                     ),
@@ -164,7 +156,7 @@ class ProfileSettingPanel extends StatelessWidget {
             Text(
               'Đăng xuất',
               style: AppTypography.title.copyWith(
-                color: AppColor.textPrimary ,
+                color: AppColor.textPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),

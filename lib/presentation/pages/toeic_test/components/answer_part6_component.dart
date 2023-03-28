@@ -65,7 +65,10 @@ class AnswerPartSix extends StatelessWidget {
             "Question $index: ",
             style: AppTypography.body,
           ),
-          10.verticalSpace,
+          const Divider(
+            color: AppColor.defaultBorder,
+            thickness: 1,
+          ),
           Text.rich(TextSpan(
               style: AppTypography.title.copyWith(color: AppColor.textPrimary),
               children: [

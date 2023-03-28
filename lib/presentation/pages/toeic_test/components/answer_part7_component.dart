@@ -22,17 +22,26 @@ class AnswerPartSeven extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.r),
-          color: AppColor.textPrimary,
+          borderRadius: BorderRadius.circular(10.r),
+          color: AppColor.primary,
         ),
         padding: EdgeInsets.all(10.r),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Question $text: ",
-              style: AppTypography.body,
+            Text.rich(
+              TextSpan(
+                text: "Question ${index + 1}: ",
+                children: [
+                  TextSpan(
+                    text: text,
+                    style: AppTypography.body
+                        .copyWith(fontWeight: FontWeight.w500),
+                  )
+                ],
+                style: AppTypography.body.copyWith(fontWeight: FontWeight.bold),
+              ),
             ),
             10.verticalSpace,
             ListView.separated(
@@ -66,7 +75,10 @@ class AnswerPartSeven extends StatelessWidget {
             textAlign: TextAlign.justify,
             style: AppTypography.body,
           ),
-          10.verticalSpace,
+          const Divider(
+            color: AppColor.defaultBorder,
+            thickness: 1,
+          ),
           Text.rich(TextSpan(
               style: AppTypography.title.copyWith(color: AppColor.textPrimary),
               children: [

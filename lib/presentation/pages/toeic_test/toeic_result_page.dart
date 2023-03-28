@@ -122,7 +122,7 @@ class ToeicResultPage extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.3,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.r),
-                  color: AppColor.secondary,
+                  color: AppColor.pastelPink,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -134,13 +134,15 @@ class ToeicResultPage extends StatelessWidget {
                         Text(
                           "Part ${state.part}",
                           style: AppTypography.title.copyWith(
-                              color: AppColor.textPrimary, fontWeight: FontWeight.w700),
+                              color: AppColor.primary,
+                              fontWeight: FontWeight.w700),
                         ),
                         5.verticalSpace,
                         Text(
                           titles[state.part! - 1],
                           style: AppTypography.title.copyWith(
-                              color: AppColor.textPrimary, fontWeight: FontWeight.w700),
+                              color: AppColor.primary,
+                              fontWeight: FontWeight.w700),
                         )
                       ],
                     ),
@@ -188,7 +190,7 @@ class ToeicResultPage extends StatelessWidget {
                       child: Text(
                         "Bạn đã đúng ${state.totalCorrect} trên ${state.totalQuestion} câu hỏi!",
                         style: AppTypography.title.copyWith(
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                     )
                   ],
@@ -237,7 +239,7 @@ class ToeicResultPage extends StatelessWidget {
                 angle: 90,
                 widget: Text('${state.totalCorrect} / ${state.totalQuestion}',
                     style: AppTypography.body.copyWith(
-                      color: AppColor.textPrimary,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                     )),
               )

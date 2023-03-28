@@ -36,6 +36,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
     return Scaffold(
+      extendBody: true,
       backgroundColor: AppColor.appBackground,
       body: _buildMainScreen(topPadding),
       bottomNavigationBar: _buildBottomNavigationBar(),
@@ -46,112 +47,120 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildBottomNavigationBar() {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColor.primary,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r)),
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20.r),
+        topRight: Radius.circular(20.r),
       ),
       child: BottomAppBar(
+        color: AppColor.primary,
         notchMargin: 8.0,
         clipBehavior: Clip.antiAlias,
         shape: const CircularNotchedRectangle(),
-        child: BottomNavigationBar(
-          currentIndex: _pageIndex,
-          type: BottomNavigationBarType.fixed,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          onTap: _onPageSelected,
-          unselectedItemColor: AppColor.textSecondary,
-          selectedItemColor: AppColor.textPrimary,
-          selectedLabelStyle: AppTypography.bodySmall,
-          unselectedLabelStyle: AppTypography.bodySmall,
-          elevation: 0,
-          items: [
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: EdgeInsets.only(bottom: 4.r),
-                child: SvgPicture.asset(
-                  'assets/icons/ic_home.svg',
-                  color: AppColor.inactiveIconColor,
-                  width: 20.r,
-                  height: 20.r,
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.r),
+            topRight: Radius.circular(20.r),
+          ),
+          child: BottomNavigationBar(
+            backgroundColor: AppColor.primary,
+            currentIndex: _pageIndex,
+            type: BottomNavigationBarType.fixed,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            onTap: _onPageSelected,
+            unselectedItemColor: AppColor.textSecondary,
+            selectedItemColor: AppColor.textPrimary,
+            selectedLabelStyle: AppTypography.bodySmall,
+            unselectedLabelStyle: AppTypography.bodySmall,
+            elevation: 2,
+            items: [
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 4.r),
+                  child: SvgPicture.asset(
+                    'assets/icons/ic_home.svg',
+                    color: AppColor.inactiveIconColor,
+                    width: 20.r,
+                    height: 20.r,
+                  ),
                 ),
-              ),
-              activeIcon: Padding(
-                padding: EdgeInsets.only(bottom: 4.r),
-                child: SvgPicture.asset(
-                  'assets/icons/ic_home.svg',
-                  color: AppColor.secondary,
-                  width: 20.r,
-                  height: 20.r,
+                activeIcon: Padding(
+                  padding: EdgeInsets.only(bottom: 4.r),
+                  child: SvgPicture.asset(
+                    'assets/icons/ic_home.svg',
+                    color: AppColor.secondary,
+                    width: 20.r,
+                    height: 20.r,
+                  ),
                 ),
+                label: 'Trang chính',
               ),
-              label: 'Trang chính',
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: EdgeInsets.only(bottom: 4.r),
-                child: SvgPicture.asset(
-                  'assets/icons/ic_search.svg',
-                  color: AppColor.inactiveIconColor,
-                  width: 20.r,
-                  height: 20.r,
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 4.r),
+                  child: SvgPicture.asset(
+                    'assets/icons/ic_search.svg',
+                    color: AppColor.inactiveIconColor,
+                    width: 20.r,
+                    height: 20.r,
+                  ),
                 ),
-              ),
-              activeIcon: Padding(
-                padding: EdgeInsets.only(bottom: 4.r),
-                child: SvgPicture.asset(
-                  'assets/icons/ic_search.svg',
-                  color: AppColor.secondary,
-                  width: 20.r,
-                  height: 20.r,
+                activeIcon: Padding(
+                  padding: EdgeInsets.only(bottom: 4.r),
+                  child: SvgPicture.asset(
+                    'assets/icons/ic_search.svg',
+                    color: AppColor.secondary,
+                    width: 20.r,
+                    height: 20.r,
+                  ),
                 ),
+                label: 'Tra từ',
               ),
-              label: 'Tra từ',
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: EdgeInsets.only(bottom: 4.r),
-                child: SvgPicture.asset(
-                  'assets/icons/ic-leaderboard.svg',
-                  color: AppColor.inactiveIconColor,
-                  width: 20.r,
-                  height: 20.r,
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 4.r),
+                  child: SvgPicture.asset(
+                    'assets/icons/ic-leaderboard.svg',
+                    color: AppColor.inactiveIconColor,
+                    width: 20.r,
+                    height: 20.r,
+                  ),
                 ),
-              ),
-              activeIcon: Padding(
-                padding: EdgeInsets.only(bottom: 4.r),
-                child: SvgPicture.asset(
-                  'assets/icons/ic-leaderboard.svg',
-                  color: AppColor.secondary,
-                  width: 20.r,
-                  height: 20.r,
+                activeIcon: Padding(
+                  padding: EdgeInsets.only(bottom: 4.r),
+                  child: SvgPicture.asset(
+                    'assets/icons/ic-leaderboard.svg',
+                    color: AppColor.secondary,
+                    width: 20.r,
+                    height: 20.r,
+                  ),
                 ),
+                label: 'Thống kê',
               ),
-              label: 'Thống kê',
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: EdgeInsets.only(bottom: 4.r),
-                child: SvgPicture.asset(
-                  'assets/icons/ic_user.svg',
-                  color: AppColor.inactiveIconColor,
-                  width: 20.r,
-                  height: 20.r,
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 4.r),
+                  child: SvgPicture.asset(
+                    'assets/icons/ic_user.svg',
+                    color: AppColor.inactiveIconColor,
+                    width: 20.r,
+                    height: 20.r,
+                  ),
                 ),
-              ),
-              activeIcon: Padding(
-                padding: EdgeInsets.only(bottom: 4.r),
-                child: SvgPicture.asset(
-                  'assets/icons/ic_user.svg',
-                  color: AppColor.secondary,
-                  width: 20.r,
-                  height: 20.r,
+                activeIcon: Padding(
+                  padding: EdgeInsets.only(bottom: 4.r),
+                  child: SvgPicture.asset(
+                    'assets/icons/ic_user.svg',
+                    color: AppColor.secondary,
+                    width: 20.r,
+                    height: 20.r,
+                  ),
                 ),
+                label: 'Tài khoản',
               ),
-              label: 'Tài khoản',
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

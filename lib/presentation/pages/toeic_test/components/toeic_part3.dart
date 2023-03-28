@@ -180,7 +180,7 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
       padding: EdgeInsets.all(10.r),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(width: 1, color: AppColor.primary)),
+          border: Border.all(width: 1, color: AppColor.defaultBorder)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -316,7 +316,7 @@ class _ToeicPartThreeComponentState extends State<ToeicPartThreeComponent>
             listener: (context, state) async {
               if (state.status == CountDownStatus.done) {
                 await context.read<ToeicCubitPartOne>().autoCheckAnswerPart3467(
-                  questionIndex: questionINDEX,
+                      questionIndex: questionINDEX,
                       time: 90,
                       animation: widget.animationController,
                       audio: widget.audioService,

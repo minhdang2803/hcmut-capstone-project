@@ -31,7 +31,8 @@ class FlashcardComponent extends StatelessWidget {
           AutoSizeText(
             title,
             textAlign: TextAlign.center,
-            style: AppTypography.body.copyWith(fontSize: 10.h, fontWeight: FontWeight.w500),
+            style: AppTypography.body
+                .copyWith(fontSize: 15.r, fontWeight: FontWeight.w500),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           )
@@ -56,9 +57,7 @@ class FlashcardRandomComponent extends StatelessWidget {
       padding: EdgeInsets.all(8.r),
       decoration: BoxDecoration(
         color: AppColor.primary,
-        border: Border.all(
-          width: 2.r,
-          color: AppColor.defaultBorder),
+        border: Border.all(width: 2.r, color: AppColor.defaultBorder),
         borderRadius: BorderRadius.circular(20.r),
       ),
       child: Column(
@@ -78,9 +77,10 @@ class FlashcardRandomComponent extends StatelessWidget {
           ),
           10.verticalSpace,
           AutoSizeText(
-            title, 
+            title,
             textAlign: TextAlign.center,
-            style: AppTypography.body.copyWith(fontSize: 10.h, fontWeight: FontWeight.w500),
+            style: AppTypography.body
+                .copyWith(fontSize: 15.r, fontWeight: FontWeight.w500),
           )
         ],
       ),

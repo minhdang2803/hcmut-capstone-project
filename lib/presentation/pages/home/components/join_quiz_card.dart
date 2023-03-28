@@ -6,7 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import '../../../theme/app_typography.dart';
 
 class JoinQuizCard extends StatelessWidget {
-  const JoinQuizCard({Key? key}) : super(key: key);
+  const JoinQuizCard({Key? key, required this.onTap}) : super(key: key);
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class JoinQuizCard extends StatelessWidget {
                 children: [
                   AutoSizeText(
                     textAlign: TextAlign.center,
-                    'Tham gia giải đố Tiếng Anh cùng bạn bè',
+                    'Luyện tập kỹ năng TOEIC',
                     style: AppTypography.title.copyWith(
                       fontSize: 15,
                       fontWeight: FontWeight.w800,
@@ -34,7 +35,7 @@ class JoinQuizCard extends StatelessWidget {
                     maxLines: 2,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: onTap,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
@@ -45,12 +46,6 @@ class JoinQuizCard extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            // SvgPicture.asset(
-                            //   'assets/icons/ic_locate.svg',
-                            //   color: AppColor.textPrimary,
-                            //   width: 20,
-                            //   height: 20,
-                            // ),
                             AutoSizeText(
                               'Tham gia ngay',
                               style: AppTypography.bodySmall.copyWith(

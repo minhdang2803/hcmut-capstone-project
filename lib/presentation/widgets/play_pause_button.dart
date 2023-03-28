@@ -26,7 +26,7 @@ class PlayPauseButton extends StatelessWidget {
         width: size,
         height: size,
         decoration: BoxDecoration(
-          color: enabled ? AppColor.primary : Colors.grey,
+          color: enabled ? AppColor.mainPink : Colors.grey,
           borderRadius: BorderRadius.circular(14.r),
         ),
         child: Center(

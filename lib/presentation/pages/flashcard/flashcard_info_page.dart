@@ -105,7 +105,7 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
           borderRadius: BorderRadius.circular(30.r),
           border: Border.all(
             width: 2,
-            color: AppColor.primary,
+            color: AppColor.textPrimary,
           ),
         ),
         child: ListView(
@@ -118,7 +118,7 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
                     TextSpan(
                         text: "- UK: ",
                         style: AppTypography.title.copyWith(
-                            color: AppColor.primary,
+                            color: AppColor.mainPink,
                             fontWeight: FontWeight.bold)),
                     TextSpan(
                       text: widget.vocab.pronounce.uk.toCapitalize(),
@@ -143,7 +143,7 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
                     TextSpan(
                         text: "- US: ",
                         style: AppTypography.title.copyWith(
-                            color: AppColor.primary,
+                            color: AppColor.mainPink,
                             fontWeight: FontWeight.bold)),
                     TextSpan(
                       text: widget.vocab.pronounce.us.toCapitalize(),
@@ -165,7 +165,7 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Divider(
-                    color: AppColor.primary,
+                    color: AppColor.mainPink,
                     thickness: 2,
                   ),
                   Text.rich(
@@ -173,7 +173,7 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
                       TextSpan(
                           text: "- English: ",
                           style: AppTypography.title.copyWith(
-                              color: AppColor.primary,
+                              color: AppColor.mainPink,
                               fontWeight: FontWeight.bold)),
                       TextSpan(
                         text: e.en.toCapitalize(),
@@ -187,7 +187,7 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
                       TextSpan(
                           text: "- Tiếng Việt: ",
                           style: AppTypography.title.copyWith(
-                              color: AppColor.primary,
+                              color: AppColor.mainPink,
                               fontWeight: FontWeight.bold)),
                       TextSpan(
                         text: e.vi.toCapitalize(),
@@ -201,7 +201,7 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
                       TextSpan(
                           text: "- Example(ví dụ): ",
                           style: AppTypography.title.copyWith(
-                              color: AppColor.primary,
+                              color: AppColor.mainPink,
                               fontWeight: FontWeight.bold)),
                       TextSpan(
                         text: e.example.toCapitalize(),
@@ -231,7 +231,7 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
             10.horizontalSpace,
             Text(
               "(${widget.vocab.vocabType})",
-              style: AppTypography.headline.copyWith(color: AppColor.primary),
+              style: AppTypography.headline.copyWith(color: AppColor.mainPink),
             ),
           ],
         ),

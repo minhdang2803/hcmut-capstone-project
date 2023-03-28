@@ -24,6 +24,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       expands: false,
       maxLength: 40,
       controller: widget.controller,
+      cursorColor: Colors.black,
       decoration: InputDecoration(
         filled: true,
         enabledBorder: OutlineInputBorder(
