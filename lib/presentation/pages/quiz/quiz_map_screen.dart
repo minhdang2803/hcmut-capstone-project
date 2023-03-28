@@ -70,8 +70,8 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
               alignment: Alignment.center,
               child: Text(
                 "Trò chơi giải đố",
-                style: AppTypography.subHeadline
-                    .copyWith(color: AppColor.textPrimary, fontWeight: FontWeight.bold),
+                style: AppTypography.subHeadline.copyWith(
+                    color: AppColor.textPrimary, fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(width: 35.r)
@@ -80,8 +80,8 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
       ),
       body: SafeArea(
         child: Padding(
-          // padding: EdgeInsets.all(20.r),
-          padding: EdgeInsets.only(top: 10.r),
+          padding: EdgeInsets.all(10.r),
+          // padding: EdgeInsets.only(top: 10.r),
           child: ClipRRect(
             // borderRadius: BorderRadius.circular(20.r),
             borderRadius: BorderRadius.circular(20.r
