@@ -89,7 +89,7 @@ class _QuizDoneScreenState extends State<QuizDoneScreen> {
       height: 318.r,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
-        color: AppColor.primary,
+        color: AppColor.mainPink,
       ),
       child: Padding(
         padding: EdgeInsets.all(20.r),
@@ -141,7 +141,7 @@ class _QuizDoneScreenState extends State<QuizDoneScreen> {
                   style: AppTypography.title.copyWith(
                     fontSize: 25,
                     fontWeight: FontWeight.w700,
-                    color: AppColor.darkGray,
+                    color: AppColor.textPrimary,
                   ),
                 ),
                 BlocBuilder<QuizCubit, QuizState>(
@@ -151,7 +151,7 @@ class _QuizDoneScreenState extends State<QuizDoneScreen> {
                       style: AppTypography.title.copyWith(
                         fontSize: 25,
                         fontWeight: FontWeight.w700,
-                        color: Colors.black,
+                        color: AppColor.textSecondary.withOpacity(0.5),
                       ),
                     );
                   },
@@ -169,7 +169,7 @@ class _QuizDoneScreenState extends State<QuizDoneScreen> {
                   style: AppTypography.title.copyWith(
                     fontSize: 25,
                     fontWeight: FontWeight.w700,
-                    color: AppColor.darkGray,
+                    color: AppColor.textPrimary,
                   ),
                 ),
                 BlocBuilder<QuizCubit, QuizState>(
@@ -179,7 +179,7 @@ class _QuizDoneScreenState extends State<QuizDoneScreen> {
                       style: AppTypography.title.copyWith(
                         fontSize: 25,
                         fontWeight: FontWeight.w700,
-                        color: Colors.black,
+                        color: AppColor.textSecondary.withOpacity(0.5),
                       ),
                     );
                   },
@@ -198,7 +198,7 @@ class _QuizDoneScreenState extends State<QuizDoneScreen> {
                   style: AppTypography.title.copyWith(
                     fontSize: 25,
                     fontWeight: FontWeight.w700,
-                    color: AppColor.darkGray,
+                    color: AppColor.textPrimary,
                   ),
                 ),
                 BlocBuilder<QuizCubit, QuizState>(
@@ -209,7 +209,7 @@ class _QuizDoneScreenState extends State<QuizDoneScreen> {
                       style: AppTypography.title.copyWith(
                         fontSize: 25,
                         fontWeight: FontWeight.w700,
-                        color: Colors.black,
+                        color: AppColor.textSecondary.withOpacity(0.5),
                       ),
                     );
                   },

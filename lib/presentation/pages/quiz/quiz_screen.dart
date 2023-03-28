@@ -101,7 +101,7 @@ class _QuizScreenState extends State<QuizScreen>
 
   AppBar _buildAppbar() {
     return AppBar(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.appBackground,
       automaticallyImplyLeading: false,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -124,8 +124,8 @@ class _QuizScreenState extends State<QuizScreen>
             alignment: Alignment.center,
             child: Text(
               "Câu đố cấp độ ${widget.level}",
-              style: AppTypography.subHeadline
-                  .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+              style: AppTypography.subHeadline.copyWith(
+                  color: AppColor.textPrimary, fontWeight: FontWeight.bold),
             ),
           ),
           SizedBox(width: 40.r)

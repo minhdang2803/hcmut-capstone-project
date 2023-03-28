@@ -75,7 +75,9 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
       height: MediaQuery.of(context).size.height * 0.75,
       padding: EdgeInsets.all(15.r),
       decoration: BoxDecoration(
-          color: AppColor.primary, borderRadius: BorderRadius.circular(20.r), border: Border.all(color: AppColor.defaultBorder)),
+          color: AppColor.primary,
+          borderRadius: BorderRadius.circular(20.r),
+          border: Border.all(color: AppColor.defaultBorder)),
       child: SingleChildScrollView(
         child: SlideTransition(
           position: _offsetAnimation,
@@ -278,7 +280,7 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
               return LinearProgressIndicator(
                 value: (state.currentIndex! + 1) / state.total!,
                 backgroundColor: AppColor.pastelPink,
-                color: AppColor.secondary,
+                color: AppColor.mainPink,
               );
             },
           ),
@@ -293,7 +295,8 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
                   return Text(
                     "Question: ${state.currentIndex! + 1}/${state.total}",
                     style: AppTypography.title.copyWith(
-                        color: AppColor.textPrimary, fontWeight: FontWeight.w700),
+                        color: AppColor.textPrimary,
+                        fontWeight: FontWeight.w700),
                   );
                 },
               ),
@@ -312,7 +315,8 @@ class _QuizGame02State extends State<QuizGame02> with TickerProviderStateMixin {
                   return Text(
                     "Time left ⏱️: ${state.durationInSecond}s",
                     style: AppTypography.title.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.w700),
+                        color: AppColor.textPrimary,
+                        fontWeight: FontWeight.w700),
                   );
                 },
               ),

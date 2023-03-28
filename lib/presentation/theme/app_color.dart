@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppColor {
   //main colors
   static const Color primary = Colors.white;
-  // static const Color secondary = Color(0xffFF8FA2);
+  // static const Color secondary = Color(0xffffb8c9);
   static const Color secondary = Color.fromARGB(255, 221, 203, 231);
   static const Color navBarColor = Color(0xffCFCEE8);
   // static const Color mainPink = Color.fromARGB(255, 195, 165, 211);
@@ -18,7 +18,7 @@ class AppColor {
   static const Color falseColor = Color(0xFFFF6666);
   static const Color trueColor = Color(0xFF53DF83);
 
-  static const Color pastelPink = Color(0xffFFD6DD);
+  static const Color pastelPink = Color(0xffffb8c9);
   static const Color textPrimary = Color(0xFF000000);
   static const Color textSecondary = Color.fromARGB(255, 99, 99, 99);
   static const Color textSub = Color(0xFF858494);
