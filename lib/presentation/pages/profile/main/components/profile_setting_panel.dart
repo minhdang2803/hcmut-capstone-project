@@ -86,7 +86,7 @@ class ProfileSettingPanel extends StatelessWidget {
                           const ProfileSettingItem(
                             asset: 'assets/icons/ic_user.svg',
                             label: 'User',
-                            iconColor: AppColor.secondary,
+                            iconColor: AppColor.mainPink,
                             // onPress: () => Navigator.of(context)
                             //     .pushNamed(RouteName.updateProfile),
                           ),
