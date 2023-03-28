@@ -80,21 +80,27 @@ class BKEDialog extends StatelessWidget {
                         behavior: HitTestBehavior.translucent,
                         child: Container(
                           alignment: Alignment.center,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: AppColor.secondary, width: 1),
                             color: AppColor.secondary,
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               bottomLeft: Radius.circular(20),
                             ),
                           ),
                           child: Text(
                             'Huỷ',
                             style: AppTypography.body.copyWith(
-                              color: AppColor.textPrimary
-                              ,
+                              color: AppColor.textPrimary,
                             ),
                           ),
                         ),
                       ),
+                    ),
+                    Container(
+                      height: 48.r,
+                      width: 2.r,
+                      color: AppColor.appBackground,
                     ),
                     Expanded(
                       child: GestureDetector(
@@ -104,11 +110,11 @@ class BKEDialog extends StatelessWidget {
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: AppColor.secondary,
-                            border: Border.all(color: AppColor.defaultBorder),
+                            border:
+                                Border.all(color: AppColor.secondary, width: 1),
                             borderRadius: const BorderRadius.only(
                               bottomRight: Radius.circular(20),
                             ),
-                            
                           ),
                           child: Text(
                             'Đồng ý',
