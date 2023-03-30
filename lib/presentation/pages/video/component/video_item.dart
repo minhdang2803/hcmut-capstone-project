@@ -182,7 +182,7 @@ class _VideoItemState extends State<VideoItem> {
                             )
                           : const Visibility(
                               visible: false,
-                              child: const SizedBox(),
+                              child: SizedBox.shrink(),
                             ),
                     ],
                   ),
@@ -190,6 +190,7 @@ class _VideoItemState extends State<VideoItem> {
               ),
             ),
           ),
+          5.verticalSpace,
           SizedBox(
             width: 150.r,
             child: Text(
@@ -197,6 +198,7 @@ class _VideoItemState extends State<VideoItem> {
               style: AppTypography.bodySmall.copyWith(
                   color: AppColor.textPrimary, fontWeight: FontWeight.w500),
               overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
               maxLines: 2,
             ),
           ),

@@ -105,7 +105,7 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
           borderRadius: BorderRadius.circular(30.r),
           border: Border.all(
             width: 2,
-            color: AppColor.textPrimary,
+            color: AppColor.defaultBorder,
           ),
         ),
         child: ListView(
@@ -235,15 +235,6 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
             ),
           ],
         ),
-        IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.delete,
-            size: 25.r,
-          ),
-        )
       ],
     );
   }

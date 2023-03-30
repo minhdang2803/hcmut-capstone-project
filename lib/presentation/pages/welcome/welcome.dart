@@ -17,12 +17,8 @@ class WelcomeScreen extends StatelessWidget {
       backgroundColor: AppColor.primary,
       body: Stack(
         children: [
-          SvgPicture.asset(
-            'assets/authentication/welcome_screen.svg',
-            width: 1.sw,
-            fit: BoxFit.contain,
-            color: AppColor.accentBlue
-          ),
+          SvgPicture.asset('assets/authentication/welcome_screen.svg',
+              width: 1.sw, fit: BoxFit.contain, color: AppColor.accentBlue),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -31,13 +27,13 @@ class WelcomeScreen extends StatelessWidget {
                 padding: EdgeInsets.all(30.r),
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppColor.defaultBorder, width: 1.5),
+                    border:
+                        Border.all(color: AppColor.defaultBorder, width: 1.5),
                     borderRadius: BorderRadius.circular(25.r),
                   ),
-                  padding: const EdgeInsets.all(4),
+                  padding: EdgeInsets.symmetric(vertical: 10.r),
                   child: Column(
                     children: [
-                      10.verticalSpace,
                       Text(
                         'Bắt đầu học cùng Casper',
                         style: AppTypography.subHeadline
@@ -77,10 +73,9 @@ class WelcomeScreen extends StatelessWidget {
     return RoundedElevatedButton(
       elevation: 0,
       label: title,
-      labelStyle: AppTypography.subHeadline.copyWith(
-          color: AppColor.textPrimary,
-          fontWeight: FontWeight.bold),
-      backgroundColor: isLogin ?AppColor.accentBlue : AppColor.darkGray,
+      labelStyle: AppTypography.subHeadline
+          .copyWith(color: AppColor.textPrimary, fontWeight: FontWeight.bold),
+      backgroundColor: isLogin ? AppColor.accentBlue : AppColor.darkGray,
       width: 250.w,
       height: 46.h,
       radius: 17.r,
