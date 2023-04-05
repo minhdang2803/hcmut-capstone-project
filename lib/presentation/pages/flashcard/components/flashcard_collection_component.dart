@@ -29,7 +29,7 @@ class FlashcardComponent extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Visibility(
-            visible: imgUrl != '',
+            visible: imgUrl != "",
             child: Image(image: AssetImage(imgUrl))
           ),
           AutoSizeText(

@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 
 import '../presentation/pages/video/component/bottom_vocabulary.dart';
 
+
+
 class WordProcessing{
 
   WordProcessing._internal();
-  
+
   static final _instance = WordProcessing._internal();
   factory WordProcessing.instance() => _instance;
 

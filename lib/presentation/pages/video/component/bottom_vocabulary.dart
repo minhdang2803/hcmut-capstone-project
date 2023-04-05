@@ -7,6 +7,7 @@ import 'package:translator/translator.dart';
 
 import '../../../../bloc/vocab/vocab_cubit.dart';
 import '../../../../data/models/vocab/vocab.dart';
+import '../../../../utils/constants.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_typography.dart';
 import '../../../widgets/holder_widget.dart';
@@ -53,7 +54,7 @@ class _BottomVocabState extends State<BottomVocab>
     super.initState();
 
     // context.read<VocabCubit>().getVocab('can');
-    final vocal = context.read<VocabCubit>().getVocab(widget.text);
+    context.read<VocabCubit>().getVocab(widget.text);
   }
 
   @override
@@ -132,7 +133,7 @@ class _BottomVocabState extends State<BottomVocab>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.text,
+                        widget.text.replaceAll(Constants.charactersToRemove, ''),
                         style: AppTypography.headline.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppColor.textPrimary,
@@ -165,7 +166,7 @@ class _BottomVocabState extends State<BottomVocab>
                 .map((e) => VocabularyTab(vocabInfo: e))
                 .toList(),
           )
-        : SizedBox(child: Text(_translateFromGG));
+        : SizedBox(child: Text(_translateFromGG, style: AppTypography.title,));
   }
 
   Widget _buildVocabTypes() {
@@ -231,7 +232,7 @@ class _BottomVocabState extends State<BottomVocab>
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    widget.text,
+                    widget.text.replaceAll(Constants.charactersToRemove, ''),
                     style: AppTypography.headline.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColor.primary,

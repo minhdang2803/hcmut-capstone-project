@@ -16,6 +16,7 @@ import '../../theme/app_typography.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 
 import '../video/component/bottom_vocabulary.dart';
+import '../video/component/gg_translate_button.dart';
 
 class BookRead extends StatefulWidget {
   const BookRead({super.key, required this.book});
@@ -66,6 +67,7 @@ class _BookReadState extends State<BookRead> {
 
   @override
   void dispose() {
+    
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     _scrollControllerBottomUp.removeListener(_scrollListener);
@@ -330,18 +332,25 @@ class _BookReadState extends State<BookRead> {
           return Container(
               // decoration: BoxDecoration(border: Border.all(color:Colors.black)),
               height: _getRatio(_ebook.sentences[index].text)*_rowHeight,
-              child: Align(
-                alignment: Alignment.centerLeft, // set the alignment to center left
-                child: RichText(
-                          text: TextSpan(
-                            children: _wordProcessing.createTextSpans(
-                              context,
-                              _ebook.sentences[index].text,
-                              AppTypography.title,
-                            ),
-                          ),
-                        ),
-                
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 270.w,
+                    child: Align(
+                      alignment: Alignment.centerLeft, // set the alignment to center left
+                      child: RichText(
+                                text: TextSpan(
+                                  children: _wordProcessing.createTextSpans(
+                                    context,
+                                    _ebook.sentences[index].text,
+                                    AppTypography.title,
+                                  ),
+                                ),
+                              ),
+                    ),
+                  ),
+                  TranslateIconButton(text: _ebook.sentences[index].text.replaceAll('[', '').replaceAll(']', ''))
+                ],
               ),
           );
         },

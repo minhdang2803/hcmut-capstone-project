@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:skeletons/skeletons.dart';
+import 'package:translator/translator.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../bloc/video/video_cubit.dart';
@@ -17,6 +18,7 @@ import '../../theme/app_color.dart';
 import '../../theme/app_typography.dart';
 import '../../widgets/holder_widget.dart';
 import 'component/bottom_vocabulary.dart';
+import 'component/gg_translate_button.dart';
 
 class VideoPlayerPageModel {
   final BuildContext context;
@@ -93,6 +95,13 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
 
   @override
   void dispose() {
+    context.read<VideoCubit>().exit();
+                  widget.video.id != null
+                      ? context.read<LastWatchVideoCubit>().saveProcess(
+                            mongoID: widget.video.id!,
+                            second: _currentDuration ~/ 1000,
+                          )
+                      : null;
     super.dispose();
   }
 
@@ -219,35 +228,45 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.r, vertical: 10.r),
-      child: SingleChildScrollView(
-        child: RichText(
-          text: TextSpan(
-            children: _subVideo?.subs
-                .map(
-                  (e) => TextSpan(
-                    children: [
-                      WidgetSpan(child: SizedBox(key: _keys[e.index + 1])),
-                      TextSpan(
-                        children: _wordProcessing.createTextSpans(
-                          context,
-                          e.text,
-                          AppTypography.title.copyWith(
-                            color: (_currentDuration > e.from) &&
-                                    (_currentDuration < e.to)
-                                ? AppColor.mainPink
-                                : AppColor.textPrimary,
-                          ),
-                        ),
-                      ),
-                    ],
+      child: ListView(
+        shrinkWrap: true,
+        children: _subVideo!.subs
+            .map(
+              (e) => Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 35.h,
+                    width: 270.w,
+                    child: _subVideo?.subs != null
+                        ? Align(
+                            alignment: Alignment.centerLeft,
+                            child: RichText(
+                              text: TextSpan(
+                                children: _wordProcessing.createTextSpans(
+                                  context,
+                                  e.text ?? '',
+                                  AppTypography.title.copyWith(
+                                    color: (_currentDuration > e.from) &&
+                                            (_currentDuration < e.to)
+                                        ? AppColor.mainPink
+                                        : AppColor.textPrimary,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : SizedBox(height: 0.1.h),
                   ),
-                )
-                .toList(),
-          ),
-        ),
+                  TranslateIconButton(text: e.text)
+                ],
+              ),
+            )
+            .toList(),
       ),
     );
   }
+
 
   Widget _buildLoadingSkeleton() {
     return Padding(
