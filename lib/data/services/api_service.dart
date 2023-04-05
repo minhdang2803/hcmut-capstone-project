@@ -34,8 +34,10 @@ class APIService {
         options: headerOption,
         queryParameters: request.queryParams,
       );
+   
       return request.parseResponse(response.data);
     } on DioError catch (e) {
+      print(e.type);
       switch (e.type) {
         case DioErrorType.connectionError:
           throw RemoteException(
@@ -65,6 +67,7 @@ class APIService {
               RemoteException.other, 'Dio error unknown: ${e.error}');
       }
     } catch (e) {
+      print(e);
       throw RemoteException(RemoteException.other, e.toString());
     }
   }

@@ -12,7 +12,7 @@ class AppColor {
   static const Color onSecondary = Colors.white;
 
   static const Color accentPink = Color(0xFFFFD6DD);
-  static const Color accentBlue = Color.fromARGB(255, 222, 190, 240);
+  static const Color accentBlue = Color.fromARGB(255, 221, 203, 231);
   static const Color accentGreen = Color(0xFFC9F2E9);
 
   static const Color falseColor = Color(0xFFFF6666);
@@ -25,8 +25,8 @@ class AppColor {
   static const Color appBackground = Color.fromARGB(255, 238, 238, 238);
   static const Color correctColor = Color(0xff53DF83);
   //scroll bar indicator color
-  static const Color darkGray = Color.fromARGB(255, 216, 216, 216);
-  static const Color neutralGrey = Color(0xffEFEEFC);
+  static const Color darkGray = Color.fromARGB(255, 201, 201, 201);
+  static const Color neutralGrey = Color.fromARGB(255, 202, 202, 202);
   //pin border color (sms pin code)
   static const Color lightGray = Color(0xFFE6E6E6);
 

@@ -1,3 +1,4 @@
+import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +24,7 @@ class BookSection extends StatelessWidget {
       children: [
         Text(
           heading.toCapitalize(),
-          style: Theme.of(context).textTheme.headlineSmall,
+          style: AppTypography.title.copyWith(fontWeight: FontWeight.bold),
         ),
         Container(
           margin: const EdgeInsets.symmetric(

@@ -78,6 +78,7 @@ class ContinueCard extends StatelessWidget {
                               color: AppColor.textPrimary,
                             ),
                             maxLines: 2,
+                            overflow: TextOverflow.ellipsis
                           ),
                         ],
                       ),

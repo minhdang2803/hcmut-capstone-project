@@ -38,7 +38,7 @@ class VideoYoutubeHorizontalList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 230.r,
+      height: 240.r,
       width: double.infinity,
       padding: EdgeInsets.only(right: 15.r, left: 25.r),
       child: Column(

@@ -55,9 +55,9 @@ class _StartToeic extends State<StartToeic> {
           child: Column(
             children: [
               20.verticalSpace,
-              const ToeicDivider(text: "Luyện tập"),
+              const TextDivider(text: "Luyện tập"),
               _buildParts(context),
-              const ToeicDivider(text: "Lịch sử làm bài"),
+              const TextDivider(text: "Lịch sử làm bài"),
               20.verticalSpace,
               _buildHistory(context),
             ],
@@ -237,8 +237,8 @@ class HistoryCard extends StatelessWidget {
   }
 }
 
-class ToeicDivider extends StatelessWidget {
-  const ToeicDivider({super.key, required this.text});
+class TextDivider extends StatelessWidget {
+  const TextDivider({super.key, required this.text});
   final String text;
   @override
   Widget build(BuildContext context) {
