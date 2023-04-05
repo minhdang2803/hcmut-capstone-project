@@ -58,6 +58,20 @@ class _NavigationPageState extends State<NavigationPage> {
     super.dispose();
   }
 
+  String _getPublishTime(String time){
+    final now = DateTime.now().toUtc();
+    final publishedHour = DateTime.parse(time);
+
+    Duration difference = now.difference(publishedHour);
+    if (difference.inDays > 0) {
+    return "${difference.inDays} ngày trước";
+    } else if (difference.inHours > 0) {
+      return "${difference.inHours} giờ trước";
+    } else {
+      return "Gần đây";
+    }
+  }
+
   void _onReadNews(NewsInfo news) {
     // pause video
     showModalBottomSheet(
@@ -174,28 +188,27 @@ class _NavigationPageState extends State<NavigationPage> {
     create: (context) => _newsListBloc,
     child: BlocBuilder<NewsListBloc, NewsListState>(
       builder: (context, state) {
-        print(state);
         if (state is NewsListLoadedState) {
           final newsList = state.newsList;
           return Container(
             padding: EdgeInsets.only(left: 10.w),
-            height: 1000.h,
+            height: 300.h,
             width: 300.w,
             child: ListView.builder(
               itemBuilder: (ctx, i) => GestureDetector(
                 onTap: () {
                   _onReadNews(newsList[i]);
                 },
-                child: SizedBox(
-                  height: 60.h,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.r),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
-                        height: 50.h,
-                        width: 80.w,
+                        height: 70.h,
+                        width: 100.w,
                         color: AppColor.primary,
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/images/default_logo.png',
@@ -212,18 +225,35 @@ class _NavigationPageState extends State<NavigationPage> {
                       ),
                       ),
                       SizedBox(width: 10.w),
-                      SizedBox(
-                        width: 190.w,
-                        child: AutoSizeText(
-                            newsList[i].title,
-                            style: AppTypography.body.copyWith(
-                              fontSize: 11.r,
-                              fontWeight: FontWeight.w800,
-                              color: AppColor.textPrimary,
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: 170.w,
+                            child: AutoSizeText(
+                                newsList[i].title,
+                                style: AppTypography.body.copyWith(
+                                  fontSize: 11.r,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColor.textPrimary,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis
                             ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis
-                        ),
+                          ),
+                          SizedBox(
+                            width: 170.w,
+                            child: AutoSizeText(
+                                _getPublishTime(newsList[i].publishedAt),
+                                style: AppTypography.body.copyWith(
+                                  fontSize: 8.r,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColor.textSecondary,
+                                ),
+                                maxLines: 1,
+                                // overflow: TextOverflow.ellipsis
+                            ),
+                          ),
+                        ],
                       ),
                       
                     ],
