@@ -2,6 +2,7 @@ import 'package:bke/bloc/book/book_bloc.dart';
 import 'package:bke/bloc/book/book_event.dart';
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/book/book_reader.dart';
+import 'package:bke/utils/word_processing.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,6 +32,8 @@ class _BookReadState extends State<BookRead> {
 
   final ScrollController _scrollController = ScrollController(initialScrollOffset: 1.0);
   final ScrollController _scrollControllerBottomUp = ScrollController(initialScrollOffset: 9999.0); //init a new scroll controller that set initial offset to end
+  final WordProcessing _wordProcessing = WordProcessing.instance();
+
   bool _isLoading = false;
 
   int _pageNumber = 1;
@@ -228,69 +231,6 @@ class _BookReadState extends State<BookRead> {
     // LogUtil.debug('position: $_position page: $_pageNumber');
   }
 
-  List<String> splitWord(String subText) {
-    final eachCharList = subText.split(" ");
-    List<String> result = [];
-    String tempWord = '';
-    for (final element in eachCharList) {
-      if (element.contains("[") && element.contains("]")) {
-        result.add(element);
-      } else if (element.contains('[') && !element.contains(']')) {
-        tempWord = "$tempWord$element ";
-      } else if (!element.contains('[') && element.contains(']')) {
-        tempWord = tempWord + element;
-        result.add(tempWord);
-        tempWord = "";
-      } else if (!element.contains('[') && !element.contains(']')) {
-        result.add(element);
-      }
-    }
-    return result;
-  }
-
-  List<TextSpan> createTextSpans(String subText, TextStyle style) {
-    final arrayStrings = splitWord(subText);
-    List<TextSpan> arrayOfTextSpan = [];
-    for (int index = 0; index < arrayStrings.length; index++) {
-      var text = arrayStrings[index];
-      TextSpan span = const TextSpan();
-      // first is the word highlight recommended by admin [example] and ending with , or .
-      if (text.contains('[') && text.contains(']')) {
-        text = text.trim().substring(1, text.length - 1);
-        span = TextSpan(
-          text: '$text ',
-          style: style,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                builder: (context) => BottomVocab(text: text.toLowerCase()),
-              );
-            },
-        );
-      } else {
-        // the normalword
-        span = TextSpan(
-          text: "$text ",
-          style: style,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent
-                ,
-                builder: (context) => BottomVocab(text: text.toLowerCase()),
-              );
-            },
-        );
-      }
-
-      arrayOfTextSpan.add(span);
-    }
-    return arrayOfTextSpan;
-  }
-
   int _getRatio(String text){
     int ratio = (text.length/_maxCharInOneRow).ceil(); // 1, 2, 3
     return ratio;
@@ -393,13 +333,14 @@ class _BookReadState extends State<BookRead> {
               child: Align(
                 alignment: Alignment.centerLeft, // set the alignment to center left
                 child: RichText(
-                              text: TextSpan(
-                                children: createTextSpans(
-                                  _ebook.sentences[index].text,
-                                  AppTypography.title,
-                                ),
-                              ),
+                          text: TextSpan(
+                            children: _wordProcessing.createTextSpans(
+                              context,
+                              _ebook.sentences[index].text,
+                              AppTypography.title,
                             ),
+                          ),
+                        ),
                 
               ),
           );

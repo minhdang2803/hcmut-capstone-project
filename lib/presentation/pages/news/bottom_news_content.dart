@@ -6,6 +6,7 @@ import 'package:skeletons/skeletons.dart';
 import 'package:translator/translator.dart';
 
 import '../../../data/models/news/news_model.dart';
+import '../../../utils/word_processing.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_typography.dart';
 import '../../widgets/holder_widget.dart';
@@ -13,7 +14,8 @@ import '../../widgets/holder_widget.dart';
 
 class BottomNewsContent extends StatelessWidget {
   final NewsInfo news;
-  const BottomNewsContent({Key? key, required this.news}) : super(key: key);
+  BottomNewsContent({Key? key, required this.news}) : super(key: key);
+  final WordProcessing _wordProcessing = WordProcessing.instance();
 
   String _getPublishTime(String time){
     final now = DateTime.now().toUtc();
@@ -30,10 +32,18 @@ class BottomNewsContent extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context){
-  return Container(
-        height: 1000.h,
-        padding: EdgeInsets.all(16),
-        child: Column(
+  return 
+    Container(
+        padding: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: AppColor.primary,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30.r),
+            topRight: Radius.circular(30.r),
+          ),
+        ),
+        child:  Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
@@ -42,29 +52,34 @@ class BottomNewsContent extends StatelessWidget {
                   // mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      this.news.title,
+                      news.title,
                       style: AppTypography.subHeadline.copyWith(fontWeight: FontWeight.w600)
                     ),
                     Text(
-                          this.news.author,
+                          news.author,
                           style: AppTypography.bodySmall.copyWith(fontWeight: FontWeight.w700)
                         ),
                     Row(
                       children: [
                         Text(
-                          " - ${this.news.source}, ",
+                          " - ${news.source}, ",
                           style: AppTypography.bodySmall
                         ),
                         Text(
-                          _getPublishTime(this.news.publishedAt),
+                          _getPublishTime(news.publishedAt),
                           style: AppTypography.bodySmall.copyWith(fontStyle: FontStyle.italic)
                         ),
                       ],
                     ),
-                    Text(
-                          this.news.content,
-                          style: AppTypography.body
+                    RichText(
+                      text: TextSpan(
+                        children: _wordProcessing.createTextSpans(
+                          context,
+                          news.content,
+                          AppTypography.title,
                         ),
+                      ),
+                    ),
                     ],
                 )
               )

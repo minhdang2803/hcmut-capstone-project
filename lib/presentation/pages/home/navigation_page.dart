@@ -62,8 +62,9 @@ class _NavigationPageState extends State<NavigationPage> {
     // pause video
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColor.primary,
-      builder: (context) => BottomNewsContent(news: news),
+      backgroundColor: Colors.transparent,
+      elevation: 20.h,
+      builder: (context) {return BottomNewsContent(news: news);},
     );
   }
 
@@ -178,7 +179,7 @@ class _NavigationPageState extends State<NavigationPage> {
           final newsList = state.newsList;
           return Container(
             padding: EdgeInsets.only(left: 10.w),
-            height: 350.h,
+            height: 1000.h,
             width: 300.w,
             child: ListView.builder(
               itemBuilder: (ctx, i) => GestureDetector(

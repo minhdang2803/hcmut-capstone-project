@@ -12,6 +12,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../bloc/video/video_cubit.dart';
 import '../../../data/models/video/sub_video_model.dart';
+import '../../../utils/word_processing.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_typography.dart';
 import '../../widgets/holder_widget.dart';
@@ -40,6 +41,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   int _currentIndex = 0;
   int _currentDuration = 0;
 
+  final WordProcessing _wordProcessing = WordProcessing.instance();
+
   final _keys = List<GlobalKey>.generate(1000000, (_) => GlobalKey());
 
   void _onDictionarySearch(String text) {
@@ -51,60 +54,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
       backgroundColor: Colors.transparent,
       builder: (context) => BottomVocab(text: text),
     );
-  }
-
-  List<String> splitWord(String subText) {
-    final eachCharList = subText.split(" ");
-    List<String> result = [];
-    String tempWord = '';
-    for (final element in eachCharList) {
-      if (element.contains("[") && element.contains("]")) {
-        result.add(element);
-      } else if (element.contains('[') && !element.contains(']')) {
-        tempWord = "$tempWord$element ";
-      } else if (!element.contains('[') && element.contains(']')) {
-        tempWord = tempWord + element;
-        result.add(tempWord);
-        tempWord = "";
-      } else if (!element.contains('[') && !element.contains(']')) {
-        result.add(element);
-      }
-    }
-    return result;
-  }
-
-  List<TextSpan> createTextSpans(String subText, TextStyle style) {
-    final arrayStrings = splitWord(subText);
-    List<TextSpan> arrayOfTextSpan = [];
-    for (int index = 0; index < arrayStrings.length; index++) {
-      var text = arrayStrings[index];
-      TextSpan span = const TextSpan();
-      // first is the word highlight recommended by admin [example] and ending with , or .
-      if (text.contains('[') && text.contains(']')) {
-        text = text.trim().substring(1, text.length - 1);
-        span = TextSpan(
-          text: '$text ',
-          style: style,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              _onDictionarySearch(text.toLowerCase());
-            },
-        );
-      } else {
-        // the normalword
-        span = TextSpan(
-          text: "$text ",
-          style: style,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              _onDictionarySearch(text.toLowerCase());
-            },
-        );
-      }
-
-      arrayOfTextSpan.add(span);
-    }
-    return arrayOfTextSpan;
   }
 
   @override
@@ -279,7 +228,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
                     children: [
                       WidgetSpan(child: SizedBox(key: _keys[e.index + 1])),
                       TextSpan(
-                        children: createTextSpans(
+                        children: _wordProcessing.createTextSpans(
+                          context,
                           e.text,
                           AppTypography.title.copyWith(
                             color: (_currentDuration > e.from) &&

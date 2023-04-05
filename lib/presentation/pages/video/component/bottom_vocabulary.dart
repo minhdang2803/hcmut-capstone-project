@@ -132,7 +132,7 @@ class _BottomVocabState extends State<BottomVocab>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.text.toCapitalize(),
+                        widget.text,
                         style: AppTypography.headline.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppColor.textPrimary,
