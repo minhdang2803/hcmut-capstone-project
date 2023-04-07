@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bke/bloc/news/news_event.dart';
 import 'package:bke/data/data_source/local/auth_local_source.dart';
 import 'package:bke/data/models/search/search_model.dart';
 import 'package:bke/presentation/pages/home/components/continue_card.dart';
@@ -12,11 +13,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../../bloc/news/news_bloc.dart';
+import '../../../bloc/news/news_state.dart';
 import '../../../bloc/recent_action/action_bloc.dart';
 import '../../../bloc/recent_action/action_event.dart';
 import '../../../bloc/recent_action/action_state.dart';
+import '../../../data/models/news/news_model.dart';
 import '../../theme/app_color.dart';
 import '../main/components/monastery_search_delegate.dart';
+import '../news/bottom_news_content.dart';
+import '../toeic_test/toeic_page.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({Key? key}) : super(key: key);
@@ -28,6 +34,7 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   late final List<String> _pages;
   late final ActionBloc _actionBloc;
+  late final NewsListBloc _newsListBloc;
   @override
   void initState() {
     super.initState();
@@ -41,11 +48,38 @@ class _NavigationPageState extends State<NavigationPage> {
     ];
     _actionBloc = ActionBloc();
     _actionBloc.add(const GetRecentActionsEvent());
+
+    _newsListBloc = NewsListBloc();
+    _newsListBloc.add(LoadTopHeadlinesEvent());
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  String _getPublishTime(String time){
+    final now = DateTime.now().toUtc();
+    final publishedHour = DateTime.parse(time);
+
+    Duration difference = now.difference(publishedHour);
+    if (difference.inDays > 0) {
+    return "${difference.inDays} ngày trước";
+    } else if (difference.inHours > 0) {
+      return "${difference.inHours} giờ trước";
+    } else {
+      return "Gần đây";
+    }
+  }
+
+  void _onReadNews(NewsInfo news) {
+    // pause video
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      elevation: 20.h,
+      builder: (context) {return BottomNewsContent(news: news);},
+    );
   }
 
   @override
@@ -68,6 +102,7 @@ class _NavigationPageState extends State<NavigationPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                
                 _buildUserBanner(context),
                 BlocProvider(
                     create: (context) => _actionBloc,
@@ -120,9 +155,7 @@ class _NavigationPageState extends State<NavigationPage> {
                     )),
                 _buildSearchBar(context, size),
                 SizedBox(height: 0.02.sh),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Container(
+                Container(
                       padding:
                           const EdgeInsets.only(top: 20, left: 10, right: 10),
                       width: double.infinity,
@@ -133,17 +166,109 @@ class _NavigationPageState extends State<NavigationPage> {
                           // topRight: Radius.circular(40),
                         ),
                       ),
+                      
                       child: Column(children: [
                         _buildFeaturesList(size, context, menuList),
-                        100.verticalSpace
+                        30.verticalSpace,
+                        const TextDivider(text: 'Tin tức nổi bật'),
+                        SingleChildScrollView(child: _buildNewsTopHeadlines(context)),
                       ]),
-                    ),
-                  ),
+                      
+                    
+                  
                 )
               ],
             ),
           ),
         ]));
+  }
+
+  Widget _buildNewsTopHeadlines(BuildContext context) {
+    return BlocProvider(
+    create: (context) => _newsListBloc,
+    child: BlocBuilder<NewsListBloc, NewsListState>(
+      builder: (context, state) {
+        if (state is NewsListLoadedState) {
+          final newsList = state.newsList;
+          return Container(
+            padding: EdgeInsets.only(left: 10.w),
+            height: 300.h,
+            width: 300.w,
+            child: ListView.builder(
+              itemBuilder: (ctx, i) => GestureDetector(
+                onTap: () {
+                  _onReadNews(newsList[i]);
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.r),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        height: 70.h,
+                        width: 100.w,
+                        color: AppColor.primary,
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/images/default_logo.png',
+                          placeholderFit: BoxFit.contain,
+                          image: newsList[i].urlToImage!=''?newsList[i].urlToImage:'assets/images/default_logo.png',
+                          fadeInDuration: const Duration(milliseconds: 400),
+                          fit: BoxFit.fill,
+                          // placeholderFit: BoxFit.fill,
+                          imageErrorBuilder: (context, error, stackTrace) =>
+                              Image.asset(
+                            'assets/images/default_logo.png',
+                          ),
+                        ),
+                      ),
+                      ),
+                      SizedBox(width: 10.w),
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: 170.w,
+                            child: AutoSizeText(
+                                newsList[i].title,
+                                style: AppTypography.body.copyWith(
+                                  fontSize: 11.r,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColor.textPrimary,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis
+                            ),
+                          ),
+                          SizedBox(
+                            width: 170.w,
+                            child: AutoSizeText(
+                                _getPublishTime(newsList[i].publishedAt),
+                                style: AppTypography.body.copyWith(
+                                  fontSize: 8.r,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColor.textSecondary,
+                                ),
+                                maxLines: 1,
+                                // overflow: TextOverflow.ellipsis
+                            ),
+                          ),
+                        ],
+                      ),
+                      
+                    ],
+                  ),
+                ),
+              ),
+              itemCount: newsList.length,
+              scrollDirection: Axis.vertical,
+            ),
+          );
+        }
+        return SizedBox(height: 1);
+      },
+    ),
+  );
   }
 
   SizedBox _buildFeaturesList(
@@ -165,6 +290,7 @@ class _NavigationPageState extends State<NavigationPage> {
               Navigator.pushNamed(context, _pages[index]);
             },
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
                   margin: const EdgeInsets.only(

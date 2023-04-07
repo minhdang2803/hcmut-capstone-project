@@ -63,5 +63,8 @@ class EndPoint {
   static const searchAll = "$_baseUrl/search/all";
   static const searchBooks = "$_baseUrl/search/book";
   static const searchVideos = "$_baseUrl/search/video";
+
+  //news
+  static const getAllNews = '$_baseUrl/news';
 }
 

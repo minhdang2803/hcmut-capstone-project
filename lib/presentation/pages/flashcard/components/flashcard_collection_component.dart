@@ -26,8 +26,12 @@ class FlashcardComponent extends StatelessWidget {
         ),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image(image: AssetImage(imgUrl)),
+          Visibility(
+            visible: imgUrl != "",
+            child: Image(image: AssetImage(imgUrl))
+          ),
           AutoSizeText(
             title,
             textAlign: TextAlign.center,
@@ -80,7 +84,7 @@ class FlashcardRandomComponent extends StatelessWidget {
             title,
             textAlign: TextAlign.center,
             style: AppTypography.body
-                .copyWith(fontSize: 15.r, fontWeight: FontWeight.w500),
+                .copyWith(fontSize: 11.r, fontWeight: FontWeight.w500),
           )
         ],
       ),

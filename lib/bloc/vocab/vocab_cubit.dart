@@ -6,6 +6,7 @@ import '../../data/models/network/base_response.dart';
 import '../../data/models/network/cvn_exception.dart';
 import '../../data/models/vocab/vocab.dart';
 import '../../data/repositories/vocab_repository.dart';
+import '../../utils/constants.dart';
 import '../../utils/log_util.dart';
 
 part 'vocab_state.dart';
@@ -15,9 +16,12 @@ class VocabCubit extends Cubit<VocabState> {
 
   final _vocabRepository = VocabRepository.instance();
 
-  void getVocab(String vocab) async {
+  void getVocab(String text) async {
     try {
       emit(VocabLoading());
+      
+      final vocab = text.replaceAll(Constants.charactersToRemove, '');
+
       final BaseResponse<VocabInfos> response =
           await _vocabRepository.getVocabInfos(vocab);
 

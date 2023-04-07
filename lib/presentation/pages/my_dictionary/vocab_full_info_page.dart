@@ -78,7 +78,7 @@ class _VocabFullInfoPageState extends State<VocabFullInfoPage> {
                 TextSpan(
                     text: "- UK: ",
                     style: AppTypography.title.copyWith(
-                        color: AppColor.primary, fontWeight: FontWeight.bold)),
+                        color: AppColor.mainPink, fontWeight: FontWeight.bold)),
                 TextSpan(
                   text: widget.vocabInfo.pronounce.uk.toCapitalize(),
                   style: AppTypography.title,
@@ -90,7 +90,7 @@ class _VocabFullInfoPageState extends State<VocabFullInfoPage> {
                 TextSpan(
                     text: "- US: ",
                     style: AppTypography.title.copyWith(
-                        color: AppColor.primary, fontWeight: FontWeight.bold)),
+                        color: AppColor.mainPink, fontWeight: FontWeight.bold)),
                 TextSpan(
                   text: widget.vocabInfo.pronounce.us.toCapitalize(),
                   style: AppTypography.title,
@@ -111,7 +111,7 @@ class _VocabFullInfoPageState extends State<VocabFullInfoPage> {
                       TextSpan(
                           text: "- English: ",
                           style: AppTypography.title.copyWith(
-                              color: AppColor.primary,
+                              color: AppColor.mainPink,
                               fontWeight: FontWeight.bold)),
                       TextSpan(
                         text: e.en.toCapitalize(),
@@ -125,7 +125,7 @@ class _VocabFullInfoPageState extends State<VocabFullInfoPage> {
                       TextSpan(
                           text: "- Tiếng Việt: ",
                           style: AppTypography.title.copyWith(
-                              color: AppColor.primary,
+                              color: AppColor.mainPink,
                               fontWeight: FontWeight.bold)),
                       TextSpan(
                         text: e.vi.toCapitalize(),
@@ -139,7 +139,7 @@ class _VocabFullInfoPageState extends State<VocabFullInfoPage> {
                       TextSpan(
                           text: "- Example(ví dụ): ",
                           style: AppTypography.title.copyWith(
-                              color: AppColor.primary,
+                              color: AppColor.mainPink,
                               fontWeight: FontWeight.bold)),
                       TextSpan(
                         text: e.example.toCapitalize(),
@@ -164,12 +164,12 @@ class _VocabFullInfoPageState extends State<VocabFullInfoPage> {
           children: [
             Text(
               widget.vocabInfo.vocab.toCapitalize(),
-              style: AppTypography.headline,
+              style: AppTypography.subHeadline.copyWith(fontWeight: FontWeight.bold),
             ),
             10.horizontalSpace,
             Text(
               "(${widget.vocabInfo.vocabType})",
-              style: AppTypography.headline.copyWith(color: AppColor.primary),
+              style: AppTypography.title.copyWith(fontWeight: FontWeight.bold),
             ),
           ],
         ),
