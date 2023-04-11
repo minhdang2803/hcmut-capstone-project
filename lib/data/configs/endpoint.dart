@@ -1,3 +1,5 @@
+import 'package:bke/data/models/toeic/toeic_models.dart';
+
 class EndPoint {
   static const _baseUrl = 'https://bkenglish-9ec8e.et.r.appspot.com/api';
   static const loginPath = '$_baseUrl/user/login';
@@ -14,7 +16,8 @@ class EndPoint {
   static const getYoutubeVideoInfo = '$_baseUrl/videoYoutubeInfo/getOne';
   static const getContinueWatching = '$_baseUrl/videoCheckpoint/getAll';
   static const updateVideoCkpt = '$_baseUrl/videoCheckpoint/add';
-  static const getRecommendedVideos = '$_baseUrl/videoYoutubeInfo/recommendation';
+  static const getRecommendedVideos =
+      '$_baseUrl/videoYoutubeInfo/recommendation';
   static const getLatestVideo = '$_baseUrl/videoYoutubeInfo/latest';
   static const saveExternalVideo = '$_baseUrl/videoYoutubeInfo/createExternal';
 
@@ -22,7 +25,8 @@ class EndPoint {
   static const getAllBooks = '$_baseUrl/BookInfo';
   static const getHomepageList = '$_baseUrl/BookInfo/listCategory';
   static const getContinueReading = '$_baseUrl/bookCheckpoint/getAllEBook';
-  static const getContinueListening = '$_baseUrl/bookCheckpoint/getAllAudiobook';
+  static const getContinueListening =
+      '$_baseUrl/bookCheckpoint/getAllAudiobook';
   static const updateCkpt = '$_baseUrl/bookCheckpoint/add';
   static const getFavorites = '$_baseUrl/bookFavorites/getAll';
   static const getBookInfo = '$_baseUrl/bookInfo/getOne';
@@ -54,6 +58,7 @@ class EndPoint {
   static const getPart = "$_baseUrl/toeic/practice";
   static const submitToeicScore = "$_baseUrl/toeic/submit";
   static const toeicHistory = "$_baseUrl/toeic/submit/history";
+  static const toeicHistoryReview = "$_baseUrl/toeic/submit/summary";
 
   // calendar
   static const getHistoryActivities =
@@ -67,4 +72,3 @@ class EndPoint {
   //news
   static const getAllNews = '$_baseUrl/news';
 }
-

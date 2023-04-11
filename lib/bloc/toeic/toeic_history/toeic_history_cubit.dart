@@ -25,4 +25,29 @@ class ToeicHistoryCubit extends Cubit<ToeicHistoryState> {
           errorMessage: error.errorMessage, status: ToeicHistoryStatus.fail));
     }
   }
+
+  Future<void> getReviewResult(int part, String id) async {
+    try {
+      emit(state.copyWith(status: ToeicHistoryStatus.loading));
+      if ([1, 2, 5].contains(part)) {
+        ToeicQuestionResponse response = await instance.getReview125(id);
+        emit(state.copyWith(
+          status: ToeicHistoryStatus.done,
+          part125: response.listOfQuestions,
+        ));
+      } else {
+        ToeicGroupQuestionResponse response = await instance.getReview3467(id);
+        emit(state.copyWith(
+          status: ToeicHistoryStatus.done,
+          part3467: response.listOfQuestions,
+        ));
+      }
+    } on RemoteException catch (error) {
+      emit(ToeicHistoryState.initial());
+      emit(
+        state.copyWith(
+            errorMessage: error.errorMessage, status: ToeicHistoryStatus.fail),
+      );
+    }
+  }
 }

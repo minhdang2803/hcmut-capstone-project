@@ -1,6 +1,7 @@
 import 'package:bke/bloc/toeic/toeic_history/toeic_history_cubit.dart';
 import 'package:bke/data/models/toeic/toeic_models.dart';
 import 'package:bke/presentation/pages/toeic_test/toeic_instruction_page.dart';
+import 'package:bke/presentation/pages/toeic_test/toeic_review_page.dart';
 import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
@@ -83,7 +84,23 @@ class _StartToeic extends State<StartToeic> {
             return ListView.builder(
               itemBuilder: (context, index) {
                 final history = state.histories![index];
-                return HistoryCard(history: history);
+                return HistoryCard(
+                  history: history,
+                  onTap: (partNumber) {
+                    context
+                        .read<ToeicHistoryCubit>()
+                        .getReviewResult(partNumber, history.id!);
+                    Navigator.pushNamed(
+                      context,
+                      RouteName.toeicReview,
+                      arguments: ReviewToeicParam(
+                        id: history.id!,
+                        context: context,
+                        part: partNumber,
+                      ),
+                    );
+                  },
+                );
               },
               itemCount: state.histories!.length,
             );
@@ -148,8 +165,14 @@ class _StartToeic extends State<StartToeic> {
 }
 
 class HistoryCard extends StatelessWidget {
-  HistoryCard({super.key, required this.history});
+  HistoryCard({
+    super.key,
+    required this.history,
+    required this.onTap,
+  });
+
   final ToeicHistory history;
+  final void Function(int) onTap;
   final imgUrls = [
     "assets/texture/part1.svg",
     "assets/texture/part2.svg",
@@ -214,24 +237,28 @@ class HistoryCard extends StatelessWidget {
     int part = getPart(history.score);
     final score = getScore(history.score);
     final percentage = ((score!.noCorrect) / score.total) * 100;
-    return ListTile(
-      subtitle: const Divider(
-        color: AppColor.defaultBorder,
-        thickness: 1,
-      ),
-      leading: SvgPicture.asset(
-        imgUrls[part - 1],
-        height: 30.r,
-        width: 30.r,
-        fit: BoxFit.contain,
-      ),
-      title: Text(
-        titles[part - 1],
-        style: AppTypography.title,
-      ),
-      trailing: Text(
-        percentage.toStringAsFixed(0).toString() + "%",
-        style: AppTypography.title,
+    return GestureDetector(
+      onTap: () => onTap(part),
+      child: ListTile(
+        subtitle: LinearProgressIndicator(
+          color: AppColor.defaultBorder,
+          value: (percentage / 100),
+          backgroundColor: AppColor.defaultBorder.withOpacity(0.25),
+        ),
+        leading: SvgPicture.asset(
+          imgUrls[part - 1],
+          height: 30.r,
+          width: 30.r,
+          fit: BoxFit.contain,
+        ),
+        title: Text(
+          titles[part - 1],
+          style: AppTypography.title,
+        ),
+        trailing: Text(
+          "${percentage.toStringAsFixed(0)}%",
+          style: AppTypography.title,
+        ),
       ),
     );
   }

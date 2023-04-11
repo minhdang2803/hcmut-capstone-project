@@ -213,9 +213,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
           isAnswer125Correct: false,
           totalCorrect: state.totalCorrect!,
           chosenIndex125: questionIndex,
-          resultByQuestion: {
-            state.part125![state.currentIndex!].id!.toString(): userAnswer[0],
-          },
+          resultByQuestion: data,
         ),
       );
     }

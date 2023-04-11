@@ -3,16 +3,18 @@ import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AnswerPartTwo extends StatelessWidget {
-  const AnswerPartTwo({
+class ReviewPartTwo extends StatelessWidget {
+  const ReviewPartTwo({
     super.key,
     required this.index,
     required this.text,
     required this.correctAnswer,
+    required this.userAnswer,
   });
   final int index;
   final String text;
   final String correctAnswer;
+  final String userAnswer;
 
   List<String> getTranScript(String text) {
     int indexOfQuestion = text.indexOf("?");
@@ -75,6 +77,13 @@ class AnswerPartTwo extends StatelessWidget {
                         AppTypography.title.copyWith(color: AppColor.mainPink),
                     children: [
                       TextSpan(text: correctAnswer, style: AppTypography.title)
+                    ])),
+                Text.rich(TextSpan(
+                    text: "Your answer: ",
+                    style:
+                        AppTypography.title.copyWith(color: AppColor.mainPink),
+                    children: [
+                      TextSpan(text: userAnswer, style: AppTypography.title)
                     ])),
               ],
             )

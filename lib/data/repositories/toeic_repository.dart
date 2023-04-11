@@ -65,4 +65,14 @@ class ToeicRepository {
     final response = await _remote.getHistory();
     return response.data!;
   }
+
+  Future<ToeicQuestionResponse> getReview125(String id) async {
+    final response = await _remote.getReviewPart125(id);
+    return response.data!;
+  }
+
+    Future<ToeicGroupQuestionResponse> getReview3467(String id) async {
+    final response = await _remote.getReviewPart3467(id);
+    return response.data!;
+  }
 }

@@ -30,9 +30,8 @@ class PartComponent extends StatelessWidget {
             child: Card(
               elevation: 1.5,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.r),
-                side: const BorderSide(color: AppColor.defaultBorder)
-              ),
+                  borderRadius: BorderRadius.circular(20.r),
+                  side: const BorderSide(color: AppColor.defaultBorder)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -57,7 +56,8 @@ class PartComponent extends StatelessWidget {
             child: Text(
               title,
               textAlign: TextAlign.center,
-              style: AppTypography.body.copyWith(fontWeight: FontWeight.w700, fontSize:10.h),
+              style: AppTypography.title
+                  .copyWith(fontWeight: FontWeight.w700, fontSize: 10.h),
             ),
           )
         ],

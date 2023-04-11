@@ -8,6 +8,7 @@ class ToeicQuestion {
   final String? transcript;
   final String? correctAnswer;
   final List<String>? answers;
+  final String? userAnswer;
 
   ToeicQuestion({
     this.id,
@@ -19,6 +20,7 @@ class ToeicQuestion {
     this.mp3Url,
     this.correctAnswer,
     this.transcript,
+    this.userAnswer,
   });
 
   factory ToeicQuestion.fromJson(Map<String, dynamic> json) {
@@ -33,6 +35,7 @@ class ToeicQuestion {
       correctAnswer: json["correct_answer"],
       answers:
           (json['answers'] as List<dynamic>).map((e) => e as String).toList(),
+      userAnswer: json["userAnswer"],
     );
   }
 }
@@ -58,6 +61,7 @@ class ToeicGroupQuestion {
   final String? mp3Url;
   final String? transcript;
   final List<ToeicQuestion>? questions;
+  final List<String>? userAnswer;
 
   ToeicGroupQuestion({
     this.id,
@@ -68,9 +72,16 @@ class ToeicGroupQuestion {
     this.mp3UrlPro,
     this.questions,
     this.transcript,
+    this.userAnswer,
   });
 
   factory ToeicGroupQuestion.fromJson(Map<String, dynamic> json) {
+    List<String>? userAnswer;
+    if (json["userAnswer"] != null) {
+      userAnswer = (json["userAnswer"] as List<dynamic>)
+          .map((e) => e as String)
+          .toList();
+    }
     return ToeicGroupQuestion(
       id: json['_id'],
       gid: json['gid'],
@@ -82,6 +93,7 @@ class ToeicGroupQuestion {
       questions: (json['questions'] as List<dynamic>)
           .map((e) => ToeicQuestion.fromJson(e))
           .toList(),
+      userAnswer: userAnswer,
     );
   }
 }
@@ -112,13 +124,13 @@ class ToeicHistoryResponse {
 
 class ToeicHistory {
   final ToeicHistoryScore score;
+  final String? id;
 
-  ToeicHistory({required this.score});
+  ToeicHistory({required this.score, this.id});
 
   factory ToeicHistory.fromJson(Map<String, dynamic> json) {
     return ToeicHistory(
-      score: ToeicHistoryScore.fromJson(json['score']),
-    );
+        score: ToeicHistoryScore.fromJson(json['score']), id: json["_id"]);
   }
 }
 

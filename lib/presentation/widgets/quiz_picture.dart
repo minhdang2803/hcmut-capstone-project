@@ -7,14 +7,17 @@ class QuizPicture extends StatelessWidget {
   const QuizPicture({
     super.key,
     // this.imageUrl,
-    required this.imgData,
+    this.imgData,
     this.borderRadius = 20,
     this.height = 200,
     this.width = 350,
     this.isBorder = true,
+    this.imageUrl,
+    this.isLocal = true,
   });
-  // final String? imageUrl;
-  final Uint8List imgData;
+  final String? imageUrl;
+  final bool? isLocal;
+  final Uint8List? imgData;
   final double? borderRadius;
   final bool? isBorder;
   final double? width;
@@ -23,6 +26,12 @@ class QuizPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late final dynamic imgProvider;
+    if (isLocal!) {
+      imgProvider = MemoryImage(imgData!);
+    } else {
+      imgProvider = NetworkImage(imageUrl!);
+    }
     return Container(
       decoration: BoxDecoration(
         border: isBorder! ? Border.all(width: 1.0, color: Colors.grey) : null,
@@ -31,12 +40,14 @@ class QuizPicture extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(borderRadius!),
         child: ImagePixels.container(
-          imageProvider: MemoryImage(imgData),
+          imageProvider: imgProvider,
           colorAlignment: Alignment.center,
           child: SizedBox(
             width: width,
             height: height,
-            child: Image.memory(imgData, fit: BoxFit.fill),
+            child: isLocal!
+                ? Image.memory(imgData!, fit: BoxFit.fill)
+                : Image.network(imageUrl!, fit: BoxFit.fill),
           ),
         ),
       ),

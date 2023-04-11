@@ -15,6 +15,7 @@ import 'package:bke/presentation/pages/book/books_page.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
 import 'package:bke/presentation/pages/flashcard/flashcards.dart';
 import 'package:bke/presentation/pages/quiz/quizzes.dart';
+import 'package:bke/presentation/pages/toeic_test/toeic_review_page.dart';
 import 'package:bke/presentation/pages/video/videos.dart';
 
 import 'package:flutter/material.dart';
@@ -69,6 +70,19 @@ class RouteGenerator {
           child: const StartToeic(),
         );
 
+        break;
+
+      case RouteName.toeicReview:
+        final args = settings.arguments as ReviewToeicParam;
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: args.context.read<ToeicHistoryCubit>()),
+          ],
+          child: ToeicReviewPage(
+            part: args.part,
+            id: args.id,
+          ),
+        );
         break;
 
       case RouteName.toeicInstruction:
