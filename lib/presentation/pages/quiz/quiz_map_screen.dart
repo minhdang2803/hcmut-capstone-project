@@ -34,10 +34,10 @@ class _QuizMapScreenState extends State<QuizMapScreen> {
     double screenSize = double.parse(getDoubleRoundedToTwo(height / width));
     double nineteenPerNine = double.parse(getDoubleRoundedToTwo(19 / 9));
 
-    if (screenSize >= nineteenPerNine) {
-      return 2.5;
+    if (screenSize <= nineteenPerNine) {
+      return 1.75;
     } else {
-      return 2.0;
+      return 2.5;
     }
   }
 

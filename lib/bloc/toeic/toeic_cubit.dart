@@ -397,15 +397,16 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
       emit(state.copyWith(totalChosen: state.totalChosen! + 1));
       emit(
         state.copyWith(
-            status: ToeicStatus.done,
-            isAnswer3467Correct: answerChoosenList,
-            totalCorrect: state.totalChosen! == totalQuestion
-                ? state.totalCorrect! + 1
-                : state.totalCorrect!,
-            chosenIndex3467: chosenIndexByQuestion,
-            chosenIndex125: questionIndex,
-            result3467: resultList,
-            resultByQuestion: resultMap),
+          status: ToeicStatus.done,
+          isAnswer3467Correct: answerChoosenList,
+          totalCorrect: state.totalChosen! == totalQuestion
+              ? state.totalCorrect! + 1
+              : state.totalCorrect!,
+          chosenIndex3467: chosenIndexByQuestion,
+          chosenIndex125: questionIndex,
+          result3467: resultList,
+          resultByQuestion: resultMap,
+        ),
       );
     } else {
       answerChoosenList[questionIndex] = false;
@@ -470,6 +471,7 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
         }
       }
     }
+    print(state.resultByQuestion);
   }
 
   Future<void> autoCheckAnswerPart3467({

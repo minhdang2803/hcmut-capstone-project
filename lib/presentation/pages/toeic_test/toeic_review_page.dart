@@ -180,15 +180,17 @@ class _ToeicReviewPageState extends State<ToeicReviewPage> {
         );
         break;
       case 3:
-        returnWidget = AnswerPartThree(
+        returnWidget = ReviewPartThree(
           index: index,
           answer: answer[index].questions!,
+          userAnswer: answer[index].userAnswer,
         );
         break;
       case 4:
-        returnWidget = AnswerPartThree(
+        returnWidget = ReviewPartThree(
           index: index,
           answer: answer[index].questions!,
+          userAnswer: answer[index].userAnswer,
         );
         break;
       case 5:
@@ -201,17 +203,19 @@ class _ToeicReviewPageState extends State<ToeicReviewPage> {
         );
         break;
       case 6:
-        returnWidget = AnswerPartSix(
+        returnWidget = ReviewPartSix(
           text: answer[index].text,
           index: index,
           answer: answer[index].questions!,
+          userAnswer: answer[index].userAnswer!,
         );
         break;
       default:
-        returnWidget = AnswerPartSeven(
+        returnWidget = ReviewPartSeven(
           index: index,
           text: answer[index].text!,
           answer: answer[index].questions!,
+          userAnswer: answer[index].userAnswer!,
         );
         break;
     }

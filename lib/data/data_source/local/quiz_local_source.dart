@@ -38,8 +38,8 @@ class QuizLocalSourceImpl implements QuizLocalSource {
       answers.add({"id": element["id"], "score": element["score"]});
     }
     Map<String, dynamic> data = {"id": id, "score": result};
-    answers.removeWhere((element) =>
-        element.containsKey("id") && element.containsValue(id));
+    answers.removeWhere(
+        (element) => element.containsKey("id") && element.containsValue(id));
     answers.add(data);
     LogUtil.debug(
         "Succesfully save the answer of quiz level $id, score: $result");
@@ -181,6 +181,7 @@ class QuizLocalSourceImpl implements QuizLocalSource {
       dy: 0.93,
       sizeDx: 25.r,
       sizeDy: 25.r,
+      isDone: true,
     ),
     MapObjectLocal(
       id: '2',

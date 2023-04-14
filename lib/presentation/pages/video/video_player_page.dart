@@ -37,25 +37,23 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
     with AutomaticKeepAliveClientMixin<VideoPlayerPage> {
   late YoutubePlayerController _controller;
 
-  final itemController = ItemScrollController();
   SubVideo? _subVideo;
   bool isCaptionOn = false;
   int _currentIndex = 0;
   int _currentDuration = 0;
+  final itemListener = ItemPositionsListener.create();
+  final ItemScrollController itemScrollController = ItemScrollController();
 
   final WordProcessing _wordProcessing = WordProcessing.instance();
 
   final _keys = List<GlobalKey>.generate(1000000, (_) => GlobalKey());
 
-  void _onDictionarySearch(String text) {
-    // pause video
-    _controller.pause();
 
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => BottomVocab(text: text),
-    );
+  Future<void> scrollToItem(index) async {
+    itemScrollController.scrollTo(
+        index: index,
+        duration: const Duration(milliseconds: 500),
+        alignment: 0.5);
   }
 
   @override
@@ -95,13 +93,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
 
   @override
   void dispose() {
-    context.read<VideoCubit>().exit();
-                  widget.video.id != null
-                      ? context.read<LastWatchVideoCubit>().saveProcess(
-                            mongoID: widget.video.id!,
-                            second: _currentDuration ~/ 1000,
-                          )
-                      : null;
     super.dispose();
   }
 
@@ -221,6 +212,10 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
     try {
       if (_currentDuration > _subVideo!.subs[_currentIndex].to) {
         _currentIndex++;
+        itemScrollController.scrollTo(
+            index: _currentIndex,
+            duration: const Duration(milliseconds: 500),
+            alignment: 0.5);
       }
     } catch (error) {
       // do nothing handle case currentIndex does not exists
@@ -228,46 +223,52 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.r, vertical: 10.r),
-      child: ListView(
+      child: ScrollablePositionedList.builder(
+        itemScrollController: itemScrollController,
+        itemPositionsListener: itemListener,
         shrinkWrap: true,
-        children: _subVideo!.subs
-            .map(
-              (e) => Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 35.h,
-                    width: 270.w,
-                    child: _subVideo?.subs != null
-                        ? Align(
-                            alignment: Alignment.centerLeft,
-                            child: RichText(
-                              text: TextSpan(
-                                children: _wordProcessing.createTextSpans(
-                                  context,
-                                  e.text ?? '',
-                                  AppTypography.title.copyWith(
-                                    color: (_currentDuration > e.from) &&
-                                            (_currentDuration < e.to)
-                                        ? AppColor.mainPink
-                                        : AppColor.textPrimary,
-                                  ),
-                                ),
+        itemBuilder: (context, index) {
+          final element = _subVideo!.subs[index];
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 35.h,
+                width: 270.w,
+                child: _subVideo?.subs != null
+                    ? Align(
+                        alignment: Alignment.centerLeft,
+                        child: RichText(
+                          text: TextSpan(
+                            children: _wordProcessing.createTextSpans(
+                              context,
+                              element.text,
+                              AppTypography.title.copyWith(
+                                color: (_currentDuration > element.from) &&
+                                        (_currentDuration < element.to)
+                                    ? AppColor.mainPink
+                                    : AppColor.textPrimary,
                               ),
                             ),
-                          )
-                        : SizedBox(height: 0.1.h),
-                  ),
-                  TranslateIconButton(text: e.text)
-                ],
+                          ),
+                        ),
+                      )
+                    : SizedBox(height: 0.1.h),
               ),
-            )
-            .toList(),
+              TranslateIconButton(text: element.text)
+            ],
+          );
+        },
+        itemCount: _subVideo!.subs.length,
       ),
     );
   }
 
-
+// _subVideo!.subs
+//             .map(
+//               (e) =>
+//             )
+//             .toList(),
   Widget _buildLoadingSkeleton() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.r, vertical: 10.r),

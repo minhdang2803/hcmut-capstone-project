@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../presentation/pages/video/component/bottom_vocabulary.dart';
 
-
-
-class WordProcessing{
-
+class WordProcessing {
   WordProcessing._internal();
 
   static final _instance = WordProcessing._internal();
@@ -32,7 +29,8 @@ class WordProcessing{
     return result;
   }
 
-  List<TextSpan> createTextSpans(BuildContext context, String subText, TextStyle style) {
+  List<TextSpan> createTextSpans(
+      BuildContext context, String subText, TextStyle style) {
     final arrayStrings = splitWord(subText);
     List<TextSpan> arrayOfTextSpan = [];
     for (int index = 0; index < arrayStrings.length; index++) {
@@ -62,8 +60,7 @@ class WordProcessing{
             ..onTap = () {
               showModalBottomSheet(
                 context: context,
-                backgroundColor: Colors.transparent
-                ,
+                backgroundColor: Colors.transparent,
                 builder: (context) => BottomVocab(text: text.toLowerCase()),
               );
             },

@@ -78,11 +78,33 @@ class _NavigationPageState extends State<NavigationPage> {
       context: context,
       backgroundColor: Colors.transparent,
       elevation: 20.h,
+      enableDrag: false,
+      isDismissible: false,
+      isScrollControlled: true,
       builder: (context) {
-        return BottomNewsContent(news: news);
+        return _buildModalBottomSheet(news);
       },
     );
   }
+
+  Widget _customDismissible({required Widget child}) => GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => Navigator.pop(context),
+        child: GestureDetector(
+          onTap: () {},
+          child: child,
+        ),
+      );
+  Widget _buildModalBottomSheet(NewsInfo news) => _customDismissible(
+        child: DraggableScrollableSheet(
+          initialChildSize: 0.9,
+          minChildSize: 0.5,
+          maxChildSize: 0.9,
+          builder: (context, controller) {
+            return BottomNewsContent(news: news);
+          },
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +179,7 @@ class _NavigationPageState extends State<NavigationPage> {
                 _buildSearchBar(context, size),
                 SizedBox(height: 0.02.sh),
                 Container(
-                  padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
+                  padding: const EdgeInsets.only(top: 20, left: 0, right: 0),
                   width: MediaQuery.of(context).size.width,
                   decoration: const BoxDecoration(
                     color: AppColor.primary,
@@ -196,12 +218,13 @@ class _NavigationPageState extends State<NavigationPage> {
               height: 300.h,
               width: 300.w,
               child: ListView.builder(
+                padding: const EdgeInsets.only(top: 10),
                 itemBuilder: (ctx, i) => GestureDetector(
                   onTap: () {
                     _onReadNews(newsList[i]);
                   },
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10.r),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -231,10 +254,10 @@ class _NavigationPageState extends State<NavigationPage> {
                         Column(
                           children: [
                             SizedBox(
-                              width: 170.w,
+                              width: 175.w,
                               child: AutoSizeText(newsList[i].title,
                                   style: AppTypography.body.copyWith(
-                                    fontSize: 11.r,
+                                    fontSize: 12.r,
                                     fontWeight: FontWeight.w800,
                                     color: AppColor.textPrimary,
                                   ),
@@ -246,7 +269,7 @@ class _NavigationPageState extends State<NavigationPage> {
                               child: AutoSizeText(
                                 _getPublishTime(newsList[i].publishedAt),
                                 style: AppTypography.body.copyWith(
-                                  fontSize: 8.r,
+                                  fontSize: 12.r,
                                   fontWeight: FontWeight.w500,
                                   color: AppColor.textSecondary,
                                 ),
@@ -377,11 +400,6 @@ class _NavigationPageState extends State<NavigationPage> {
             width: 80.w,
             height: 80.h,
           )
-          // : Image.network(
-          //     user.photoUrl!,
-          //     width: 80.w,
-          //     height: 80.h,
-          //   )
         ],
       ),
     );
@@ -395,7 +413,9 @@ class _NavigationPageState extends State<NavigationPage> {
           showSearch(
             context: context,
             delegate: MonasterySearchDelegate(
-                searchType: SearchType.all, buildContext: context),
+              searchType: SearchType.all,
+              buildContext: context,
+            ),
           );
         },
         child: ClipRRect(

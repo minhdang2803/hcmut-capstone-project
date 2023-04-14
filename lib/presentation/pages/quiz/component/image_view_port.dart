@@ -149,8 +149,8 @@ class _ImageViewPortState extends State<ImageViewPort> {
       image,
       filterQuality: FilterQuality.high,
       fit: BoxFit.contain,
-      height: 40.r,
-      width: 40.r,
+      height: 40,
+      width: 40,
     );
   }
 
@@ -158,39 +158,42 @@ class _ImageViewPortState extends State<ImageViewPort> {
   Widget _buildIcon(int total, String image, String star) {
     final starIcon = Image(
       image: AssetImage(star),
-      fit: BoxFit.contain,
+      fit: BoxFit.cover,
       filterQuality: FilterQuality.high,
-      height: 30.r,
-      width: 20.r,
+      height: 15,
+      width: 15,
     );
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        if (total > 0 && total < 5)
-          Expanded(child: starIcon)
-        else if (total > 4 && total < 8)
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [starIcon, starIcon],
+    return SizedBox(
+      height: 60,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (total > 0 && total < 5)
+            Expanded(child: starIcon)
+          else if (total > 4 && total < 8)
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [starIcon, starIcon],
+              ),
+            )
+          else if (total == 8)
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [starIcon, starIcon, starIcon],
+              ),
             ),
-          )
-        else if (total == 8)
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [starIcon, starIcon, starIcon],
-            ),
+          Image(
+            image: AssetImage(image),
+            fit: BoxFit.contain,
+            filterQuality: FilterQuality.high,
+            height: 40,
+            width: 40,
           ),
-        Image(
-          image: AssetImage(image),
-          fit: BoxFit.contain,
-          filterQuality: FilterQuality.high,
-          height: 40.r,
-          width: 40.r,
-        ),
-      ],
+        ],
+      ),
     );
   }
 
