@@ -48,7 +48,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
 
   final _keys = List<GlobalKey>.generate(1000000, (_) => GlobalKey());
 
-
   Future<void> scrollToItem(index) async {
     itemScrollController.scrollTo(
         index: index,
@@ -65,6 +64,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
       flags: YoutubePlayerFlags(
         startAt: lastWatch,
         autoPlay: true,
+        forceHD: true,
         enableCaption: false,
       ),
     );
@@ -214,7 +214,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
         _currentIndex++;
         itemScrollController.scrollTo(
             index: _currentIndex,
-            duration: const Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 200),
             alignment: 0.5);
       }
     } catch (error) {
@@ -233,28 +233,31 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: 35.h,
-                width: 270.w,
-                child: _subVideo?.subs != null
-                    ? Align(
-                        alignment: Alignment.centerLeft,
-                        child: RichText(
-                          text: TextSpan(
-                            children: _wordProcessing.createTextSpans(
-                              context,
-                              element.text,
-                              AppTypography.title.copyWith(
-                                color: (_currentDuration > element.from) &&
-                                        (_currentDuration < element.to)
-                                    ? AppColor.mainPink
-                                    : AppColor.textPrimary,
-                              ),
-                            ),
+                  height: 35.h,
+                  width: 270.w,
+                  child: //_subVideo?.subs != null
+                      Align(
+                    alignment: Alignment.centerLeft,
+                    child: RichText(
+                      text: TextSpan(
+                        children: _wordProcessing.createTextSpans(
+                          context,
+                          element.text,
+                          AppTypography.title.copyWith(
+                            color: (_currentDuration > element.from) &&
+                                    (_currentDuration < element.to)
+                                ? AppColor.mainPink
+                                : AppColor.textPrimary,
                           ),
                         ),
-                      )
-                    : SizedBox(height: 0.1.h),
-              ),
+                      ),
+                    ),
+                  )
+                  // : SizedBox(
+                  //     height: 0.1.h,
+                  //     child: Text("clm"),
+                  //   ),
+                  ),
               TranslateIconButton(text: element.text)
             ],
           );

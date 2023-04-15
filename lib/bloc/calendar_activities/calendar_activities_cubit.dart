@@ -13,7 +13,7 @@ class CalendarActivitiesCubit extends Cubit<CalendarActivitiesState> {
 
   final _calendarActiviesRepository = CalendarActivitiesRepository.instance();
 
-  void getCalendarActivitiesList({required String yearMonth}) async {
+  Future<void> getCalendarActivitiesList({required String yearMonth}) async {
     try {
       emit(CalendarActivitiesLoading());
       final response = await _calendarActiviesRepository.getHistoryActivities(

@@ -106,10 +106,13 @@ class _CalendarPageState extends State<CalendarPage>
       listener: (context, state) {
         if (state is CalendarActivitiesLoading) {
           showDialog(
+            barrierColor: Colors.transparent,
             context: context,
             builder: (context) {
-              return const Center(
-                  child: CircularProgressIndicator(color: AppColor.secondary));
+              // return const Center(
+              //   child: CircularProgressIndicator(color: AppColor.secondary),
+              // );
+              return const SizedBox.shrink();
             },
           );
         }
@@ -126,13 +129,21 @@ class _CalendarPageState extends State<CalendarPage>
           WidgetUtil.showSnackBar(context, state.errorMessage);
         }
       },
-      child: ListView(
-        padding: EdgeInsets.only(bottom: 30.r),
-        children: [
-          _buildCalendar(),
-          10.verticalSpace,
-          _buildEvents(),
-        ],
+      child: RefreshIndicator(
+        color: AppColor.secondary,
+        onRefresh: () async => await context
+            .read<CalendarActivitiesCubit>()
+            .getCalendarActivitiesList(
+                yearMonth: DateFormat('yyyy-MM').format(_focusedDay)),
+        child: ListView(
+          padding: EdgeInsets.only(bottom: 30.r),
+          children: [
+            _buildCalendar(),
+            10.verticalSpace,
+            _buildEvents(),
+            100.verticalSpace,
+          ],
+        ),
       ),
     );
   }

@@ -10,17 +10,15 @@ import '../../../models/news/news_model.dart';
 import '../../../services/api_service.dart';
 
 abstract class NewsSource {
-   Future<BaseResponse<NewsInfos>> getTopHeadlines();
-   Future<BaseResponse<NewsInfos>> getByCategory(String category);
-
+  Future<BaseResponse<NewsInfos>> getTopHeadlines();
+  Future<BaseResponse<NewsInfos>> getByCategory(String category);
 }
 
 class NewsSourceImpl extends NewsSource {
   final APIService _api = APIService.instance();
 
   @override
-  Future<BaseResponse<NewsInfos>> getByCategory(String category) async{
-   
+  Future<BaseResponse<NewsInfos>> getByCategory(String category) async {
     const path = EndPoint.getAllNews;
     final token = await const FlutterSecureStorage()
         .read(key: HiveConfig.currentUserTokenKey);
@@ -44,14 +42,14 @@ class NewsSourceImpl extends NewsSource {
   }
 
   @override
-  Future<BaseResponse<NewsInfos>> getTopHeadlines() async{
+  Future<BaseResponse<NewsInfos>> getTopHeadlines() async {
     const path = EndPoint.getAllNews;
     final token = await const FlutterSecureStorage()
         .read(key: HiveConfig.currentUserTokenKey);
     final header = {'Authorization': 'Bearer $token'};
     final Map<String, dynamic> params = {
       'page': 1,
-      'limit': 5,
+      'limit': 10,
       'isTopHeadline': true,
     };
 
@@ -66,5 +64,4 @@ class NewsSourceImpl extends NewsSource {
     );
     return _api.get(request);
   }
-
 }

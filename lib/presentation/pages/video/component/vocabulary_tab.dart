@@ -22,6 +22,13 @@ class VocabularyTab extends StatefulWidget {
 }
 
 class _VocabularyTabState extends State<VocabularyTab> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<FlashcardCollectionCubit>().getFlashcardCollections();
+  }
+
   bool isLiked = false;
   @override
   Widget build(BuildContext context) {

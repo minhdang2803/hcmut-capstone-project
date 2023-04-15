@@ -47,10 +47,9 @@ class _FlipCardState extends State<FlipCard> {
           }
           return Container(
             decoration: BoxDecoration(
-              color: AppColor.greyBackground,
-              borderRadius: BorderRadius.circular(30.r),
-              border: Border.all(color: AppColor.defaultBorder)
-            ),
+                color: AppColor.greyBackground,
+                borderRadius: BorderRadius.circular(30.r),
+                border: Border.all(color: AppColor.defaultBorder)),
             child: Transform(
               alignment: Alignment.center,
               transform: Matrix4.identity()
