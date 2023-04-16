@@ -1,15 +1,19 @@
 import 'package:bke/bloc/calendar_activities/calendar_activities_cubit.dart';
+import 'package:bke/bloc/dictionary/dictionary_cubit.dart';
 import 'package:bke/bloc/flashcard/flashcard_card/flashcard_cubit.dart';
 import 'package:bke/bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
 import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
 import 'package:bke/data/dependency_injection/di.dart';
+import 'package:bke/data/repositories/dictionary_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'bloc/authentication/auth_cubit.dart';
 import 'bloc/flashcard/flashcard_collection_random/flashcard_collection_random_cubit.dart';
 
@@ -22,19 +26,20 @@ import 'presentation/theme/app_theme.dart';
 import 'presentation/widgets/custom_restart_widget.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
-  // Initialize the BackgroundIsolateBinaryMessenger
-  // BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await initServices();
   await HiveConfig().init();
-  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlaySty  le(
   //   statusBarColor: Colors.transparent,
   //   statusBarBrightness: Brightness.light,
   //   statusBarIconBrightness: Brightness.dark,
   //   systemNavigationBarIconBrightness: Brightness.dark,
   // ));
-
+  final instance = DictionaryRepository.instance();
+  await instance.importDictionary();
   runApp(MyApp(
     initialRoute: await _getInitialRoute(),
   ));
@@ -64,6 +69,7 @@ class MyApp extends StatelessWidget {
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (ctx) => AuthCubit()),
+              BlocProvider(create: (ctx) => DictionaryCubit()),
               BlocProvider(create: (ctx) => CategoryVideoCubit()),
               BlocProvider(create: (ctx) => VocabCubit()),
               BlocProvider(create: (ctx) => FlashcardCollectionCubit()),

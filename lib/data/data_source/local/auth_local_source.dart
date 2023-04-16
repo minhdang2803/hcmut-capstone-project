@@ -7,16 +7,16 @@ import '../../models/authentication/user.dart';
 import '../../models/network/cvn_exception.dart';
 
 abstract class AuthLocalSource {
-  void saveCurrentUser(User user, String token);
+  void saveCurrentUser(AppUser user, String token);
 
-  User? getCurrentUser();
+  AppUser? getCurrentUser();
 
   Box getUserBox();
 }
 
 class AuthLocalSourceImpl extends AuthLocalSource {
   @override
-  void saveCurrentUser(User user, String token) async {
+  void saveCurrentUser(AppUser user, String token) async {
     try {
       final userBox = Hive.box(HiveConfig.userBox);
       const storage = FlutterSecureStorage();
@@ -31,7 +31,7 @@ class AuthLocalSourceImpl extends AuthLocalSource {
   }
 
   @override
-  User? getCurrentUser() {
+  AppUser? getCurrentUser() {
     final userBox = Hive.box(HiveConfig.userBox);
     return userBox.get(HiveConfig.currentUserKey);
   }

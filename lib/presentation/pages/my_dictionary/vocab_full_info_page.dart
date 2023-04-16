@@ -1,7 +1,9 @@
 import 'package:bke/data/models/vocab/vocab.dart';
+import 'package:bke/data/services/audio_service.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/presentation/widgets/custom_app_bar.dart';
+import 'package:bke/presentation/widgets/play_pause_button.dart';
 import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,17 +19,68 @@ class VocabFullInfoPage extends StatefulWidget {
   State<VocabFullInfoPage> createState() => _VocabFullInfoPageState();
 }
 
-class _VocabFullInfoPageState extends State<VocabFullInfoPage> {
+class _VocabFullInfoPageState extends State<VocabFullInfoPage>
+    with TickerProviderStateMixin {
+  late final AnimationController _animationController;
+  late final AnimationController _animationController2;
+  late final AudioService _voiceUK;
+  late final AudioService _voiceUS;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _animationController2 = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _voiceUK = AudioService();
+    _voiceUK.player.isPlaying.listen((isPlaying) {
+      isPlaying
+          ? _animationController.forward()
+          : _animationController.reverse();
+    });
+    _voiceUS = AudioService();
+    _voiceUS.player.isPlaying.listen((isPlaying) {
+      isPlaying
+          ? _animationController2.forward()
+          : _animationController2.reverse();
+    });
+  }
+
+  Widget _buildAudioController(
+    AudioService audio,
+    String audioUrl,
+    AnimationController controller,
+    BuildContext context,
+  ) {
+    audio.setAudioInternet(audioUrl);
+
+    return PlayPauseButton(
+      controller: controller,
+      onItemClick: () {
+        if (!audio.player.isPlaying.value) {
+          audio.play();
+        } else {
+          audio.stop();
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.appBackground,
       body: SafeArea(
         bottom: false,
         child: Column(
           children: [
             BkEAppBar(
-              label: widget.vocabInfo.vocab,
+              label: widget.vocabInfo.vocab.toCapitalize(),
               onBackButtonPress: () => Navigator.pop(context),
             ),
             _buildVocabInfoComponent(context)
@@ -68,42 +121,67 @@ class _VocabFullInfoPageState extends State<VocabFullInfoPage> {
           borderRadius: BorderRadius.circular(30.r),
           border: Border.all(
             width: 2,
-            color: AppColor.primary,
+            color: AppColor.defaultBorder,
           ),
         ),
         child: ListView(
           children: [
-            Text.rich(
-              TextSpan(children: [
-                TextSpan(
-                    text: "- UK: ",
-                    style: AppTypography.title.copyWith(
-                        color: AppColor.mainPink, fontWeight: FontWeight.bold)),
-                TextSpan(
-                  text: widget.vocabInfo.pronounce.uk.toCapitalize(),
-                  style: AppTypography.title,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text.rich(
+                  TextSpan(children: [
+                    TextSpan(
+                        text: "- UK: ",
+                        style: AppTypography.title.copyWith(
+                            color: AppColor.mainPink,
+                            fontWeight: FontWeight.bold)),
+                    TextSpan(
+                      text: widget.vocabInfo.pronounce.uk.toCapitalize(),
+                      style: AppTypography.title,
+                    ),
+                  ]),
                 ),
-              ]),
+                _buildAudioController(
+                  _voiceUS,
+                  widget.vocabInfo.pronounce.usmp3,
+                  _animationController2,
+                  context,
+                )
+              ],
             ),
-            Text.rich(
-              TextSpan(children: [
-                TextSpan(
-                    text: "- US: ",
-                    style: AppTypography.title.copyWith(
-                        color: AppColor.mainPink, fontWeight: FontWeight.bold)),
-                TextSpan(
-                  text: widget.vocabInfo.pronounce.us.toCapitalize(),
-                  style: AppTypography.title,
+            5.verticalSpace,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text.rich(
+                  TextSpan(children: [
+                    TextSpan(
+                        text: "- US: ",
+                        style: AppTypography.title.copyWith(
+                            color: AppColor.mainPink,
+                            fontWeight: FontWeight.bold)),
+                    TextSpan(
+                      text: widget.vocabInfo.pronounce.us.toCapitalize(),
+                      style: AppTypography.title,
+                    ),
+                  ]),
                 ),
-              ]),
+                _buildAudioController(
+                  _voiceUK,
+                  widget.vocabInfo.pronounce.ukmp3,
+                  _animationController,
+                  context,
+                )
+              ],
             ),
-            10.verticalSpace,
+            5.verticalSpace,
             ...widget.vocabInfo.translate.map((e) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Divider(
-                    color: AppColor.primary,
+                    color: AppColor.defaultBorder,
                     thickness: 2,
                   ),
                   Text.rich(
@@ -164,12 +242,14 @@ class _VocabFullInfoPageState extends State<VocabFullInfoPage> {
           children: [
             Text(
               widget.vocabInfo.vocab.toCapitalize(),
-              style: AppTypography.subHeadline.copyWith(fontWeight: FontWeight.bold),
+              style:
+                  AppTypography.headline.copyWith(fontWeight: FontWeight.bold),
             ),
             10.horizontalSpace,
             Text(
               "(${widget.vocabInfo.vocabType})",
-              style: AppTypography.title.copyWith(fontWeight: FontWeight.bold),
+              style: AppTypography.title.copyWith(
+                  fontWeight: FontWeight.bold, color: AppColor.mainPink),
             ),
           ],
         ),

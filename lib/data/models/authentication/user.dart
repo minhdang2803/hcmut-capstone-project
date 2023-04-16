@@ -1,9 +1,9 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-part '../../adapters/user.g.dart';
+part 'user.g.dart';
 
 @HiveType(typeId: 2)
-class User {
+class AppUser {
   @HiveField(0)
   String? id;
 
@@ -19,7 +19,7 @@ class User {
   @HiveField(4)
   String? photoUrl;
 
-  User({
+  AppUser({
     this.id,
     this.fullName,
     this.email,
@@ -27,7 +27,7 @@ class User {
     this.photoUrl,
   });
 
-  User.fromJson(Map<String, dynamic> json) {
+  AppUser.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     fullName = json['fullName'];
     email = json['email'];

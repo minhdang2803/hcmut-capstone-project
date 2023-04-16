@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "394754433117",
+    "project_id": "bke-firebase",
+    "storage_bucket": "bke-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394754433117:android:fae7861ed3ed966a02edb4",
+        "android_client_info": {
+          "package_name": "com.example.bke"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "394754433117-ea0qcgqs83e4lcls5o1h6fkdaha9t6b8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXyGeOve_0Cax6uXlkNE1zoBj1HCbfrCY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "394754433117-ea0qcgqs83e4lcls5o1h6fkdaha9t6b8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "394754433117-6v37jeqgnlt5obe0utp4g0ihl2185is1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hcmutCapstoneProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

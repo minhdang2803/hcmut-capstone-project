@@ -24,7 +24,7 @@ class QuizLocalSourceImpl implements QuizLocalSource {
   Box getMapObjectLocalBox() => Hive.box(HiveConfig.mapObject);
   String getUserId() {
     final userBox = Hive.box(HiveConfig.userBox);
-    final User user = userBox.get(HiveConfig.currentUserKey);
+    final AppUser user = userBox.get(HiveConfig.currentUserKey);
     return user.id!;
   }
 

@@ -16,7 +16,7 @@ class StringUtil {
     return '***';
   }
 
-  static String getUserIdentify(User? currentUser) {
+  static String getUserIdentify(AppUser? currentUser) {
     if (currentUser == null) return '';
     if (currentUser.fullName?.isNotEmpty ?? false) {
       return currentUser.fullName!;

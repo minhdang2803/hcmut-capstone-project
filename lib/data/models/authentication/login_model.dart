@@ -5,11 +5,11 @@ class LoginModel {
     required this.user,
     required this.authorization,
   });
-  late final User user;
+  late final AppUser user;
   late final Authorization authorization;
 
   LoginModel.fromJson(Map<String, dynamic> json) {
-    user = User.fromJson(json['user']);
+    user = AppUser.fromJson(json['user']);
     authorization = Authorization.fromJson(json['authorization']);
   }
 

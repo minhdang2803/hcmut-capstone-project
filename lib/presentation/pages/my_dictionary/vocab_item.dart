@@ -31,9 +31,11 @@ class _VocabDictionaryItemState extends State<VocabDictionaryItem> {
   }
 
   void concat() {
-    for (var trans in widget.vocab.translate) {
-      _translation += " ${trans.vi};";
-    }
+    setState(() {
+      for (var trans in widget.vocab.translate) {
+        _translation += " ${trans.vi};";
+      }
+    });
   }
 
   @override
@@ -42,10 +44,9 @@ class _VocabDictionaryItemState extends State<VocabDictionaryItem> {
       padding: EdgeInsets.all(10.r),
       height: 70.h,
       decoration: BoxDecoration(
-        color: widget.color,
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: AppColor.defaultBorder)
-      ),
+          color: widget.color,
+          borderRadius: BorderRadius.circular(20.r),
+          border: Border.all(color: AppColor.defaultBorder)),
       child: _buildVocabPanel(),
     );
   }

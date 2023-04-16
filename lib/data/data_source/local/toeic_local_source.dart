@@ -27,7 +27,7 @@ class ToeicLocalSourceImpl implements ToeicLocalSource {
   Box getToeicResultBox() => Hive.box(HiveConfig.toeicResult);
   String getUserId() {
     final userBox = Hive.box(HiveConfig.userBox);
-    final User user = userBox.get(HiveConfig.currentUserKey);
+    final AppUser user = userBox.get(HiveConfig.currentUserKey);
     return user.id!;
   }
 

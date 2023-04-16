@@ -30,7 +30,7 @@ class HiveConfig {
 
   Future<void> init() async {
     await Hive.initFlutter();
-    Hive.registerAdapter(UserAdapter());
+    Hive.registerAdapter(AppUserAdapter());
 
     Hive.registerAdapter(LocalVocabInfoAdapter());
     Hive.registerAdapter(PronounceAdapter());
@@ -74,5 +74,6 @@ class HiveConfig {
     await Hive.openBox(toeicPart);
     await Hive.openBox(toeicResult);
     await Hive.openBox(calendarEvent);
+    await Hive.openBox(dictionary);
   }
 }

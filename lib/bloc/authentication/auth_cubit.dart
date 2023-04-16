@@ -1,10 +1,11 @@
+import 'package:bke/data/models/authentication/user.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hive/hive.dart';
 
 import '../../data/models/authentication/login_model.dart';
 import '../../data/models/authentication/register_model.dart';
-import '../../data/models/authentication/user.dart';
 import '../../data/models/network/base_response.dart';
 import '../../data/models/network/cvn_exception.dart';
 import '../../data/repositories/auth_repository.dart';
@@ -27,6 +28,10 @@ class AuthCubit extends Cubit<AuthState> {
       final user = response.data!.user;
       final token = response.data!.authorization.accessToken;
       _authRepository.saveCurrentUser(user, token);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
       emit(LoginSuccess(user));
       LogUtil.debug('Login success: ${response.data?.user.id ?? 'empty user'}');
     } on RemoteException catch (e, s) {
@@ -116,6 +121,10 @@ class AuthCubit extends Cubit<AuthState> {
       final user = response.data!.user;
       final token = response.data!.authorization.accessToken;
       _authRepository.saveCurrentUser(user, token);
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: registerModel.email,
+        password: registerModel.password,
+      );
       emit(RegisterSuccess(user));
       LogUtil.debug(
           'Register success, login with user: ${response.data?.user.id ?? 'empty user'}');
@@ -226,7 +235,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  User? getCurrentUser() => _authRepository.getCurrentUser();
+  AppUser? getCurrentUser() => _authRepository.getCurrentUser();
 
   Box getUserBox() => _authRepository.getUserBox();
 }

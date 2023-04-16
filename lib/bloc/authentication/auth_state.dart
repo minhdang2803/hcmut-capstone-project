@@ -17,7 +17,7 @@ class AuthLoading extends AuthState {
 class LoginSuccess extends AuthState {
   const LoginSuccess(this.user);
 
-  final User? user;
+  final AppUser? user;
 
   @override
   List<Object?> get props => [user];
@@ -36,7 +36,7 @@ class LoginFailure extends AuthState {
 class RegisterSuccess extends AuthState {
   const RegisterSuccess(this.user);
 
-  final User? user;
+  final AppUser? user;
 
   @override
   List<Object?> get props => [user];

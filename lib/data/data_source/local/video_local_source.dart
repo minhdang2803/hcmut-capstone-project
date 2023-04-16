@@ -23,7 +23,7 @@ class VideoLocalSourceImpl implements VideoLocalSource {
 
   String getUserId() {
     final userBox = Hive.box(HiveConfig.userBox);
-    final User user = userBox.get(HiveConfig.currentUserKey);
+    final AppUser user = userBox.get(HiveConfig.currentUserKey);
     return user.id!;
   }
 

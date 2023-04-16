@@ -1,4 +1,6 @@
+import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../utils/log_util.dart';
@@ -51,7 +53,7 @@ class VocabLocalSourceImpl extends VocabLocalSource {
 
   @override
   Box getMyDictionaryBox() => Hive.box(HiveConfig.myDictionary);
-
+  Box dictionaryBox() => Hive.box(HiveConfig.dictionary);
   @override
   void addVocabToLocal(LocalVocabInfo vocab) {
     try {
