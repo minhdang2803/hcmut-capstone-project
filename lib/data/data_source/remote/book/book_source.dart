@@ -12,27 +12,26 @@ import '../../../models/network/base_response.dart';
 import '../../../services/api_service.dart';
 
 abstract class BookSource {
-   Future<BaseResponse<BookInfosV2>> getAll();
-   Future<BaseResponse<BookInfos>> getByCategory(String category);
+  Future<BaseResponse<BookInfosV2>> getAll();
+  Future<BaseResponse<BookInfos>> getByCategory(String category);
 
-   Future<BaseResponse<BookInfo>> getBookInfo(String bookId);
-   Future<BaseResponse<BookInfo>> getLatest();
-   Future<BaseResponse<BookReader>> getEbook(String bookId, int pageKey);
-   Future<BaseResponse<BookListener>> getAudioBook(String bookId);
-   Future<BaseResponse> updateCkpt(String bookId, int ckpt, bool isEbook);
-   Future<BaseResponse> addFavorite(String bookId);
-   Future<BaseResponse> removeFavorite(String bookId);
-   Future<BaseResponse<BookInfos>> getContinueReading();
-   Future<BaseResponse<BookInfos>> getContinueListening();
-   Future<BaseResponse<BookInfos>> getFavorites();
+  Future<BaseResponse<BookInfo>> getBookInfo(String bookId);
+  Future<BaseResponse<BookInfo>> getLatest();
+  Future<BaseResponse<BookReader>> getEbook(String bookId, int pageKey);
+  Future<BaseResponse<BookListener>> getAudioBook(String bookId);
+  Future<BaseResponse> updateCkpt(String bookId, int ckpt, bool isEbook);
+  Future<BaseResponse> addFavorite(String bookId);
+  Future<BaseResponse> removeFavorite(String bookId);
+  Future<BaseResponse<BookInfos>> getContinueReading();
+  Future<BaseResponse<BookInfos>> getContinueListening();
+  Future<BaseResponse<BookInfos>> getFavorites();
 }
 
 class BookSourceImpl extends BookSource {
   final APIService _api = APIService.instance();
 
-
   @override
-  Future<BaseResponse<BookInfosV2>> getAll() async{
+  Future<BaseResponse<BookInfosV2>> getAll() async {
     const path = EndPoint.getHomepageList;
     final token = await const FlutterSecureStorage()
         .read(key: HiveConfig.currentUserTokenKey);
@@ -46,12 +45,12 @@ class BookSourceImpl extends BookSource {
         dataBuilder: BookInfosV2.fromJson,
       ),
     );
-    return _api.get(request);//return 5 most popular books of each category, for 5 categories
+    return _api.get(
+        request); //return 5 most popular books of each category, for 5 categories
   }
 
   @override
-  Future<BaseResponse<BookInfos>> getByCategory(String category) async{
-   
+  Future<BaseResponse<BookInfos>> getByCategory(String category) async {
     const path = EndPoint.getAllBooks;
     final token = await const FlutterSecureStorage()
         .read(key: HiveConfig.currentUserTokenKey);
@@ -75,8 +74,7 @@ class BookSourceImpl extends BookSource {
   }
 
   @override
-  Future<BaseResponse<BookInfos>> getContinueReading() async{
-   
+  Future<BaseResponse<BookInfos>> getContinueReading() async {
     const path = EndPoint.getContinueReading;
     final token = await const FlutterSecureStorage()
         .read(key: HiveConfig.currentUserTokenKey);
@@ -93,9 +91,8 @@ class BookSourceImpl extends BookSource {
     return _api.get(request);
   }
 
-    @override
-  Future<BaseResponse<BookInfos>> getContinueListening() async{
-   
+  @override
+  Future<BaseResponse<BookInfos>> getContinueListening() async {
     const path = EndPoint.getContinueListening;
     final token = await const FlutterSecureStorage()
         .read(key: HiveConfig.currentUserTokenKey);
@@ -112,9 +109,8 @@ class BookSourceImpl extends BookSource {
     return _api.get(request);
   }
 
-    @override
-  Future<BaseResponse<BookInfos>> getFavorites() async{
-   
+  @override
+  Future<BaseResponse<BookInfos>> getFavorites() async {
     const path = EndPoint.getFavorites;
     final token = await const FlutterSecureStorage()
         .read(key: HiveConfig.currentUserTokenKey);
@@ -128,11 +124,10 @@ class BookSourceImpl extends BookSource {
       ),
       header: header,
     );
-    
-    final res =  await _api.get(request);
+
+    final res = await _api.get(request);
     return res;
   }
-
 
   @override
   Future<BaseResponse<BookInfo>> getBookInfo(String bookId) async {
@@ -159,7 +154,7 @@ class BookSourceImpl extends BookSource {
     final token = await const FlutterSecureStorage()
         .read(key: HiveConfig.currentUserTokenKey);
     final header = {'Authorization': 'Bearer $token'};
-  
+
     final request = APIServiceRequest(
       path,
       header: header,
@@ -180,7 +175,7 @@ class BookSourceImpl extends BookSource {
       'bookId': bookId,
       'limit': Constants.defaultReadingPageSize,
       'page': pageKey
-    }; 
+    };
     final request = APIServiceRequest(
       path,
       queryParams: params,
@@ -190,9 +185,8 @@ class BookSourceImpl extends BookSource {
       ),
       header: header,
     );
-  
+
     return _api.get(request);
-  
   }
 
   @override
@@ -215,12 +209,14 @@ class BookSourceImpl extends BookSource {
   }
 
   @override
-  Future<BaseResponse> updateCkpt(String bookId, int ckpt, bool isEbook) async{
+  Future<BaseResponse> updateCkpt(String bookId, int ckpt, bool isEbook) async {
     const path = EndPoint.updateCkpt;
     final token = await const FlutterSecureStorage()
         .read(key: HiveConfig.currentUserTokenKey);
     final header = {'Authorization': 'Bearer $token'};
-    final bodyRequest = isEbook ? {'bookId': bookId, 'checkpointPage': ckpt} : {'bookId': bookId, 'checkpointSecond': ckpt};
+    final bodyRequest = isEbook
+        ? {'bookId': bookId, 'checkpointPage': ckpt}
+        : {'bookId': bookId, 'checkpointSecond': ckpt};
     final request = APIServiceRequest(
       path,
       header: header,
@@ -232,7 +228,7 @@ class BookSourceImpl extends BookSource {
   }
 
   @override
-  Future<BaseResponse> addFavorite(String bookId) async{
+  Future<BaseResponse> addFavorite(String bookId) async {
     const path = EndPoint.addFavorite;
     final token = await const FlutterSecureStorage()
         .read(key: HiveConfig.currentUserTokenKey);
@@ -245,11 +241,11 @@ class BookSourceImpl extends BookSource {
       (response) => BaseResponse.fromJson(json: response, dataBuilder: null),
     );
 
-    return _api.post(request);  
+    return _api.post(request);
   }
-  
+
   @override
-  Future<BaseResponse> removeFavorite(String bookId) async{
+  Future<BaseResponse> removeFavorite(String bookId) async {
     const path = EndPoint.removeFavorite;
     final token = await const FlutterSecureStorage()
         .read(key: HiveConfig.currentUserTokenKey);
@@ -261,13 +257,11 @@ class BookSourceImpl extends BookSource {
       queryParams: param,
       (response) => BaseResponse.fromJson(json: response, dataBuilder: null),
     );
- 
-    return _api.post(request, isDelete: true); //the actual http request used is delete, not post
-    
+
+    return _api.post(request,
+        isDelete: true); //the actual http request used is delete, not post
   }
   // @override
   // Future<BaseResponse<BookListeners>> getAudioCkptList(String bookId) async {
   // }
-
-
 }

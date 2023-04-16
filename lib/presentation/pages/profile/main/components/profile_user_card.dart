@@ -11,26 +11,26 @@ class ProfileUserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.topCenter,
-      children: [
-        _buildUserScore(context),
-      ],
-    );
+    // return Stack(
+    //   alignment: Alignment.center,
+    //   children: [],
+    // );
+    return _buildUserScore(context);
   }
 
   Container _buildUserScore(BuildContext context) {
     final authLocal = GetIt.I.get<AuthLocalSourceImpl>();
     final user = authLocal.getCurrentUser();
-
+    final topPadding = MediaQuery.of(context).padding.top;
     return Container(
+      padding: EdgeInsets.only(top: topPadding),
       alignment: Alignment.bottomCenter,
-      height: 110.r,
+      height: 110.r + topPadding,
       decoration: BoxDecoration(
         color: AppColor.secondary,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20.r),
-          bottomRight: Radius.circular(20.r),
+          bottomLeft: Radius.circular(40.r),
+          bottomRight: Radius.circular(40.r),
         ),
       ),
       child: Center(
@@ -45,9 +45,9 @@ class ProfileUserCard extends StatelessWidget {
             ),
             12.horizontalSpace,
             Text(
-                user?.fullName ?? "User",
-                style: AppTypography.subHeadline
-                    .copyWith(color: AppColor.textPrimary, fontWeight: FontWeight.w700),
+              user?.fullName ?? "User",
+              style: AppTypography.subHeadline.copyWith(
+                  color: AppColor.textPrimary, fontWeight: FontWeight.w700),
             ),
           ],
         ),

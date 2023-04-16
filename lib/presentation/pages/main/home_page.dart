@@ -166,9 +166,9 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Padding _buildMainScreen(double topPadding) {
-    return Padding(
-      padding: EdgeInsets.only(top: topPadding),
+  Widget _buildMainScreen(double topPadding) {
+    return Container(
+      padding: _pageIndex != 3 ? EdgeInsets.only(top: topPadding) : null,
       child: IndexedStack(
         index: _pageIndex,
         children: _pages,
