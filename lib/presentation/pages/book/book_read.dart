@@ -31,8 +31,11 @@ class _BookReadState extends State<BookRead> {
   late EbookModel _ebook;
   late final BookBloc _bookBloc;
 
-  final ScrollController _scrollController = ScrollController(initialScrollOffset: 1.0);
-  final ScrollController _scrollControllerBottomUp = ScrollController(initialScrollOffset: 9999.0); //init a new scroll controller that set initial offset to end
+  final ScrollController _scrollController =
+      ScrollController(initialScrollOffset: 1.0);
+  final ScrollController _scrollControllerBottomUp = ScrollController(
+      initialScrollOffset:
+          9999.0); //init a new scroll controller that set initial offset to end
   final WordProcessing _wordProcessing = WordProcessing.instance();
 
   bool _isLoading = false;
@@ -40,7 +43,7 @@ class _BookReadState extends State<BookRead> {
   int _pageNumber = 1;
   late int _totalPage;
   double _position = 0;
-  List <double> offsets = [];
+  List<double> offsets = [];
   bool _ckptReached = false;
   bool _pageReached = false;
   late int _oldPage = 1;
@@ -48,7 +51,7 @@ class _BookReadState extends State<BookRead> {
   int _chapterIdx = -1;
   final int _maxCharInOneRow = 50;
   final double _rowHeight = 30.h;
-  final double _rowWidth = 16.r*20;
+  final double _rowWidth = 16.r * 20;
 
   DateTime? _loadPrevPageTime;
   DateTime _lastUpdate = DateTime.now();
@@ -59,7 +62,7 @@ class _BookReadState extends State<BookRead> {
     _bookBloc = BookBloc();
 
     _scrollController.addListener(_scrollListener);
-    
+
     _scrollControllerBottomUp.addListener(_scrollListenerBottomUp);
     _bookBloc
         .add(LoadEbookEvent(bookId: widget.book.bookId, pageKey: _pageNumber));
@@ -67,7 +70,6 @@ class _BookReadState extends State<BookRead> {
 
   @override
   void dispose() {
-    
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     _scrollControllerBottomUp.removeListener(_scrollListener);
@@ -77,15 +79,15 @@ class _BookReadState extends State<BookRead> {
 
   void _scrollListener() async {
     // print(_scrollController.offset);
-    
+
     //scroll down
     if (!_isLoading &&
         _scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-    
-      if (_loadPrevPageTime != null && DateTime.now().difference(_loadPrevPageTime!).inSeconds < 3){
-          return;
+      if (_loadPrevPageTime != null &&
+          DateTime.now().difference(_loadPrevPageTime!).inSeconds < 3) {
+        return;
       }
       setState(() {
         _isLoading = true;
@@ -105,25 +107,24 @@ class _BookReadState extends State<BookRead> {
       _loadPrevPageTime = DateTime.now();
     }
 
-    
-      
-      if (_ckptReached && DateTime.now().difference(_lastUpdate).inSeconds > 5 ){
-        if ((_scrollController.offset - _oldCkpt).abs() > 1000 || _pageNumber != _oldPage) {
-          _oldCkpt = _scrollController.offset;
-          _oldPage = _pageNumber;
-          int savedIdx = 0;
-          for (int i = 0; i< offsets.length; i++){
-            if (_scrollController.offset < offsets[i]){
-              savedIdx = Constants.defaultReadingPageSize * (_pageNumber - 1) + i;
-              break;
-            }  
+    if (_ckptReached && DateTime.now().difference(_lastUpdate).inSeconds > 5) {
+      if ((_scrollController.offset - _oldCkpt).abs() > 1000 ||
+          _pageNumber != _oldPage) {
+        _oldCkpt = _scrollController.offset;
+        _oldPage = _pageNumber;
+        int savedIdx = 0;
+        for (int i = 0; i < offsets.length; i++) {
+          if (_scrollController.offset < offsets[i]) {
+            savedIdx = Constants.defaultReadingPageSize * (_pageNumber - 1) + i;
+            break;
           }
-      
-          _bookBloc.add(UpdateCkptEvent(
-            bookId: widget.book.id, ckpt: savedIdx, isEbook: true));
-          _lastUpdate = DateTime.now();
         }
+
+        _bookBloc.add(UpdateCkptEvent(
+            bookId: widget.book.id, ckpt: savedIdx, isEbook: true));
+        _lastUpdate = DateTime.now();
       }
+    }
   }
 
   Future<void> _loadNextPage() async {
@@ -154,13 +155,13 @@ class _BookReadState extends State<BookRead> {
 
   void _scrollListenerBottomUp() async {
     //scroll down
-    
+
     if (!_isLoading &&
         _scrollControllerBottomUp.offset >=
             _scrollControllerBottomUp.position.maxScrollExtent &&
         !_scrollControllerBottomUp.position.outOfRange) {
-   
-      if (_loadPrevPageTime != null && DateTime.now().difference(_loadPrevPageTime!).inSeconds < 3){
+      if (_loadPrevPageTime != null &&
+          DateTime.now().difference(_loadPrevPageTime!).inSeconds < 3) {
         return;
       }
       setState(() {
@@ -180,26 +181,24 @@ class _BookReadState extends State<BookRead> {
       await _loadPrevPage();
       _loadPrevPageTime = DateTime.now();
     }
-    
 
-    if (_ckptReached && DateTime.now().difference(_lastUpdate).inSeconds > 5 ){
-      if ((_scrollControllerBottomUp.offset - _oldCkpt).abs() > 1000 || _pageNumber != _oldPage) {
+    if (_ckptReached && DateTime.now().difference(_lastUpdate).inSeconds > 5) {
+      if ((_scrollControllerBottomUp.offset - _oldCkpt).abs() > 1000 ||
+          _pageNumber != _oldPage) {
         _oldCkpt = _scrollControllerBottomUp.offset;
         _oldPage = _pageNumber;
         int savedIdx = 99;
-        for (var i = 0; i< offsets.length; i+=1){
-          if (_scrollControllerBottomUp.offset < offsets[i]){
+        for (var i = 0; i < offsets.length; i += 1) {
+          if (_scrollControllerBottomUp.offset < offsets[i]) {
             savedIdx = Constants.defaultReadingPageSize * (_pageNumber - 1) + i;
             break;
           }
-          
         }
-      // LogUtil.debug('$_oldCkpt and $savedIdx');
-      
+        // LogUtil.debug('$_oldCkpt and $savedIdx');
+
         _bookBloc.add(UpdateCkptEvent(
-          bookId: widget.book.id, ckpt: savedIdx, isEbook: true));
+            bookId: widget.book.id, ckpt: savedIdx, isEbook: true));
         _lastUpdate = DateTime.now();
-        
       }
     }
   }
@@ -212,12 +211,11 @@ class _BookReadState extends State<BookRead> {
       _bookBloc.add(
           LoadEbookEvent(bookId: widget.book.bookId, pageKey: _pageNumber));
     }
-    if (offsets.isNotEmpty){
+    if (offsets.isNotEmpty) {
       _position = offsets[index % Constants.defaultReadingPageSize];
       _oldCkpt = _position;
     }
     // LogUtil.debug('position: $_position page: $_pageNumber');
-    
   }
 
   void setPage(index) async {
@@ -229,32 +227,32 @@ class _BookReadState extends State<BookRead> {
           .add(LoadEbookEvent(bookId: widget.book.bookId, pageKey: pageNumber));
       _pageNumber = pageNumber;
     }
-    
+
     // LogUtil.debug('position: $_position page: $_pageNumber');
   }
 
-  int _getRatio(String text){
-    int ratio = (text.length/_maxCharInOneRow).ceil(); // 1, 2, 3
+  int _getRatio(String text) {
+    int ratio = (text.length / _maxCharInOneRow).ceil(); // 1, 2, 3
     return ratio;
   }
 
-  void calculateOffsets(List<Sentence> sentences){
+  void calculateOffsets(List<Sentence> sentences) {
     offsets.clear();
     offsets.add(0);
-    for (var sentence in sentences){
-      if (offsets.length == 100){ 
+    for (var sentence in sentences) {
+      if (offsets.length == 100) {
         break;
       }
-      int ratio = (sentence.text.length/_maxCharInOneRow).ceil(); 
-      double prevCellOffset = offsets[offsets.length-1];
-      offsets.add(prevCellOffset + ratio*(_rowHeight - 1));
+      int ratio = (sentence.text.length / _maxCharInOneRow).ceil();
+      double prevCellOffset = offsets[offsets.length - 1];
+      offsets.add(prevCellOffset + ratio * (_rowHeight - 1));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-  
+
     return Scaffold(
         backgroundColor: AppColor.primary,
         body: SafeArea(
@@ -282,26 +280,35 @@ class _BookReadState extends State<BookRead> {
                             _totalPage = state.book!.metadata.totalPage;
                             setInitialCkpt(_ebook.ckpt);
                             Future.delayed(const Duration(seconds: 1), () {
-                              _scrollController.animateTo(_position - 4*_rowHeight > _scrollController.position.maxScrollExtent ? _position - _rowHeight*4 : _position,
+                              _scrollController.animateTo(
+                                  _position - 4 * _rowHeight >
+                                          _scrollController
+                                              .position.maxScrollExtent
+                                      ? _position - _rowHeight * 4
+                                      : _position,
                                   duration: const Duration(microseconds: 100),
                                   curve: Curves.easeInOut);
                             });
                             // Perform the action here
                           }
                           // LogUtil.debug(_chapterIdx.toString());
-                          if (_pageReached){
-                            
-                            _position = offsets[_chapterIdx%Constants.defaultReadingPageSize];
-                           
+                          if (_pageReached) {
+                            _position = offsets[
+                                _chapterIdx % Constants.defaultReadingPageSize];
+
                             _oldCkpt = _position;
                             Future.delayed(const Duration(seconds: 1), () {
                               _pageReached = false;
-                              
-                              _scrollController.animateTo(_position - _rowHeight > _scrollController.position.maxScrollExtent ? _position - _rowHeight*2 : _position,
+
+                              _scrollController.animateTo(
+                                  _position - _rowHeight >
+                                          _scrollController
+                                              .position.maxScrollExtent
+                                      ? _position - _rowHeight * 2
+                                      : _position,
                                   duration: const Duration(microseconds: 100),
                                   curve: Curves.easeInOut);
                             });
-                            
                           }
 
                           return _buildListView(_scrollController);
@@ -330,28 +337,32 @@ class _BookReadState extends State<BookRead> {
         itemBuilder: (context, index) {
           // Build your list item
           return Container(
-              // decoration: BoxDecoration(border: Border.all(color:Colors.black)),
-              height: _getRatio(_ebook.sentences[index].text)*_rowHeight,
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 270.w,
-                    child: Align(
-                      alignment: Alignment.centerLeft, // set the alignment to center left
-                      child: RichText(
-                                text: TextSpan(
-                                  children: _wordProcessing.createTextSpans(
-                                    context,
-                                    _ebook.sentences[index].text,
-                                    AppTypography.title,
-                                  ),
-                                ),
-                              ),
+            // decoration: BoxDecoration(border: Border.all(color:Colors.black)),
+            height: _getRatio(_ebook.sentences[index].text) * _rowHeight,
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 270.w,
+                  child: Align(
+                    alignment: Alignment
+                        .centerLeft, // set the alignment to center left
+                    child: RichText(
+                      text: TextSpan(
+                        children: _wordProcessing.createTextSpans(
+                          context,
+                          _ebook.sentences[index].text,
+                          AppTypography.title,
+                        ),
+                      ),
                     ),
                   ),
-                  TranslateIconButton(text: _ebook.sentences[index].text.replaceAll('[', '').replaceAll(']', ''))
-                ],
-              ),
+                ),
+                TranslateIconButton(
+                    text: _ebook.sentences[index].text
+                        .replaceAll('[', '')
+                        .replaceAll(']', ''))
+              ],
+            ),
           );
         },
       ),
@@ -360,7 +371,7 @@ class _BookReadState extends State<BookRead> {
 
   Widget _appBar() {
     return Container(
-      height: _rowHeight*2,
+      height: _rowHeight * 2,
       width: double.infinity,
       decoration: const BoxDecoration(
         color: AppColor.appBackground,
@@ -384,13 +395,13 @@ class _BookReadState extends State<BookRead> {
           SizedBox(
             width: 200.w,
             child: Text(
-                      widget.book.title!,
-                      style: AppTypography.title.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
+              widget.book.title!,
+              style: AppTypography.title.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
           ),
           IconButton(
               icon: Icon(
@@ -448,11 +459,10 @@ class _BookReadState extends State<BookRead> {
           padding: EdgeInsets.symmetric(horizontal: 30.r),
           child: const Center(
               child: CircularProgressIndicator(color: AppColor.secondary)));
-    } 
-    else{
+    } else {
       if (state is EbookLoadedState) {
         chapters = state.book!.ebook.chapter;
-      } else if (state is EbookLoadedAnotherState){
+      } else if (state is EbookLoadedAnotherState) {
         chapters = state.book!.ebook.chapter;
       }
       chapterList = chapters.keys.cast<String>().toList();
@@ -467,25 +477,25 @@ class _BookReadState extends State<BookRead> {
                     picked = true;
                     at = i;
                   });
-                   _chapterIdx = chapters[chapterList[at]];
-                   setPage(_chapterIdx);
+                  _chapterIdx = chapters[chapterList[at]];
+                  setPage(_chapterIdx);
                   Navigator.pop(context);
                 },
                 child: SizedBox(
-                  height: _rowHeight*2,
+                  height: _rowHeight * 2,
                   child: Text(
                     chapterList[i] == 'prologue'
                         ? 'Chương mở đầu'
                         : 'Chương ${chapterList[i]}',
                     style: picked && i == at
                         ? AppTypography.body.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: AppColor.secondary,
-                            )
+                            fontWeight: FontWeight.w500,
+                            color: AppColor.secondary,
+                          )
                         : AppTypography.body.copyWith(
-                              fontWeight: FontWeight.w200,
-                              color: AppColor.textPrimary,
-                            ),
+                            fontWeight: FontWeight.w200,
+                            color: AppColor.textPrimary,
+                          ),
                     textAlign: TextAlign.center,
                   ),
                 )),

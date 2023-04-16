@@ -95,6 +95,7 @@ class _BookListen extends State<BookListen> {
               setAudioBook(state);
             }
             return Scaffold(
+              backgroundColor: Colors.white,
               body: Container(
                 height: size.height,
                 width: size.width,
@@ -112,6 +113,7 @@ class _BookListen extends State<BookListen> {
                     alignment: Alignment.center,
                     color: Colors.black.withOpacity(0.1),
                     child: SafeArea(
+                      bottom: false,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -167,20 +169,28 @@ class _BookListen extends State<BookListen> {
                                       textAlign: TextAlign.center),
                                   Column(
                                     children: [
-                                      Slider(
-                                        min: 0,
-                                        max: _duration.inSeconds.toDouble(),
-                                        value: _duration != Duration.zero
-                                            ? _position.inSeconds.toDouble()
-                                            : 0.0,
-                                        activeColor: AppColor.secondary,
-                                        onChanged: (value) async {
-                                          if (_isLoaded) {
-                                            final position = Duration(
-                                                seconds: value.toInt());
-                                            await audioPlayer.seek(position);
-                                          }
-                                        },
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: AppColor.lightGray,
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Slider(
+                                          min: 0,
+                                          max: _duration.inSeconds.toDouble(),
+                                          value: _duration != Duration.zero
+                                              ? _position.inSeconds.toDouble()
+                                              : 0.0,
+                                          activeColor: AppColor.secondary,
+                                          inactiveColor: AppColor.secondary
+                                              .withOpacity(0.5),
+                                          onChanged: (value) async {
+                                            if (_isLoaded) {
+                                              final position = Duration(
+                                                  seconds: value.toInt());
+                                              await audioPlayer.seek(position);
+                                            }
+                                          },
+                                        ),
                                       ),
                                       const SizedBox(
                                         height: 20,
@@ -242,20 +252,19 @@ class _BookListen extends State<BookListen> {
                                       FloatingActionButton(
                                         backgroundColor: AppColor.secondary,
                                         child: Icon(
-                                            _isPlaying
-                                                ? Icons.pause
-                                                : Icons.play_arrow,
-                                            color: AppColor.primary,
-                                            size: 38,
-                                          ),
-                                          onPressed: () async {
-                                            if (_isPlaying) {
-                                              await audioPlayer.pause();
-                                            } else {
-                                              await audioPlayer.resume();
-                                            }
-                                          },
-                                        
+                                          _isPlaying
+                                              ? Icons.pause
+                                              : Icons.play_arrow,
+                                          color: AppColor.primary,
+                                          size: 38,
+                                        ),
+                                        onPressed: () async {
+                                          if (_isPlaying) {
+                                            await audioPlayer.pause();
+                                          } else {
+                                            await audioPlayer.resume();
+                                          }
+                                        },
                                       ),
                                       IconButton(
                                           icon: Icon(
@@ -318,7 +327,9 @@ Widget appBar(BuildContext context) {
             color: AppColor.appBackground,
             size: 24,
           ),
-          onPressed: () {},
+          onPressed: () {
+            print("hello");
+          },
         )
       ],
     ),

@@ -26,8 +26,8 @@ class BookDetails extends StatefulWidget {
 }
 
 class _BookDetails extends State<BookDetails> {
-  late final BookBloc _bookBloc;
-  late final BookInfo _bookInfo;
+  late BookBloc _bookBloc;
+  late BookInfo _bookInfo;
   late bool _isLiked;
   @override
   void initState() {
@@ -156,17 +156,16 @@ class _BookDetails extends State<BookDetails> {
                                                 ),
                                                 child: TextButton(
                                                   onPressed: () {
-                                                    Navigator.of(context).pushNamed(
-                                                        RouteName.bookRead,
-                                                        arguments:
-                                                            BookArguments(
-                                                                bookId:
-                                                                    _bookInfo
-                                                                        .bookId,
-                                                                id: _bookInfo
-                                                                    .id,
-                                                                title: _bookInfo
-                                                                    .title));
+                                                    Navigator.of(context)
+                                                        .pushNamed(
+                                                      RouteName.bookRead,
+                                                      arguments: BookArguments(
+                                                          bookId:
+                                                              _bookInfo.bookId,
+                                                          id: _bookInfo.id,
+                                                          title:
+                                                              _bookInfo.title),
+                                                    );
                                                   },
                                                   child: Row(
                                                     mainAxisAlignment:
@@ -195,8 +194,10 @@ class _BookDetails extends State<BookDetails> {
                                               const SizedBox(
                                                 width: 10,
                                               ),
+                                            
                                               Visibility(
-                                                visible: _bookInfo.mp3Url != '',
+                                                visible: _bookInfo
+                                                    .mp3Url!.isNotEmpty,
                                                 child: Container(
                                                   width: size.width * 0.4,
                                                   height: 50,

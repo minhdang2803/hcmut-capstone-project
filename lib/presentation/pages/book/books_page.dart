@@ -111,12 +111,19 @@ class BookPage extends StatelessWidget {
 
   Widget _contentSection(BuildContext context) {
     late String heading;
-    return BlocBuilder<BookListBloc, BookListState>(builder: (context, state) {
+    return BlocConsumer<BookListBloc, BookListState>(
+        listener: (context, state) {
       if (state is BookListLoadingState) {
-        return Center(
-            child: CircularProgressIndicator(color: AppColor.accentBlue));
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Center(
+                  child: CircularProgressIndicator(color: AppColor.accentBlue));
+            });
+      } else {
+        Navigator.pop(context);
       }
-
+    }, builder: (context, state) {
       if (state is BookListLoadedState) {
         heading = state.category;
         // print(heading);
