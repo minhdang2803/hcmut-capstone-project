@@ -70,6 +70,7 @@ class _BookDetails extends State<BookDetails> {
                               alignment: Alignment.center,
                               color: Colors.black.withOpacity(0.1),
                               child: SafeArea(
+                                bottom: false,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
@@ -123,9 +124,10 @@ class _BookDetails extends State<BookDetails> {
                                                 .textTheme
                                                 .titleLarge!
                                                 .copyWith(
-                                                  fontWeight: FontWeight.normal,
-                                                  color: AppColor.textPrimary
-                                                ),
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color:
+                                                        AppColor.textPrimary),
                                           ),
                                           const SizedBox(
                                             height: 8,
@@ -174,11 +176,13 @@ class _BookDetails extends State<BookDetails> {
                                                       const Icon(
                                                           Icons.menu_book,
                                                           size: 20,
-                                                          color: AppColor.textPrimary),
+                                                          color: AppColor
+                                                              .textPrimary),
                                                       const Text(
                                                         "Đọc",
                                                         style: TextStyle(
-                                                          color: AppColor.textPrimary,
+                                                          color: AppColor
+                                                              .textPrimary,
                                                           fontWeight:
                                                               FontWeight.w500,
                                                           fontSize: 15,
@@ -230,11 +234,13 @@ class _BookDetails extends State<BookDetails> {
                                                       children: [
                                                         Icon(Icons.headphones,
                                                             size: 20,
-                                                            color: AppColor.textPrimary),
+                                                            color: AppColor
+                                                                .textPrimary),
                                                         Text(
                                                           "Nghe",
                                                           style: TextStyle(
-                                                            color: AppColor.textPrimary,
+                                                            color: AppColor
+                                                                .textPrimary,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                             fontSize: 15,

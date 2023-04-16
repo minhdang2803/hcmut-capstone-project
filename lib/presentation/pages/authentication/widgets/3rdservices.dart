@@ -10,7 +10,6 @@ import '../../../widgets/circular_border_icon.dart';
 class Option extends StatelessWidget {
   const Option({super.key});
 
-  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -50,28 +49,28 @@ class Option extends StatelessWidget {
             ),
           ],
         ),
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushReplacementNamed(RouteName.main);
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Đăng nhập ẩn danh',
-                style: AppTypography.body.copyWith(
-                  color: AppColor.textSecondary,
-                ),
-              ),
-              Icon(
-                Icons.arrow_right_alt_rounded,
-                size: 32.r,
-                color: AppColor.textSecondary,
-              ),
-            ],
-          ),
-        )
+        // GestureDetector(
+        //   onTap: () {
+        //     Navigator.of(context).pushReplacementNamed(RouteName.main);
+        //   },
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     crossAxisAlignment: CrossAxisAlignment.center,
+        //     children: [
+        //       Text(
+        //         'Đăng nhập ẩn danh',
+        //         style: AppTypography.body.copyWith(
+        //           color: AppColor.textSecondary,
+        //         ),
+        //       ),
+        //       Icon(
+        //         Icons.arrow_right_alt_rounded,
+        //         size: 32.r,
+        //         color: AppColor.textSecondary,
+        //       ),
+        //     ],
+        //   ),
+        // )
       ],
     );
   }

@@ -29,12 +29,37 @@ class TranslateIconButton extends StatelessWidget {
               color: AppColor.primary,
             ),
             child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(height: 70.h, child: AutoSizeText(text, style: AppTypography.bodySmall)),
-                  SizedBox(height: 70.h, child: AutoSizeText(translateFromGG, style: AppTypography.body.copyWith(fontWeight: FontWeight.bold),)),
-                ],
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.75,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                        height: 70.h,
+                        child: AutoSizeText.rich(
+                          TextSpan(
+                              text: "English: ",
+                              style: AppTypography.body
+                                  .copyWith(color: AppColor.mainPink),
+                              children: [
+                                TextSpan(text: text, style: AppTypography.body)
+                              ]),
+                        )),
+                    SizedBox(
+                        height: 70.h,
+                        child: AutoSizeText.rich(
+                          TextSpan(
+                              text: "Vietnamese: ",
+                              style: AppTypography.body
+                                  .copyWith(color: AppColor.mainPink),
+                              children: [
+                                TextSpan(
+                                    text: translateFromGG,
+                                    style: AppTypography.body)
+                              ]),
+                        )),
+                  ],
+                ),
               ),
             ),
           ),

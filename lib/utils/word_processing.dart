@@ -1,3 +1,4 @@
+import 'package:bke/utils/extension.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ class WordProcessing {
   factory WordProcessing.instance() => _instance;
 
   List<String> splitWord(String subText) {
-    final eachCharList = subText.split(" ");
+    final eachCharList = subText.toCapitalize().split(" ");
     List<String> result = [];
     String tempWord = '';
     for (final element in eachCharList) {
@@ -34,7 +35,8 @@ class WordProcessing {
     final arrayStrings = splitWord(subText);
     List<TextSpan> arrayOfTextSpan = [];
     for (int index = 0; index < arrayStrings.length; index++) {
-      var text = arrayStrings[index];
+      var text = arrayStrings[index].trim();
+      if (text.isEmpty) continue;
       TextSpan span = const TextSpan();
       // first is the word highlight recommended by admin [example] and ending with , or .
       if (text.contains('[') && text.contains(']')) {

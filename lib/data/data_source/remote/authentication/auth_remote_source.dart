@@ -102,7 +102,7 @@ class AuthRemoteSourceImpl extends AuthRemoteSource {
   @override
   Future<BaseResponse<LoginModel>> login(String email, String password) async {
     const path = EndPoint.loginPath;
-    final bodyRequest = {'email': email, 'password': password};
+    final bodyRequest = {'email': email.toLowerCase(), 'password': password};
     final request = APIServiceRequest(
       path,
       dataBody: bodyRequest,

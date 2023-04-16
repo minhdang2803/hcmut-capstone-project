@@ -65,7 +65,7 @@ class VideoYoutubeHorizontalList extends StatelessWidget {
                   icon: Icon(
                     Icons.keyboard_arrow_right_rounded,
                     size: 24.r,
-                    color: AppColor.primary,
+                    color: Colors.black,
                   ),
                   onPressed: onSeeMore,
                 ),

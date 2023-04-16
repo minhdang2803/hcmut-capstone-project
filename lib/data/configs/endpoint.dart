@@ -7,8 +7,6 @@ class EndPoint {
   static const gmailVerifyPath = '$_baseUrl/user/gmailVerify';
   static const checkGmailVerifyPath = '$_baseUrl/user/checkGmailVerify';
   static const resetPassPath = '$_baseUrl/user/resetPassword';
-  // static const getToeicP1Path = '$_baseUrl/toeicP1/getToeicP1';
-  // static const saveScoreToeicP1Path = '$_baseUrl/scoreToeicP1/saveScoreToeicP1';
 
   //Video
   static const getSubVideo = '$_baseUrl/subVideo';
@@ -20,7 +18,6 @@ class EndPoint {
       '$_baseUrl/videoYoutubeInfo/recommendation';
   static const getLatestVideo = '$_baseUrl/videoYoutubeInfo/latest';
   static const saveExternalVideo = '$_baseUrl/videoYoutubeInfo/createExternal';
-
   //Book
   static const getAllBooks = '$_baseUrl/BookInfo';
   static const getHomepageList = '$_baseUrl/BookInfo/listCategory';
@@ -35,11 +32,9 @@ class EndPoint {
   static const addFavorite = '$_baseUrl/bookFavorites/add';
   static const removeFavorite = '$_baseUrl/bookFavorites/delete';
   static const getLatestBook = '$_baseUrl/bookInfo/latest';
-
   //Vocab
   static const findVocabsByListId = "$_baseUrl/vocab/getListVocab";
   static const getVocabInfos = '$_baseUrl/vocab';
-
   //Flashcard
   static const getAllFlashcard = '$_baseUrl/flashCard/getAll';
   static const updateFlashcard = '$_baseUrl/flashCard/upsert';
@@ -48,27 +43,22 @@ class EndPoint {
   static const flashcardRandomGetAllThumbnail =
       "$_baseUrl/templateFlashCard/listCategory";
   static const flashcardRandomGetAll = "$_baseUrl/templateFlashCard/random";
-
   // Quiz
   static const getMultipleChoiceQuiz = "$_baseUrl/quizVocab/level";
   static const upsertResultBylevel = "$_baseUrl/userQuizScore/upsert";
   static const getUserQuizResult = "$_baseUrl/userQuizScore/getAll";
-
   //Toeic
   static const getPart = "$_baseUrl/toeic/practice";
   static const submitToeicScore = "$_baseUrl/toeic/submit";
   static const toeicHistory = "$_baseUrl/toeic/submit/history";
   static const toeicHistoryReview = "$_baseUrl/toeic/submit/summary";
-
   // calendar
   static const getHistoryActivities =
       "$_baseUrl/historyActivities/getByYearMonth";
-
   //search
   static const searchAll = "$_baseUrl/search/all";
   static const searchBooks = "$_baseUrl/search/book";
   static const searchVideos = "$_baseUrl/search/video";
-
   //news
   static const getAllNews = '$_baseUrl/news';
 }

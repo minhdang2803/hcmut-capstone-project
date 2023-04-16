@@ -43,9 +43,11 @@ class BottomNewsContent extends StatelessWidget {
         ),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          BackButton(onPressed: () => Navigator.pop(context)),
+          5.verticalSpace,
           Expanded(
               child: SingleChildScrollView(
                   child: Column(
@@ -58,27 +60,29 @@ class BottomNewsContent extends StatelessWidget {
                     .copyWith(fontWeight: FontWeight.w600),
                 textAlign: TextAlign.left,
               ),
+              15.verticalSpace,
               Text(
                 news.author,
-                style: AppTypography.bodySmall
-                    .copyWith(fontWeight: FontWeight.w700),
-                textAlign: TextAlign.justify,
+                style: AppTypography.body.copyWith(fontWeight: FontWeight.w700),
+                textAlign: TextAlign.left,
               ),
+              15.verticalSpace,
               Row(
                 children: [
                   Text(
                     " - ${news.source}, ",
                     style: AppTypography.bodySmall,
-                    textAlign: TextAlign.justify,
+                    textAlign: TextAlign.left,
                   ),
                   Text(
                     _getPublishTime(news.publishedAt),
                     style: AppTypography.bodySmall
                         .copyWith(fontStyle: FontStyle.italic),
-                    textAlign: TextAlign.justify,
+                    textAlign: TextAlign.left,
                   ),
                 ],
               ),
+              15.verticalSpace,
               Text.rich(
                 TextSpan(
                   children: _wordProcessing.createTextSpans(
@@ -87,6 +91,7 @@ class BottomNewsContent extends StatelessWidget {
                     AppTypography.title,
                   ),
                 ),
+                textAlign: TextAlign.justify,
               ),
             ],
           ))),

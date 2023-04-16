@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bke/data/models/video/video_youtube_info_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,6 +22,11 @@ class VideoYoutubeItem extends StatefulWidget {
 }
 
 class _VideoYoutubeItemState extends State<VideoYoutubeItem> {
+  String buildRandomLevel() {
+    List<String> level = ["Basic", "Intermediate", "Advanced"];
+    return (level.toList()..shuffle()).first;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -61,6 +68,7 @@ class _VideoYoutubeItemState extends State<VideoYoutubeItem> {
   Widget _buildSubYoutubeData() {
     return Expanded(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             widget.videoYoutubeInfo.title,
@@ -68,26 +76,30 @@ class _VideoYoutubeItemState extends State<VideoYoutubeItem> {
                 AppTypography.bodySmall.copyWith(fontWeight: FontWeight.bold),
             textAlign: TextAlign.start,
           ),
-          10.verticalSpace,
+          3.verticalSpace,
+          Text(
+            '${widget.videoYoutubeInfo.viewCount} views',
+            style: AppTypography.bodySmall,
+            overflow: TextOverflow.ellipsis,
+          ),
+          3.verticalSpace,
           Row(
             children: [
               Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(078),
-                    color: AppColor.primary),
+                    color: AppColor.mainPink),
                 child: Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 12.r, vertical: 3.r),
                   child: Text(
-                    'Basic',
+                    buildRandomLevel(),
                     style:
                         AppTypography.bodySmall.copyWith(color: Colors.white),
                   ),
                 ),
               ),
               5.horizontalSpace,
-              Text('${widget.videoYoutubeInfo.viewCount} views',
-                  style: AppTypography.bodySmall),
             ],
           )
         ],
