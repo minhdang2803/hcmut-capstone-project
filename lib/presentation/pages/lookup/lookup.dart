@@ -2,7 +2,6 @@ import 'package:bke/bloc/dictionary/dictionary_cubit.dart';
 import 'package:bke/data/configs/hive_config.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
-import 'package:bke/presentation/widgets/text_field_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../routes/route_name.dart';
 import '../../theme/app_color.dart';
-import '../../widgets/custom_app_bar.dart';
+import '../../widgets/widgets.dart';
 import '../my_dictionary/vocab_item.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 // import '../../theme/app_color.dart';
@@ -25,9 +24,19 @@ class LookUpPage extends StatefulWidget {
 }
 
 class _LookUpPageState extends State<LookUpPage> with TickerProviderStateMixin {
-  static const tabs = <Tab>[
-    Tab(child: FittedBox(child: Text('Từ yêu thích'))),
-    Tab(child: FittedBox(child: Text('Từ điển'))),
+  static final tabs = <Tab>[
+    Tab(
+        child: FittedBox(
+            child: Text(
+      'Từ yêu thích',
+      style: AppTypography.title,
+    ))),
+    Tab(
+        child: FittedBox(
+            child: Text(
+      'Từ điển',
+      style: AppTypography.title,
+    ))),
   ];
   late final TabController _tabController;
   final word = TextEditingController();
@@ -68,7 +77,21 @@ class _LookUpPageState extends State<LookUpPage> with TickerProviderStateMixin {
                   BlocBuilder<DictionaryCubit, DictionaryState>(
                     builder: (context, state) {
                       if (state.status == DictionaryStatus.initial) {
-                        return _buildEmpty();
+                        return Column(
+                          children: [
+                            10.verticalSpace,
+                            CustomLookupTextField(
+                              controller: word,
+                              onSubmitted: (value) => context
+                                  .read<DictionaryCubit>()
+                                  .findWord(value),
+                            ),
+                            EmptyWidget(
+                              text: "Nhập từ vựng cần tìm kiếm",
+                              paddingHeight: 120.h,
+                            ),
+                          ],
+                        );
                       } else if (state.status == DictionaryStatus.loading) {
                         return const Center(
                           child: CircularProgressIndicator(
@@ -78,13 +101,17 @@ class _LookUpPageState extends State<LookUpPage> with TickerProviderStateMixin {
                         if (state.vocabList!.isEmpty) {
                           return Column(
                             children: [
-                              CustomTextField(
+                              10.verticalSpace,
+                              CustomLookupTextField(
                                 controller: word,
                                 onSubmitted: (value) => context
                                     .read<DictionaryCubit>()
-                                    .findWord(value),
+                                    .findWord(value.toLowerCase()),
                               ),
-                              _buildEmpty(),
+                              EmptyWidget(
+                                text: "Nhập từ vựng cần tìm kiếm",
+                                paddingHeight: 120.h,
+                              ),
                             ],
                           );
                         } else {
@@ -144,7 +171,7 @@ class _LookUpPageState extends State<LookUpPage> with TickerProviderStateMixin {
           vocabList.addAll(myVocab.map((e) => e));
 
           if (value.isEmpty) {
-            return _buildEmpty();
+            return EmptyWidget(paddingHeight: 150.r);
           }
           return _buildDictionary(vocabList);
         },
@@ -179,43 +206,29 @@ class _LookUpPageState extends State<LookUpPage> with TickerProviderStateMixin {
         return ListView.separated(
           padding: EdgeInsets.only(top: 20.r),
           scrollDirection: Axis.vertical,
-          itemCount: state.vocabList!.length,
-          itemBuilder: (context, index) => GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                RouteName.vocabFullInfo,
-                arguments: state.vocabList![index],
+          itemCount: state.vocabList!.length + 1,
+          itemBuilder: (context, index) {
+            if (index < state.vocabList!.length) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    RouteName.vocabFullInfo,
+                    arguments: state.vocabList![index],
+                  );
+                },
+                child: VocabDictionaryItem(
+                  vocab: state.vocabList![index],
+                ),
               );
-            },
-            child: VocabDictionaryItem(
-              vocab: state.vocabList![index],
-            ),
-          ),
+            } else {
+              return 180.verticalSpace;
+            }
+          },
           separatorBuilder: (BuildContext context, int index) =>
               5.verticalSpace,
         );
       },
-    );
-  }
-
-  Column _buildEmpty() {
-    return Column(
-      children: [
-        120.verticalSpace,
-        Image(
-          image: const AssetImage("assets/images/angry.png"),
-          height: 200.r,
-          width: 200.r,
-        ),
-        Text(
-          "Bạn chưa lưu từ vựng nào!",
-          style: AppTypography.subHeadline.copyWith(
-            color: AppColor.textPrimary,
-            fontWeight: FontWeight.w700,
-          ),
-        )
-      ],
     );
   }
 }

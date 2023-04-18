@@ -102,7 +102,7 @@ class _AuthContentCardState extends State<AuthContentCard>
       curve: Curves.decelerate,
       duration: const Duration(milliseconds: 250),
       width: 315.w,
-      height: _changeLayout ? 336.h : 450.h,
+      height: _changeLayout ? 340.h : 460.h,
       child: _buildAuthContent(),
     );
   }

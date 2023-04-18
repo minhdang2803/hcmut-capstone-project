@@ -258,3 +258,24 @@ class _CalendarPageState extends State<CalendarPage>
     );
   }
 }
+
+// Text.rich(
+//               TextSpan(
+//                 text: text?[0] ?? "",
+//                 children: [
+//                   TextSpan(
+//                       text: _events?[_selectedDay]?[index].title != null
+//                           ? ":"
+//                           : ""),
+//                   TextSpan(
+//                     text: text?[1] ?? " ",
+//                     style: AppTypography.body
+//                         .copyWith(fontWeight: FontWeight.w500),
+//                   ),
+//                 ],
+//                 style: AppTypography.body.copyWith(
+//                   color: Colors.black,
+//                   fontWeight: FontWeight.bold,
+//                 ),
+//               ),
+//             ),

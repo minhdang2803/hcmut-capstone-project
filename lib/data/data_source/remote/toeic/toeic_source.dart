@@ -80,7 +80,7 @@ class ToeicSourceImpl extends ToeicSource {
       (response) =>
           BaseResponse<void>.fromJson(json: response, dataBuilder: null),
     );
-    LogUtil.debug("Get toeic test: ${{'part$part': data}}");
+    LogUtil.debug("Update toeic test: ${{'part$part': data}}");
     return _api.post(request);
   }
 
