@@ -1,5 +1,6 @@
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
+import 'package:bke/utils/word_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -20,6 +21,7 @@ class ReviewPartFive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final wordProcessing = WordProcessing.instance();
     return Padding(
       padding: EdgeInsets.all(10.r),
       child: Container(
@@ -45,17 +47,32 @@ class ReviewPartFive extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text.rich(TextSpan(
+                Text.rich(
+                  TextSpan(
                     text: "Question: ",
                     style:
                         AppTypography.title.copyWith(color: AppColor.mainPink),
                     children: [
-                      TextSpan(text: "$text\n", style: AppTypography.title),
-                      ...answer
-                          .map((e) => TextSpan(
-                              text: "$e\n", style: AppTypography.title))
-                          .toList()
-                    ])),
+                      TextSpan(
+                        children: wordProcessing.createTextSpans(
+                            context, text, AppTypography.title)
+                          ..add(const TextSpan(text: "\n")),
+                        style: AppTypography.title,
+                      ),
+                      TextSpan(
+                        children: answer
+                            .map(
+                              (e) => TextSpan(
+                                children: wordProcessing.createTextSpans(
+                                    context, e, AppTypography.title)
+                                  ..add(const TextSpan(text: "\n")),
+                              ),
+                            )
+                            .toList(),
+                      )
+                    ],
+                  ),
+                ),
                 Text.rich(TextSpan(
                     text: "Answer: ",
                     style:

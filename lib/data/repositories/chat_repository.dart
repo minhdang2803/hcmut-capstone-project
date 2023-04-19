@@ -23,4 +23,16 @@ class ChatRepository {
     return _remote.updateUserData(
         fullName: fullName, email: email, userUID: userUID);
   }
+
+  Future<void> createGroup(
+      {required String userName,
+      required String uid,
+      required String groupName,
+      required String? groupIcon}) {
+    return _remote.createGroup(
+        userName: userName,
+        uid: uid,
+        groupName: groupName,
+        groupIcon: groupIcon);
+  }
 }

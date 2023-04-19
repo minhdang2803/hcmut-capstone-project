@@ -71,7 +71,7 @@ class _CustomLookupTextFieldState extends State<CustomLookupTextField> {
         cursorColor: AppColor.secondary,
         decoration: InputDecoration(
           suffixIcon: IconButton(
-            onPressed: () => widget.onSubmitted!(widget.controller.text),
+            onPressed: () => widget.onSubmitted(widget.controller.text),
             icon: Icon(Icons.search),
           ),
           hintText: widget.hintText ?? "Nhập từ vựng cần tìm kiếm",

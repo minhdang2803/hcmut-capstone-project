@@ -9,22 +9,26 @@ class EmptyWidget extends StatelessWidget {
   final double? paddingHeight;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(height: paddingHeight),
-        Image(
-          image: const AssetImage("assets/images/angry.png"),
-          height: 200.r,
-          width: 200.r,
-        ),
-        Text(
-          text ?? "Bạn chưa lưu từ vựng nào!",
-          style: AppTypography.subHeadline.copyWith(
-            color: AppColor.textPrimary,
-            fontWeight: FontWeight.w700,
+    return Padding(
+      padding: EdgeInsets.all(10.r),
+      child: Column(
+        children: [
+          SizedBox(height: paddingHeight),
+          Image(
+            image: const AssetImage("assets/images/angry.png"),
+            height: 200.r,
+            width: 200.r,
           ),
-        )
-      ],
+          Text(
+            text ?? "Bạn chưa lưu từ vựng nào!",
+            style: AppTypography.subHeadline.copyWith(
+              color: AppColor.textPrimary,
+              fontWeight: FontWeight.w700,
+            ),
+            textAlign: TextAlign.center,
+          )
+        ],
+      ),
     );
   }
 }

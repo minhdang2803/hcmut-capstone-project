@@ -1,6 +1,7 @@
 import 'package:bke/data/models/toeic/toeic_models.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
+import 'package:bke/utils/word_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -19,6 +20,7 @@ class ReviewPartSeven extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final WordProcessing _wordProcessing = WordProcessing.instance();
     return Padding(
       padding: EdgeInsets.all(10.r),
       child: Container(
@@ -36,13 +38,13 @@ class ReviewPartSeven extends StatelessWidget {
               TextSpan(
                 text: "Paragraph To read:\n\n",
                 style: AppTypography.title.copyWith(color: AppColor.mainPink),
-                children: [
-                  TextSpan(
-                    text: text,
-                    style: AppTypography.body,
-                  )
-                ],
+                children: _wordProcessing.createTextSpans(
+                  context,
+                  text,
+                  AppTypography.body,
+                ),
               ),
+              textAlign: TextAlign.justify,
             ),
             10.verticalSpace,
             ListView.separated(
@@ -51,7 +53,8 @@ class ReviewPartSeven extends StatelessWidget {
               itemBuilder: (context, index) {
                 if (index < answer.length) {
                   final toeicLocal = answer[index];
-                  return _buildQuestionAndResult(toeicLocal, index);
+                  return _buildQuestionAndResult(
+                      context, toeicLocal, index, _wordProcessing);
                 } else {
                   return 100.verticalSpace;
                 }
@@ -65,7 +68,8 @@ class ReviewPartSeven extends StatelessWidget {
     );
   }
 
-  Widget _buildQuestionAndResult(ToeicQuestion toeicLocal, int index) {
+  Widget _buildQuestionAndResult(BuildContext context, ToeicQuestion toeicLocal,
+      int index, WordProcessing wordProcessing) {
     return Container(
       padding: EdgeInsets.all(10.r),
       decoration: BoxDecoration(
@@ -75,23 +79,38 @@ class ReviewPartSeven extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            answer[index].text ?? "Question",
+          Text.rich(
+            TextSpan(
+                children: wordProcessing.createTextSpans(
+              context,
+              answer[index].text ?? "Question",
+              AppTypography.body,
+            )),
             textAlign: TextAlign.justify,
-            style: AppTypography.body,
           ),
           const Divider(
             color: AppColor.defaultBorder,
             thickness: 1,
           ),
-          Text.rich(TextSpan(
-              style: AppTypography.title.copyWith(color: AppColor.mainPink),
-              children: [
-                ...toeicLocal.answers!
-                    .map((e) =>
-                        TextSpan(text: "$e\n", style: AppTypography.title))
-                    .toList()
-              ])),
+          Text.rich(
+            TextSpan(
+                style: AppTypography.title.copyWith(color: AppColor.mainPink),
+                children: [
+                  ...toeicLocal.answers!
+                      .map(
+                        (e) => TextSpan(
+                          // text: "$e\n",
+                          children: wordProcessing.createTextSpans(
+                            context,
+                            e,
+                            AppTypography.title,
+                          )..add(const TextSpan(text: "\n")),
+                          style: AppTypography.title,
+                        ),
+                      )
+                      .toList()
+                ]),
+          ),
           Text.rich(TextSpan(
               text: "Answer: ",
               style: AppTypography.title.copyWith(color: AppColor.mainPink),

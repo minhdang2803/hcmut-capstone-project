@@ -8,6 +8,11 @@ abstract class ChatSource {
     required String email,
     required String userUID,
   });
+  Future<void> createGroup(
+      {required String userName,
+      required String uid,
+      required String groupName,
+      required String? groupIcon});
 }
 
 class ChatSourceImpl implements ChatSource {
@@ -43,5 +48,35 @@ class ChatSourceImpl implements ChatSource {
   Stream<DocumentSnapshot<Object?>> getUserGroups(uid) {
     final userGroups = userCollection.doc(uid).snapshots();
     return userGroups;
+  }
+
+  @override
+  Future<void> createGroup(
+      {required String userName,
+      required String uid,
+      required String groupName,
+      required String? groupIcon}) async {
+    final data = {
+      "groupName": groupName,
+      "groupIcon": groupIcon,
+      "admin": "${uid}_$userName",
+      "members": [],
+      "groupId": "",
+      "recentMessage": "",
+      "recentMessageSender": "",
+      "timeLastMessage": "",
+    };
+    DocumentReference ref = await groupCollection.add(data);
+
+    //update the members
+    await ref.update({
+      "members": FieldValue.arrayUnion(["${uid}_$userName"]),
+      "groupId": ref.id,
+    });
+
+    DocumentReference userRef = userCollection.doc(uid);
+    return await userRef.update({
+      "groups": FieldValue.arrayUnion(["${ref.id}_$groupName"])
+    });
   }
 }

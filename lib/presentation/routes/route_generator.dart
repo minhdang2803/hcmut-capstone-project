@@ -1,3 +1,4 @@
+import 'package:bke/bloc/chat/chat_cubit.dart';
 import 'package:bke/bloc/countdown_cubit/count_down_cubit.dart';
 import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
@@ -138,7 +139,17 @@ class RouteGenerator {
         break;
 
       case RouteName.chatPage:
-        page = const ChatPage();
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => ChatCubit(),
+            ),
+            // BlocProvider(
+            //   create: (context) => SubjectBloc(),
+            // ),
+          ],
+          child: const ChatPage(),
+        );
         break;
 
       case RouteName.videoPage:

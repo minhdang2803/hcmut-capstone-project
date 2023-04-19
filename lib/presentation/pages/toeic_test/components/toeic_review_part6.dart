@@ -1,6 +1,8 @@
 import 'package:bke/data/models/toeic/toeic_models.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
+import 'package:bke/utils/extension.dart';
+import 'package:bke/utils/word_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -19,6 +21,7 @@ class ReviewPartSix extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final WordProcessing _wordProcessing = WordProcessing.instance();
     return Padding(
       padding: EdgeInsets.all(10.r),
       child: Container(
@@ -38,11 +41,15 @@ class ReviewPartSix extends StatelessWidget {
                 style: AppTypography.title.copyWith(color: AppColor.mainPink),
                 children: [
                   TextSpan(
-                    text: text,
-                    style: AppTypography.body,
+                    children: _wordProcessing.createTextSpans(
+                      context,
+                      text,
+                      AppTypography.body,
+                    ),
                   )
                 ],
               ),
+              textAlign: TextAlign.justify,
             ),
             10.verticalSpace,
             ListView.separated(
@@ -50,7 +57,8 @@ class ReviewPartSix extends StatelessWidget {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 final toeicLocal = answer[index];
-                return _buildQuestionAndResult(toeicLocal, index + 1);
+                return _buildQuestionAndResult(
+                    context, toeicLocal, index + 1, _wordProcessing);
               },
               separatorBuilder: (context, index) => 10.verticalSpace,
               itemCount: answer.length,
@@ -61,7 +69,8 @@ class ReviewPartSix extends StatelessWidget {
     );
   }
 
-  Widget _buildQuestionAndResult(ToeicQuestion toeicLocal, int index) {
+  Widget _buildQuestionAndResult(BuildContext context, ToeicQuestion toeicLocal,
+      int index, WordProcessing wordProcessing) {
     return Container(
       padding: EdgeInsets.all(10.r),
       decoration: BoxDecoration(
@@ -79,14 +88,33 @@ class ReviewPartSix extends StatelessWidget {
             color: AppColor.defaultBorder,
             thickness: 1,
           ),
-          Text.rich(TextSpan(
-              style: AppTypography.title.copyWith(color: AppColor.mainPink),
-              children: [
-                ...toeicLocal.answers!
-                    .map((e) =>
-                        TextSpan(text: "$e\n", style: AppTypography.title))
-                    .toList()
-              ])),
+          // Text.rich(TextSpan(
+          //     style: AppTypography.title.copyWith(color: AppColor.mainPink),
+          //     children: [
+          //       ...toeicLocal.answers!
+          //           .map((e) =>
+          //               TextSpan(text: "$e\n", style: AppTypography.title))
+          //           .toList()
+          //     ])),
+          Text.rich(
+            TextSpan(
+                style: AppTypography.title.copyWith(color: AppColor.mainPink),
+                children: [
+                  ...toeicLocal.answers!
+                      .map(
+                        (e) => TextSpan(
+                          // text: "$e\n",
+                          children: wordProcessing.createTextSpans(
+                            context,
+                            e.toCapitalizeFirst(),
+                            AppTypography.title,
+                          )..add(const TextSpan(text: "\n")),
+                          style: AppTypography.title,
+                        ),
+                      )
+                      .toList()
+                ]),
+          ),
           Text.rich(TextSpan(
               text: "Answer: ",
               style: AppTypography.title.copyWith(color: AppColor.mainPink),

@@ -5,20 +5,19 @@ enum ChatGetDataStatus { initial, done, fail, loading }
 enum ChatInProcessStatus { initial, sending, receiving, sendingDone }
 
 class ChatState extends Equatable {
-  ChatState(
-      {this.chattingStatus,
-      this.errorMessage,
-      this.updatingDataStatus,
-      this.groups});
+  ChatState({
+    this.chattingStatus,
+    this.errorMessage,
+    this.updatingDataStatus,
+  });
   late final ChatGetDataStatus? updatingDataStatus;
   late final ChatInProcessStatus? chattingStatus;
   late final String? errorMessage;
-  late final Stream<DocumentSnapshot<Object?>>? groups;
+
   ChatState.initial() {
     updatingDataStatus = ChatGetDataStatus.initial;
     chattingStatus = ChatInProcessStatus.initial;
     errorMessage = "";
-    groups = null;
   }
 
   ChatState copyWith({
@@ -31,7 +30,6 @@ class ChatState extends Equatable {
       chattingStatus: chattingStatus ?? this.chattingStatus,
       errorMessage: errorMessage ?? this.errorMessage,
       updatingDataStatus: updatingDataStatus ?? this.updatingDataStatus,
-      groups: groups ?? this.groups,
     );
   }
 

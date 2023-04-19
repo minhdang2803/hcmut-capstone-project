@@ -82,6 +82,12 @@ class BottomNewsContent extends StatelessWidget {
                   ),
                 ],
               ),
+              10.verticalSpace,
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                    20.r,
+                  ),
+                  child: Image.network(news.urlToImage)),
               15.verticalSpace,
               Text.rich(
                 TextSpan(

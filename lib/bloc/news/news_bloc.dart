@@ -1,8 +1,5 @@
 import 'package:bke/data/models/news/news_model.dart';
-import '../../data/models/network/cvn_exception.dart';
 import '../../data/repositories/news_repository.dart';
-import '../../utils/constants.dart';
-import '../../utils/log_util.dart';
 import 'news_state.dart';
 import 'news_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
