@@ -84,10 +84,23 @@ class BottomNewsContent extends StatelessWidget {
               ),
               10.verticalSpace,
               ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                    20.r,
+                borderRadius: BorderRadius.circular(
+                  20.r,
+                ),
+                child: FadeInImage.assetNetwork(
+                  fit: BoxFit.contain,
+                  imageErrorBuilder: (context, error, stackTrace) =>
+                      Image.network(
+                    'https://static.wikia.nocookie.net/otonari-no-tenshi/images/c/c9/No_images_available.jpg/revision/latest?cb=20220104141308',
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.contain,
                   ),
-                  child: Image.network(news.urlToImage)),
+                  placeholder: "assets/images/default_logo.png",
+                  image: news.urlToImage.isEmpty
+                      ? news.urlToImage
+                      : "https://lh3.googleusercontent.com/drive-viewer/AAOQEOSNan7V6kMFqB0eeYCVQJiAUyn8nGpA9fCjFywBjqiCpxxxBG8eECkDciAEoCWLA6s5UW2Hjczs7Toh9_-UwmiSlKh2=s2560",
+                ),
+              ),
               15.verticalSpace,
               Text.rich(
                 TextSpan(
