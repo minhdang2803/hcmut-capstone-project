@@ -14,6 +14,8 @@ import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/pages/book/books_page.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
+import 'package:bke/presentation/pages/chat/chat_conversation_page.dart';
+import 'package:bke/presentation/pages/chat/chat_member_info.dart';
 import 'package:bke/presentation/pages/flashcard/flashcards.dart';
 import 'package:bke/presentation/pages/quiz/quizzes.dart';
 import 'package:bke/presentation/pages/toeic_test/toeic_review_page.dart';
@@ -149,6 +151,31 @@ class RouteGenerator {
             // ),
           ],
           child: const ChatPage(),
+        );
+        break;
+
+      case RouteName.chatConversation:
+        final args = settings.arguments as ChatConversationParam;
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: args.context.read<ChatCubit>())
+          ],
+          child: ChatConversationPage(
+            chatGroupId: args.chatGroupId,
+            chatName: args.chatName,
+          ),
+        );
+        break;
+
+      case RouteName.chatMemberInfo:
+        final args = settings.arguments as ChatMemberInfoParam;
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: args.context.read<ChatCubit>())
+          ],
+          child: ChatMemberInfo(
+            chatName: args.chatName,
+          ),
         );
         break;
 

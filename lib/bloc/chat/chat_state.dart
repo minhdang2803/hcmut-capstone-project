@@ -9,7 +9,13 @@ class ChatState extends Equatable {
     this.chattingStatus,
     this.errorMessage,
     this.updatingDataStatus,
+    this.admin,
+    this.groupName,
+    this.groupId,
   });
+  late final String? groupName;
+  late final String? admin;
+  late final String? groupId;
   late final ChatGetDataStatus? updatingDataStatus;
   late final ChatInProcessStatus? chattingStatus;
   late final String? errorMessage;
@@ -18,15 +24,23 @@ class ChatState extends Equatable {
     updatingDataStatus = ChatGetDataStatus.initial;
     chattingStatus = ChatInProcessStatus.initial;
     errorMessage = "";
+    groupName = "";
+    admin = "";
+    groupId = "";
   }
 
   ChatState copyWith({
-    final ChatGetDataStatus? updatingDataStatus,
-    final ChatInProcessStatus? chattingStatus,
-    final String? errorMessage,
-    final Stream<DocumentSnapshot<Object?>>? groups,
+    String? groupName,
+    String? admin,
+    ChatGetDataStatus? updatingDataStatus,
+    ChatInProcessStatus? chattingStatus,
+    String? errorMessage,
+    String? groupId,
   }) {
     return ChatState(
+      groupId: groupId ?? this.groupId,
+      admin: admin ?? this.admin,
+      groupName: groupName ?? this.groupName,
       chattingStatus: chattingStatus ?? this.chattingStatus,
       errorMessage: errorMessage ?? this.errorMessage,
       updatingDataStatus: updatingDataStatus ?? this.updatingDataStatus,

@@ -13,6 +13,12 @@ abstract class ChatSource {
       required String uid,
       required String groupName,
       required String? groupIcon});
+  Future<dynamic> getChats({
+    required String groupId,
+    required String uid,
+  });
+  Future<String> getGroupAdmin({required String groupId});
+  Stream<DocumentSnapshot<Object?>> getMembers({required String groupId});
 }
 
 class ChatSourceImpl implements ChatSource {
@@ -78,5 +84,36 @@ class ChatSourceImpl implements ChatSource {
     return await userRef.update({
       "groups": FieldValue.arrayUnion(["${ref.id}_$groupName"])
     });
+  }
+
+  @override
+  Future<dynamic> getChats({
+    required String groupId,
+    required String uid,
+  }) async {
+    return groupCollection
+        .doc(groupId)
+        .collection("messages")
+        .orderBy("time")
+        .snapshots();
+  }
+
+  @override
+  Future<String> getGroupAdmin({required String groupId}) async {
+    Map<String, dynamic> result = {};
+    await groupCollection.doc(groupId).get().then((DocumentSnapshot value) {
+      if (value.exists) {
+        result = value.data() as Map<String, dynamic>;
+      } else {
+        result = {};
+      }
+    });
+    return (result['admin'] as String)
+        .substring(result['admin'].indexOf("_") + 1);
+  }
+
+  @override
+  Stream<DocumentSnapshot<Object?>> getMembers({required String groupId}) {
+    return groupCollection.doc(groupId).snapshots();
   }
 }
