@@ -58,7 +58,8 @@ class _CalendarPageState extends State<CalendarPage>
       }
     }
     final eventSource = {
-      for (var i in listDataCalendar) DateTime.parse(i.date): i.listEvent
+      for (var i in listDataCalendar)
+        DateFormat('MM/dd/yyyy').parse(i.date): i.listEvent
     };
     setState(() {
       _events = LinkedHashMap<DateTime, List<Event>>(

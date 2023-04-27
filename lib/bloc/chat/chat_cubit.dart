@@ -15,8 +15,31 @@ class ChatCubit extends Cubit<ChatState> {
     return instance.getUserGroups(uid);
   }
 
+  Stream<DocumentSnapshot<Object?>> getMembers({required String groupId}) {
+    return instance.getMembers(groupId: groupId);
+  }
+
+  void getGroupInfo(String res) async {
+    emit(state.copyWith(updatingDataStatus: ChatGetDataStatus.loading));
+    final groupName = getName(res);
+    final groupAdmin = await instance.getGroupAdmin(getGroupId(res));
+    final groupId = getGroupId(res);
+    emit(
+      state.copyWith(
+        updatingDataStatus: ChatGetDataStatus.done,
+        groupName: groupName,
+        groupId: groupId,
+        admin: groupAdmin,
+      ),
+    );
+  }
+
   String getName(String res) {
     return res.substring(res.indexOf("_") + 1);
+  }
+
+  String getGroupId(String res) {
+    return res.substring(0, res.indexOf("_"));
   }
 
   Future<void> createGroup({

@@ -44,7 +44,7 @@ class BkEAppBar extends StatelessWidget {
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _buildLeading(context),
             10.horizontalSpace,
@@ -53,8 +53,7 @@ class BkEAppBar extends StatelessWidget {
             _buildNotificationIcon(context),
             if (onSearchButtonPress != null) 12.horizontalSpace,
             _buildSearchIcon(context),
-            // 10.horizontalSpace,
-            // _buildOptions(context)
+            _buildOptions(context)
           ],
         ),
       ),
@@ -62,9 +61,14 @@ class BkEAppBar extends StatelessWidget {
   }
 
   Widget _buildOptions(BuildContext context) {
-    return trailing != null
-        ? Visibility(visible: trailing != null, child: trailing!)
-        : Container();
+    return Visibility(
+        visible: trailing != null,
+        child: Row(
+          children: [
+            10.horizontalSpace,
+            trailing ?? const SizedBox.shrink(),
+          ],
+        ));
   }
 
   Widget _buildLabel() {

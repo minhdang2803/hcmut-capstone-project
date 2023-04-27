@@ -21,7 +21,10 @@ class ChatRepository {
     required String userUID,
   }) {
     return _remote.updateUserData(
-        fullName: fullName, email: email, userUID: userUID);
+      fullName: fullName,
+      email: email,
+      userUID: userUID,
+    );
   }
 
   Future<void> createGroup(
@@ -34,5 +37,13 @@ class ChatRepository {
         uid: uid,
         groupName: groupName,
         groupIcon: groupIcon);
+  }
+
+  Future<dynamic> getGroupAdmin(String groupId) {
+    return _remote.getGroupAdmin(groupId: groupId);
+  }
+
+  Stream<DocumentSnapshot<Object?>> getMembers({required String groupId}) {
+    return _remote.getMembers(groupId: groupId);
   }
 }

@@ -1,5 +1,7 @@
 import 'package:bke/bloc/chat/chat_cubit.dart';
 import 'package:bke/data/data_source/local/local_sources.dart';
+import 'package:bke/presentation/pages/chat/chat_conversation_page.dart';
+import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -78,9 +80,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildSearchBar(BuildContext context) {
     return CustomLookupTextField(
-      onSubmitted: (value) {
-        print("hello");
-      },
+      onSubmitted: (value) {},
       hintText: "Tìm nhóm hội thoại",
       controller: searchController,
     );
@@ -123,7 +123,19 @@ class _ChatPageState extends State<ChatPage> {
                     chatName: context.read<ChatCubit>().getName(current),
                     chatLastMessage: "Hello",
                     timeForLastMessage: "10 mins ago",
-                    onTap: () {},
+                    onTap: () {
+                      context.read<ChatCubit>().getGroupInfo(current);
+                      Navigator.pushNamed(
+                        context,
+                        RouteName.chatConversation,
+                        arguments: ChatConversationParam(
+                          chatName: context.read<ChatCubit>().getName(current),
+                          chatGroupId:
+                              context.read<ChatCubit>().getGroupId(current),
+                          context: context,
+                        ),
+                      );
+                    },
                   );
                 },
                 separatorBuilder: (context, index) => 10.verticalSpace,
@@ -135,16 +147,13 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _addGroup(BuildContext context) {
-    ValueNotifier<int> selected = ValueNotifier<int>(-1);
-    String name = "";
-    String imgUrl = "";
     final cubit = context.read<ChatCubit>();
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (clm) {
         return AlertDialog(
           title: Text(
-            "Thêm mới bộ sưu tập",
+            "Tạo nhóm trò chuyện",
             style: AppTypography.title.copyWith(fontWeight: FontWeight.w700),
           ),
           shape: RoundedRectangleBorder(
@@ -152,49 +161,9 @@ class _ChatPageState extends State<ChatPage> {
               20.r,
             ),
           ),
-          content: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.6,
-            height: MediaQuery.of(context).size.height * 0.4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Tên bộ sưu tập: ", style: AppTypography.title),
-                5.verticalSpace,
-                CustomTextField(
-                  controller: createGroupController,
-                  borderRadius: 30.r,
-                  onChanged: (value) => name = value,
-                ),
-                10.verticalSpace,
-                Text("Chọn ảnh bìa", style: AppTypography.title),
-                5.verticalSpace,
-                Expanded(
-                  child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3),
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          selected.value = index;
-                          imgUrl = cubit.pictures[index];
-                          if (imgUrl == "") {
-                            imgUrl = "assets/images/peace.png";
-                          }
-                        },
-                        child: ValueListenableBuilder(
-                          valueListenable: selected,
-                          builder: (context, value, child) {
-                            return _buildHoverIcon(value, index, cubit);
-                          },
-                        ),
-                      );
-                    },
-                    itemCount: cubit.pictures.length,
-                  ),
-                ),
-              ],
-            ),
+          content: CustomTextField(
+            controller: createGroupController,
+            borderRadius: 30.r,
           ),
           actions: [
             ValueListenableBuilder<TextEditingValue>(
@@ -206,7 +175,7 @@ class _ChatPageState extends State<ChatPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.r)),
                   ),
-                  onPressed: value.text.isEmpty || imgUrl == ""
+                  onPressed: value.text.isEmpty
                       ? null
                       : () {
                           final getIt = GetIt.I.get<AuthLocalSourceImpl>();
@@ -215,13 +184,13 @@ class _ChatPageState extends State<ChatPage> {
                             userName: userBox!.fullName!,
                             uid: FirebaseAuth.instance.currentUser!.uid,
                             groupName: value.text,
-                            groupIcon: imgUrl,
+                            groupIcon: "",
                           );
                           createGroupController.clear();
                           Navigator.pop(context);
                         },
                   child: Text(
-                    "Thêm",
+                    "Tạo nhóm",
                     style: AppTypography.body.copyWith(
                       color: AppColor.primary,
                       fontWeight: FontWeight.w700,
@@ -253,86 +222,6 @@ class _ChatPageState extends State<ChatPage> {
       },
     );
   }
-
-  Widget _buildHoverIcon(int value, int index, ChatCubit cubit) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(
-            color: value == index ? AppColor.accentBlue : Colors.transparent,
-            width: 2.0),
-      ),
-      child: Image(
-        image: AssetImage(cubit.pictures[index]),
-      ),
-    );
-  }
-//   void _changeTitle(BuildContext context) {
-//     showDialog(
-//       context: context,
-//       builder: (context) {
-//         return AlertDialog(
-//           title: Text(
-//             "Tạo nhóm trò chuyện",
-//             style: AppTypography.title.copyWith(fontWeight: FontWeight.w700),
-//           ),
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(
-//               20.r,
-//             ),
-//           ),
-//           content: CustomTextField(
-//             controller: createGroupController,
-//             borderRadius: 30.r,
-//           ),
-//           actions: [
-//             ValueListenableBuilder<TextEditingValue>(
-//               valueListenable: createGroupController,
-//               builder: (context, value, child) {
-//                 return ElevatedButton(
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: AppColor.secondary,
-//                     shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(15.r)),
-//                   ),
-//                   onPressed: value.text.isEmpty
-//                       ? null
-//                       : () {
-//                           Navigator.pop(context);
-//                         },
-//                   child: Text(
-//                     "Tạo nhóm",
-//                     style: AppTypography.body.copyWith(
-//                       color: AppColor.primary,
-//                       fontWeight: FontWeight.w700,
-//                     ),
-//                   ),
-//                 );
-//               },
-//             ),
-//             ElevatedButton(
-//               style: ElevatedButton.styleFrom(
-//                 backgroundColor: AppColor.secondary,
-//                 shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(15.r)),
-//               ),
-//               onPressed: () {
-//                 createGroupController.clear();
-//                 Navigator.pop(context);
-//               },
-//               child: Text(
-//                 "Huỷ",
-//                 style: AppTypography.body.copyWith(
-//                   color: AppColor.primary,
-//                   fontWeight: FontWeight.w700,
-//                 ),
-//               ),
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
 }
 
 class ChatComponent extends StatelessWidget {
@@ -360,8 +249,7 @@ class ChatComponent extends StatelessWidget {
           BoxShadow(
             color: AppColor.defaultBorder.withOpacity(0.25),
             spreadRadius: 1,
-
-            offset: Offset(0, 1), // changes position of shadow
+            offset: const Offset(0, 1), // changes position of shadow
           ),
         ],
       ),
