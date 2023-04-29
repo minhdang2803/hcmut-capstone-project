@@ -1,24 +1,31 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bke/bloc/chat/chat_cubit.dart';
+import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/presentation/widgets/custom_app_bar.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
+import 'package:bke/utils/widget_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatMemberInfoParam {
-  ChatMemberInfoParam({required this.context, required this.chatName});
+  ChatMemberInfoParam(
+      {required this.context, required this.chatName, required this.groupId});
   final BuildContext context;
   final String chatName;
+  final String groupId;
 }
 
 class ChatMemberInfo extends StatelessWidget {
-  const ChatMemberInfo({super.key, required this.chatName});
+  const ChatMemberInfo(
+      {super.key, required this.chatName, required this.groupId});
 
   final String chatName;
+  final String groupId;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +38,31 @@ class ChatMemberInfo extends StatelessWidget {
             BkEAppBar(
               label: "$chatName's Infomation",
               onBackButtonPress: () => Navigator.pop(context),
+              trailing: IconButton(
+                onPressed: () {
+                  WidgetUtil.showDialog(
+                    context: context,
+                    title: "Cảnh báo!",
+                    message: "Bạn chắc chắn muốn rời khỏi cuộc trò chuyện?",
+                    onAccepted: () {
+                      context.read<ChatCubit>().toggleGroupJoin(
+                          groupId: groupId,
+                          userName:
+                              FirebaseAuth.instance.currentUser!.displayName!,
+                          groupName: chatName,
+                          uid: FirebaseAuth.instance.currentUser!.uid);
+                      // Navigator.push(context, RouteName.chatPage);
+                      int count = 0;
+                      Navigator.of(context).popUntil((_) => count++ >= 2);
+                    },
+                    onDismissed: () {},
+                  );
+                },
+                icon: const Icon(
+                  Icons.exit_to_app,
+                  size: 30,
+                ),
+              ),
             ),
             Expanded(
               child: Container(
@@ -196,10 +228,17 @@ class InfoCard extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              AutoSizeText("ID: $memId",
+              SizedBox(
+                width: 220.w,
+                child: Text(
+                  "ID: $memId",
                   style: AppTypography.bodySmall.copyWith(
                     color: AppColor.textSecondary,
-                  )),
+                    overflow: TextOverflow.fade,
+                  ),
+                  overflow: TextOverflow.fade,
+                ),
+              ),
             ],
           ),
           const Spacer(),

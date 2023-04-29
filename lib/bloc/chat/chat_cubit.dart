@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/repositories/chat_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -42,6 +43,10 @@ class ChatCubit extends Cubit<ChatState> {
     return res.substring(0, res.indexOf("_"));
   }
 
+  void removeRoomInfo() {
+    emit(state.copyWith(groupId: null, groupName: null, admin: null));
+  }
+
   Future<void> createGroup({
     required String userName,
     required String uid,
@@ -59,8 +64,86 @@ class ChatCubit extends Cubit<ChatState> {
       emit(state.copyWith(updatingDataStatus: ChatGetDataStatus.done));
     } catch (error) {
       emit(ChatState.initial());
-      emit(state.copyWith(updatingDataStatus: ChatGetDataStatus.fail));
+      emit(state.copyWith(
+          updatingDataStatus: ChatGetDataStatus.fail,
+          errorMessage: error.toString()));
     }
+  }
+
+  Future<void> seachChat(String groupName) async {
+    try {
+      emit(state.copyWith(chatSearchStatus: ChatSearchStatus.loading));
+      final response = await instance.searchSearch(groupName);
+      emit(state.copyWith(
+        chatSearchStatus: ChatSearchStatus.done,
+        listChatInfo: response,
+      ));
+    } catch (error) {
+      emit(ChatState.initial());
+      emit(state.copyWith(
+          chatSearchStatus: ChatSearchStatus.fail,
+          errorMessage: error.toString()));
+    }
+  }
+
+  Future<bool> isUserInGroup(
+      {required String groupName,
+      required String groupId,
+      required String userName,
+      required String uid}) async {
+    return instance.isUserInGroup(
+      groupName: groupName,
+      groupId: groupId,
+      userName: userName,
+      uid: uid,
+    );
+  }
+
+  Future<void> toggleGroupJoin(
+      {required String groupId,
+      required String userName,
+      required String groupName,
+      required String uid}) async {
+    final response = await instance.toggleGroupJoin(
+      groupId: groupId,
+      userName: userName,
+      groupName: groupName,
+      uid: uid,
+    );
+  }
+
+  void exitSearchPage() {
+    emit(state.copyWith(chatSearchStatus: ChatSearchStatus.initial));
+  }
+
+  Future<void> checkInGroups({
+    required String groupName,
+    required String uid,
+  }) async {
+    emit(state.copyWith(chatSearchStatus: ChatSearchStatus.loading));
+    final response =
+        await instance.checkInGroups(groupName: groupName, uid: uid);
+
+    emit(state.copyWith(
+      isInGroup: response,
+      chatSearchStatus: ChatSearchStatus.done,
+    ));
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getChats(
+      {required String groupId, required String uid}) {
+    return instance.getChats(groupId: groupId, uid: uid);
+  }
+
+  void sendMessage(
+      {required String groupId,
+      required Map<String, dynamic> chatMessageData}) {
+    return instance.sendMessage(
+        groupId: groupId, chatMessageData: chatMessageData);
+  }
+
+  void updateChatlength(int length) {
+    emit(state.copyWith(chatLength: length));
   }
 
   List<String> pictures = [

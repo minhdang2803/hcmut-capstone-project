@@ -6,6 +6,7 @@ import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
 import 'package:bke/data/dependency_injection/di.dart';
 import 'package:bke/data/repositories/dictionary_repository.dart';
 import 'package:bke/utils/share_pref.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -37,6 +38,7 @@ void main() async {
   //   statusBarIconBrightness: Brightness.dark,
   //   systemNavigationBarIconBrightness: Brightness.dark,
   // ));
+
   final sharePref = SharedPrefWrapper.instance();
   final secondLogin = await sharePref.getBool("isSecondLogin");
   if (!secondLogin) {

@@ -91,3 +91,48 @@ class _CustomLookupTextFieldState extends State<CustomLookupTextField> {
     );
   }
 }
+
+class ChatTextField extends StatefulWidget {
+  const ChatTextField(
+      {super.key,
+      required this.controller,
+      this.borderRadius = 30,
+      this.onChanged,
+      required this.onSubmitted,
+      this.hintText});
+
+  final TextEditingController controller;
+  final double? borderRadius;
+  final void Function(String)? onChanged;
+  final void Function(String) onSubmitted;
+  final String? hintText;
+  @override
+  State<ChatTextField> createState() => _ChatTextFieldState();
+}
+
+class _ChatTextFieldState extends State<ChatTextField> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.9,
+      child: TextField(
+        controller: widget.controller,
+        cursorColor: AppColor.secondary,
+        decoration: InputDecoration(
+          hintText: widget.hintText ?? "Nhập tin nhắn",
+          filled: true,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(widget.borderRadius!),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(widget.borderRadius!),
+            borderSide: BorderSide.none,
+          ),
+        ),
+        onChanged: widget.onChanged,
+        onSubmitted: widget.onSubmitted,
+      ),
+    );
+  }
+}

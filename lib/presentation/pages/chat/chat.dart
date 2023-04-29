@@ -1,6 +1,7 @@
 import 'package:bke/bloc/chat/chat_cubit.dart';
 import 'package:bke/data/data_source/local/local_sources.dart';
 import 'package:bke/presentation/pages/chat/chat_conversation_page.dart';
+import 'package:bke/presentation/pages/chat/chat_search_page.dart';
 import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
@@ -41,6 +42,8 @@ class _ChatPageState extends State<ChatPage> {
             BkEAppBar(
               label: 'Trò chuyện',
               onBackButtonPress: () => Navigator.pop(context),
+              onSearchButtonPress: () => showSearch(
+                  context: context, delegate: ChatSearchPage(context)),
             ),
             _buildMainUi(context)
           ],
@@ -69,8 +72,8 @@ class _ChatPageState extends State<ChatPage> {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
-              10.verticalSpace,
-              _buildSearchBar(context),
+              // 10.verticalSpace,
+              // _buildSearchBar(context),
               20.verticalSpace,
               Expanded(child: _buildChatList(context))
             ],
@@ -78,13 +81,15 @@ class _ChatPageState extends State<ChatPage> {
     ));
   }
 
-  Widget _buildSearchBar(BuildContext context) {
-    return CustomLookupTextField(
-      onSubmitted: (value) {},
-      hintText: "Tìm nhóm hội thoại",
-      controller: searchController,
-    );
-  }
+  // Widget _buildSearchBar(BuildContext context) {
+  //   return CustomLookupTextField(
+  //     onSubmitted: (value) {
+  //       showSearch(context: context, delegate: ChatSearchPage());
+  //     },
+  //     hintText: "Tìm nhóm hội thoại",
+  //     controller: searchController,
+  //   );
+  // }
 
   Widget _buildChatList(BuildContext context) {
     return SizedBox(
@@ -118,6 +123,7 @@ class _ChatPageState extends State<ChatPage> {
                 itemBuilder: (context, index) {
                   int indexReverse =
                       snapshot.data['groups']!.length - index - 1;
+
                   final current = snapshot.data['groups'][indexReverse];
                   return ChatComponent(
                     chatName: context.read<ChatCubit>().getName(current),

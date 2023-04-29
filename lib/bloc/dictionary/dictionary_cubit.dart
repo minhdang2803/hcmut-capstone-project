@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:bke/data/models/network/cvn_exception.dart';
 import 'package:bke/data/models/vocab/vocab.dart';

@@ -39,7 +39,7 @@ class BkEAppBar extends StatelessWidget {
         padding: EdgeInsets.only(
           // top: topPadding,
           top: 0,
-          right: 30.r,
+          right: 18.r,
           left: onBackButtonPress != null ? 20.r : 30.r,
         ),
         child: Row(
@@ -65,7 +65,6 @@ class BkEAppBar extends StatelessWidget {
         visible: trailing != null,
         child: Row(
           children: [
-            10.horizontalSpace,
             trailing ?? const SizedBox.shrink(),
           ],
         ));
@@ -122,7 +121,7 @@ class BkEAppBar extends StatelessWidget {
       child: CircleBorderContainer(
         radius: 32.r,
         elevation: 2,
-        borderColor: AppColor.iconBorder,
+        borderColor: Colors.transparent,
         borderWidth: 3.r,
         onPressed: onSearchButtonPress,
         child: SvgPicture.asset(
