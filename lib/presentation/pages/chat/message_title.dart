@@ -1,6 +1,7 @@
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/utils/extension.dart';
+import 'package:bke/utils/word_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +24,7 @@ class MessageTitle extends StatefulWidget {
 
 class _MessageTitleState extends State<MessageTitle> {
   bool isVisibleTime = false;
+  final WordProcessing wordProcessing = WordProcessing.instance();
   @override
   Widget build(BuildContext context) {
     final clm = DateTime.fromMicrosecondsSinceEpoch(widget.time * 1000);
@@ -64,11 +66,13 @@ class _MessageTitleState extends State<MessageTitle> {
             ),
             5.verticalSpace,
             SizedBox(
-              child: Text(widget.message,
-                  style: AppTypography.body.copyWith(
-                    color: color,
-                  )),
-            ),
+                child: Text.rich(
+              TextSpan(
+                  children: wordProcessing.createTextSpans(
+                      context,
+                      widget.message,
+                      AppTypography.body.copyWith(color: color))),
+            )),
             Visibility(
               visible: isVisibleTime,
               child: Column(
