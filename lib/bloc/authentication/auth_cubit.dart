@@ -1,3 +1,4 @@
+import 'package:bke/data/data_source/local/local_sources.dart';
 import 'package:bke/data/data_source/remote/chat/chat_local_source.dart';
 import 'package:bke/data/models/authentication/user.dart';
 import 'package:bloc/bloc.dart';
@@ -30,10 +31,16 @@ class AuthCubit extends Cubit<AuthState> {
       final user = response.data!.user;
       final token = response.data!.authorization.accessToken;
       _authRepository.saveCurrentUser(user, token);
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final logingg = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
         email: email,
         password: password,
-      );
+      )
+          .then((value) {
+        final data = GetIt.I.get<AuthLocalSourceImpl>();
+        return FirebaseAuth.instance.currentUser!
+            .updateDisplayName(data.getCurrentUser()!.fullName);
+      });
       emit(LoginSuccess(user));
       LogUtil.debug('Login success: ${response.data?.user.id ?? 'empty user'}');
     } on RemoteException catch (e, s) {

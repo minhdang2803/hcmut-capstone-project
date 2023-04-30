@@ -174,6 +174,7 @@ class RouteGenerator {
             BlocProvider.value(value: args.context.read<ChatCubit>())
           ],
           child: ChatMemberInfo(
+            groupId: args.groupId,
             chatName: args.chatName,
           ),
         );

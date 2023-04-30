@@ -1,6 +1,7 @@
 import 'package:bke/bloc/chat/chat_cubit.dart';
 import 'package:bke/data/data_source/local/local_sources.dart';
 import 'package:bke/presentation/pages/chat/chat_conversation_page.dart';
+import 'package:bke/presentation/pages/chat/chat_search_page.dart';
 import 'package:bke/presentation/routes/route_name.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:bke/presentation/widgets/widgets.dart';
@@ -9,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import '../../theme/app_color.dart';
-import '../../widgets/custom_app_bar.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -41,6 +42,8 @@ class _ChatPageState extends State<ChatPage> {
             BkEAppBar(
               label: 'Trò chuyện',
               onBackButtonPress: () => Navigator.pop(context),
+              onSearchButtonPress: () => showSearch(
+                  context: context, delegate: ChatSearchPage(context)),
             ),
             _buildMainUi(context)
           ],
@@ -69,8 +72,8 @@ class _ChatPageState extends State<ChatPage> {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
-              10.verticalSpace,
-              _buildSearchBar(context),
+              // 10.verticalSpace,
+              // _buildSearchBar(context),
               20.verticalSpace,
               Expanded(child: _buildChatList(context))
             ],
@@ -78,13 +81,15 @@ class _ChatPageState extends State<ChatPage> {
     ));
   }
 
-  Widget _buildSearchBar(BuildContext context) {
-    return CustomLookupTextField(
-      onSubmitted: (value) {},
-      hintText: "Tìm nhóm hội thoại",
-      controller: searchController,
-    );
-  }
+  // Widget _buildSearchBar(BuildContext context) {
+  //   return CustomLookupTextField(
+  //     onSubmitted: (value) {
+  //       showSearch(context: context, delegate: ChatSearchPage());
+  //     },
+  //     hintText: "Tìm nhóm hội thoại",
+  //     controller: searchController,
+  //   );
+  // }
 
   Widget _buildChatList(BuildContext context) {
     return SizedBox(
@@ -118,22 +123,30 @@ class _ChatPageState extends State<ChatPage> {
                 itemBuilder: (context, index) {
                   int indexReverse =
                       snapshot.data['groups']!.length - index - 1;
+
                   final current = snapshot.data['groups'][indexReverse];
-                  return ChatComponent(
-                    chatName: context.read<ChatCubit>().getName(current),
-                    chatLastMessage: "Hello",
-                    timeForLastMessage: "10 mins ago",
-                    onTap: () {
-                      context.read<ChatCubit>().getGroupInfo(current);
-                      Navigator.pushNamed(
-                        context,
-                        RouteName.chatConversation,
-                        arguments: ChatConversationParam(
-                          chatName: context.read<ChatCubit>().getName(current),
-                          chatGroupId:
-                              context.read<ChatCubit>().getGroupId(current),
-                          context: context,
-                        ),
+                  final groupId = context.read<ChatCubit>().getGroupId(current);
+                  context.read<ChatCubit>().getGroupData(groupId);
+                  return BlocBuilder<ChatCubit, ChatState>(
+                    builder: (context, state) {
+                      return ChatComponent(
+                        chatName: context.read<ChatCubit>().getName(current),
+                        chatLastMessage:
+                            "Join the community as ${FirebaseAuth.instance.currentUser!.displayName!}",
+                        timeForLastMessage: "",
+                        onTap: () {
+                          context.read<ChatCubit>().getGroupInfo(current);
+                          Navigator.pushNamed(
+                            context,
+                            RouteName.chatConversation,
+                            arguments: ChatConversationParam(
+                              chatName:
+                                  context.read<ChatCubit>().getName(current),
+                              chatGroupId: groupId,
+                              context: context,
+                            ),
+                          );
+                        },
                       );
                     },
                   );
@@ -238,6 +251,7 @@ class ChatComponent extends StatelessWidget {
   final String chatLastMessage;
   final String timeForLastMessage;
   final Function() onTap;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -260,7 +274,7 @@ class ChatComponent extends StatelessWidget {
           children: [
             Text(chatName, style: AppTypography.title),
             Padding(
-              padding: EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 10),
               child: Text(
                 timeForLastMessage,
                 style: AppTypography.bodySmall,
@@ -289,7 +303,7 @@ class ChatComponent extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    chatName[0],
+                    chatName[0].toUpperCase(),
                     style:
                         AppTypography.subHeadline.copyWith(color: Colors.white),
                   ),
@@ -299,4 +313,9 @@ class ChatComponent extends StatelessWidget {
       ),
     );
   }
+}
+
+String diffFromNow(int time) {
+  final clm = DateTime.fromMillisecondsSinceEpoch(time);
+  return DateFormat('dd/MM/yyyy, HH:mm').format(clm).toString();
 }

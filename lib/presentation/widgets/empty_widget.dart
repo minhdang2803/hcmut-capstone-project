@@ -22,7 +22,7 @@ class EmptyWidget extends StatelessWidget {
           Text(
             text ?? "Bạn chưa lưu từ vựng nào!",
             style: AppTypography.subHeadline.copyWith(
-              color: AppColor.textPrimary,
+            color: AppColor.textPrimary,
               fontWeight: FontWeight.w700,
             ),
             textAlign: TextAlign.center,

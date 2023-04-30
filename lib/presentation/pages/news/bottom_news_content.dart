@@ -96,22 +96,21 @@ class BottomNewsContent extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                   placeholder: "assets/images/default_logo.png",
-                  image: news.urlToImage.isEmpty
+                  image: news.urlToImage.isNotEmpty
                       ? news.urlToImage
                       : "https://lh3.googleusercontent.com/drive-viewer/AAOQEOSNan7V6kMFqB0eeYCVQJiAUyn8nGpA9fCjFywBjqiCpxxxBG8eECkDciAEoCWLA6s5UW2Hjczs7Toh9_-UwmiSlKh2=s2560",
                 ),
               ),
               15.verticalSpace,
               Text.rich(
-                TextSpan(
-                  children: _wordProcessing.createTextSpans(
-                    context,
-                    news.content,
-                    AppTypography.title,
+                  TextSpan(
+                    children: _wordProcessing.createTextSpans(
+                      context,
+                      news.content,
+                      AppTypography.title,
+                    ),
                   ),
-                ),
-                textAlign: TextAlign.justify,
-              ),
+                  textAlign: TextAlign.justify),
             ],
           ))),
         ],
