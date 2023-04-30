@@ -17,7 +17,7 @@ class WordProcessing {
     String tempWord = '';
     for (final element in eachCharList) {
       if (element.contains("[") && element.contains("]")) {
-        result.add(element.replaceAll(RegExp(r'[\[\]]'), ''));
+        result.add(element);
       } else if (element.contains('[') && !element.contains(']')) {
         tempWord = "$tempWord$element ";
       } else if (!element.contains('[') && element.contains(']')) {
@@ -28,7 +28,6 @@ class WordProcessing {
         result.add(element);
       }
     }
-    print(result);
     return result;
   }
 
@@ -42,16 +41,18 @@ class WordProcessing {
       TextSpan span = const TextSpan();
       // first is the word highlight recommended by admin [example] and ending with , or .
       if (text.contains('[') && text.contains(']')) {
-        text = text.trim().substring(1, text.length - 1);
+        int startIndex = text.indexOf('[') + 1;
+        int endIndex = text.indexOf(']');
+        String translatableText = text.trim().substring(startIndex, endIndex);
         span = TextSpan(
-          text: '$text ',
+          text: '${plainText(text)} ',
           style: style,
           recognizer: TapGestureRecognizer()
             ..onTap = () {
               showModalBottomSheet(
                 context: context,
                 backgroundColor: Colors.transparent,
-                builder: (context) => BottomVocab(text: text.toLowerCase()),
+                builder: (context) => BottomVocab(text: translatableText.toLowerCase()),
               );
             },
         );
@@ -74,5 +75,9 @@ class WordProcessing {
       arrayOfTextSpan.add(span);
     }
     return arrayOfTextSpan;
+  }
+
+  String plainText (String text) {
+    return text.replaceAll(RegExp(r'[\[\]]'), '');
   }
 }
