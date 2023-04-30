@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:bke/bloc/chat/chat_cubit.dart';
 import 'package:bke/data/data_source/remote/chat/chat_local_source.dart';
+import 'package:bke/data/models/chat/chat_group_info_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatRepository {

@@ -29,6 +29,8 @@ class ChatState extends Equatable {
     this.chatLength,
     this.chatStream,
     this.groupData,
+    this.listChatData,
+    this.groupList,
   });
   late final String? groupName;
   late final String? admin;
@@ -43,6 +45,8 @@ class ChatState extends Equatable {
   late final int? chatLength;
   late final DocumentSnapshot<Object?>? groupData;
   late final Stream<QuerySnapshot<Map<String, dynamic>>>? chatStream;
+  late final List<ChatGroupData>? listChatData;
+  late final Stream<DocumentSnapshot<Object?>>? groupList;
 
   ChatState.initial() {
     updatingDataStatus = ChatGetDataStatus.initial;
@@ -58,6 +62,8 @@ class ChatState extends Equatable {
     chatLength = 0;
     chatStream = null;
     groupData = null;
+    listChatData = [];
+    groupList = null;
   }
 
   ChatState copyWith({
@@ -74,6 +80,8 @@ class ChatState extends Equatable {
     int? chatLength,
     Stream<QuerySnapshot<Map<String, dynamic>>>? chatStream,
     DocumentSnapshot<Object?>? groupData,
+    List<ChatGroupData>? listChatData,
+    Stream<DocumentSnapshot<Object?>>? groupList,
   }) {
     return ChatState(
       groupId: groupId ?? this.groupId,
@@ -89,6 +97,8 @@ class ChatState extends Equatable {
       chatLength: chatLength ?? this.chatLength,
       chatStream: chatStream ?? this.chatStream,
       groupData: groupData ?? this.groupData,
+      listChatData: listChatData ?? this.listChatData,
+      groupList: groupList ?? this.groupList,
     );
   }
 
@@ -107,16 +117,7 @@ class ChatState extends Equatable {
         chatLength,
         chatStream,
         groupData,
+        listChatData,
+        groupList,
       ];
-}
-
-class ChatInfo {
-  final String groupName;
-  final String admin;
-  final String groupId;
-  ChatInfo({
-    required this.groupId,
-    required this.groupName,
-    required this.admin,
-  });
 }

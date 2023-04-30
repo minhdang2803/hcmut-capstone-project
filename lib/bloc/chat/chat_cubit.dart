@@ -1,6 +1,4 @@
-import 'dart:math';
-
-import 'package:bke/data/models/network/cvn_exception.dart';
+import 'package:bke/data/models/chat/chat_group_info_model.dart';
 import 'package:bke/data/repositories/chat_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -130,11 +128,20 @@ class ChatCubit extends Cubit<ChatState> {
     ));
   }
 
-  Future<DocumentSnapshot<Object?>> getGroupData(String groupId) async {
+  void getGroupData(String groupId) async {
+    List<ChatGroupData> chatGroupData = [];
     emit(state.copyWith(updatingDataStatus: ChatGetDataStatus.loading));
     final clm = await instance.getGroupData(groupId: groupId);
-    emit(state.copyWith(updatingDataStatus: ChatGetDataStatus.done));
-    return clm;
+    chatGroupData.addAll(state.listChatData ?? []);
+    chatGroupData.add(
+      ChatGroupData(
+          lastMessage: clm['recentMessage'],
+          lastSentTime: clm['timeLastMessage'],
+          groupId: clm['groupId']),
+    );
+    emit(state.copyWith(
+        updatingDataStatus: ChatGetDataStatus.done,
+        listChatData: chatGroupData));
   }
 
   void getChats({required String groupId, required String uid}) {

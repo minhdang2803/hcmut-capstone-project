@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:bke/bloc/chat/chat_cubit.dart';
+import 'package:bke/data/models/chat/chat_group_info_model.dart';
 import 'package:bke/utils/share_pref.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -140,6 +141,7 @@ class ChatSourceImpl implements ChatSource {
   }
 
   //search
+  @override
   Future<List<ChatInfo>> searchSearch(String groupName) async {
     final List<ChatInfo> chatInfos = [];
     final clm =

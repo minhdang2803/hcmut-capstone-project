@@ -126,15 +126,14 @@ class _ChatPageState extends State<ChatPage> {
 
                   final current = snapshot.data['groups'][indexReverse];
                   final groupId = context.read<ChatCubit>().getGroupId(current);
-
                   context.read<ChatCubit>().getGroupData(groupId);
                   return BlocBuilder<ChatCubit, ChatState>(
                     builder: (context, state) {
                       return ChatComponent(
                         chatName: context.read<ChatCubit>().getName(current),
-                        chatLastMessage: "",
+                        chatLastMessage:
+                            "Join the community as ${FirebaseAuth.instance.currentUser!.displayName!}",
                         timeForLastMessage: "",
-                        groupId: groupId,
                         onTap: () {
                           context.read<ChatCubit>().getGroupInfo(current);
                           Navigator.pushNamed(
@@ -236,14 +235,9 @@ class _ChatPageState extends State<ChatPage> {
       },
     );
   }
-
-  String diffFromNow(int time) {
-    final clm = DateTime.fromMillisecondsSinceEpoch(time);
-    return DateFormat('dd/MM/yyyy, HH:mm').format(clm).toString();
-  }
 }
 
-class ChatComponent extends StatefulWidget {
+class ChatComponent extends StatelessWidget {
   const ChatComponent({
     super.key,
     this.chatAvatar,
@@ -251,26 +245,12 @@ class ChatComponent extends StatefulWidget {
     required this.chatName,
     required this.timeForLastMessage,
     required this.onTap,
-    required this.groupId,
   });
   final String? chatAvatar;
   final String chatName;
   final String chatLastMessage;
   final String timeForLastMessage;
-  final dynamic groupId;
   final Function() onTap;
-
-  @override
-  State<ChatComponent> createState() => _ChatComponentState();
-}
-
-class _ChatComponentState extends State<ChatComponent> {
-  late final data;
-  @override
-  void initState() {}
-
-  @override
-  void didChangeDependencies() {}
 
   @override
   Widget build(BuildContext context) {
@@ -287,55 +267,55 @@ class _ChatComponentState extends State<ChatComponent> {
           ),
         ],
       ),
-      child: BlocBuilder<ChatCubit, ChatState>(
-        builder: (context, state) {
-          return ListTile(
-            onTap: widget.onTap,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(widget.chatName, style: AppTypography.title),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
+      child: ListTile(
+        onTap: onTap,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(chatName, style: AppTypography.title),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text(
+                timeForLastMessage,
+                style: AppTypography.bodySmall,
+              ),
+            )
+          ],
+        ),
+        leading: chatAvatar != null
+            ? Container(
+                decoration: BoxDecoration(
+                  color: AppColor.accentPink,
+                  borderRadius: BorderRadius.circular(360),
+                ),
+                child: Image.asset(
+                  chatAvatar!,
+                  width: 50,
+                  height: 50,
+                ),
+              )
+            : Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: AppColor.accentPink,
+                  borderRadius: BorderRadius.circular(360),
+                ),
+                child: Center(
                   child: Text(
-                    widget.timeForLastMessage,
-                    style: AppTypography.bodySmall,
+                    chatName[0].toUpperCase(),
+                    style:
+                        AppTypography.subHeadline.copyWith(color: Colors.white),
                   ),
-                )
-              ],
-            ),
-            leading: widget.chatAvatar != null
-                ? Container(
-                    decoration: BoxDecoration(
-                      color: AppColor.accentPink,
-                      borderRadius: BorderRadius.circular(360),
-                    ),
-                    child: Image.asset(
-                      widget.chatAvatar!,
-                      width: 50,
-                      height: 50,
-                    ),
-                  )
-                : Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: AppColor.accentPink,
-                      borderRadius: BorderRadius.circular(360),
-                    ),
-                    child: Center(
-                      child: Text(
-                        widget.chatName[0].toUpperCase(),
-                        style: AppTypography.subHeadline
-                            .copyWith(color: Colors.white),
-                      ),
-                    ),
-                  ),
-            subtitle:
-                Text(widget.chatLastMessage, style: AppTypography.bodySmall),
-          );
-        },
+                ),
+              ),
+        subtitle: Text(chatLastMessage, style: AppTypography.bodySmall),
       ),
     );
   }
+}
+
+String diffFromNow(int time) {
+  final clm = DateTime.fromMillisecondsSinceEpoch(time);
+  return DateFormat('dd/MM/yyyy, HH:mm').format(clm).toString();
 }
