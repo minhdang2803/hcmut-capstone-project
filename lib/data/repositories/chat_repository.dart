@@ -88,4 +88,9 @@ class ChatRepository {
     return _remote.sendMessage(
         groupId: groupId, chatMessageData: chatMessageData);
   }
+
+  Future<DocumentSnapshot<Object?>> getGroupData(
+      {required String groupId}) async {
+    return _remote.getGroupData(groupId: groupId);
+  }
 }

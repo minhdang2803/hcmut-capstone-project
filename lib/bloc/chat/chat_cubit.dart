@@ -130,16 +130,32 @@ class ChatCubit extends Cubit<ChatState> {
     ));
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getChats(
-      {required String groupId, required String uid}) {
-    return instance.getChats(groupId: groupId, uid: uid);
+  Future<DocumentSnapshot<Object?>> getGroupData(String groupId) async {
+    emit(state.copyWith(updatingDataStatus: ChatGetDataStatus.loading));
+    final clm = await instance.getGroupData(groupId: groupId);
+    emit(state.copyWith(updatingDataStatus: ChatGetDataStatus.done));
+    return clm;
+  }
+
+  void getChats({required String groupId, required String uid}) {
+    emit(state.copyWith(chattingStatus: ChatInProcessStatus.initial));
+    final clm = instance.getChats(groupId: groupId, uid: uid);
+    emit(
+      state.copyWith(
+          chattingStatus: ChatInProcessStatus.ready, chatStream: clm),
+    );
   }
 
   void sendMessage(
       {required String groupId,
       required Map<String, dynamic> chatMessageData}) {
-    return instance.sendMessage(
-        groupId: groupId, chatMessageData: chatMessageData);
+    emit(state.copyWith(chattingStatus: ChatInProcessStatus.sending));
+    instance.sendMessage(
+      groupId: groupId,
+      chatMessageData: chatMessageData,
+    );
+    emit(state.copyWith(chattingStatus: ChatInProcessStatus.sendingDone));
+    emit(state.copyWith(chattingStatus: ChatInProcessStatus.ready));
   }
 
   void updateChatlength(int length) {

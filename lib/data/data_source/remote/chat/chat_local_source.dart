@@ -39,6 +39,7 @@ abstract class ChatSource {
   });
   void sendMessage(
       {required String groupId, required Map<String, dynamic> chatMessageData});
+  Future<DocumentSnapshot<Object?>> getGroupData({required String groupId});
 }
 
 class ChatSourceImpl implements ChatSource {
@@ -231,6 +232,7 @@ class ChatSourceImpl implements ChatSource {
     return stateOfUserGroups;
   }
 
+  @override
   void sendMessage(
       {required String groupId,
       required Map<String, dynamic> chatMessageData}) async {
@@ -242,5 +244,11 @@ class ChatSourceImpl implements ChatSource {
         "timeLastMessage": chatMessageData['time'].toString(),
       },
     );
+  }
+
+  @override
+  Future<DocumentSnapshot<Object?>> getGroupData(
+      {required String groupId}) async {
+    return groupCollection.doc(groupId).get();
   }
 }

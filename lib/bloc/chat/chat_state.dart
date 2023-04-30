@@ -6,21 +6,30 @@ enum ChatSearchStatus { initial, done, fail, loading, joiningChat }
 
 enum ChatResultLoading { initial, done, fail, loading }
 
-enum ChatInProcessStatus { initial, sending, receiving, sendingDone }
+enum ChatInProcessStatus {
+  initial,
+  ready,
+  sending,
+  receiving,
+  sendingDone,
+}
 
 class ChatState extends Equatable {
-  ChatState(
-      {this.chattingStatus,
-      this.errorMessage,
-      this.updatingDataStatus,
-      this.admin,
-      this.groupName,
-      this.groupId,
-      this.listChatInfo,
-      this.chatSearchStatus,
-      this.isInGroup,
-      this.chatResultLoading,
-      this.chatLength});
+  ChatState({
+    this.chattingStatus,
+    this.errorMessage,
+    this.updatingDataStatus,
+    this.admin,
+    this.groupName,
+    this.groupId,
+    this.listChatInfo,
+    this.chatSearchStatus,
+    this.isInGroup,
+    this.chatResultLoading,
+    this.chatLength,
+    this.chatStream,
+    this.groupData,
+  });
   late final String? groupName;
   late final String? admin;
   late final String? groupId;
@@ -32,6 +41,8 @@ class ChatState extends Equatable {
   late final List<ChatInfo>? listChatInfo;
   late final List<bool>? isInGroup;
   late final int? chatLength;
+  late final DocumentSnapshot<Object?>? groupData;
+  late final Stream<QuerySnapshot<Map<String, dynamic>>>? chatStream;
 
   ChatState.initial() {
     updatingDataStatus = ChatGetDataStatus.initial;
@@ -45,6 +56,8 @@ class ChatState extends Equatable {
     isInGroup = [];
     listChatInfo = [];
     chatLength = 0;
+    chatStream = null;
+    groupData = null;
   }
 
   ChatState copyWith({
@@ -59,6 +72,8 @@ class ChatState extends Equatable {
     List<bool>? isInGroup,
     List<ChatResultLoading>? chatResultLoading,
     int? chatLength,
+    Stream<QuerySnapshot<Map<String, dynamic>>>? chatStream,
+    DocumentSnapshot<Object?>? groupData,
   }) {
     return ChatState(
       groupId: groupId ?? this.groupId,
@@ -72,6 +87,8 @@ class ChatState extends Equatable {
       isInGroup: isInGroup ?? this.isInGroup,
       chatResultLoading: chatResultLoading ?? this.chatResultLoading,
       chatLength: chatLength ?? this.chatLength,
+      chatStream: chatStream ?? this.chatStream,
+      groupData: groupData ?? this.groupData,
     );
   }
 
@@ -88,6 +105,8 @@ class ChatState extends Equatable {
         isInGroup,
         chatResultLoading,
         chatLength,
+        chatStream,
+        groupData,
       ];
 }
 
