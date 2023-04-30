@@ -4,11 +4,8 @@ import 'package:bke/data/models/authentication/user.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-<<<<<<< HEAD
 import 'package:google_sign_in/google_sign_in.dart';
-=======
 import 'package:get_it/get_it.dart';
->>>>>>> main
 import 'package:hive/hive.dart';
 
 import '../../data/models/authentication/login_model.dart';
@@ -22,7 +19,12 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'https://www.googleapis.com/auth/userinfo.profile',
+    ],
+  );
 
   final _authRepository = AuthRepository.instance();
   String fullName = "Người dùng mới";
@@ -74,39 +76,34 @@ class AuthCubit extends Cubit<AuthState> {
   void doGoogleLogin() async {
     try {
       emit(AuthLoading());
-      
-      // final GoogleSignInAccount? account = await _googleSignIn.signIn();
-      // final bool isAuthorized = await _googleSignIn.requestScopes([
-      //     'https://www.googleapis.com/auth/userinfo.email',
-      //     'https://www.googleapis.com/auth/userinfo.profile',
-      //   ],);
-      // LogUtil.debug(isAuthorized as String?);
 
-      // if (account != null){
-      //   fullName = account.displayName??fullName;
-      //   email = account.email;
-      // }
-      if (true){
+      final GoogleSignInAccount? account = await googleSignIn.signIn();
+      LogUtil.debug('account: ${account}');
+      if (account != null) {
+        fullName = account.displayName ?? fullName;
+        email = account.email;
+      }
+
+      if (true) {
         final BaseResponse<LoginModel> response =
             await _authRepository.loginWithGoogle(email);
-  
+
         final user = response.data!.user;
         final token = response.data!.authorization.accessToken;
         _authRepository.saveCurrentUser(user, token);
-        
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: user.email??'',
-          password: user.password??'',
-        );
+
+        // await FirebaseAuth.instance.signInWithEmailAndPassword(
+        //   email: user.email ?? '',
+        //   password: user.password ?? '',
+        // );
         emit(LoginSuccess(user));
       }
-     
     } on RemoteException catch (e, s) {
       LogUtil.error('Google Login error: ${e.message}',
           error: e, stackTrace: s);
       switch (e.code) {
         case RemoteException.responseError:
-          emit (const WaitingPassword("Hãy tạo một mật khẩu để tiếp tục."));  
+          emit(const WaitingPassword("Hãy tạo một mật khẩu để tiếp tục."));
           break;
         case RemoteException.noInternet:
           emit(const LoginFailure('No internet connection!'));
@@ -153,7 +150,7 @@ class AuthCubit extends Cubit<AuthState> {
   void doRegister(RegisterModel registerModel, {is3party = false}) async {
     try {
       emit(AuthLoading());
-      if (is3party){
+      if (is3party) {
         registerModel.fullName = fullName;
         registerModel.email = email;
       }
