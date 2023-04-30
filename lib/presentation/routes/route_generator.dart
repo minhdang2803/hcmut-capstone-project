@@ -1,3 +1,4 @@
+import 'package:bke/bloc/chat/chat_cubit.dart';
 import 'package:bke/bloc/countdown_cubit/count_down_cubit.dart';
 import 'package:bke/bloc/quiz/quiz/quiz_cubit.dart';
 import 'package:bke/bloc/quiz/quiz_map/map_cubit.dart';
@@ -14,6 +15,8 @@ import 'package:bke/data/models/vocab/vocab.dart';
 import 'package:bke/presentation/pages/authentication/components/set_pass_component.dart';
 import 'package:bke/presentation/pages/book/books_page.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
+import 'package:bke/presentation/pages/chat/chat_conversation_page.dart';
+import 'package:bke/presentation/pages/chat/chat_member_info.dart';
 import 'package:bke/presentation/pages/flashcard/flashcards.dart';
 import 'package:bke/presentation/pages/quiz/quizzes.dart';
 import 'package:bke/presentation/pages/toeic_test/toeic_review_page.dart';
@@ -142,7 +145,43 @@ class RouteGenerator {
         break;
 
       case RouteName.chatPage:
-        page = const ChatPage();
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => ChatCubit(),
+            ),
+            // BlocProvider(
+            //   create: (context) => SubjectBloc(),
+            // ),
+          ],
+          child: const ChatPage(),
+        );
+        break;
+
+      case RouteName.chatConversation:
+        final args = settings.arguments as ChatConversationParam;
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: args.context.read<ChatCubit>())
+          ],
+          child: ChatConversationPage(
+            chatGroupId: args.chatGroupId,
+            chatName: args.chatName,
+          ),
+        );
+        break;
+
+      case RouteName.chatMemberInfo:
+        final args = settings.arguments as ChatMemberInfoParam;
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: args.context.read<ChatCubit>())
+          ],
+          child: ChatMemberInfo(
+            groupId: args.groupId,
+            chatName: args.chatName,
+          ),
+        );
         break;
 
       case RouteName.videoPage:

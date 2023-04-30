@@ -1,6 +1,8 @@
 import 'package:bke/data/models/toeic/toeic_models.dart';
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
+import 'package:bke/utils/extension.dart';
+import 'package:bke/utils/word_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,6 +19,7 @@ class ReviewPartThree extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final wordProcessing = WordProcessing.instance();
     return Padding(
       padding: EdgeInsets.all(10.r),
       child: Container(
@@ -40,7 +43,8 @@ class ReviewPartThree extends StatelessWidget {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 final toeicLocal = answer[index];
-                return _buildQuestionAndResult(toeicLocal, index + 1);
+                return _buildQuestionAndResult(
+                    context, toeicLocal, index + 1, wordProcessing);
               },
               separatorBuilder: (context, index) => 10.verticalSpace,
               itemCount: answer.length,
@@ -51,7 +55,12 @@ class ReviewPartThree extends StatelessWidget {
     );
   }
 
-  Widget _buildQuestionAndResult(ToeicQuestion toeicLocal, int index) {
+  Widget _buildQuestionAndResult(
+    BuildContext context,
+    ToeicQuestion toeicLocal,
+    int index,
+    WordProcessing wordProcessing,
+  ) {
     return Container(
       padding: EdgeInsets.all(10.r),
       decoration: BoxDecoration(
@@ -71,12 +80,34 @@ class ReviewPartThree extends StatelessWidget {
               style: AppTypography.title.copyWith(color: AppColor.mainPink),
               children: [
                 TextSpan(
-                    text: "${toeicLocal.text}\n", style: AppTypography.title),
-                ...toeicLocal.answers!
-                    .map((e) =>
-                        TextSpan(text: "$e\n", style: AppTypography.title))
-                    .toList()
+                  children: wordProcessing.createTextSpans(
+                      context, toeicLocal.text!, AppTypography.title)
+                    ..add(const TextSpan(text: "\n")),
+                ),
+                TextSpan(
+                  children: toeicLocal.answers!
+                      .map((e) => TextSpan(
+                          children: wordProcessing.createTextSpans(context,
+                              e.toCapitalizeFirst(), AppTypography.title)
+                            ..add(
+                              const TextSpan(text: "\n"),
+                            )))
+                      .toList(),
+                ),
               ])),
+
+          // TextSpan(
+          //             children: answer
+          //                 .map(
+          //                   (e) => TextSpan(
+          //                     children: wordProcessing.createTextSpans(
+          //                       context,
+          //                       e,
+          //                       AppTypography.title,
+          //                     )..add(const TextSpan(text: "\n")),
+          //                   ),
+          //                 )
+          //                 .toList())
           Text.rich(TextSpan(
               text: "Answer: ",
               style: AppTypography.title.copyWith(color: AppColor.mainPink),

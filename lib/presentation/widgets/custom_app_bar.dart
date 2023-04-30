@@ -39,12 +39,12 @@ class BkEAppBar extends StatelessWidget {
         padding: EdgeInsets.only(
           // top: topPadding,
           top: 0,
-          right: 30.r,
+          right: 18.r,
           left: onBackButtonPress != null ? 20.r : 30.r,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _buildLeading(context),
             10.horizontalSpace,
@@ -53,8 +53,7 @@ class BkEAppBar extends StatelessWidget {
             _buildNotificationIcon(context),
             if (onSearchButtonPress != null) 12.horizontalSpace,
             _buildSearchIcon(context),
-            // 10.horizontalSpace,
-            // _buildOptions(context)
+            _buildOptions(context)
           ],
         ),
       ),
@@ -62,9 +61,13 @@ class BkEAppBar extends StatelessWidget {
   }
 
   Widget _buildOptions(BuildContext context) {
-    return trailing != null
-        ? Visibility(visible: trailing != null, child: trailing!)
-        : Container();
+    return Visibility(
+        visible: trailing != null,
+        child: Row(
+          children: [
+            trailing ?? const SizedBox.shrink(),
+          ],
+        ));
   }
 
   Widget _buildLabel() {
@@ -118,7 +121,7 @@ class BkEAppBar extends StatelessWidget {
       child: CircleBorderContainer(
         radius: 32.r,
         elevation: 2,
-        borderColor: AppColor.iconBorder,
+        borderColor: Colors.transparent,
         borderWidth: 3.r,
         onPressed: onSearchButtonPress,
         child: SvgPicture.asset(

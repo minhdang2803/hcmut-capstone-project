@@ -66,7 +66,7 @@ class _VerifyRegisterOTPComponentState
             RichText(
               text: TextSpan(
                 text:
-                    'Nhập mã OTP đã được gửi đến email của bạn để xác nhận',
+                    'Nhập mã OTP đã được gửi đến email của bạn, vui lòng kiểm tra email để xác nhận: ',
                 style: AppTypography.body,
                 children: [
                   TextSpan(
@@ -142,7 +142,8 @@ class _VerifyRegisterOTPComponentState
           }
           return RoundedElevatedButton(
             label: 'Xác nhận',
-            labelStyle: AppTypography.title.copyWith(color: AppColor.textPrimary),
+            labelStyle:
+                AppTypography.title.copyWith(color: AppColor.textPrimary),
             backgroundColor: AppColor.accentBlue,
             width: 225.w,
             height: 44.h,

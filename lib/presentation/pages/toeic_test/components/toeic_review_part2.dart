@@ -1,5 +1,6 @@
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
+import 'package:bke/utils/word_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -26,6 +27,7 @@ class ReviewPartTwo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final wordProcessing = WordProcessing.instance();
     final List<String> content = getTranScript(text);
     return Padding(
       padding: EdgeInsets.all(10.r),
@@ -56,18 +58,40 @@ class ReviewPartTwo extends StatelessWidget {
                           .copyWith(color: AppColor.mainPink),
                       children: [
                         TextSpan(
-                            text: "${content[0]}?", style: AppTypography.title),
+                          children: wordProcessing.createTextSpans(
+                              context, content[0], AppTypography.title)
+                            ..add(TextSpan(text: "\n")),
+                        ),
                         TextSpan(
-                            text: "${content[1]}\n",
-                            style: AppTypography.title),
+                          children: wordProcessing.createTextSpans(
+                              context, content[1], AppTypography.title)
+                            ..add(TextSpan(text: "\n")),
+                        ),
                         TextSpan(
-                            text: "(${content[2]}\n",
-                            style: AppTypography.title),
+                          children: wordProcessing.createTextSpans(
+                              context, content[2], AppTypography.title)
+                            ..add(TextSpan(text: "\n")),
+                        ),
                         TextSpan(
-                            text: "(${content[3]}\n",
-                            style: AppTypography.title),
+                          children: wordProcessing.createTextSpans(
+                              context, content[3], AppTypography.title)
+                            ..add(TextSpan(text: "\n")),
+                        ),
                         TextSpan(
-                            text: "(${content[4]}", style: AppTypography.title)
+                          children: wordProcessing.createTextSpans(
+                              context, content[4], AppTypography.title),
+                        ),
+                        // TextSpan(
+                        //     text: "${content[1]}\n",
+                        //     style: AppTypography.title),
+                        // TextSpan(
+                        //     text: "(${content[2]}\n",
+                        //     style: AppTypography.title),
+                        // TextSpan(
+                        //     text: "(${content[3]}\n",
+                        //     style: AppTypography.title),
+                        // TextSpan(
+                        //     text: "(${content[4]}", style: AppTypography.title)
                       ]),
                 ),
                 10.verticalSpace,

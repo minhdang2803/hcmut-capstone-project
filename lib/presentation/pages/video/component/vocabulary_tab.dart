@@ -1,5 +1,6 @@
 import 'package:bke/bloc/flashcard/flashcard_card/flashcard_cubit.dart';
 import 'package:bke/data/models/flashcard/flashcard_collection_model.dart';
+import 'package:bke/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,11 +74,11 @@ class _VocabularyTabState extends State<VocabularyTab> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 10.verticalSpace,
-                Text(e.vi, style: AppTypography.title),
+                Text(e.vi.toCapitalize(), style: AppTypography.title),
                 5.verticalSpace,
-                Text(e.en, style: AppTypography.body),
+                Text(e.en.toCapitalize(), style: AppTypography.body),
                 5.verticalSpace,
-                Text(e.example, style: AppTypography.body),
+                Text(e.example.toCapitalize(), style: AppTypography.body),
                 10.verticalSpace,
                 Divider(height: 1.r, color: AppColor.defaultBorder),
               ],

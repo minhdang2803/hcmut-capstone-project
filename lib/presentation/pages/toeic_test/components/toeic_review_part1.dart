@@ -1,5 +1,6 @@
 import 'package:bke/presentation/theme/app_color.dart';
 import 'package:bke/presentation/theme/app_typography.dart';
+import 'package:bke/utils/word_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -21,6 +22,7 @@ class ReviewPartOne extends StatelessWidget {
   final String imgUrl;
   @override
   Widget build(BuildContext context) {
+    final wordProcessing = WordProcessing.instance();
     return Padding(
       padding: EdgeInsets.all(10.r),
       child: Container(
@@ -50,13 +52,14 @@ class ReviewPartOne extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text.rich(TextSpan(
-                    text: "Transcript: ",
-                    style:
-                        AppTypography.title.copyWith(color: AppColor.mainPink),
-                    children: [
-                      TextSpan(text: text, style: AppTypography.title)
-                    ])),
+                Text.rich(
+                  TextSpan(
+                      text: "Transcript: ",
+                      style: AppTypography.title
+                          .copyWith(color: AppColor.mainPink),
+                      children: wordProcessing.createTextSpans(
+                          context, text, AppTypography.title)),
+                ),
                 10.verticalSpace,
                 Text.rich(TextSpan(
                     text: "Answer: ",

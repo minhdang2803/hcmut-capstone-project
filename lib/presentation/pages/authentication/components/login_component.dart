@@ -45,63 +45,62 @@ class _LoginComponentState extends State<LoginComponent> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AuthInputField(
-                    hintText: 'Email',
-                    inputAction: TextInputAction.next,
-                    inputType: TextInputType.text,
-                    enableErrorText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Email không được để trống';
-                      }
-                      if (!ValidationUtil.isValidEmail(value)) {
-                        return 'Email không hợp lệ';
-                      }
-                      return null;
-                    },
-                    onChange: (value) {
-                      _email = value;
-                    },
-                  ),
-                  AuthInputField(
-                    hintText: 'Mật khẩu',
-                    inputAction: TextInputAction.done,
-                    inputType: TextInputType.text,
-                    obscure: true,
-                    enableErrorText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Mật khẩu không được để trống';
-                      }
-                      if (!ValidationUtil.isPasswordValid(value)) {
-                        return 'Mật khẩu phải có nhiều hơn 6 ký tự';
-                      }
-                      return null;
-                    },
-                    onChange: (value) {
-                      _password = value;
-                    },
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () =>
-                          widget.onChangeAction(AuthAction.forgotPassword),
-                      child: Text(
-                        'Quên mật khẩu?',
-                        style: AppTypography.body.copyWith(
-                          color: AppColor.textSecondary,
-                        ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AuthInputField(
+                  hintText: 'Email',
+                  inputAction: TextInputAction.next,
+                  inputType: TextInputType.text,
+                  enableErrorText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Email không được để trống';
+                    }
+                    if (!ValidationUtil.isValidEmail(value)) {
+                      return 'Email không hợp lệ';
+                    }
+                    return null;
+                  },
+                  onChange: (value) {
+                    _email = value;
+                  },
+                ),
+                AuthInputField(
+                  hintText: 'Mật khẩu',
+                  inputAction: TextInputAction.done,
+                  inputType: TextInputType.text,
+                  obscure: true,
+                  enableErrorText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Mật khẩu không được để trống';
+                    }
+                    if (!ValidationUtil.isPasswordValid(value)) {
+                      return 'Mật khẩu phải có nhiều hơn 6 ký tự';
+                    }
+                    return null;
+                  },
+                  onChange: (value) {
+                    _password = value;
+                  },
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () =>
+                        widget.onChangeAction(AuthAction.forgotPassword),
+                    child: Text(
+                      'Quên mật khẩu?',
+                      style: AppTypography.body.copyWith(
+                        color: AppColor.textSecondary,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+            30.verticalSpace,
             _buildLoginButton(),
             const Expanded(
               child: Option(),

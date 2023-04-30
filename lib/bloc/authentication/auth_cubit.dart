@@ -1,8 +1,14 @@
+import 'package:bke/data/data_source/local/local_sources.dart';
+import 'package:bke/data/data_source/remote/chat/chat_local_source.dart';
 import 'package:bke/data/models/authentication/user.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+<<<<<<< HEAD
 import 'package:google_sign_in/google_sign_in.dart';
+=======
+import 'package:get_it/get_it.dart';
+>>>>>>> main
 import 'package:hive/hive.dart';
 
 import '../../data/models/authentication/login_model.dart';
@@ -22,6 +28,7 @@ class AuthCubit extends Cubit<AuthState> {
   String fullName = "Người dùng mới";
   String email = "testuser@gmail.com";
 
+  final chatLocalSource = GetIt.I.get<ChatSourceImpl>();
   void doLogin(String email, String password) async {
     try {
       emit(AuthLoading());
@@ -32,10 +39,16 @@ class AuthCubit extends Cubit<AuthState> {
       final user = response.data!.user;
       final token = response.data!.authorization.accessToken;
       _authRepository.saveCurrentUser(user, token);
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final logingg = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
         email: email,
         password: password,
-      );
+      )
+          .then((value) {
+        final data = GetIt.I.get<AuthLocalSourceImpl>();
+        return FirebaseAuth.instance.currentUser!
+            .updateDisplayName(data.getCurrentUser()!.fullName);
+      });
       emit(LoginSuccess(user));
       LogUtil.debug('Login success: ${response.data?.user.id ?? 'empty user'}');
     } on RemoteException catch (e, s) {
@@ -148,10 +161,23 @@ class AuthCubit extends Cubit<AuthState> {
       final user = response.data!.user;
       final token = response.data!.authorization.accessToken;
       _authRepository.saveCurrentUser(user, token);
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+
+      // Firebase authentication handler START
+      final ggRegister =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: registerModel.email,
         password: registerModel.password,
       );
+      final ggUser = ggRegister.user;
+      if (user != null) {
+        await chatLocalSource.updateUserData(
+          fullName: registerModel.fullName,
+          email: registerModel.email,
+          userUID: ggUser!.uid,
+        );
+      }
+      // Firebase authentication handler END
+
       emit(RegisterSuccess(user));
       LogUtil.debug(
           'Register success, login with user: ${response.data?.user.id ?? 'empty user'}');

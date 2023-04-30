@@ -43,6 +43,7 @@ class RouteName {
   static const quizMapScreen = "/quizMapScreen";
 
   static const chatPage = "/chatPage";
-
+  static const chatConversation = "chatConversation";
+  static const chatMemberInfo = "/chatMemberInfo";
   static const historyActivities = "/historyActivities";
 }

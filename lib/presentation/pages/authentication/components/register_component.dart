@@ -47,6 +47,7 @@ class _RegisterComponentState extends State<RegisterComponent> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _buildRegisterForms(context),
+            10.verticalSpace,
             _buildRegisterButton(),
             const Expanded(child: Option())
           ],
@@ -73,7 +74,9 @@ class _RegisterComponentState extends State<RegisterComponent> {
             child: FittedBox(
               child: Padding(
                   padding: EdgeInsets.all(10.r),
-                  child: const CircularProgressIndicator()),
+                  child: const CircularProgressIndicator(
+                    color: AppColor.secondary,
+                  )),
             ),
           );
         }

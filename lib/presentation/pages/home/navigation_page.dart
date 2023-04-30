@@ -239,13 +239,13 @@ class _NavigationPageState extends State<NavigationPage> {
                               placeholderFit: BoxFit.contain,
                               image: newsList[i].urlToImage != ''
                                   ? newsList[i].urlToImage
-                                  : 'assets/images/default_logo.png',
+                                  : 'https://lh3.googleusercontent.com/drive-viewer/AAOQEOSNan7V6kMFqB0eeYCVQJiAUyn8nGpA9fCjFywBjqiCpxxxBG8eECkDciAEoCWLA6s5UW2Hjczs7Toh9_-UwmiSlKh2=s2560',
                               fadeInDuration: const Duration(milliseconds: 400),
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                               // placeholderFit: BoxFit.fill,
                               imageErrorBuilder: (context, error, stackTrace) =>
-                                  Image.asset(
-                                'assets/images/default_logo.png',
+                                  Image.network(
+                                'https://static.wikia.nocookie.net/otonari-no-tenshi/images/c/c9/No_images_available.jpg/revision/latest?cb=20220104141308',
                               ),
                             ),
                           ),

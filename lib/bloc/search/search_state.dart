@@ -1,5 +1,3 @@
-import 'package:bke/data/models/book/book_listener.dart';
-import 'package:bke/data/models/book/book_reader.dart';
 import 'package:equatable/equatable.dart';
 import '../../data/models/book/book_info.dart';
 import '../../data/models/video/video_youtube_info_model.dart';

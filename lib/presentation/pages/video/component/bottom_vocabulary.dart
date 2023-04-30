@@ -133,7 +133,9 @@ class _BottomVocabState extends State<BottomVocab>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.text.replaceAll(Constants.charactersToRemove, ''),
+                        widget.text
+                            .toCapitalize()
+                            .replaceAll(Constants.charactersToRemove, ''),
                         style: AppTypography.headline.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppColor.textPrimary,
@@ -142,11 +144,6 @@ class _BottomVocabState extends State<BottomVocab>
                       5.verticalSpace,
                       _buildVocabTypes(),
                     ],
-                  ),
-                  Icon(
-                    Icons.volume_up,
-                    size: 20.r,
-                    color: AppColor.textPrimary,
                   ),
                 ],
               ),
@@ -166,7 +163,11 @@ class _BottomVocabState extends State<BottomVocab>
                 .map((e) => VocabularyTab(vocabInfo: e))
                 .toList(),
           )
-        : SizedBox(child: Text(_translateFromGG, style: AppTypography.title,));
+        : SizedBox(
+            child: Text(
+            _translateFromGG,
+            style: AppTypography.title,
+          ));
   }
 
   Widget _buildVocabTypes() {
@@ -196,7 +197,7 @@ class _BottomVocabState extends State<BottomVocab>
                         padding: EdgeInsets.symmetric(
                             horizontal: 6.r, vertical: 2.r),
                         child: Center(
-                          child: Text(e,
+                          child: Text(e.toCapitalize(),
                               style: _vocabTypeList.length > 2
                                   ? AppTypography.bodySmall.copyWith(
                                       color: _vocabTypeList[_currentTab] == e

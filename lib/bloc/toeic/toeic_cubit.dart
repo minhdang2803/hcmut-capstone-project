@@ -471,7 +471,6 @@ class ToeicCubitPartOne extends Cubit<ToeicStatePartOne> {
         }
       }
     }
-    print(state.resultByQuestion);
   }
 
   Future<void> autoCheckAnswerPart3467({

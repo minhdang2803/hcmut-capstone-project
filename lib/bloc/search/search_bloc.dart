@@ -1,6 +1,4 @@
-import 'package:bke/data/models/book/book_info.dart';
 import '../../data/repositories/search_repository.dart';
-import '../../utils/log_util.dart';
 import 'search_state.dart';
 import 'search_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +21,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState>{
       try{
         var response = await _searchRepos.searchAll(event.query);
         var res = response.data! ;
-        print(res.books.first);
         emit(SearchLoadedState(books: res.books, videos: res.videos, query: event.query));
       }
       catch(e){

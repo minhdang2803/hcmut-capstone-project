@@ -27,8 +27,8 @@ class _BookListen extends State<BookListen> {
   bool _isLoaded = false;
   Duration _duration = Duration.zero;
   Duration _position = Duration.zero;
-  late final BookListener _audioBook;
-  late final BookBloc _bookBloc;
+  late BookListener _audioBook;
+  late BookBloc _bookBloc;
 
   @override
   void initState() {
