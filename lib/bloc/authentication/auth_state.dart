@@ -52,6 +52,15 @@ class RegisterFailure extends AuthState {
   List<Object?> get props => [errorCode, errorMessage];
 }
 
+class WaitingPassword extends AuthState {
+  const WaitingPassword(this.message);
+
+  final String message;
+
+  @override
+  List<Object?> get props => [message];
+}
+
 class ResetPasswordSuccess extends AuthState {
   const ResetPasswordSuccess(this.message);
 

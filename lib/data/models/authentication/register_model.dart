@@ -1,3 +1,4 @@
+
 class RegisterModel {
   String fullName = '';
   bool invalidFullname = false;
@@ -8,6 +9,8 @@ class RegisterModel {
   String password = '';
   bool invalidPassword = false;
 
+  String? loginType;
+
   RegisterModel();
 
   Map<String, dynamic> toMap() {
@@ -15,6 +18,7 @@ class RegisterModel {
       'fullName': fullName,
       'email': email,
       'password': password,
+      'loginType': loginType
     };
   }
 
@@ -25,5 +29,6 @@ class RegisterModel {
     invalidEmail = false;
     password = '';
     invalidPassword = false;
+    loginType = '';
   }
 }

@@ -11,6 +11,7 @@ import 'package:bke/bloc/video/video_cubit.dart';
 
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
+import 'package:bke/presentation/pages/authentication/components/set_pass_component.dart';
 import 'package:bke/presentation/pages/book/books_page.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
 import 'package:bke/presentation/pages/flashcard/flashcards.dart';
@@ -49,6 +50,9 @@ class RouteGenerator {
         break;
       case RouteName.authentication:
         page = const AuthenticationPage();
+        break;
+      case RouteName.setPassComponent:
+        page = const SetPassComponent();
         break;
       case RouteName.profile:
         page = const ProfilePage();

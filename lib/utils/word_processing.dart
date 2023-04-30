@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../presentation/pages/video/component/bottom_vocabulary.dart';
-
+import 'constants.dart';
 class WordProcessing {
   WordProcessing._internal();
 
@@ -11,12 +11,13 @@ class WordProcessing {
   factory WordProcessing.instance() => _instance;
 
   List<String> splitWord(String subText) {
-    final eachCharList = subText.toCapitalize().split(" ");
+    List<String> eachCharList = subText.split(' ');
+    print(eachCharList);
     List<String> result = [];
     String tempWord = '';
     for (final element in eachCharList) {
       if (element.contains("[") && element.contains("]")) {
-        result.add(element);
+        result.add(element.replaceAll(RegExp(r'[\[\]]'), ''));
       } else if (element.contains('[') && !element.contains(']')) {
         tempWord = "$tempWord$element ";
       } else if (!element.contains('[') && element.contains(']')) {
@@ -27,6 +28,7 @@ class WordProcessing {
         result.add(element);
       }
     }
+    print(result);
     return result;
   }
 

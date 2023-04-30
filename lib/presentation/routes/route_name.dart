@@ -1,8 +1,11 @@
+import 'package:bke/presentation/pages/authentication/components/set_pass_component.dart';
+
 class RouteName {
   static const splash = '/';
   static const main = '/main';
   static const welcome = '/welcome';
   static const authentication = '/authentication';
+  static const setPassComponent = '/setPassword';
   static const profile = '/profile';
   static const updateProfile = '/update_profile';
   static const aboutUs = '/about_us';

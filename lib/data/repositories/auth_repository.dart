@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../data_source/local/auth_local_source.dart';
@@ -20,9 +21,9 @@ class AuthRepository {
 
   factory AuthRepository.instance() => _instance;
 
-  // Future<BaseResponse<User>> loginWithGoogle() {
-  //   return _authRemoteSource.loginWithGoogle();
-  // }
+  Future<BaseResponse<LoginModel>> loginWithGoogle(String email) {
+    return _authRemoteSource.loginWithGoogle(email);
+  }
 
   // Future<BaseResponse<User>> loginWithFacebook() {
   //   return _authRemoteSource.loginWithFacebook();
