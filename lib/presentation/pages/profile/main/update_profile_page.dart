@@ -58,25 +58,27 @@ class _UserProfilePageState extends State<UserProfilePage> {
               child: CircleAvatar(
                 backgroundColor: AppColor.appBackground,
                 radius: 50,
-                backgroundImage: _image != null ? FileImage(_image!):FileImage(File(authLocal.getCurrentUser()?.photoUrl??"")),
-                child: _image == null && authLocal.getCurrentUser()?.photoUrl == null 
-                      ? const Icon(Icons.person, size: 50)
-                      // :  _image == null && authLocal.getCurrentUser()?.photoUrl != null?
-                      // Image.network(
-                      //   authLocal.getCurrentUser()?.photoUrl??"",
-                      //   width: 50.r,
-                      //   height: 50.r,
-                      //   fit: BoxFit.cover,
-                      //   errorBuilder: (context, error, stackTrace) {
-                      //     return Image.asset(
-                      //       'assets/images/peace.png',
-                      //       width: 80.r,
-                      //       height: 80.r,
-                      //       fit: BoxFit.cover,
-                      //     );
-                      //   },
-                      // )
-                      : null,
+                backgroundImage:
+                    NetworkImage(authLocal.getCurrentUser()?.photoUrl ?? ""),
+                child: _image == null &&
+                        authLocal.getCurrentUser()?.photoUrl == null
+                    ? const Icon(Icons.person, size: 50)
+                    // :  _image == null && authLocal.getCurrentUser()?.photoUrl != null?
+                    // Image.network(
+                    //   authLocal.getCurrentUser()?.photoUrl??"",
+                    //   width: 50.r,
+                    //   height: 50.r,
+                    //   fit: BoxFit.cover,
+                    //   errorBuilder: (context, error, stackTrace) {
+                    //     return Image.asset(
+                    //       'assets/images/peace.png',
+                    //       width: 80.r,
+                    //       height: 80.r,
+                    //       fit: BoxFit.cover,
+                    //     );
+                    //   },
+                    // )
+                    : null,
               ),
             ),
             SizedBox(height: 16.r),
@@ -100,8 +102,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
               onPressed: () {
                 String name = _nameController.text.trim();
                 authLocal.saveCurrentUser(
-                    AppUser(fullName: name, photoUrl: _image?.path ?? ''),
-                    '');
+                    AppUser(fullName: name, photoUrl: _image?.path ?? ''), '');
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text("Cập nhật thông tin thành công!"),
@@ -110,14 +111,15 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 Navigator.of(context).pop();
               },
               child: Text(
-                          "Lưu",
-                          style: AppTypography.bodySmall.copyWith(
-                            color: AppColor.textPrimary,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                "Lưu",
+                style: AppTypography.bodySmall.copyWith(
+                  color: AppColor.textPrimary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(AppColor.accentBlue),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(AppColor.accentBlue),
               ),
             ),
           ],
@@ -126,3 +128,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     );
   }
 }
+// _image != null
+//                     ? FileImage(_image!)
+//                     : FileImage(
+//                         File(authLocal.getCurrentUser()?.photoUrl ?? ""))

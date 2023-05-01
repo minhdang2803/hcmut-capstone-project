@@ -104,7 +104,7 @@ class _VideoPageState extends State<VideoPage>
         if (state.status == CategoryVideoStatus.fail) {
           return HolderWidget(
             message: state.errorMessage,
-            asset: 'assets/images/error_holder.png',
+            asset: 'assets/images/error.png',
             onRetry: () {
               context.read<CategoryVideoCubit>().getMainActivities();
             },

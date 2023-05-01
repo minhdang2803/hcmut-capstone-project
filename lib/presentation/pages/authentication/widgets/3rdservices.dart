@@ -14,9 +14,8 @@ class Option extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
-      builder: (context, state) {
-        return Column(
+    return BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
+      return Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text(
@@ -53,30 +52,28 @@ class Option extends StatelessWidget {
                 ),
               ],
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushReplacementNamed(RouteName.main);
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Đăng nhập ẩn danh',
-                    style: AppTypography.body.copyWith(
-                      color: AppColor.textSecondary,
-                    ),
-                  ),
-                  Icon(
-                    Icons.arrow_right_alt_rounded,
-                    size: 32.r,
-                  )
-                ]
-              )
-            )
-          ]
-        );
-      }
-    );
+            // GestureDetector(
+            //   onTap: () {
+            //     Navigator.of(context).pushReplacementNamed(RouteName.main);
+            //   },
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //       Text(
+            //         'Đăng nhập ẩn danh',
+            //         style: AppTypography.body.copyWith(
+            //           color: AppColor.textSecondary,
+            //         ),
+            //       ),
+            //       Icon(
+            //         Icons.arrow_right_alt_rounded,
+            //         size: 32.r,
+            //       )
+            //     ]
+            //   )
+            // )
+          ]);
+    });
   }
 }

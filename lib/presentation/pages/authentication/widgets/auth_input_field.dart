@@ -48,8 +48,14 @@ class _AuthInputFieldState extends State<AuthInputField> {
       cursorColor: AppColor.textSecondary,
       focusNode: widget.focusNode,
       textCapitalization: widget.capitalization ?? TextCapitalization.none,
+      
       decoration: InputDecoration(
-        border: const UnderlineInputBorder(),
+      
+        border: const UnderlineInputBorder(
+          
+            borderSide: BorderSide(color: AppColor.secondary)),
+        focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: AppColor.secondary)),
         hintText: widget.hintText,
         hintStyle: widget.showHintError
             ? AppTypography.body.copyWith(color: AppColor.falseColor)
@@ -57,8 +63,10 @@ class _AuthInputFieldState extends State<AuthInputField> {
         suffixIcon: widget.obscure
             ? IconButton(
                 focusNode: FocusNode(skipTraversal: true),
-                icon:
-                    Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
+                icon: Icon(
+                  _isObscure ? Icons.visibility : Icons.visibility_off,
+                  color: AppColor.defaultBorder,
+                ),
                 onPressed: () {
                   setState(() {
                     _isObscure = !_isObscure;

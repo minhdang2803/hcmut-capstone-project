@@ -4,20 +4,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../bloc/authentication/auth_cubit.dart';
 import '../../../../data/models/authentication/register_model.dart';
-import '../../../../utils/enum.dart';
 import '../../../../utils/validation_util.dart';
-import '../../../../utils/widget_util.dart';
 import '../../../routes/route_name.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_typography.dart';
 import '../../../widgets/rounded_elevated_button.dart';
 import '../widgets/auth_input_field.dart';
-import '../widgets/back_to_login_btn.dart';
 
 class SetPassComponent extends StatefulWidget {
   const SetPassComponent({
     Key? key,
-
   }) : super(key: key);
 
   @override
@@ -33,9 +29,7 @@ class _SetPassComponentState extends State<SetPassComponent> {
     if (_passwordFormKey.currentState?.validate() ?? false) {
       final RegisterModel registerModel = RegisterModel();
       registerModel.password = _password;
-      context
-          .read<AuthCubit>()
-          .doRegister(registerModel, is3party: true);
+      context.read<AuthCubit>().doRegister(registerModel, is3party: true);
     }
   }
 
@@ -123,13 +117,16 @@ class _SetPassComponentState extends State<SetPassComponent> {
               child: FittedBox(
                 child: Padding(
                     padding: EdgeInsets.all(10.r),
-                    child: const CircularProgressIndicator()),
+                    child: const CircularProgressIndicator(
+                      color: AppColor.secondary,
+                    )),
               ),
             );
           }
           return RoundedElevatedButton(
             label: 'Xác nhận',
-            labelStyle: AppTypography.title.copyWith(color: AppColor.textPrimary),
+            labelStyle:
+                AppTypography.title.copyWith(color: AppColor.textPrimary),
             backgroundColor: AppColor.accentBlue,
             width: 225.w,
             height: 44.h,

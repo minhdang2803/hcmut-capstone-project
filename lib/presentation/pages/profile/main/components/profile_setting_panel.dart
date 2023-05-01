@@ -1,5 +1,7 @@
+import 'package:bke/bloc/authentication/auth_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -27,7 +29,7 @@ class ProfileSettingPanel extends StatelessWidget {
   void _doLogOut(BuildContext context) async {
     final userBox = Hive.box(HiveConfig.userBox);
     userBox.clear();
-    await FirebaseAuth.instance.signOut();
+    context.read<AuthCubit>().signOut();
     await const FlutterSecureStorage()
         .delete(key: HiveConfig.currentUserTokenKey)
         .then(

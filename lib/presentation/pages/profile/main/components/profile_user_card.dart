@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:bke/presentation/theme/app_typography.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../../data/data_source/local/auth_local_source.dart';
@@ -21,6 +23,8 @@ class ProfileUserCard extends StatelessWidget {
   }
 
   Container _buildUserScore(BuildContext context) {
+    final googleImage = FirebaseAuth.instance.currentUser?.photoURL ??
+        "https://lh3.googleusercontent.com/drive-viewer/AFGJ81qQfSbK-RvsJd_b-fbUmfVpxD1eTBrVvEVh88F0LsENgFxF7rkLY2jbH8MRvKl9ZH_KS38Ndwt7_Apoiyk9NRquO3Lt=s2560";
     final authLocal = GetIt.I.get<AuthLocalSourceImpl>();
     final user = authLocal.getCurrentUser();
     final topPadding = MediaQuery.of(context).padding.top;
@@ -41,10 +45,8 @@ class ProfileUserCard extends StatelessWidget {
           children: [
             CircleAvatar(
                 backgroundColor: AppColor.appBackground,
-                radius: 50,
-                backgroundImage: authLocal.getCurrentUser()?.photoUrl != null ? FileImage(File(authLocal.getCurrentUser()?.photoUrl??"")): null,
-            ),
-
+                radius: 30,
+                backgroundImage: NetworkImage(googleImage)),
             12.horizontalSpace,
             Text(
               user?.fullName ?? "User",

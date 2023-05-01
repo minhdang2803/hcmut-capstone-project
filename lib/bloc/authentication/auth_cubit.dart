@@ -76,12 +76,15 @@ class AuthCubit extends Cubit<AuthState> {
   void doGoogleLogin() async {
     try {
       emit(AuthLoading());
-
+      late GoogleSignInAuthentication? googleAuth;
       final GoogleSignInAccount? account = await googleSignIn.signIn();
       LogUtil.debug('account: ${account}');
       if (account != null) {
         fullName = account.displayName ?? fullName;
         email = account.email;
+        googleAuth = await account.authentication;
+      } else {
+        googleAuth = null;
       }
 
       if (true) {
@@ -92,6 +95,11 @@ class AuthCubit extends Cubit<AuthState> {
         final token = response.data!.authorization.accessToken;
         _authRepository.saveCurrentUser(user, token);
 
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth!.accessToken,
+          idToken: googleAuth.idToken,
+        );
+        await FirebaseAuth.instance.signInWithCredential(credential);
         // await FirebaseAuth.instance.signInWithEmailAndPassword(
         //   email: user.email ?? '',
         //   password: user.password ?? '',
@@ -109,11 +117,11 @@ class AuthCubit extends Cubit<AuthState> {
           emit(const LoginFailure('No internet connection!'));
           break;
         default:
-          emit(const LoginFailure('Please try again later!'));
+          emit(LoginFailure(e.toString()));
           break;
       }
     } catch (e, s) {
-      emit(const LoginFailure('Please try again later!'));
+      emit(LoginFailure(e.toString()));
       LogUtil.error('Google Login error', error: e, stackTrace: s);
     }
   }
@@ -282,6 +290,20 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e, s) {
       emit(const ResetPasswordFailure('Please try again later!'));
       LogUtil.error('Reset password error ', error: e, stackTrace: s);
+    }
+  }
+
+  void signOut() async {
+    if (FirebaseAuth.instance.currentUser != null) {
+      final clm = FirebaseAuth.instance.currentUser!.providerData;
+      for (final providerProfile in clm) {
+        // ID of the provider (google.com, apple.cpm, etc.)
+        final provider = providerProfile.providerId;
+        if (provider == "google.com") {
+          googleSignIn.disconnect();
+        }
+      }
+      await FirebaseAuth.instance.signOut();
     }
   }
 
