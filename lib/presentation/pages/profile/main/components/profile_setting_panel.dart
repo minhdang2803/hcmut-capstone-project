@@ -18,8 +18,8 @@ class ProfileSettingPanel extends StatelessWidget {
   void _showConfirmDialog(BuildContext context) async {
     WidgetUtil.showDialog(
       context: context,
-      title: 'Logout',
-      message: 'Do you want to logout? See you again',
+      title: 'Đăng xuất',
+      message: 'Bạn có chắc muốn đăng xuất chứ? Casper sẽ nhớ bạn lắm.',
       onAccepted: () => _doLogOut(context),
     );
   }
@@ -85,12 +85,12 @@ class ProfileSettingPanel extends StatelessWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          const ProfileSettingItem(
+                          ProfileSettingItem(
                             asset: 'assets/icons/ic_user.svg',
                             label: 'User',
                             iconColor: AppColor.mainPink,
-                            // onPress: () => Navigator.of(context)
-                            //     .pushNamed(RouteName.updateProfile),
+                            onPress: () => Navigator.of(context)
+                                .pushNamed(RouteName.updateProfile),
                           ),
                           SizedBox(height: 20.r),
                           ProfileSettingItem(

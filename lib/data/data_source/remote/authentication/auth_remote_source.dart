@@ -1,3 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+import '../../../../utils/image_util.dart';
 import '../../../../utils/log_util.dart';
 import '../../../configs/endpoint.dart';
 import '../../../models/authentication/login_model.dart';
@@ -7,7 +11,7 @@ import '../../../models/network/base_response.dart';
 import '../../../services/api_service.dart';
 
 abstract class AuthRemoteSource {
-  // Future<BaseResponse<User>> loginWithGoogle();
+  Future<BaseResponse<LoginModel>> loginWithGoogle(String confirmEmail);
 
   // Future<BaseResponse<User>> loginWithFacebook();
 
@@ -29,37 +33,28 @@ abstract class AuthRemoteSource {
 class AuthRemoteSourceImpl extends AuthRemoteSource {
   final APIService _api = APIService.instance();
 
-  // @override
-  // Future<BaseResponse<User>> loginWithGoogle() async {
-  //   try {
-  //     final GoogleSignIn googleSignIn = GoogleSignIn(
-  //       scopes: [
-  //         'email',
-  //         'https://www.googleapis.com/auth/userinfo.profile',
-  //       ],
-  //     );
-  //     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-  //     final base64Img =
-  //         await ImageUtil.networkImageToBase64(googleUser!.photoUrl);
-  //     final bodyRequest = LoginModel(
-  //       id: googleUser.id,
-  //       fullName: googleUser.displayName,
-  //       email: googleUser.email,
-  //       photoUrl: base64Img,
-  //     ).toMap();
-  //     final loginRequest = APIServiceRequest(
-  //       EndPoint.loginPath,
-  //       dataBody: bodyRequest,
-  //       (response) => BaseResponse<User>.fromJson(
-  //           json: response, dataBuilder: User.fromJson),
-  //     );
-  //     LogUtil.debug('Google login: $bodyRequest');
-  //     return _api.post(loginRequest);
-  //   } catch (e) {
-  //     LogUtil.error('Google authentication failed: $e');
-  //     return Future.error(e);
-  //   }
-  // }
+  @override
+  //CHECK IF THE EMAIL USER JUST USE TO LOG IN GOOGLE EXISTS IN DB, 
+  //IF YES ALLOW SIGNING IN, ELSE REQUIRE INPUT A PASSWORD
+  // TO COMPLETE THE REGISTRATIONr
+  Future<BaseResponse<LoginModel>> loginWithGoogle(String confirmEmail) async {
+    try {
+      final email = {"email": confirmEmail};
+      
+      final loginRequest = APIServiceRequest(
+        EndPoint.loginViaGoogle,
+        queryParams: email,
+        (response) => BaseResponse<LoginModel>.fromJson(
+          json: response, dataBuilder: LoginModel.fromJson),
+      );
+
+      return _api.get(loginRequest);
+      
+    } catch (e) {
+      LogUtil.error('Google authentication failed: $e'); //error from 3rd party
+      return Future.error(e); 
+    }
+  }
 
   // @override
   // Future<BaseResponse<User>> loginWithFacebook() async {

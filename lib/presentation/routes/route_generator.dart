@@ -12,6 +12,7 @@ import 'package:bke/bloc/video/video_cubit.dart';
 
 import 'package:bke/data/models/book/book_listener.dart';
 import 'package:bke/data/models/vocab/vocab.dart';
+import 'package:bke/presentation/pages/authentication/components/set_pass_component.dart';
 import 'package:bke/presentation/pages/book/books_page.dart';
 import 'package:bke/presentation/pages/chat/chat.dart';
 import 'package:bke/presentation/pages/chat/chat_conversation_page.dart';
@@ -31,6 +32,7 @@ import '../pages/my_dictionary/my_dictionary.dart';
 import '../pages/my_dictionary/vocab_full_info_page.dart';
 import '../pages/notification/notifications_page.dart';
 
+import '../pages/profile/main/update_profile_page.dart';
 import '../pages/toeic_test/toeics.dart';
 import '../pages/welcome/welcome.dart';
 import '../pages/main/home_page.dart';
@@ -53,8 +55,14 @@ class RouteGenerator {
       case RouteName.authentication:
         page = const AuthenticationPage();
         break;
+      case RouteName.setPassComponent:
+        page = const SetPassComponent();
+        break;
       case RouteName.profile:
         page = const ProfilePage();
+        break;
+      case RouteName.updateProfile:
+        page = const UserProfilePage();
         break;
       case RouteName.aboutUs:
         page = const AboutUsPage();

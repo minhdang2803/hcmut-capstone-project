@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bke/presentation/theme/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,12 +39,12 @@ class ProfileUserCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/images/peace.png',
-              width: 50.r,
-              height: 50.r,
-              fit: BoxFit.cover,
+            CircleAvatar(
+                backgroundColor: AppColor.appBackground,
+                radius: 50,
+                backgroundImage: authLocal.getCurrentUser()?.photoUrl != null ? FileImage(File(authLocal.getCurrentUser()?.photoUrl??"")): null,
             ),
+
             12.horizontalSpace,
             Text(
               user?.fullName ?? "User",

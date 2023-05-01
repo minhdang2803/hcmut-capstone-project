@@ -3,6 +3,7 @@ import 'package:bke/data/models/toeic/toeic_models.dart';
 class EndPoint {
   static const _baseUrl = 'https://bkenglish-9ec8e.et.r.appspot.com/api';
   static const loginPath = '$_baseUrl/user/login';
+  static const loginViaGoogle = '$_baseUrl/user/loginViaGoogle';
   static const registerPath = '$_baseUrl/user/createUser';
   static const gmailVerifyPath = '$_baseUrl/user/gmailVerify';
   static const checkGmailVerifyPath = '$_baseUrl/user/checkGmailVerify';

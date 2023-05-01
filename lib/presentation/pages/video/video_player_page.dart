@@ -258,7 +258,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
                   //     child: Text("clm"),
                   //   ),
                   ),
-              TranslateIconButton(text: element.text)
+              TranslateIconButton(text: _wordProcessing.plainText(element.text))
             ],
           );
         },
