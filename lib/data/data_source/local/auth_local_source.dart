@@ -21,7 +21,9 @@ class AuthLocalSourceImpl extends AuthLocalSource {
       final userBox = Hive.box(HiveConfig.userBox);
       const storage = FlutterSecureStorage();
       userBox.put(HiveConfig.currentUserKey, user);
-      await storage.write(key: HiveConfig.currentUserTokenKey, value: token);
+      if (token!=""){
+        await storage.write(key: HiveConfig.currentUserTokenKey, value: token);
+      }
       LogUtil.debug('Saved user: ${user.id} - token: $token');
     } catch (e, s) {
       LogUtil.error('Save user error: $e', error: e, stackTrace: s);

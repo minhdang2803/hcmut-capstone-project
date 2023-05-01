@@ -32,6 +32,7 @@ import '../pages/my_dictionary/my_dictionary.dart';
 import '../pages/my_dictionary/vocab_full_info_page.dart';
 import '../pages/notification/notifications_page.dart';
 
+import '../pages/profile/main/update_profile_page.dart';
 import '../pages/toeic_test/toeics.dart';
 import '../pages/welcome/welcome.dart';
 import '../pages/main/home_page.dart';
@@ -59,6 +60,9 @@ class RouteGenerator {
         break;
       case RouteName.profile:
         page = const ProfilePage();
+        break;
+      case RouteName.updateProfile:
+        page = const UserProfilePage();
         break;
       case RouteName.aboutUs:
         page = const AboutUsPage();
