@@ -54,7 +54,8 @@ class _AuthContentCardState extends State<AuthContentCard>
 
   void _onTabChange() {
     FocusManager.instance.primaryFocus?.unfocus();
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    // if(ScaffoldMessenger.of(context).sna)
+    // ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 
   void _changeAuthAction(AuthAction action) {
