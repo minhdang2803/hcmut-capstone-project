@@ -76,9 +76,9 @@ class BkEAppBar extends StatelessWidget {
         label ?? '',
         textAlign: TextAlign.center,
         style: AppTypography.headline.copyWith(
-          fontWeight: FontWeight.w900,
-          color: AppColor.textPrimary,
-        ),
+            fontWeight: FontWeight.w900,
+            color: AppColor.textPrimary,
+            fontSize: 25),
         maxLines: 1,
       ),
     );

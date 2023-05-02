@@ -33,13 +33,13 @@ class BookPage extends StatelessWidget {
               children: [
                 BkEAppBar(
                   label: 'Thư viện',
-                  onBackButtonPress: () => Navigator.pop(context),
+                  onBackButtonPress: () => Navigator.pop(context, true),
                   onSearchButtonPress: () {
                     showSearch(
-                        context: context,
-                        delegate: MonasterySearchDelegate(
-                            searchType: SearchType.books,
-                            buildContext: context));
+                      context: context,
+                      delegate: MonasterySearchDelegate(
+                          searchType: SearchType.books, buildContext: context),
+                    );
                   },
                 ),
                 // _buildOptionBar(context),

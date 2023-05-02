@@ -33,8 +33,8 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   late final List<String> _pages;
-  late final ActionBloc _actionBloc;
-  late final NewsListBloc _newsListBloc;
+  // late final ActionBloc _actionBloc;
+  // late final NewsListBloc _newsListBloc;
   @override
   void initState() {
     super.initState();
@@ -46,11 +46,13 @@ class _NavigationPageState extends State<NavigationPage> {
       RouteName.quizMapScreen,
       RouteName.chatPage
     ];
-    _actionBloc = ActionBloc();
-    _actionBloc.add(const GetRecentActionsEvent());
+    // _actionBloc = ActionBloc();
+    // _actionBloc.add(const GetRecentActionsEvent());
 
-    _newsListBloc = NewsListBloc();
-    _newsListBloc.add(LoadTopHeadlinesEvent());
+    // _newsListBloc = NewsListBloc();
+    // _newsListBloc.add(LoadTopHeadlinesEvent());
+    context.read<ActionBloc>().add(const GetRecentActionsEvent());
+    context.read<NewsListBloc>().add(LoadTopHeadlinesEvent());
   }
 
   @override
@@ -127,30 +129,28 @@ class _NavigationPageState extends State<NavigationPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 _buildUserBanner(context),
-                BlocProvider(
-                    create: (context) => _actionBloc,
-                    child: BlocBuilder<ActionBloc, ActionState>(
-                        builder: (context, state) {
-                      if (state is ActionLoadedState) {
-                        return Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Visibility(
-                                visible: state.book != null,
-                                child: ContinueCard(
-                                    recentAction: RecentAction.readBook,
-                                    item: state.book),
-                              ),
-                              Visibility(
-                                visible: state.video != null,
-                                child: ContinueCard(
-                                    recentAction: RecentAction.watchVideo,
-                                    item: state.video),
-                              ),
-                            ]);
-                      }
-                      return SizedBox(height: 0.02.sh);
-                    })),
+                BlocBuilder<ActionBloc, ActionState>(builder: (context, state) {
+                  if (state is ActionLoadedState) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Visibility(
+                          visible: state.book != null,
+                          child: ContinueCard(
+                              recentAction: RecentAction.readBook,
+                              item: state.book),
+                        ),
+                        Visibility(
+                          visible: state.video != null,
+                          child: ContinueCard(
+                              recentAction: RecentAction.watchVideo,
+                              item: state.video),
+                        ),
+                      ],
+                    );
+                  }
+                  return SizedBox(height: 0.02.sh);
+                }),
                 SizedBox(
                     height: size.height * 0.25,
                     width: size.width,
@@ -207,94 +207,91 @@ class _NavigationPageState extends State<NavigationPage> {
   }
 
   Widget _buildNewsTopHeadlines(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _newsListBloc,
-      child: BlocBuilder<NewsListBloc, NewsListState>(
-        builder: (context, state) {
-          if (state is NewsListLoadedState) {
-            final newsList = state.newsList;
-            return Container(
-              padding: EdgeInsets.only(left: 10.w),
-              height: 300.h,
-              width: 300.w,
-              child: ListView.builder(
-                padding: const EdgeInsets.only(top: 10),
-                itemBuilder: (ctx, i) => GestureDetector(
-                  onTap: () {
-                    _onReadNews(newsList[i]);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            height: 70.h,
-                            width: 100.w,
-                            color: AppColor.primary,
-                            child: FadeInImage.assetNetwork(
-                              placeholder: 'assets/images/default_logo.png',
-                              placeholderFit: BoxFit.contain,
-                              image: newsList[i].urlToImage != ''
-                                  ? newsList[i].urlToImage
-                                  : 'https://lh3.googleusercontent.com/drive-viewer/AAOQEOSNan7V6kMFqB0eeYCVQJiAUyn8nGpA9fCjFywBjqiCpxxxBG8eECkDciAEoCWLA6s5UW2Hjczs7Toh9_-UwmiSlKh2=s2560',
-                              fadeInDuration: const Duration(milliseconds: 400),
-                              fit: BoxFit.cover,
-                              // placeholderFit: BoxFit.fill,
-                              imageErrorBuilder: (context, error, stackTrace) =>
-                                  Image.network(
-                                'https://static.wikia.nocookie.net/otonari-no-tenshi/images/c/c9/No_images_available.jpg/revision/latest?cb=20220104141308',
-                              ),
+    return BlocBuilder<NewsListBloc, NewsListState>(
+      builder: (context, state) {
+        if (state is NewsListLoadedState) {
+          final newsList = state.newsList;
+          return Container(
+            padding: EdgeInsets.only(left: 10.w),
+            height: 300.h,
+            width: 300.w,
+            child: ListView.builder(
+              padding: const EdgeInsets.only(top: 10),
+              itemBuilder: (ctx, i) => GestureDetector(
+                onTap: () {
+                  _onReadNews(newsList[i]);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          height: 70.h,
+                          width: 100.w,
+                          color: AppColor.primary,
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/images/default_logo.png',
+                            placeholderFit: BoxFit.contain,
+                            image: newsList[i].urlToImage != ''
+                                ? newsList[i].urlToImage
+                                : 'https://lh3.googleusercontent.com/drive-viewer/AAOQEOSNan7V6kMFqB0eeYCVQJiAUyn8nGpA9fCjFywBjqiCpxxxBG8eECkDciAEoCWLA6s5UW2Hjczs7Toh9_-UwmiSlKh2=s2560',
+                            fadeInDuration: const Duration(milliseconds: 400),
+                            fit: BoxFit.cover,
+                            // placeholderFit: BoxFit.fill,
+                            imageErrorBuilder: (context, error, stackTrace) =>
+                                Image.network(
+                              'https://static.wikia.nocookie.net/otonari-no-tenshi/images/c/c9/No_images_available.jpg/revision/latest?cb=20220104141308',
                             ),
                           ),
                         ),
-                        SizedBox(width: 10.w),
-                        Column(
-                          children: [
-                            SizedBox(
-                              width: 175.w,
-                              child: AutoSizeText(newsList[i].title,
-                                  style: AppTypography.body.copyWith(
-                                    fontSize: 12.r,
-                                    fontWeight: FontWeight.w800,
-                                    color: AppColor.textPrimary,
-                                  ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis),
-                            ),
-                            SizedBox(
-                              width: 170.w,
-                              child: AutoSizeText(
-                                _getPublishTime(newsList[i].publishedAt),
+                      ),
+                      SizedBox(width: 10.w),
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: 175.w,
+                            child: AutoSizeText(newsList[i].title,
                                 style: AppTypography.body.copyWith(
                                   fontSize: 12.r,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColor.textSecondary,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColor.textPrimary,
                                 ),
-                                maxLines: 1,
-                                // overflow: TextOverflow.ellipsis
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                          SizedBox(
+                            width: 170.w,
+                            child: AutoSizeText(
+                              _getPublishTime(newsList[i].publishedAt),
+                              style: AppTypography.body.copyWith(
+                                fontSize: 12.r,
+                                fontWeight: FontWeight.w500,
+                                color: AppColor.textSecondary,
                               ),
+                              maxLines: 1,
+                              // overflow: TextOverflow.ellipsis
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                itemCount: newsList.length,
-                scrollDirection: Axis.vertical,
               ),
-            );
-          }
-          return SizedBox.shrink();
-        },
-      ),
+              itemCount: newsList.length,
+              scrollDirection: Axis.vertical,
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 
-  SizedBox _buildFeaturesList(
+  Widget _buildFeaturesList(
       Size size, BuildContext context, List<String> menuList) {
     final List<String> featureList = <String>[
       "Video",
@@ -304,41 +301,30 @@ class _NavigationPageState extends State<NavigationPage> {
       "Giải đố",
       "Trò chuyện"
     ];
-    return SizedBox(
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 10.r),
         height: size.height * 0.08,
         child: ListView.builder(
           itemBuilder: (ctx, index) => GestureDetector(
             onTap: () {
-              setState(() {});
-              Navigator.pushNamed(context, _pages[index]);
+              Navigator.pushNamed(context, _pages[index]).then((value) {
+                context.read<ActionBloc>().add(const GetRecentActionsEvent());
+                context.read<NewsListBloc>().add(LoadTopHeadlinesEvent());
+              });
             },
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  margin: const EdgeInsets.only(
-                    left: 10,
-                  ),
+                  margin: const EdgeInsets.only(bottom: 5),
                   width: size.height * 0.08,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20.r),
-                    child: Stack(
-                      alignment: AlignmentDirectional.center,
-                      children: [
-                        // Container(
-                        //   color: AppColor.accentBlue,
-                        // ),
-                        Image.asset(
-                          'assets/icons/${menuList[index]}.png',
-                          height: size.height * 0.05,
-                          width: size.height * 0.05,
-                        ),
-                      ],
+                    child: Image.asset(
+                      'assets/icons/${menuList[index]}.png',
+                      height: size.height * 0.05,
+                      width: size.height * 0.05,
                     ),
-                    // Image.network(
-                    //   bookList[i].coverUrl,
-                    //   height: size.height*0.25
-                    // ),
                   ),
                 ),
                 AutoSizeText(

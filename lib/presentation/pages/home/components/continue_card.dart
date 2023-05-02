@@ -53,14 +53,15 @@ class ContinueCard extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(5.0.r),
         child: GestureDetector(
-          onTap: (){recentAction == RecentAction.readBook ? 
-                    Navigator.of(context).
-                      pushNamed(RouteName.bookRead, 
-                        arguments: BookArguments(bookId: item.bookId, id: item.id, title: item.title))
-                    :Navigator.of(context).
-                      pushNamed(RouteName.videoPlayer, 
-                        arguments: VideoPlayerPageModel(context: context, video: item));
-                    },
+          onTap: () {
+            recentAction == RecentAction.readBook
+                ? Navigator.of(context).pushNamed(RouteName.bookRead,
+                    arguments: BookArguments(
+                        bookId: item.bookId, id: item.id, title: item.title))
+                : Navigator.of(context).pushNamed(RouteName.videoPlayer,
+                    arguments:
+                        VideoPlayerPageModel(context: context, video: item));
+          },
           child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Container(
@@ -83,15 +84,13 @@ class ContinueCard extends StatelessWidget {
                               ),
                               maxLines: 1,
                             ),
-                            AutoSizeText(
-                              item.title,
-                              style: AppTypography.body.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: AppColor.textPrimary,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis
-                            ),
+                            AutoSizeText(item.title,
+                                style: AppTypography.body.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColor.textPrimary,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis),
                           ],
                         ),
                       ),
@@ -120,11 +119,12 @@ class ContinueCard extends StatelessWidget {
                                 image: recentAction == RecentAction.readBook
                                     ? item.coverUrl
                                     : item.thumbUrl,
-                                fadeInDuration: const Duration(milliseconds: 400),
+                                fadeInDuration:
+                                    const Duration(milliseconds: 400),
                                 fit: BoxFit.fill,
                                 // placeholderFit: BoxFit.fill,
-                                imageErrorBuilder: (context, error, stackTrace) =>
-                                    Image.asset(
+                                imageErrorBuilder:
+                                    (context, error, stackTrace) => Image.asset(
                                   'assets/images/default_logo.png',
                                 ),
                               ),

@@ -59,7 +59,7 @@ class _VideoPageState extends State<VideoPage>
               label: 'Video',
               onBackButtonPress: () {
                 context.read<CategoryVideoCubit>().exit();
-                Navigator.pop(context);
+                Navigator.pop(context, true);
               },
               onSearchButtonPress: () async {
                 await showSearch(

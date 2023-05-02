@@ -6,6 +6,7 @@ class CustomTextField extends StatefulWidget {
     super.key,
     required this.controller,
     this.borderRadius = 30,
+    this.hintText,
     this.onChanged,
     this.onSubmitted,
   });
@@ -14,6 +15,7 @@ class CustomTextField extends StatefulWidget {
   final double? borderRadius;
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
+  final String? hintText;
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
@@ -27,6 +29,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       cursorColor: Colors.black,
       decoration: InputDecoration(
+        hintText: widget.hintText ?? "hintText",
         filled: true,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius!),

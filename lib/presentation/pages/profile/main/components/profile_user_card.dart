@@ -43,10 +43,19 @@ class ProfileUserCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-                backgroundColor: AppColor.appBackground,
-                radius: 30,
-                backgroundImage: NetworkImage(googleImage)),
+            Container(
+              padding: EdgeInsets.all(10.r),
+              height: 65.r,
+              width: 65.r,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(360),
+              ),
+              child: Image.network(
+                googleImage,
+                fit: BoxFit.cover,
+              ),
+            ),
             12.horizontalSpace,
             Text(
               user?.fullName ?? "User",

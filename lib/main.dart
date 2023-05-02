@@ -2,6 +2,8 @@ import 'package:bke/bloc/calendar_activities/calendar_activities_cubit.dart';
 import 'package:bke/bloc/dictionary/dictionary_cubit.dart';
 import 'package:bke/bloc/flashcard/flashcard_card/flashcard_cubit.dart';
 import 'package:bke/bloc/flashcard/flashcard_collection/flashcard_collection_cubit.dart';
+import 'package:bke/bloc/news/news_bloc.dart';
+import 'package:bke/bloc/recent_action/action_bloc.dart';
 import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
 import 'package:bke/data/dependency_injection/di.dart';
 import 'package:bke/data/repositories/dictionary_repository.dart';
@@ -83,6 +85,8 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (ctx) => FlashcardCubit()),
               BlocProvider(create: (ctx) => FlashcardRandomCubit()),
               BlocProvider(create: (ctx) => CalendarActivitiesCubit()),
+              BlocProvider(create: (ctx) => NewsListBloc()),
+              BlocProvider(create: (ctx) => ActionBloc())
             ],
             child: MaterialApp(
               title: 'Funny Englisk',

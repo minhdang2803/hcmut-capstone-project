@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../presentation/pages/video/component/bottom_vocabulary.dart';
-import 'constants.dart';
+
 class WordProcessing {
   WordProcessing._internal();
 
@@ -11,8 +11,8 @@ class WordProcessing {
   factory WordProcessing.instance() => _instance;
 
   List<String> splitWord(String subText) {
-    List<String> eachCharList = subText.split(' ');
-    print(eachCharList);
+    List<String> eachCharList = subText.toCapitalize().split(' ');
+
     List<String> result = [];
     String tempWord = '';
     for (final element in eachCharList) {
@@ -52,7 +52,8 @@ class WordProcessing {
               showModalBottomSheet(
                 context: context,
                 backgroundColor: Colors.transparent,
-                builder: (context) => BottomVocab(text: translatableText.toLowerCase()),
+                builder: (context) =>
+                    BottomVocab(text: translatableText.toLowerCase()),
               );
             },
         );
@@ -77,7 +78,8 @@ class WordProcessing {
     return arrayOfTextSpan;
   }
 
-  String plainText (String text) {
+  String plainText(String text) {
     return text.replaceAll(RegExp(r'[\[\]]'), '');
   }
+  
 }

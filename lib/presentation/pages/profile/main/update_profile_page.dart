@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bke/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -49,77 +50,79 @@ class _UserProfilePageState extends State<UserProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      backgroundColor: AppColor.appBackground,
+      body: SafeArea(
+        bottom: false,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            GestureDetector(
-              onTap: _getImage,
-              child: CircleAvatar(
-                backgroundColor: AppColor.appBackground,
-                radius: 50,
-                backgroundImage:
-                    NetworkImage(authLocal.getCurrentUser()?.photoUrl ?? ""),
-                child: _image == null &&
-                        authLocal.getCurrentUser()?.photoUrl == null
-                    ? const Icon(Icons.person, size: 50)
-                    // :  _image == null && authLocal.getCurrentUser()?.photoUrl != null?
-                    // Image.network(
-                    //   authLocal.getCurrentUser()?.photoUrl??"",
-                    //   width: 50.r,
-                    //   height: 50.r,
-                    //   fit: BoxFit.cover,
-                    //   errorBuilder: (context, error, stackTrace) {
-                    //     return Image.asset(
-                    //       'assets/images/peace.png',
-                    //       width: 80.r,
-                    //       height: 80.r,
-                    //       fit: BoxFit.cover,
-                    //     );
-                    //   },
-                    // )
-                    : null,
-              ),
+            BkEAppBar(
+              label: "Cập nhật thông tin",
+              onBackButtonPress: () => Navigator.pop(context),
             ),
-            SizedBox(height: 16.r),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 32.r),
-              child: TextField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  hintText: authLocal.getCurrentUser()?.fullName ?? '',
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                      width: 1,
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30.r)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    20.verticalSpace,
+                    CircleAvatar(
+                      backgroundColor: AppColor.appBackground,
+                      radius: 50,
+                      backgroundImage: NetworkImage(
+                          authLocal.getCurrentUser()?.photoUrl ?? ""),
+                      child: _image == null &&
+                              authLocal.getCurrentUser()?.photoUrl == null
+                          ? const Icon(Icons.person, size: 50)
+                          // :  _image == null && authLocal.getCurrentUser()?.photoUrl != null?
+                          // Image.network(
+                          //   authLocal.getCurrentUser()?.photoUrl??"",
+                          //   width: 50.r,
+                          //   height: 50.r,
+                          //   fit: BoxFit.cover,
+                          //   errorBuilder: (context, error, stackTrace) {
+                          //     return Image.asset(
+                          //       'assets/images/peace.png',
+                          //       width: 80.r,
+                          //       height: 80.r,
+                          //       fit: BoxFit.cover,
+                          //     );
+                          //   },
+                          // )
+                          : null,
                     ),
-                  ),
+                    SizedBox(height: 16.r),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 32.r),
+                      child: CustomTextField(
+                        hintText: authLocal.getCurrentUser()?.fullName ?? '',
+                        controller: _nameController,
+                      ),
+                    ),
+                    SizedBox(height: 16.r),
+                    QuizButton(
+                      onTap: () {
+                        String name = _nameController.text.trim();
+                        authLocal.saveCurrentUser(
+                            AppUser(
+                                fullName: name, photoUrl: _image?.path ?? ''),
+                            '');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Cập nhật thông tin thành công!"),
+                          ),
+                        );
+                        Navigator.of(context).pop();
+                      },
+                      text: "Lưu thông tin",
+                      width: 200.w,
+                      height: 40.h,
+                      backgroundColor: AppColor.secondary,
+                    )
+                  ],
                 ),
-              ),
-            ),
-            SizedBox(height: 16.r),
-            ElevatedButton(
-              onPressed: () {
-                String name = _nameController.text.trim();
-                authLocal.saveCurrentUser(
-                    AppUser(fullName: name, photoUrl: _image?.path ?? ''), '');
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Cập nhật thông tin thành công!"),
-                  ),
-                );
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                "Lưu",
-                style: AppTypography.bodySmall.copyWith(
-                  color: AppColor.textPrimary,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(AppColor.accentBlue),
               ),
             ),
           ],

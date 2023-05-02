@@ -72,16 +72,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
     context.read<VideoCubit>().getSubVideo(widget.video.videoId);
   }
 
-  void _goToSpan(int spanIndex) {
-    if (_keys[spanIndex].currentContext != null) {
-      Scrollable.ensureVisible(
-        _keys[spanIndex].currentContext!,
-        alignment: 0.2,
-        duration: const Duration(milliseconds: 300),
-      );
-    }
-  }
-
   void _resetCurrentIndex(PointerEvent details) {
     for (var element in _subVideo!.subs) {
       if ((_currentDuration > element.from) &&
@@ -207,15 +197,13 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   }
 
   Widget _buildSub() {
-    if (_currentIndex != 0) _goToSpan(_currentIndex);
-
     try {
       if (_currentDuration > _subVideo!.subs[_currentIndex].to) {
         _currentIndex++;
         itemScrollController.scrollTo(
             index: _currentIndex,
             duration: const Duration(milliseconds: 200),
-            alignment: 0.5);
+            alignment: 0.2);
       }
     } catch (error) {
       // do nothing handle case currentIndex does not exists
@@ -252,12 +240,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
                         ),
                       ),
                     ),
-                  )
-                  // : SizedBox(
-                  //     height: 0.1.h,
-                  //     child: Text("clm"),
-                  //   ),
-                  ),
+                  )),
               TranslateIconButton(text: _wordProcessing.plainText(element.text))
             ],
           );
@@ -267,11 +250,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
     );
   }
 
-// _subVideo!.subs
-//             .map(
-//               (e) =>
-//             )
-//             .toList(),
   Widget _buildLoadingSkeleton() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.r, vertical: 10.r),
