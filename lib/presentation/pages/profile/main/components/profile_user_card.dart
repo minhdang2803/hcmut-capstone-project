@@ -44,16 +44,19 @@ class ProfileUserCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(10.r),
+              padding: EdgeInsets.all(5.r),
               height: 65.r,
               width: 65.r,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(360),
               ),
-              child: Image.network(
-                googleImage,
-                fit: BoxFit.cover,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(360),
+                child: Image.network(
+                  googleImage,
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
             12.horizontalSpace,
