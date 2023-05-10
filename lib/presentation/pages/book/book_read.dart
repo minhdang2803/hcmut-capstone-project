@@ -254,73 +254,81 @@ class _BookReadState extends State<BookRead> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-        backgroundColor: AppColor.primary,
+        backgroundColor: AppColor.appBackground,
         body: SafeArea(
             top: true,
             bottom: false,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _appBar(),
                 Expanded(
-                  child: BlocProvider(
-                      create: (context) => _bookBloc,
-                      child: BlocBuilder<BookBloc, BookState>(
-                          builder: (context, state) {
-                        if (state is BookLoadingState) {
-                          return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 1.h),
-                              child: const Center(
-                                  child: CircularProgressIndicator(
-                                      color: AppColor.accentBlue)));
-                        } else if (state is EbookLoadedState) {
-                          _ebook = state.book!.ebook;
-                          calculateOffsets(_ebook.sentences);
-                          if (!_ckptReached) {
-                            //move to saved checkpoint
-                            _totalPage = state.book!.metadata.totalPage;
-                            setInitialCkpt(_ebook.ckpt);
-                            Future.delayed(const Duration(seconds: 1), () {
-                              _scrollController.animateTo(
-                                  _position - 4 * _rowHeight >
-                                          _scrollController
-                                              .position.maxScrollExtent
-                                      ? _position - _rowHeight * 4
-                                      : _position,
-                                  duration: const Duration(microseconds: 100),
-                                  curve: Curves.easeInOut);
-                            });
-                            // Perform the action here
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.all(10.r),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30.r),
+                            topRight: Radius.circular(30.r)),
+                        color: Colors.white),
+                    child: BlocProvider(
+                        create: (context) => _bookBloc,
+                        child: BlocBuilder<BookBloc, BookState>(
+                            builder: (context, state) {
+                          if (state is BookLoadingState) {
+                            return const Center(
+                                child: CircularProgressIndicator(
+                                    color: AppColor.accentBlue));
+                          } else if (state is EbookLoadedState) {
+                            _ebook = state.book!.ebook;
+                            calculateOffsets(_ebook.sentences);
+                            if (!_ckptReached) {
+                              //move to saved checkpoint
+                              _totalPage = state.book!.metadata.totalPage;
+                              setInitialCkpt(_ebook.ckpt);
+                              Future.delayed(const Duration(seconds: 1), () {
+                                _scrollController.animateTo(
+                                    _position - 4 * _rowHeight >
+                                            _scrollController
+                                                .position.maxScrollExtent
+                                        ? _position - _rowHeight * 4
+                                        : _position,
+                                    duration: const Duration(microseconds: 100),
+                                    curve: Curves.easeInOut);
+                              });
+                              // Perform the action here
+                            }
+                            // LogUtil.debug(_chapterIdx.toString());
+                            if (_pageReached) {
+                              _position = offsets[_chapterIdx %
+                                  Constants.defaultReadingPageSize];
+
+                              _oldCkpt = _position;
+                              Future.delayed(const Duration(seconds: 1), () {
+                                _pageReached = false;
+
+                                _scrollController.animateTo(
+                                    _position - _rowHeight >
+                                            _scrollController
+                                                .position.maxScrollExtent
+                                        ? _position - _rowHeight * 2
+                                        : _position,
+                                    duration: const Duration(microseconds: 100),
+                                    curve: Curves.easeInOut);
+                              });
+                            }
+
+                            return _buildListView(_scrollController);
+                          } else if (state is EbookLoadedAnotherState) {
+                            _ebook = state.book!.ebook;
+                            calculateOffsets(_ebook.sentences);
+                            return _buildListView(_scrollControllerBottomUp);
+                          } else {
+                            // Display an error message or empty state
+                            return const Text('An error occurred.');
                           }
-                          // LogUtil.debug(_chapterIdx.toString());
-                          if (_pageReached) {
-                            _position = offsets[
-                                _chapterIdx % Constants.defaultReadingPageSize];
-
-                            _oldCkpt = _position;
-                            Future.delayed(const Duration(seconds: 1), () {
-                              _pageReached = false;
-
-                              _scrollController.animateTo(
-                                  _position - _rowHeight >
-                                          _scrollController
-                                              .position.maxScrollExtent
-                                      ? _position - _rowHeight * 2
-                                      : _position,
-                                  duration: const Duration(microseconds: 100),
-                                  curve: Curves.easeInOut);
-                            });
-                          }
-
-                          return _buildListView(_scrollController);
-                        } else if (state is EbookLoadedAnotherState) {
-                          _ebook = state.book!.ebook;
-                          calculateOffsets(_ebook.sentences);
-                          return _buildListView(_scrollControllerBottomUp);
-                        } else {
-                          // Display an error message or empty state
-                          return const Text('An error occurred.');
-                        }
-                      })),
+                        })),
+                  ),
                 )
               ],
             )));
@@ -340,6 +348,7 @@ class _BookReadState extends State<BookRead> {
             // decoration: BoxDecoration(border: Border.all(color:Colors.black)),
             height: _getRatio(_ebook.sentences[index].text) * _rowHeight,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   width: 270.w,
@@ -455,10 +464,8 @@ class _BookReadState extends State<BookRead> {
     final state = _bookBloc.state;
     dynamic chapters;
     if (state is BookLoadingState) {
-      return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.r),
-          child: const Center(
-              child: CircularProgressIndicator(color: AppColor.secondary)));
+      return const Center(
+          child: CircularProgressIndicator(color: AppColor.secondary));
     } else {
       if (state is EbookLoadedState) {
         chapters = state.book!.ebook.chapter;
@@ -468,7 +475,7 @@ class _BookReadState extends State<BookRead> {
       chapterList = chapters.keys.cast<String>().toList();
       if (chapterList.isNotEmpty) {
         return Container(
-          padding: EdgeInsets.only(top: 20.r),
+          // padding: EdgeInsets.only(top: 20.r),
           color: AppColor.primary,
           child: ListView.builder(
             itemBuilder: (ctx, i) => GestureDetector(
