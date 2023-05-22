@@ -11,6 +11,7 @@ import 'package:bke/utils/share_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -27,7 +28,7 @@ import 'presentation/theme/app_theme.dart';
 import 'presentation/widgets/custom_restart_widget.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -39,7 +40,7 @@ void main() async {
   //   statusBarIconBrightness: Brightness.dark,
   //   systemNavigationBarIconBrightness: Brightness.dark,
   // ));
-
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   final sharePref = SharedPrefWrapper.instance();
   final secondLogin = await sharePref.getBool("isSecondLogin");
   if (!secondLogin) {
@@ -71,6 +72,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
+
     return CVNRestartWidget(
       child: ScreenUtilInit(
         designSize: const Size(360, 690),

@@ -66,6 +66,8 @@ dependencies:
   cloud_firestore: ^4.5.1
   get: ^4.6.5
   intl: ^0.17.0
+  flutter_native_splash: ^2.2.19
+  firebase_messaging: ^14.6.1
 
 dev_dependencies:
   flutter_test:
