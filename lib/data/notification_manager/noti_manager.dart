@@ -10,9 +10,9 @@ class NotificationManager {
     AndroidInitializationSettings initAndroid =
         const AndroidInitializationSettings('@drawable/yoga');
     DarwinInitializationSettings initIos = DarwinInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
       onDidReceiveLocalNotification: (id, title, body, payload) {},
     );
     InitializationSettings initializationSettings = InitializationSettings(
