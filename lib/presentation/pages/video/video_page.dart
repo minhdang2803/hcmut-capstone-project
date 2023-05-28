@@ -1,6 +1,8 @@
+import 'package:bke/bloc/notification/notification_cubit.dart';
 import 'package:bke/bloc/video/category_video/category_video_cubit.dart';
 // ignore: unused_import
 import 'package:bke/data/models/video/video_models.dart';
+import 'package:bke/data/notification_manager/noti_manager.dart';
 import 'package:bke/presentation/pages/video/video_see_more_page.dart';
 import 'package:bke/presentation/pages/video/videos.dart';
 import 'package:bke/presentation/theme/app_color.dart';
@@ -59,6 +61,10 @@ class _VideoPageState extends State<VideoPage>
               label: 'Video',
               onBackButtonPress: () {
                 context.read<CategoryVideoCubit>().exit();
+                context.read<NotificationCubit>().pushNoti(
+                      title: "Video feature",
+                      message: "Back to home Screen",
+                    );
                 Navigator.pop(context, true);
               },
               onSearchButtonPress: () async {
