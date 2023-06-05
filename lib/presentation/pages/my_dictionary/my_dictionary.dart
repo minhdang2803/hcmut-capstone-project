@@ -16,7 +16,7 @@ class MyDictionaryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.appBackground,
       body: SafeArea(
         bottom: false,
         child: Column(
@@ -93,7 +93,7 @@ class MyDictionaryPage extends StatelessWidget {
         Text(
           "Bạn chưa lưu từ vựng nào!",
           style: AppTypography.subHeadline.copyWith(
-            color: AppColor.primary,
+            color: Colors.black,
             fontWeight: FontWeight.w700,
           ),
         )

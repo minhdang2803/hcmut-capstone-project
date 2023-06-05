@@ -229,15 +229,17 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
                     child: RichText(
                       text: TextSpan(
                         children: _wordProcessing.createTextSpans(
-                          context,
-                          element.text,
-                          AppTypography.title.copyWith(
-                            color: (_currentDuration > element.from) &&
-                                    (_currentDuration < element.to)
-                                ? AppColor.mainPink
-                                : AppColor.textPrimary,
-                          ),
-                        ),
+                            context,
+                            element.text,
+                            AppTypography.title.copyWith(
+                              color: (_currentDuration > element.from) &&
+                                      (_currentDuration < element.to)
+                                  ? AppColor.mainPink
+                                  : AppColor.textPrimary,
+                            ),
+                            pause: () => _controller.pause(),
+                            play: () => _controller.play(),
+                            continuePlaying: true),
                       ),
                     ),
                   )),

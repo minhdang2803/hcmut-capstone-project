@@ -76,15 +76,23 @@ class _BottomVocabState extends State<BottomVocab>
                 if (_vocabInfos != null) {
                   for (var element in _vocabInfos!.list) {
                     if (!_vocabTypeList.contains(element.vocabType)) {
+                      // if (element.vocabType.isEmpty) {
+                      //   _vocabTypeList.add("Idiom");
+                      // } else {
+                      //   _vocabTypeList.add(element.vocabType);
+                      // }
                       _vocabTypeList.add(element.vocabType);
                     }
                   }
 
                   // map data thành list các tab, động từ, giới từ ,....
                   for (var element in _vocabTypeList) {
-                    final wordTab = _vocabInfos!.list
-                        .where((e) => e.vocabType == element)
-                        .toList();
+                    final wordTab = _vocabInfos!.list.where((e) {
+                      // if (e.vocabType.isEmpty) {
+                      //   return element == "Idiom";
+                      // }
+                      return e.vocabType == element;
+                    }).toList();
 
                     _translateInfoList.add(wordTab);
                   }
@@ -197,7 +205,8 @@ class _BottomVocabState extends State<BottomVocab>
                         padding: EdgeInsets.symmetric(
                             horizontal: 6.r, vertical: 2.r),
                         child: Center(
-                          child: Text(e.toCapitalize(),
+                          child: Text(
+                              e.isEmpty ? "Function word" : e.toCapitalize(),
                               style: _vocabTypeList.length > 2
                                   ? AppTypography.bodySmall.copyWith(
                                       color: _vocabTypeList[_currentTab] == e
