@@ -234,6 +234,7 @@ class _VocabFullInfoPageState extends State<VocabFullInfoPage>
     );
   }
 
+  String functionalWord = "Functional word";
   Widget _buildVocabTitle(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -247,7 +248,7 @@ class _VocabFullInfoPageState extends State<VocabFullInfoPage>
             ),
             10.horizontalSpace,
             Text(
-              "(${widget.vocabInfo.vocabType})",
+              "(${widget.vocabInfo.vocabType.isNotEmpty ? widget.vocabInfo.vocabType.toCapitalize() : functionalWord})",
               style: AppTypography.title.copyWith(
                   fontWeight: FontWeight.bold, color: AppColor.mainPink),
             ),

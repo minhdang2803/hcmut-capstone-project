@@ -114,7 +114,7 @@ class ChatSearchPage extends SearchDelegate {
               ),
               Text(
                 "Admin: $admin",
-                style: AppTypography.title,
+                style: AppTypography.bodySmall,
               ),
             ],
           ),

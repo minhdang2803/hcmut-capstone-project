@@ -11,6 +11,7 @@ class ChatCubit extends Cubit<ChatState> {
   final instance = ChatRepository.instance();
 
   Stream<DocumentSnapshot<Object?>> getChatList(uid) {
+    
     return instance.getUserGroups(uid);
   }
 

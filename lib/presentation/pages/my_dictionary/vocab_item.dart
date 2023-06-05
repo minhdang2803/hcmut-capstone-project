@@ -38,6 +38,7 @@ class _VocabDictionaryItemState extends State<VocabDictionaryItem> {
     });
   }
 
+  final functionalWord = "Functional word";
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -67,7 +68,7 @@ class _VocabDictionaryItemState extends State<VocabDictionaryItem> {
             ),
             5.horizontalSpace,
             Text(
-              "(${widget.vocab.vocabType})",
+              "(${widget.vocab.vocabType.isNotEmpty ? widget.vocab.vocabType.toCapitalize() : functionalWord})",
               style: AppTypography.body.copyWith(
                 fontWeight: FontWeight.bold,
                 color: AppColor.textSecondary,

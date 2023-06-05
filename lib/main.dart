@@ -47,7 +47,6 @@ void main() async {
   final sharePref = SharedPrefWrapper.instance();
   final secondLogin = await sharePref.getBool("isSecondLogin");
   if (!secondLogin) {
-    print("Here");
     final instance = DictionaryRepository.instance();
     await instance.importDictionary();
     sharePref.setBool("isSecondLogin", true);

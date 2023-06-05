@@ -32,7 +32,13 @@ class WordProcessing {
   }
 
   List<TextSpan> createTextSpans(
-      BuildContext context, String subText, TextStyle style) {
+    BuildContext context,
+    String subText,
+    TextStyle style, {
+    Function()? pause,
+    Function()? play,
+    bool? continuePlaying = false,
+  }) {
     final arrayStrings = splitWord(subText);
     List<TextSpan> arrayOfTextSpan = [];
     for (int index = 0; index < arrayStrings.length; index++) {
@@ -49,12 +55,17 @@ class WordProcessing {
           style: style,
           recognizer: TapGestureRecognizer()
             ..onTap = () {
+              pause?.call();
               showModalBottomSheet(
                 context: context,
                 backgroundColor: Colors.transparent,
                 builder: (context) =>
                     BottomVocab(text: translatableText.toLowerCase()),
-              );
+              ).then((value) {
+                if (continuePlaying == true) {
+                  play?.call();
+                }
+              });
             },
         );
       } else {
@@ -64,11 +75,16 @@ class WordProcessing {
           style: style,
           recognizer: TapGestureRecognizer()
             ..onTap = () {
+              pause?.call();
               showModalBottomSheet(
                 context: context,
                 backgroundColor: Colors.transparent,
                 builder: (context) => BottomVocab(text: text.toLowerCase()),
-              );
+              ).then((value) {
+                if (continuePlaying == true) {
+                  play?.call();
+                }
+              });
             },
         );
       }
@@ -81,5 +97,4 @@ class WordProcessing {
   String plainText(String text) {
     return text.replaceAll(RegExp(r'[\[\]]'), '');
   }
-  
 }

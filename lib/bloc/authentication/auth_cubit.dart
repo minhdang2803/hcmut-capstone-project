@@ -4,6 +4,7 @@ import 'package:bke/data/models/authentication/user.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
@@ -99,7 +100,7 @@ class AuthCubit extends Cubit<AuthState> {
           accessToken: googleAuth!.accessToken,
           idToken: googleAuth.idToken,
         );
-        await FirebaseAuth.instance.signInWithCredential(credential);
+        await FirebaseAuth.instance.signInWithCredential(credential).then((value) => null);
         // await FirebaseAuth.instance.signInWithEmailAndPassword(
         //   email: user.email ?? '',
         //   password: user.password ?? '',
