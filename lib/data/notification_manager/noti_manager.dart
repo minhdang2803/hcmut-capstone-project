@@ -48,4 +48,23 @@ class NotificationManager {
       {int id = 0, String? title, String? body, String? payLoad}) async {
     return notificationsPlugin.show(id, title, body, notificationDetails());
   }
+
+  Future<void> scheduleNotification(String? title, String? body) async {
+    AndroidNotificationDetails details = const AndroidNotificationDetails(
+        "channelId", "channelName",
+        importance: Importance.max, priority: Priority.high);
+
+    NotificationDetails notificationDetails =
+        NotificationDetails(android: details);
+
+    await notificationsPlugin.periodicallyShow(
+      0,
+      title,
+      body,
+      RepeatInterval.everyMinute,
+      notificationDetails,
+    );
+  }
+
+  Future<void> stopNotification() async => notificationsPlugin.cancelAll();
 }

@@ -37,6 +37,9 @@ void main() async {
   await initServices();
   await HiveConfig().init();
   getItInstance.get<NotificationManager>().initNotification();
+  getItInstance
+      .get<NotificationManager>()
+      .scheduleNotification("Đừng dừng lại!", "Tiếp tục ôn tập đi nào !");
   // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlaySty  le(
   //   statusBarColor: Colors.transparent,
   //   statusBarBrightness: Brightness.light,

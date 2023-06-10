@@ -154,13 +154,15 @@ class _CalendarPageState extends State<CalendarPage>
       color: AppColor.primary,
       child: TableCalendar(
         //calendar's configurations
+
+        pageJumpingEnabled: false,
         locale: 'vi_VI',
         focusedDay: _focusedDay,
         firstDay: DateTime(2022),
         lastDay: DateTime(2050),
         calendarFormat: CalendarFormat.month,
         startingDayOfWeek: StartingDayOfWeek.monday,
-        daysOfWeekVisible: true,
+        // daysOfWeekVisible: true,
 
         //calendar callbacks
         onDaySelected: _onDateSelected,
@@ -212,9 +214,21 @@ class _CalendarPageState extends State<CalendarPage>
           ),
         ),
         rowHeight: 52.r,
-        daysOfWeekHeight: 16.r,
+        daysOfWeekHeight: 25.r,
+
+        availableGestures: AvailableGestures.all,
         headerStyle: HeaderStyle(
           titleCentered: true,
+          leftChevronIcon: const Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+            size: 30,
+          ),
+          rightChevronIcon: const Icon(
+            Icons.chevron_right,
+            color: Colors.black,
+            size: 30,
+          ),
           headerPadding: EdgeInsets.symmetric(vertical: 16.r),
           formatButtonVisible: false,
           titleTextFormatter: (date, locale) {
@@ -223,6 +237,7 @@ class _CalendarPageState extends State<CalendarPage>
           titleTextStyle: AppTypography.title.copyWith(
             color: AppColor.textPrimary,
             fontWeight: FontWeight.bold,
+            fontSize: 25,
           ),
         ),
       ),

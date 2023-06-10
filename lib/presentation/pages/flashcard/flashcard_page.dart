@@ -220,6 +220,7 @@ class _FlashCardScreenState extends State<FlashCardScreen>
             alignment: Alignment.center,
             child: BlocBuilder<FlashcardCubit, FlashcardState>(
               builder: (context, state) {
+                final vocabType = state.flashcards[state.index].vocabType;
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -229,9 +230,10 @@ class _FlashCardScreenState extends State<FlashCardScreen>
                           .copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      '(${state.flashcards[state.index].vocabType.toCapitalize()})',
+                      '(${vocabType.isNotEmpty ? vocabType.toCapitalize() : "Function word"})',
                       style: AppTypography.title.copyWith(
-                          fontWeight: FontWeight.bold, color: AppColor.textPrimary),
+                          fontWeight: FontWeight.bold,
+                          color: AppColor.textPrimary),
                     ),
                     5.verticalSpace,
                     Text.rich(

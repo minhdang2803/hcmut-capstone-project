@@ -230,8 +230,9 @@ class _FlashcardInfoScreenState extends State<FlashcardInfoScreen>
             ),
             10.horizontalSpace,
             Text(
-              "(${widget.vocab.vocabType})",
-              style: AppTypography.headline.copyWith(color: AppColor.mainPink),
+              "(${widget.vocab.vocabType.isEmpty ? "Function word" : widget.vocab.vocabType})",
+              style:
+                  AppTypography.subHeadline.copyWith(color: AppColor.mainPink),
             ),
           ],
         ),
