@@ -29,7 +29,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       cursorColor: Colors.black,
       decoration: InputDecoration(
-        hintText: widget.hintText ?? "hintText",
+        hintText: widget.hintText ?? "Bắt đầu nhập",
         filled: true,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius!),

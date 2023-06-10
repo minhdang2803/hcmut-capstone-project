@@ -312,7 +312,9 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.r)),
                   ),
-                  onPressed: value.text.isEmpty || imgUrl == ""
+                  onPressed: value.text.isEmpty ||
+                          imgUrl == "" ||
+                          _addFlashcardCollection.text.isEmpty
                       ? null
                       : () {
                           context
@@ -331,7 +333,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
                   child: Text(
                     "Thêm",
                     style: AppTypography.body.copyWith(
-                      color: AppColor.textPrimary,
+                      color: AppColor.primary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -351,7 +353,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
               child: Text(
                 "Huỷ",
                 style: AppTypography.body.copyWith(
-                  color: AppColor.textPrimary,
+                  color: AppColor.primary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -457,7 +459,7 @@ class _FlashcardCollectionScreenState extends State<FlashcardCollectionScreen>
               // backgroundColor: AppColor.primary,
               child: const Icon(
                 Icons.add,
-                color: AppColor.textPrimary,
+                color: AppColor.primary,
               ),
             )
           : null,

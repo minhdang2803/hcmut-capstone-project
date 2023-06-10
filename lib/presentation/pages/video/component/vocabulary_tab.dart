@@ -225,7 +225,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
                 child: Text(
                   "Bộ sưu tập mới",
                   style: AppTypography.body.copyWith(
-                    color: AppColor.textPrimary,
+                    color: AppColor.primary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -242,7 +242,7 @@ class _VocabularyTabState extends State<VocabularyTab> {
                 child: Text(
                   "Huỷ",
                   style: AppTypography.body.copyWith(
-                    color: AppColor.textPrimary,
+                    color: AppColor.primary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

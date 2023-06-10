@@ -1,5 +1,6 @@
 import 'package:bke/presentation/pages/calendar/calendar_page.dart';
 import 'package:bke/presentation/pages/home/navigation_page.dart';
+import 'package:bke/presentation/routes/route_name.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -178,7 +179,9 @@ class _MainPageState extends State<MainPage> {
 
   Widget _buildFloattingButton(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushNamed(context, RouteName.chatPage);
+      },
       backgroundColor: AppColor.secondary,
       elevation: 2,
       isExtended: false,
