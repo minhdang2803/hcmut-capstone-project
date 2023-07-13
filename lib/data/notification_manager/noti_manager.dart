@@ -61,7 +61,7 @@ class NotificationManager {
       0,
       title,
       body,
-      RepeatInterval.daily,
+      RepeatInterval.everyMinute,
       notificationDetails,
     );
   }
